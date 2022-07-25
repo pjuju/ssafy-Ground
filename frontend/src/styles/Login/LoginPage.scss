@@ -1,0 +1,62 @@
+@import '../common/utils';
+
+.social-login {
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.kakao-login {
+  &__button {
+    height: auto;
+
+    @include mobile() {
+      width: $oauth-mobile-button-size;
+    }
+
+    @include tablet() {
+      width: $oauth-tablet-button-size;
+    }
+
+    @include desktop() {
+      width: $oauth-desktop-button-size;
+    }
+  }
+}
+
+.google-login {
+  &__button {
+    display: flex;
+    height: auto;
+    background: #FFFFFF;
+    border-radius: 5px;
+    align-items: center;
+    text-decoration: none;
+
+    &--icon {
+      margin-left: 8px;
+      margin-right: 24px;
+    }
+
+    &--text {
+      height: 100%;
+      margin-right: 8px;
+      color: rgba(0, 0, 0, 0.54);
+      font-size: 14px;
+      font-family: "Roboto";
+    }
+
+    @include mobile() {
+      width: $oauth-mobile-button-size;
+    }
+
+    @include tablet() {
+      width: $oauth-tablet-button-size;
+    }
+
+    @include desktop() {
+      width: $oauth-desktop-button-size;
+    }
+  }
+}
