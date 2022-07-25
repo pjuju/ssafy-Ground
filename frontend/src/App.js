@@ -1,5 +1,5 @@
 import './App.css';
-import FindIdPage from './pages/Findid/FindIdPage';
+import FindIdPage from './pages/FindId/FindIdPage';
 
 function App() {
   return (
