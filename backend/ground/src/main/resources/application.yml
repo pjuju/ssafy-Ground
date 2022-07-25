@@ -12,6 +12,11 @@ spring:
       hibernate:
         #        show_sql: true
       format_sql: true
+      
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+    
 
 logging.level:
   org.hibernate.SQL: debug
