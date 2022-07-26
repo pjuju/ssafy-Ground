@@ -1,4 +1,4 @@
-package com.ground.ground.domain;
+package com.ground.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,28 +9,22 @@ import java.util.Date;
 
 @Entity
 @Getter @Setter
-@Table(name = "t_board")
-public class Board {
+@Table(name = "t_comment")
+public class Comment {
 
     @Id @GeneratedValue
-    @Column(name = "board_id")
+    @Column(name = "comment_id")
     private Long AI;
 
     @Column(nullable = false)
     private int user_SEQ;
 
     @Column(nullable = false)
-    private int category_SEQ;
+    private int board_SEQ;
 
     @Lob
-    @Column(name = "content")
-    private String content;
-
-    @Column(length = 30, nullable = false)
-    private String location;
-
     @Column(nullable = false)
-    private boolean b_private;
+    private String reply;
 
     @Column(nullable = false)
     private Date reg_dttm;
