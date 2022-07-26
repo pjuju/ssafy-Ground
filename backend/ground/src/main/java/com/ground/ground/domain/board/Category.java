@@ -1,4 +1,4 @@
-package com.ground.ground.domain;
+package com.ground.ground.domain.board;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -11,8 +11,8 @@ import javax.persistence.Entity;
 @Getter @Setter
 public class Category {
     @Id
-    @GeneratedValue @Column(name = "category_id")
-    private Long ai;
+    @GeneratedValue @Column(name = "category_SEQ")
+    private Long categorySEQ;
 
     @Column(length = 10, nullable = false)
     private String event;
