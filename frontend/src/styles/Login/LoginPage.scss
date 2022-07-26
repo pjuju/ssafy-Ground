@@ -1,10 +1,34 @@
 @import '../common/utils';
 
+@mixin set-layout {
+    margin-top: 1rem !important;
+    width: 80% !important;
+}
+
+.login-form {
+    &__wrapper {
+        min-height: 100vh;
+    }
+
+    &__field, &__button {
+        @include set-layout;
+    }
+
+    &__bottom {
+        @include set-layout;
+        font-size: 0.8rem;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: rgb(120, 120, 120);
+}
+
 .social-login {
-  height: 100vh;
-  width: 100%;
   justify-content: center;
   align-items: center;
+  margin-top: 1rem;
 }
 
 .kakao-login {
