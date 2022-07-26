@@ -37,7 +37,7 @@ public class GroundApplication implements WebMvcConfigurer{
 				.groupName("GROUND")
 				.apiInfo(apiInfo)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.ground.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.ground.domain"))
 //				.apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any())
 				.build();
