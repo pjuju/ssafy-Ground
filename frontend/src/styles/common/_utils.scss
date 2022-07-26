@@ -1,0 +1,27 @@
+/* 변수 */
+$oauth-mobile-button-size: 200px;
+$oauth-tablet-button-size: 200px;
+$oauth-desktop-button-size: 200px;
+
+/* 반응형 화면 크기*/
+$mobile: 767px;
+$tablet: 1023px;
+$desktop: 1024px;
+
+@mixin mobile {
+	@media (max-width: $mobile) {
+		@content;
+	}
+}
+
+@mixin tablet {
+	@media (min-width: #{$mobile+1}) and (max-width: $tablet) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	@media (min-width: $desktop) {
+		@content;
+	}
+}

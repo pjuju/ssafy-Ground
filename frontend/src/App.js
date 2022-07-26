@@ -1,24 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import LoginPage from './pages/LoginPage';
+import KakaoRedirectHandler from 'components/Login/OAuth/KakaoRedirectHandler';
+import GoogleRedirectHandler from 'components/Login/OAuth/GoogleRedirectHandler';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/oauth/callback/google" element={<GoogleRedirectHandler />} />
+        <Route path="/oauth/callback/kakao" element={<KakaoRedirectHandler />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
