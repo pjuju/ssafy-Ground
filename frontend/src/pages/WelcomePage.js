@@ -11,7 +11,6 @@ function WelcomePage() {
   const [userImg, setUserImg] = useState("");
   const [userDesc, setUserDesc] = useState("");
   const [userInterest, setUserInterest] = useState([]);
-  const [first, setfirst] = useState(second)
 
   const [isSetImg, setIsSetImg] = useState(false);
   const [isSetDesc, setIsSetDesc] = useState(false);
