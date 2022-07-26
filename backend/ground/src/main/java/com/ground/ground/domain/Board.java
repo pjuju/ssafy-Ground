@@ -23,7 +23,7 @@ public class Board {
     private int category_SEQ;
 
     @Lob
-    @Column(nullable = false)
+    @Column(name = "content")
     private String content;
 
     @Column(length = 30, nullable = false)
