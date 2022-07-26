@@ -1,5 +1,5 @@
+import { KAKAO_AUTH_URL } from 'components/Login/OAuth/KakaoAuth';
 import KakaoLoginLargeNarrow from 'assets/images/oauth/kakao_login_large_narrow.png';
-import { KAKAO_AUTH_URL } from 'components/Login/KakaoAuth';
 
 function KakaoButton() {
 	return (

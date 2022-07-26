@@ -1,4 +1,4 @@
-import { GOOGLE_AUTH_URL } from 'components/Login/GoogleAuth.js';
+import { GOOGLE_AUTH_URL } from 'components/Login/OAuth/GoogleAuth.js';
 import GoogleSigninLightNormal from 'assets/images/oauth/btn_google_signin_light_normal_web@2x.png'
 
 function GoogleButton() {

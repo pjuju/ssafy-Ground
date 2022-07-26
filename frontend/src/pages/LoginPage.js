@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
-import GoogleButton from 'components/Login/GoogleButton';
-import KakaoButton from 'components/Login/KakaoButton.js';
+import GoogleButton from 'components/Login/OAuth/GoogleButton';
+import KakaoButton from 'components/Login/OAuth/KakaoButton.js';
 import 'styles/Login/LoginPage.scss';
 
 function LoginPage() {
