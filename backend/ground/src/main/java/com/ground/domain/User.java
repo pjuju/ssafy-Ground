@@ -1,4 +1,4 @@
-package com.ground.ground.domain;
+package com.ground.domain;
 
 import lombok.Getter;
 import lombok.Setter;
