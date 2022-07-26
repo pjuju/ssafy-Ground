@@ -34,19 +34,6 @@
     align-items: center;
     text-decoration: none;
 
-    &--icon {
-      margin-left: 8px;
-      margin-right: 24px;
-    }
-
-    &--text {
-      height: 100%;
-      margin-right: 8px;
-      color: rgba(0, 0, 0, 0.54);
-      font-size: 14px;
-      font-family: "Roboto";
-    }
-
     @include mobile() {
       width: $oauth-mobile-button-size;
     }
