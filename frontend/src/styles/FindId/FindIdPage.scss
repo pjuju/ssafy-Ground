@@ -1,6 +1,6 @@
 @mixin set-layout {
-  margin-top: 1rem !important;
-  width: 80% !important;
+  margin: 1rem !important;
+  
 }
 
 .findid-form {
@@ -8,7 +8,17 @@
     min-height: 100vh;
   }
 
-  &__field, &__button {
+  &__inner{
+    width: 80%;
+  }
+
+  &__field {
     @include set-layout;
+    width: 300px;
+  }
+
+  &__button {
+    @include set-layout;
+    width: 150px;
   }
 }
