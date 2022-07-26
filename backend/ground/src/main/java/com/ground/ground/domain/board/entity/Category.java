@@ -1,4 +1,4 @@
-package com.ground.domain;
+package com.ground.ground.domain.board.entity;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
