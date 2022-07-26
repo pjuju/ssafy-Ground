@@ -17,9 +17,9 @@ import java.util.Date;
 @Table(name = "t_user")
 public class User {
 
-//    @Id @GeneratedValue
-//    @Column(name = "user_SEQ")
-//    private Long userSEQ;
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "user_SEQ")
+    private Long userSEQ;
 
     @Column(length = 50, nullable = false, unique = true)
     private String id;
@@ -51,11 +51,7 @@ public class User {
     @Column(name = "introduce")
     private String introduce;
 
-    @Id @GeneratedValue
-    @Column(name = "user_SEQ")
-    private Long userSEQ;
-
-    // 이게 대체..
+    // 이게 대체..=>무시해도됌 신경쓰지마셈
     @Column(name = "reg_user_SEQ", nullable = false)
     private int regUserSEQ;
 
