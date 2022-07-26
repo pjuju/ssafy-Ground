@@ -1,11 +1,29 @@
-package com.ground.ground.domain;
+package com.ground.ground.domain.user.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.w3c.dom.Text;
 
-import javax.persistence.*;
+
 import java.util.Date;
+import com.ground.ground.domain.follow.entity.Follow;
 
 @Entity
 @Getter @Setter
@@ -16,30 +34,36 @@ public class User {
     @Column(name = "user_id")
     private Long AI;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "id", length = 50, nullable = false, unique = true)
     private String id;
 
-    @Column(length = 20, nullable = false)
+    @Column(name = "pass", length = 20, nullable = false, unique = true)
     private String pass;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "email", length = 50, nullable = false)
     private String email;
 
-    @Column(length = 20, nullable = false)
+    @Column(name = "nickname", length = 20, nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column(name = "del_YN", nullable = false)
     private boolean del_YN;
 
-    @Column(nullable = false)
+    @Column(name = "u_private", nullable = false)
     private boolean u_private;
 
+    @Column(name = "age", length = 5)
     private String age;
+
+    @Column(name = "gender", length = 5)
     private String gender;
+
+    @Lob
+    @Column(name = "introduce")
+    private String introduce;
+
     @Lob
     private String image;
-    @Lob
-    private String introduce;
     @Lob
     private String ftoken;
 
@@ -52,4 +76,13 @@ public class User {
     private Date mod_dttm;
 
     private int mod_user_SEQ;
+
+//    @OneToMany(mappedBy = "user")
+//    private List<Follow> followings = new ArrayList<>();
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    
 }
