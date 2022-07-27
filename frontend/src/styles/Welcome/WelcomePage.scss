@@ -1,26 +1,114 @@
+@import '../common/utils';
+
+@mixin set-layout {
+  display: flex;
+  align-items: center;
+
+  &__title {
+    text-align: center;
+  }
+
+  &__submit-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & Button {
+      width: 300px;
+      height: 50px;
+    }
+  }
+}
+
 .logo {
   margin-bottom: 2rem;
 }
 
-.user-settings {
+.initial-settings {
   min-height: 100vh;
 
-  &__user-img {
-    display: flex;
-    align-items: center;
+  &__img {
+    @include set-layout();
 
-    &--title {
-      text-align: center;
+    &__input {
+      display: none;
     }
 
-    &--input {
-      width: 250px;
+    &__input-button {
       margin-bottom: 2rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      & img {
+        height: 200px;
+        width: 200px;
+        object-fit: contain;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &__desc {
+    @include set-layout();
+
+    &__input {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 400px;
+      padding: 2rem;
+
+      &__textfield {
+        width: 300px;
+      }
     }
 
-    &--button {
+    &__submit-button {
+      & Button {
+        margin-top: 1rem;
+      }
+    }
+  }
+
+  &__interest {
+    @include set-layout();
+
+    &__checkbox {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      width: 40%;
+
+      &__box {
+        width: 150px;
+      }
+
+      @include mobile() {
+        width: 80%;
+      }
+
+      @include tablet() {
+        width: 60%;
+      }
+    }
+  }
+
+  &__complete {
+    @include set-layout();
+    align-content: center;
+
+    &__divider {
       width: 100%;
-      height: 50px;
+      margin: 2rem 2rem;
+    }
+
+    &__submit-button {
+      & Button {
+        margin-top: 2rem;
+      }
     }
   }
 }
