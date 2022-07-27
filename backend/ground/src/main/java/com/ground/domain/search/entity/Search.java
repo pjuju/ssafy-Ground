@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @EntityListeners(AuditingEntityListener.class)
 public class Search {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "search_id")
     private Long id;
 
     @JoinColumn(name = "user_id")

@@ -10,13 +10,11 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "t_follow")
 public class Follow  {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long AI;
+    private Long id;
 
     @JoinColumn(name = "from_id")
     @ManyToOne

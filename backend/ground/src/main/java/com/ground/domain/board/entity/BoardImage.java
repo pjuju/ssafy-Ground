@@ -1,6 +1,6 @@
-package com.ground.domain.board.entity;
+'package com.ground.domain.board.entity;
 
-import com.ground.domain.global.image.Image;
+import com.ground.domain.global.entity.Image;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,14 +15,12 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardImage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_image_SEQ")
-    private Long postImageSEQ;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_SEQ")
-    private Board boardSEQ;
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     @Embedded
     @AttributeOverrides({
@@ -38,7 +36,7 @@ public class BoardImage {
 
     @Builder
     public BoardImage(Board board, Image image) {
-        this.boardSEQ = board;
+        this.board = board;
         this.image = image;
 
     }

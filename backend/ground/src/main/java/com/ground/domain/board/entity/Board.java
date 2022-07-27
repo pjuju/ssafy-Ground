@@ -1,5 +1,7 @@
 package com.ground.domain.board.entity;
 
+import com.ground.domain.global.entity.Category;
+import com.ground.domain.global.entity.Location;
 import com.ground.domain.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +11,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,34 +19,20 @@ import java.util.List;
 public class Board {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
-
-    // 카테고리 설정 manytoone로 해야 할 듯
-//    @Column(nullable = false)
-//    private int categoryId;
-    //dddddd
+    private User user;
 
     @Lob
     @Column(name = "content")
     private String content;
 
-    // 지역 Enum으로 해야하는 거 같음
-    @Column(length = 30, nullable = false)
-    private String location;
-
-    // user_SEQ가 있는데 이게 필요한가?
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reg_user_SEQ")
-    private User regUserSEQ;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mod_user_SEQ")
-    private User modUserSEQ;
+    @JoinColumn(name = "mod_user_id")
+    private User modUser;
 
     @CreatedDate
     @Column(name = "reg_dttm")
@@ -54,18 +41,29 @@ public class Board {
     @Column(name = "mod_dttm")
     private LocalDateTime modDttm;
 
-    @OneToMany(mappedBy = "boardSEQ")
+    @OneToMany(mappedBy = "board")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardSEQ")
+    @OneToMany(mappedBy = "board")
     private List<BoardLike> boardLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardSEQ")
+    @OneToMany(mappedBy = "board")
     private List<BoardSave> boardSaves = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardSEQ")
+    @OneToMany(mappedBy = "board")
     private List<BoardImage> images = new ArrayList<>();
 
-    @Column(nullable = false)
-    private boolean boardPrivate;
+    @Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
+    private boolean delYN;
+
+    @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 1")
+    private boolean privateYN;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 }
