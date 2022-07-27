@@ -1,9 +1,8 @@
-package com.ground.domain.image.entity;
+package com.ground.domain.global.image;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Getter
 @Builder

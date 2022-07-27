@@ -1,14 +1,15 @@
 package com.ground.domain.user.entity;
 
+import com.ground.domain.global.image.Image;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.w3c.dom.Text;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -18,30 +19,31 @@ import java.util.Date;
 public class User {
 
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "user_SEQ")
-    private Long userSEQ;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @Column(length = 50, nullable = false, unique = true)
-    private String id;
+    @Column(name = "username", unique = true)
+    private String username;
 
-    @Column(name = "pass", nullable = false)
+    @Column(name = "pass")
     private String pass;
 
-    @Column(name= "email", length = 50, nullable = false)
+    @Column(name= "email")
     private String email;
 
-    @Column(name= "nickname", length = 20, nullable = false)
+    @Column(name= "nickname")
     private String nickname;
 
     // 디폴트 값 넣어줄지
-    @Column(name = "del_YN", nullable = false)
+    @Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
     private boolean delYN;
 
-    @Column(name = "u_private", nullable = false)
-    private boolean uPrivate;
+    @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 1")
+    private boolean privateYN;
 
-    @Column(name = "age", nullable = false)
-    private int age;
+    @Column(name = "age")
+    @Enumerated(EnumType.STRING)
+    private Age age;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
@@ -51,26 +53,26 @@ public class User {
     @Column(name = "introduce")
     private String introduce;
 
-    // 이게 대체..=>무시해도됌 신경쓰지마셈
-    @Column(name = "reg_user_SEQ", nullable = false)
-    private int regUserSEQ;
+    @Column(name = "mod_user_id")
+    private int modUserId;
 
-    @Column(name = "mod_user_SEQ")
-    private int modUserSEQ;
-
-    // 임베디드 필요성
-    @Column(name = "reg_dttm", nullable = false)
-    private Date regDttm;
+    @CreatedDate
+    @Column(name = "reg_dttm")
+    private LocalDateTime regDttm;
 
     @Column(name = "mod_dttm")
-    private Date modDttm;
-
+    private LocalDateTime modDttm;
 
     // 이미지
-    @Lob
-    private String image;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "imageUrl", column = @Column(name = "member_image_url")),
+            @AttributeOverride(name = "imageType", column = @Column(name = "member_image_type")),
+            @AttributeOverride(name = "imageName", column = @Column(name = "member_image_name")),
+            @AttributeOverride(name = "imageUUID", column = @Column(name = "member_image_uuid"))
+    })
+    private Image image;
 
-    // ????????????
     @Lob
     private String ftoken;
 

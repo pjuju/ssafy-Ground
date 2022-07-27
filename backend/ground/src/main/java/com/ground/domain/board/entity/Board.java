@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,8 +26,8 @@ public class Board {
     private User userId;
 
     // 카테고리 설정 manytoone로 해야 할 듯
-    @Column(nullable = false)
-    private int categorySEQ;
+//    @Column(nullable = false)
+//    private int categoryId;
 
     @Lob
     @Column(name = "content")
@@ -47,7 +48,7 @@ public class Board {
 
     @CreatedDate
     @Column(name = "reg_dttm")
-    private LocalDateTime regDttm;
+    private Timestamp regDttm;
 
     @Column(name = "mod_dttm")
     private LocalDateTime modDttm;

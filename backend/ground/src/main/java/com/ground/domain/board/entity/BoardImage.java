@@ -1,6 +1,6 @@
 package com.ground.domain.board.entity;
 
-import com.ground.domain.image.entity.Image;
+import com.ground.domain.global.image.Image;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
