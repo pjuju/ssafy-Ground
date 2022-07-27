@@ -35,16 +35,7 @@ function BasicInfo() {
   }
 
   return (
-    <Grid
-      className="register-form__wrapper"
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Grid className="register-form__logo" item>
-        <img className="logo" src={logo} alt="text_logo" width="300rem" />
-      </Grid>
+    <>
       <Grid container justifyContent="center">
         <TextField
           className="register-form__field"
@@ -86,7 +77,7 @@ function BasicInfo() {
         />
         <Button variant="contained">중복 확인</Button>
       </Grid>
-    </Grid>
+    </>
   );
 }
 
