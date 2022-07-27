@@ -15,20 +15,19 @@ import javax.persistence.*;
 public class BoardSave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_save_id")
-    private Long boardSaveSEQ;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_SEQ")
-    private User userSEQ;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_SEQ")
-    private Board boardSEQ;
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     @Builder
     public BoardSave(User user, Board board) {
-        this.boardSEQ = board;
-        this.userSEQ = user;
+        this.board = board;
+        this.user = user;
     }
 }

@@ -1,6 +1,9 @@
 package com.ground.domain.user.entity;
 
-import com.ground.domain.global.image.Image;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ground.domain.board.entity.BoardImage;
+import com.ground.domain.global.entity.Image;
+import com.ground.domain.global.entity.Location;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +12,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -53,8 +58,6 @@ public class User {
     @Column(name = "introduce")
     private String introduce;
 
-    @Column(name = "mod_user_id")
-    private int modUserId;
 
     @CreatedDate
     @Column(name = "reg_dttm")
@@ -62,6 +65,16 @@ public class User {
 
     @Column(name = "mod_dttm")
     private LocalDateTime modDttm;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserCategory> userCategories = new ArrayList<>();
+
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "mod_user_id")
+//    private User modUser;
+
+
 
     // 이미지
     @Embedded
@@ -74,6 +87,10 @@ public class User {
     private Image image;
 
     @Lob
+    @Column(name = "ftoken")
     private String ftoken;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 }

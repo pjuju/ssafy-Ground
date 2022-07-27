@@ -1,4 +1,4 @@
-package com.ground.domain.global.image;
+package com.ground.domain.global.entity;
 
 import lombok.*;
 
@@ -19,7 +19,6 @@ public class Image {
     private String imageName;
 
     private String imageUUID;
-
     public void setUrl(String url){
         this.imageUrl = url;
     }

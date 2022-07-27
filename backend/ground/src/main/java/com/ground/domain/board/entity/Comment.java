@@ -19,32 +19,31 @@ import static javax.persistence.FetchType.LAZY;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_SEQ")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_SEQ")
-    private User userSEQ;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "board_SEQ")
-    private Board boardSEQ;
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     @Lob
     @Column(name = "reply")
     private String reply;
 
-    @Column(nullable = false)
-    private Date reg_dttm;
+    @Column(name = "reg_dttm")
+    private Date regDttm;
 
-    @Column(nullable = false)
-    private int reg_user_SEQ;
+    @Column(name = "mod_dttm")
+    private Date modDttm;
 
-    @Column(nullable = false)
-    private Date mod_dttm;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mod_user_id")
+    private User modUser;
 
-    @Column(nullable = false)
-    private int mod_user_SEQ;
+    @Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
+    private boolean delYN;
 }

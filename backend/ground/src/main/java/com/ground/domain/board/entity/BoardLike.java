@@ -1,4 +1,4 @@
-package com.ground.domain.board.entity;
+:package com.ground.domain.board.entity;
 
 import com.ground.domain.user.entity.User;
 import lombok.AccessLevel;
@@ -15,20 +15,19 @@ import javax.persistence.*;
 public class BoardLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_like_id")
-    private Long boardLikeSEQ;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_SEQ")
-    private User userSEQ;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_SEQ")
-    private Board boardSEQ;
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     @Builder
     public BoardLike(User user, Board board) {
-        this.boardSEQ = board;
-        this.userSEQ = user;
+        this.board = board;
+        this.user = user;
     }
 }

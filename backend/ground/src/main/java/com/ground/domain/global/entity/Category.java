@@ -1,4 +1,4 @@
-package com.ground.domain.category.entity;
+package com.ground.domain.global.entity;
 
 import javax.persistence.*;
 
@@ -11,7 +11,6 @@ import lombok.Setter;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(length = 10)
