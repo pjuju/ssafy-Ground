@@ -18,10 +18,28 @@ function PasswordCheck({handleIsAuth}) {
 	const onUserIdHandler = (event) => {
 		setUserId(event.target.value)
 	};
-
+  const onClickEmail = () => {
+    console.log(userId)
+    console.log(email)
+  }
+  const onClickPasswordCheck = () => {
+    console.log(valNumber)
+    handleIsAuth(true)
+  }
 	return (
 		<div>
-					<Grid item>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid
+          container
+          direction="row"
+          alignItems="flex-start"
+        >
+          <Grid item>
 						<ThemeProvider theme={theme}>
               <TextField
                 className="findid-form__field"
@@ -32,14 +50,13 @@ function PasswordCheck({handleIsAuth}) {
                 onChange={onUserIdHandler}
               />
             </ThemeProvider>
-					</Grid>
-					<Grid
-					container
-					direction="row"
-					justifyContent="center"
-					alignItems="center"
-				>
-					<Grid item>
+				  </Grid>
+        </Grid>
+        <Grid
+        container
+        direction="row"
+        >
+          <Grid item>
 						<ThemeProvider theme={theme}>
               <TextField
               className="findid-form__field"
@@ -51,23 +68,23 @@ function PasswordCheck({handleIsAuth}) {
               />
             </ThemeProvider>
 					</Grid>
-					<Grid item>
+          <Grid item>
 						<ThemeProvider theme={theme}>
               <Button
               className="findid-form__button"
               variant="contained"
+              onClick={onClickEmail}
               >
                 인증번호 전송
               </Button>
             </ThemeProvider>
 					</Grid>
-				</Grid>
-				<Grid
-					container
-					justifyContent="center"
-					alignItems="center"
-				>
-					<Grid item>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+        >
+          <Grid item>
 						<ThemeProvider theme={theme}>
               <TextField
               className="findid-form__field"
@@ -79,19 +96,20 @@ function PasswordCheck({handleIsAuth}) {
               />
             </ThemeProvider>
 					</Grid>
-					<Grid item>
+          <Grid item>
             <ThemeProvider theme={theme}>
               <Button
               className="findid-form__button"
               variant="contained"
-              onClick={event => handleIsAuth(true)}
+              onClick={onClickPasswordCheck}
               >
                 인증
               </Button>
             </ThemeProvider>
 					</Grid>
-				</Grid>
-			</div>
+        </Grid>        
+      </Grid>		
+		</div>
 		)
 };
 

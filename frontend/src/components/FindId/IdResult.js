@@ -5,9 +5,15 @@ import theme from "components/common/theme.js";
 
 function IdResult() {
 	return (
-			<div>
+			<div style={{width: 512}}>
 				<Grid item>
-					<div>
+					<div 
+          style={{
+            height: "200px",
+            boxShadow: "2px 4px 4px grey",
+            textAlign: "center",
+            lineHeight: "200px"
+          }}>
 						등록된 아이디는 userid입니다.
 					</div>
 				</Grid>

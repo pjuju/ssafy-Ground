@@ -14,7 +14,14 @@ function IdCheck({handleIsAuth}) {
 	const onValNumberHandler = (event) => {
 		setValNumber(event.target.value)
 	};
-
+  const onClickIdCheck = () => {
+    console.log(valNumber)
+    handleIsAuth(true)
+  };
+  const onClickEmail = () => {
+    console.log(email)
+  }
+ 
 	return (
 		<div>
 			<Grid
@@ -40,6 +47,7 @@ function IdCheck({handleIsAuth}) {
             <Button
             className="findid-form__button"
             variant="contained"
+            onClick={onClickEmail}
             >
               인증번호 전송
             </Button>
@@ -68,7 +76,7 @@ function IdCheck({handleIsAuth}) {
             <Button
               className="findid-form__button"
               variant="contained"
-              onClick={event => handleIsAuth(true)}
+              onClick={onClickIdCheck}
             >
               인증
             </Button>
