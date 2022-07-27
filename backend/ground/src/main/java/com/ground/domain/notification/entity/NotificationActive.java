@@ -54,6 +54,7 @@ public class NotificationActive {
     @CreatedDate
     @Column(name = "reg_dttm")
     private LocalDateTime regDttm;
+    
 
 }
 
