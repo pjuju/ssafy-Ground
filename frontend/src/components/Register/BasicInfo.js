@@ -1,9 +1,9 @@
-import "styles/Register/RegisterPage.scss";
-import logo from "assets/images/text_logo.png";
-
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+
+import "styles/Register/RegisterPage.scss";
+
 import { useState } from "react";
 
 // 아이디 정규식
@@ -35,7 +35,7 @@ function BasicInfo() {
   }
 
   return (
-    <>
+    <Grid className="register-form__top" item>
       <Grid container justifyContent="center">
         <TextField
           className="register-form__field"
@@ -59,8 +59,8 @@ function BasicInfo() {
       />
       <TextField
         size="small"
-        type="password"
         label="비밀번호 확인"
+        type="password"
         onChange={(e) => {
           comparePW(e.target.value);
         }}
@@ -77,7 +77,7 @@ function BasicInfo() {
         />
         <Button variant="contained">중복 확인</Button>
       </Grid>
-    </>
+    </Grid>
   );
 }
 

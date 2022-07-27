@@ -1,13 +1,13 @@
-import "styles/Register/RegisterPage.scss";
 import logo from "assets/images/text_logo.png";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 
 import BasicInfo from "components/Register/BasicInfo";
 import OtherInfo from "components/Register/OtherInfo";
+
+import "styles/Register/RegisterPage.scss";
 
 function RegisterPage() {
   return (
@@ -23,11 +23,7 @@ function RegisterPage() {
           <img className="logo" src={logo} alt="text_logo" width="300rem" />
         </Grid>
         <BasicInfo />
-        <br />
-        <Divider component="div" role="presentation" flexItem/>
-        <br />
         <OtherInfo />
-        <br />
         <Button variant="contained">회원가입</Button>
       </Grid>
     </Container>
