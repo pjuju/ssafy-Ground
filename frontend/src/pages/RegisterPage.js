@@ -16,9 +16,10 @@ const emailRegExp =
   /^[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]{2,3}$/;
 // 정규식 테스트
 function RegExpTest(regExp, newValue, setValue) {
+  setValue(newValue);
   const result = regExp.test(newValue);
   if (result) {
-    setValue(newValue);
+    console.log(result);
   }
 }
 
@@ -51,6 +52,7 @@ function RegisterPage() {
             className="register-form__field"
             size="small"
             label="아이디"
+            value={idValue}
             onChange={(e) => {
               RegExpTest(idRegExp, e.target.value, setIdValue);
             }}
@@ -61,6 +63,7 @@ function RegisterPage() {
           size="small"
           label="비밀번호"
           type="password"
+          value={pwValue}
           onChange={(e) => {
             RegExpTest(pwRegExp, e.target.value, setPwValue);
           }}
@@ -78,6 +81,7 @@ function RegisterPage() {
             className="register-form__field"
             size="small"
             label="이메일"
+            value={emailValue}
             onChange={(e) => {
               RegExpTest(emailRegExp, e.target.value, setEmailValue);
             }}
