@@ -28,6 +28,7 @@ public class Board {
     // 카테고리 설정 manytoone로 해야 할 듯
 //    @Column(nullable = false)
 //    private int categoryId;
+    //dddddd
 
     @Lob
     @Column(name = "content")
