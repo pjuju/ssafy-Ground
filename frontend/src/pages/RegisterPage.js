@@ -27,6 +27,13 @@ function RegisterPage() {
   const [pwValue, setPwValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
 
+  // 비밀번호 확인 비교
+  function comparePW(pwCheckValue) {
+    if (pwValue === pwCheckValue) {
+      console.log(true);
+    }
+  }
+
   return (
     <Container className="register-form" maxWidth="xs">
       <Grid
@@ -58,7 +65,14 @@ function RegisterPage() {
             RegExpTest(pwRegExp, e.target.value, setPwValue);
           }}
         />
-        <TextField size="small" type="password" label="비밀번호 확인" />
+        <TextField
+          size="small"
+          type="password"
+          label="비밀번호 확인"
+          onChange={(e) => {
+            comparePW(e.target.value);
+          }}
+        />
         <Grid container justifyContent="center">
           <TextField
             className="register-form__field"
