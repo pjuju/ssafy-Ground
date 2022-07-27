@@ -14,9 +14,13 @@ function PasswordResult() {
 	const onPasswordCheckHandler = (event) => {
 		setPasswordCheck(event.target.value)
 	}
+  const onClickPasswordConfirm = () => {
+    console.log(password)
+    console.log(passwordCheck)
+  }
 
 	return (
-		<div>
+		<div style={{width:512}}>
 			<Grid
 				container
 				direction="row"
@@ -67,6 +71,7 @@ function PasswordResult() {
             <Button
               className="findid-form__button"
               variant="contained"
+              onClick={onClickPasswordConfirm}
             >
               비밀번호 재설정
 					  </Button>

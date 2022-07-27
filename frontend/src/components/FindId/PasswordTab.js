@@ -11,8 +11,7 @@ export function PasswordTab(){
 
 
 	return (
-		<div
-		>
+		<div>
 			{isAuth === false && (
 				<PasswordCheck handleIsAuth={handleIsAuth}/>
 			)}

@@ -11,8 +11,7 @@ function IdTab() {
 
 
 	return (
-		<div
-		>
+		<div>
 			{isAuth === false && (
 				<IdCheck handleIsAuth={handleIsAuth}/>
 			)}
