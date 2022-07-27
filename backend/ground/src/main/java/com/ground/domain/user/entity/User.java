@@ -24,8 +24,8 @@ import java.util.List;
 public class User {
 
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "username", unique = true)
     private String username;
@@ -58,7 +58,6 @@ public class User {
     @Column(name = "introduce")
     private String introduce;
 
-
     @CreatedDate
     @Column(name = "reg_dttm")
     private LocalDateTime regDttm;
@@ -69,11 +68,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCategory> userCategories = new ArrayList<>();
 
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "mod_user_id")
-//    private User modUser;
-
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mod_user_id")
+    private User modUser;
 
 
     // 이미지
@@ -93,4 +91,6 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    // followers, followings, likeBoards, saveBoards, 등등 mappedBy로 가져와야 할 필요성 있음.
 }

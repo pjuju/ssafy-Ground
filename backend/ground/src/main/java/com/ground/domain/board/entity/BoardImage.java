@@ -1,4 +1,4 @@
-'package com.ground.domain.board.entity;
+package com.ground.domain.board.entity;
 
 import com.ground.domain.global.entity.Image;
 import lombok.AccessLevel;

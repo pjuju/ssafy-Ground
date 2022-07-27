@@ -1,9 +1,6 @@
 package com.ground.domain.notification.entity;
 
 import com.ground.domain.board.entity.Board;
-import com.ground.domain.global.image.Image;
-import com.ground.domain.user.entity.Age;
-import com.ground.domain.user.entity.Gender;
 import com.ground.domain.user.entity.User;
 
 import lombok.AccessLevel;
@@ -19,8 +16,8 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "t_notification_account")
-public class NotificationActive {
+@Table(name = "t_notification_board")
+public class NotificationBoard {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -40,11 +37,7 @@ public class NotificationActive {
 	@JoinColumn(name = "board_id")
 	@ManyToOne
 	private Board boardId;
-	
-	@Lob
-	@Column(name = "reply")
-	private String reply;
-	
+
 	@Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
     private boolean delYN;
 

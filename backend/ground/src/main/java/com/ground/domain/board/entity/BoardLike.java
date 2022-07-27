@@ -1,5 +1,6 @@
-:package com.ground.domain.board.entity;
+package com.ground.domain.board.entity;
 
+import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "t_like")
+@Table(name = "t_board_like")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardLike {
     @Id

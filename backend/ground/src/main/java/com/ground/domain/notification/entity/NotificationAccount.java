@@ -1,8 +1,5 @@
 package com.ground.domain.notification.entity;
 
-import com.ground.domain.global.image.Image;
-import com.ground.domain.user.entity.Age;
-import com.ground.domain.user.entity.Gender;
 import com.ground.domain.user.entity.User;
 
 import lombok.AccessLevel;
@@ -26,15 +23,15 @@ public class NotificationAccount {
 	private Long id;
 	
 	@JoinColumn(name = "from_user_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User from;
 	
 	@JoinColumn(name = "to_user_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User to;
 	
-	@Column(name = "state")
-	private boolean state;
+	@Column(name = "type")
+	private boolean type;
 	
 	@Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
     private boolean delYN;

@@ -15,7 +15,7 @@ public class UserCategory {
 
     @Id
     @GeneratedValue
-    @Column(name = "user_category_id")
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -25,6 +25,10 @@ public class UserCategory {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    public User getUser() {
+        return user;
+    }
 
     // 생성 메서드?
 }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "t_save")
+@Table(name = "t_board_save")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardSave {
     @Id
