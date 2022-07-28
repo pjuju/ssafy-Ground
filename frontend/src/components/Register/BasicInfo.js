@@ -22,19 +22,32 @@ function RegExpTest(regExp, newValue, setValue) {
   }
 }
 
-function BasicInfo(props) {
+function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [idValue, setIdValue] = useState("");
-  const [pwValue, setPwValue] = useState("");
-  const [emailValue, setEmailValue] = useState("");
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
+  const [email, setEmail] = useState("");
 
   // 비밀번호 확인 비교
-  function comparePW(pwCheckValue) {
-    if (pwValue === pwCheckValue) {
+  const comparePW = (pwCheckValue) => {
+    if (pw === pwCheckValue) {
       console.log(true);
     }
-  }
+  };
+
+  // 다음 버튼 핸들러
+  const onClickNext = () => {
+    // state 변경
+    const newBasicInfo = {
+      id: id,
+      pass: pw,
+      email: email,
+    };
+    changeBasicInfo(newBasicInfo);
+    // 컴포넌트전환
+    goToOtherInfo();
+  };
 
   return (
     <Grid className="register-form__top" item>
@@ -47,9 +60,9 @@ function BasicInfo(props) {
           className="register-form__field"
           size="small"
           label="아이디"
-          value={idValue}
+          value={id}
           onChange={(e) => {
-            RegExpTest(idRegExp, e.target.value, setIdValue);
+            RegExpTest(idRegExp, e.target.value, setId);
           }}
         />
         <GrButton className="register-form__innerBtn" variant="contained">
@@ -62,9 +75,9 @@ function BasicInfo(props) {
           size="small"
           label="비밀번호"
           type="password"
-          value={pwValue}
+          value={pw}
           onChange={(e) => {
-            RegExpTest(pwRegExp, e.target.value, setPwValue);
+            RegExpTest(pwRegExp, e.target.value, setPw);
           }}
         />
         <GrTextField
@@ -86,9 +99,9 @@ function BasicInfo(props) {
           className="register-form__field"
           size="small"
           label="이메일"
-          value={emailValue}
+          value={email}
           onChange={(e) => {
-            RegExpTest(emailRegExp, e.target.value, setEmailValue);
+            RegExpTest(emailRegExp, e.target.value, setEmail);
           }}
         />
         {!isAuthenticated && (
@@ -126,7 +139,7 @@ function BasicInfo(props) {
       <GrButton
         className="register-form__button"
         variant="contained"
-        onClick={props.goToNextPage}
+        onClick={onClickNext}
       >
         다음
       </GrButton>

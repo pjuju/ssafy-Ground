@@ -30,8 +30,23 @@ const ageList = ages.map((item, index) => (
   </MenuItem>
 ));
 
-function OtherInfo() {
+function OtherInfo({ changeOtherInfo, sendRequest }) {
+  const [nickName, setNickName] = useState("");
   const [age, setAge] = useState(ages[0].value);
+  const [gender, setGender] = useState("male");
+
+  // 회원가입 버튼 핸들러
+  const onClickRegister = () => {
+    const newOtherInfo = {
+      nickname: nickName,
+      age: age,
+      gender: gender,
+    };
+    changeOtherInfo(newOtherInfo);
+    console.log(newOtherInfo);
+
+    sendRequest();
+  };
 
   return (
     <>
@@ -44,6 +59,8 @@ function OtherInfo() {
           className="register-form__field"
           size="small"
           label="닉네임"
+          value={nickName}
+          onChange={(e) => setNickName(e.target.value)}
         />
         <GrButton className="register-form__innerBtn" variant="contained">
           중복확인
@@ -56,19 +73,34 @@ function OtherInfo() {
       >
         <FormControl sx={{ minWidth: 180 }} size="small">
           <InputLabel id="age-label">연령대</InputLabel>
-          <Select labelId="age-label" label="연령대" value={age}>
+          <Select
+            labelId="age-label"
+            label="연령대"
+            value={age}
+            onChange={(e) => {
+              setAge(e.target.value);
+            }}
+          >
             {ageList}
           </Select>
         </FormControl>
         <Divider orientation="vertical" flexItem />
         <FormControl>
-          <RadioGroup row>
-            <FormControlLabel value="female" control={<Radio />} label="남" />
-            <FormControlLabel value="male" control={<Radio />} label="여" />
+          <RadioGroup
+            row
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <FormControlLabel value="male" control={<Radio />} label="남" />
+            <FormControlLabel value="female" control={<Radio />} label="여" />
           </RadioGroup>
         </FormControl>
       </Grid>
-      <GrButton className="register-form__button" variant="contained">
+      <GrButton
+        className="register-form__button"
+        variant="contained"
+        onClick={onClickRegister}
+      >
         회원가입
       </GrButton>
     </>
