@@ -11,9 +11,9 @@ import "styles/Register/RegisterPage.scss";
 
 function RegisterPage() {
   return (
-    <Container className="register-form" maxWidth="xs">
+    <Container maxWidth="xs">
       <Grid
-        className="register-form__wrapper"
+        className="register-form"
         container
         direction="column"
         justifyContent="center"
