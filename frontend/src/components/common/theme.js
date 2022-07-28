@@ -15,4 +15,8 @@ const theme = createTheme({
   },
 });
 
+<<<<<<< HEAD
 export default theme;
+=======
+export default theme;
+>>>>>>> front-feature/user/find-id
