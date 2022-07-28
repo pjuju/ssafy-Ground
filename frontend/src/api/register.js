@@ -3,8 +3,7 @@ import { apiInstance } from "api";
 const api = apiInstance();
 
 function signUp(info) {
-  // 회원가입 요청
-  console.log(info);
+  api.post(`/posts`, info).then((response) => console.log(response.data));
 }
 
 export { signUp };

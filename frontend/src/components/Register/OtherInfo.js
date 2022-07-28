@@ -43,7 +43,6 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
       gender: gender,
     };
     changeOtherInfo(newOtherInfo);
-    console.log(newOtherInfo);
 
     sendRequest();
   };
