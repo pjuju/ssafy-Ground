@@ -28,26 +28,76 @@ public class BoardController {
     }
 
     @ApiOperation(value = "게시물 조회")
-    @ApiImplicitParam(
-            name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @GetMapping
-    public String findBoard(){
-        return "find one Board!";
-    }
+    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
+    @GetMapping("/{boardId}")
+    public String findBoard(){ return "게시물 조회!"; }
 
     @ApiOperation(value = "게시물 수정")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @PutMapping
+    @PutMapping("/{boardId}")
     public String updateBoard(){
-        return "update one Board!";
+        return "게시물 수정!";
     }
 
     @ApiOperation(value = "게시물 삭제")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @DeleteMapping
+    @DeleteMapping("/{boardId}")
     public String deleteBoard(){
-        return "delete one Board!";
+        return "게시물 삭제!";
     }
+
+    @ApiOperation(value = "게시글 좋아요")
+    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
+    @PostMapping("/{boardId}/like")
+    public String likeBoard(){
+        return "게시글 좋아요!";
+    }
+
+    @ApiOperation(value = "게시물 좋아요 취소")
+    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
+    @DeleteMapping("/{boardId}/like")
+    public String unlikeBoard(){
+        return "게시물 좋아요 취소!";
+    }
+
+    @ApiOperation(value = "게시물 저장")
+    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
+    @PostMapping("/{boardId}/save")
+    public String saveBoard(){
+        return "게시물 저장!";
+    }
+
+    @ApiOperation(value = "게시물 저장 취소")
+    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
+    @DeleteMapping("/{boardId}/save")
+    public String unsaveBoard(){
+        return "게시물 저장 취소!";
+    }
+
+    @ApiOperation(value = "댓글 생성")
+    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
+    @PostMapping("/{boardId}/comment")
+    public String addComment(){ return "댓글 생성!"; }
+
+    @ApiOperation(value = "게시글 댓글리스트 조회")
+    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
+    @GetMapping("/{boardId}/comment")
+    public String getBoardComment(){ return "게시글 댓글리스트 조회!"; }
+
+    @ApiOperation(value = "팔로우 피드 조회")
+    @ApiImplicitParam(name = "page", value = "게시물 page", example = "1", required = true)
+    @GetMapping("/follow")
+    public String getFollowBoard(){
+        return "팔로우 피드 조회!";
+    }
+
+    @ApiOperation(value = "관심종목 피드 조회")
+    @ApiImplicitParam(name = "page", value = "게시물 page", example = "1", required = true)
+    @GetMapping("/interest")
+    public String geInterestBoard(){
+        return "관심종목 피드 조회!";
+    }
+
 
 
 
