@@ -2,8 +2,6 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-import "styles/Register/RegisterPage.scss";
-
 import { useState } from "react";
 
 // 아이디 정규식
@@ -22,7 +20,7 @@ function RegExpTest(regExp, newValue, setValue) {
   }
 }
 
-function BasicInfo() {
+function BasicInfo(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [idValue, setIdValue] = useState("");
@@ -123,47 +121,13 @@ function BasicInfo() {
           </Button>
         </Grid>
       )}
-      {/* <Grid container justifyContent="center">
-        <TextField
-          className="register-form__field"
-          size="small"
-          label="아이디"
-          value={idValue}
-          onChange={(e) => {
-            RegExpTest(idRegExp, e.target.value, setIdValue);
-          }}
-        />
-        <Button variant="contained">중복 확인</Button>
-      </Grid>
-      <TextField
-        size="small"
-        label="비밀번호"
-        type="password"
-        value={pwValue}
-        onChange={(e) => {
-          RegExpTest(pwRegExp, e.target.value, setPwValue);
-        }}
-      />
-      <TextField
-        size="small"
-        label="비밀번호 확인"
-        type="password"
-        onChange={(e) => {
-          comparePW(e.target.value);
-        }}
-      />
-      <Grid container justifyContent="center">
-        <TextField
-          className="register-form__field"
-          size="small"
-          label="이메일"
-          value={emailValue}
-          onChange={(e) => {
-            RegExpTest(emailRegExp, e.target.value, setEmailValue);
-          }}
-        />
-        <Button variant="contained">중복 확인</Button>
-      </Grid> */}
+      <Button
+        className="register-form__button"
+        variant="contained"
+        onClick={props.goToNextPage}
+      >
+        다음
+      </Button>
     </Grid>
   );
 }

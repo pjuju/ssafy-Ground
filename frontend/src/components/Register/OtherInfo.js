@@ -10,8 +10,6 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 
-import "styles/Register/RegisterPage.scss";
-
 import { useState } from "react";
 
 const ages = [
@@ -34,12 +32,26 @@ function OtherInfo() {
   const [age, setAge] = useState(ages[0].value);
 
   return (
-    <Grid className="register-form__bottom" item>
-      <Grid className="id-field" container justifyContent="center">
-        <TextField size="small" label="닉네임" />
-        <Button variant="contained">중복 확인</Button>
+    <>
+      <Grid
+        className="register-form__inner-wrapper"
+        container
+        justifyContent="space-between"
+      >
+        <TextField
+          className="register-form__field"
+          size="small"
+          label="닉네임"
+        />
+        <Button className="register-form__innerBtn" variant="contained">
+          중복확인
+        </Button>
       </Grid>
-      <Grid className="select-field" container justifyContent="space-between">
+      <Grid
+        className="register-form__select-field"
+        container
+        justifyContent="space-between"
+      >
         <FormControl sx={{ minWidth: 180 }} size="small">
           <InputLabel id="age-label">연령대</InputLabel>
           <Select labelId="age-label" label="연령대" value={age}>
@@ -54,7 +66,10 @@ function OtherInfo() {
           </RadioGroup>
         </FormControl>
       </Grid>
-    </Grid>
+      <Button className="register-form__button" variant="contained">
+        회원가입
+      </Button>
+    </>
   );
 }
 

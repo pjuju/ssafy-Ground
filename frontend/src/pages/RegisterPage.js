@@ -2,14 +2,22 @@ import logo from "assets/images/text_logo.png";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 
 import BasicInfo from "components/Register/BasicInfo";
 import OtherInfo from "components/Register/OtherInfo";
 
 import "styles/Register/RegisterPage.scss";
+import { useState } from "react";
 
 function RegisterPage() {
+  const [next, setNext] = useState(false);
+
+  function goToNextPage() {
+    if (!next) {
+      setNext(!next);
+    }
+  }
+
   return (
     <Container maxWidth="xs">
       <Grid
@@ -22,9 +30,8 @@ function RegisterPage() {
         <Grid className="register-form__logo" item>
           <img className="logo" src={logo} alt="text_logo" width="300rem" />
         </Grid>
-        <BasicInfo />
-        <OtherInfo />
-        <Button variant="contained">회원가입</Button>
+        {!next && <BasicInfo goToNextPage={goToNextPage} />}
+        {next && <OtherInfo />}
       </Grid>
     </Container>
   );
