@@ -1,6 +1,8 @@
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+// import TextField from "@mui/material/TextField";
+// import Button from "@mui/material/Button";
+import GrButton from "components/common/GrButton";
+import GrTextField from "components/common/GrTextField";
 
 import { useState } from "react";
 
@@ -41,7 +43,7 @@ function BasicInfo(props) {
         container
         justifyContent="space-between"
       >
-        <TextField
+        <GrTextField
           className="register-form__field"
           size="small"
           label="아이디"
@@ -50,12 +52,12 @@ function BasicInfo(props) {
             RegExpTest(idRegExp, e.target.value, setIdValue);
           }}
         />
-        <Button className="register-form__innerBtn" variant="contained">
+        <GrButton className="register-form__innerBtn" variant="contained">
           중복확인
-        </Button>
+        </GrButton>
       </Grid>
       <Grid className="register-form__inner-wrapper" item>
-        <TextField
+        <GrTextField
           className="register-form__password"
           size="small"
           label="비밀번호"
@@ -65,7 +67,7 @@ function BasicInfo(props) {
             RegExpTest(pwRegExp, e.target.value, setPwValue);
           }}
         />
-        <TextField
+        <GrTextField
           className="register-form__password"
           size="small"
           label="비밀번호 확인"
@@ -80,7 +82,7 @@ function BasicInfo(props) {
         container
         justifyContent="space-between"
       >
-        <TextField
+        <GrTextField
           className="register-form__field"
           size="small"
           label="이메일"
@@ -90,19 +92,19 @@ function BasicInfo(props) {
           }}
         />
         {!isAuthenticated && (
-          <Button className="register-form__innerBtn" variant="contained">
+          <GrButton className="register-form__innerBtn" variant="contained">
             중복확인
-          </Button>
+          </GrButton>
         )}
         {isAuthenticated && !isSubmitted && (
-          <Button className="register-form__innerBtn" variant="contained">
+          <GrButton className="register-form__innerBtn" variant="contained">
             전송
-          </Button>
+          </GrButton>
         )}
         {isSubmitted && (
-          <Button className="register-form__innerBtn" variant="contained">
+          <GrButton className="register-form__innerBtn" variant="contained">
             재전송
-          </Button>
+          </GrButton>
         )}
       </Grid>
       {!isSubmitted && (
@@ -111,23 +113,23 @@ function BasicInfo(props) {
           container
           justifyContent="space-between"
         >
-          <TextField
+          <GrTextField
             className="register-form__field"
             size="small"
             label="인증번호"
           />
-          <Button className="register-form__innerBtn" variant="contained">
+          <GrButton className="register-form__innerBtn" variant="contained">
             인증
-          </Button>
+          </GrButton>
         </Grid>
       )}
-      <Button
+      <GrButton
         className="register-form__button"
         variant="contained"
         onClick={props.goToNextPage}
       >
         다음
-      </Button>
+      </GrButton>
     </Grid>
   );
 }

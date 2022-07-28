@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+// import TextField from "@mui/material/TextField";
+// import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,6 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
+import GrButton from "components/common/GrButton";
+import GrTextField from "components/common/GrTextField";
 
 import { useState } from "react";
 
@@ -38,14 +40,14 @@ function OtherInfo() {
         container
         justifyContent="space-between"
       >
-        <TextField
+        <GrTextField
           className="register-form__field"
           size="small"
           label="닉네임"
         />
-        <Button className="register-form__innerBtn" variant="contained">
+        <GrButton className="register-form__innerBtn" variant="contained">
           중복확인
-        </Button>
+        </GrButton>
       </Grid>
       <Grid
         className="register-form__select-field"
@@ -66,9 +68,9 @@ function OtherInfo() {
           </RadioGroup>
         </FormControl>
       </Grid>
-      <Button className="register-form__button" variant="contained">
+      <GrButton className="register-form__button" variant="contained">
         회원가입
-      </Button>
+      </GrButton>
     </>
   );
 }
