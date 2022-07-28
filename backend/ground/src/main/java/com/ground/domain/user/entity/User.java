@@ -93,4 +93,6 @@ public class User {
     private Location location;
 
     // followers, followings, likeBoards, saveBoards, 등등 mappedBy로 가져와야 할 필요성 있음.
+
+
 }
