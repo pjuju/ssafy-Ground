@@ -40,10 +40,10 @@ public class User {
     private String nickname;
 
     // 디폴트 값 넣어줄지
-    @Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
+    @Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
 
-    @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 1")
+    @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 0")
     private boolean privateYN;
 
     @Column(name = "age")

@@ -53,10 +53,10 @@ public class Board {
     @OneToMany(mappedBy = "board")
     private List<BoardImage> images = new ArrayList<>();
 
-    @Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
+    @Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
 
-    @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 1")
+    @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 0")
     private boolean privateYN;
 
     @ManyToOne(fetch = FetchType.LAZY)

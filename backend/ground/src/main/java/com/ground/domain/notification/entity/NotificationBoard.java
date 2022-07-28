@@ -24,24 +24,24 @@ public class NotificationBoard {
 	private Long id;
 	
 	@JoinColumn(name = "from_user_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User from;
 	
 	@JoinColumn(name = "to_user_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User to;
 	
 	@Column(name = "type")
 	private int type;
 	
 	@JoinColumn(name = "board_id")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Board boardId;
 
-	@Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
+	@Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
 
-    @Column(name = "check_YN" ,columnDefinition="tinyint(1) default 1")
+    @Column(name = "check_YN" ,columnDefinition="tinyint(1) default 0")
     private boolean checkYN;
     
     @CreatedDate

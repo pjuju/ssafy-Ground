@@ -26,4 +26,5 @@ public class SearchBoard {
 
     @Column(name = "reg_dttm")
     private Date regDttm;
+
 }
