@@ -3,6 +3,10 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
 import KakaoRedirectHandler from "components/Login/OAuth/KakaoRedirectHandler";
 import GoogleRedirectHandler from "components/Login/OAuth/GoogleRedirectHandler";
+<<<<<<< HEAD
+=======
+import FindIdPage from './pages/FindId/FindIdPage';
+>>>>>>> front
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -12,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<LoginPage />} />
+<<<<<<< HEAD
         <Route
           path="/oauth/callback/google"
           element={<GoogleRedirectHandler />}
@@ -20,6 +25,11 @@ function App() {
           path="/oauth/callback/kakao"
           element={<KakaoRedirectHandler />}
         />
+=======
+        <Route path="/oauth/callback/google" element={<GoogleRedirectHandler />} />
+        <Route path="/oauth/callback/kakao" element={<KakaoRedirectHandler />} />
+        <Route path="/findid" element={<FindIdPage />} />
+>>>>>>> front
       </Routes>
     </BrowserRouter>
   );

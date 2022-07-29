@@ -1,6 +1,11 @@
 import Grid from "@mui/material/Grid";
+<<<<<<< HEAD
 // import TextField from "@mui/material/TextField";
 // import Button from "@mui/material/Button";
+=======
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+>>>>>>> front
 import FormControl from "@mui/material/FormControl";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,8 +14,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
+<<<<<<< HEAD
 import GrButton from "components/common/GrButton";
 import GrTextField from "components/common/GrTextField";
+=======
+
+import "styles/Register/RegisterPage.scss";
+>>>>>>> front
 
 import { useState } from "react";
 
@@ -30,6 +40,7 @@ const ageList = ages.map((item, index) => (
   </MenuItem>
 ));
 
+<<<<<<< HEAD
 function OtherInfo({ changeOtherInfo, sendRequest }) {
   const [nickName, setNickName] = useState("");
   const [age, setAge] = useState(ages[0].value);
@@ -80,11 +91,27 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
               setAge(e.target.value);
             }}
           >
+=======
+function OtherInfo() {
+  const [age, setAge] = useState(ages[0].value);
+
+  return (
+    <Grid className="register-form__bottom" item>
+      <Grid className="id-field" container justifyContent="center">
+        <TextField size="small" label="닉네임" />
+        <Button variant="contained">중복 확인</Button>
+      </Grid>
+      <Grid className="select-field" container justifyContent="space-between">
+        <FormControl sx={{ minWidth: 180 }} size="small">
+          <InputLabel id="age-label">연령대</InputLabel>
+          <Select labelId="age-label" label="연령대" value={age}>
+>>>>>>> front
             {ageList}
           </Select>
         </FormControl>
         <Divider orientation="vertical" flexItem />
         <FormControl>
+<<<<<<< HEAD
           <RadioGroup
             row
             value={gender}
@@ -103,6 +130,15 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
         회원가입
       </GrButton>
     </>
+=======
+          <RadioGroup row>
+            <FormControlLabel value="female" control={<Radio />} label="남" />
+            <FormControlLabel value="male" control={<Radio />} label="여" />
+          </RadioGroup>
+        </FormControl>
+      </Grid>
+    </Grid>
+>>>>>>> front
   );
 }
 
