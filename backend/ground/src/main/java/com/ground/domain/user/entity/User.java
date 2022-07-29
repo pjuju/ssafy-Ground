@@ -78,9 +78,8 @@ public class User {
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "imageUrl", column = @Column(name = "member_image_url")),
-            @AttributeOverride(name = "imageType", column = @Column(name = "member_image_type")),
-            @AttributeOverride(name = "imageName", column = @Column(name = "member_image_name")),
-            @AttributeOverride(name = "imageUUID", column = @Column(name = "member_image_uuid"))
+            @AttributeOverride(name = "imageType", column = @Column(name = "member_image_type"))
+
     })
     private Image image;
 
