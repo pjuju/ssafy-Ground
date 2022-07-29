@@ -17,3 +17,4 @@ public class Category {
     private String event;
 
 }
+

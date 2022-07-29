@@ -16,9 +16,7 @@ public class Image {
     @Enumerated(EnumType.STRING)
     private ImageType imageType;
 
-    private String imageName;
 
-    private String imageUUID;
     public void setUrl(String url){
         this.imageUrl = url;
     }
