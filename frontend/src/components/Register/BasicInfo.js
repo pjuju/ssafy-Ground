@@ -1,10 +1,12 @@
+import { Input } from "@mui/material";
 import Grid from "@mui/material/Grid";
-// import TextField from "@mui/material/TextField";
-// import Button from "@mui/material/Button";
 import GrButton from "components/common/GrButton";
 import GrTextField from "components/common/GrTextField";
 
 import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 // 아이디 정규식
 const idRegExp = /^[a-zA-Z0-9|]{5,20}$/;
@@ -21,6 +23,13 @@ function RegExpTest(regExp, newValue, setValue) {
     console.log(result);
   }
 }
+
+const schema = yup
+  .object({
+    id: yup.string().required(),
+    pass: yup.string().required(),
+  })
+  .required();
 
 function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,101 +58,136 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
     goToOtherInfo();
   };
 
+  const { register, control, handleSubmit, clearErrors, setValue } = useForm({
+    defaultValues: {
+      id: "",
+      pass: "",
+      passCheck: "",
+      email: "",
+      cert: "",
+    },
+  });
+  const onSubmit = (data) => console.log(data);
+
   return (
-    <Grid className="register-form__top" item>
-      <Grid
-        className="register-form__inner-wrapper"
-        container
-        justifyContent="space-between"
-      >
-        <GrTextField
-          className="register-form__field"
-          size="small"
-          label="아이디"
-          value={id}
-          onChange={(e) => {
-            RegExpTest(idRegExp, e.target.value, setId);
-          }}
-        />
-        <GrButton className="register-form__innerBtn" variant="contained">
-          중복확인
-        </GrButton>
-      </Grid>
-      <Grid className="register-form__inner-wrapper" item>
-        <GrTextField
-          className="register-form__password"
-          size="small"
-          label="비밀번호"
-          type="password"
-          value={pw}
-          onChange={(e) => {
-            RegExpTest(pwRegExp, e.target.value, setPw);
-          }}
-        />
-        <GrTextField
-          className="register-form__password"
-          size="small"
-          label="비밀번호 확인"
-          type="password"
-          onChange={(e) => {
-            comparePW(e.target.value);
-          }}
-        />
-      </Grid>
-      <Grid
-        className="register-form__inner-wrapper"
-        container
-        justifyContent="space-between"
-      >
-        <GrTextField
-          className="register-form__field"
-          size="small"
-          label="이메일"
-          value={email}
-          onChange={(e) => {
-            RegExpTest(emailRegExp, e.target.value, setEmail);
-          }}
-        />
-        {!isAuthenticated && (
-          <GrButton className="register-form__innerBtn" variant="contained">
-            중복확인
-          </GrButton>
-        )}
-        {isAuthenticated && !isSubmitted && (
-          <GrButton className="register-form__innerBtn" variant="contained">
-            전송
-          </GrButton>
-        )}
-        {isSubmitted && (
-          <GrButton className="register-form__innerBtn" variant="contained">
-            재전송
-          </GrButton>
-        )}
-      </Grid>
-      {!isSubmitted && (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input type="submit" />
+      <Grid className="register-form__top" item>
+        {/* id */}
         <Grid
           className="register-form__inner-wrapper"
           container
           justifyContent="space-between"
         >
-          <GrTextField
-            className="register-form__field"
-            size="small"
-            label="인증번호"
+          <Controller
+            name="id"
+            control={control}
+            render={({ field }) => (
+              <GrTextField
+                {...field}
+                className="register-form__field"
+                size="small"
+                label="아이디"
+              />
+            )}
           />
           <GrButton className="register-form__innerBtn" variant="contained">
-            인증
+            중복확인
           </GrButton>
         </Grid>
-      )}
-      <GrButton
-        className="register-form__button"
-        variant="contained"
-        onClick={onClickNext}
-      >
-        다음
-      </GrButton>
-    </Grid>
+        {/* 비밀번호 */}
+        <Grid className="register-form__inner-wrapper" item>
+          <Controller
+            name="pass"
+            control={control}
+            render={({ field }) => (
+              <GrTextField
+                {...field}
+                className="register-form__password"
+                size="small"
+                label="비밀번호"
+              />
+            )}
+          />
+          <Controller
+            name="passCheck"
+            control={control}
+            render={({ field }) => (
+              <GrTextField
+                {...field}
+                className="register-form__password"
+                size="small"
+                label="비밀번호 확인"
+              />
+            )}
+          />
+        </Grid>
+        <Grid
+          className="register-form__inner-wrapper"
+          container
+          justifyContent="space-between"
+        >
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <GrTextField
+                {...field}
+                className="register-form__field"
+                size="small"
+                label="이메일"
+              />
+            )}
+          />
+          {!isAuthenticated && (
+            <GrButton className="register-form__innerBtn" variant="contained">
+              중복확인
+            </GrButton>
+          )}
+          {isAuthenticated && !isSubmitted && (
+            <GrButton className="register-form__innerBtn" variant="contained">
+              전송
+            </GrButton>
+          )}
+          {isSubmitted && (
+            <GrButton className="register-form__innerBtn" variant="contained">
+              재전송
+            </GrButton>
+          )}
+        </Grid>
+        {!isSubmitted && (
+          <Grid
+            className="register-form__inner-wrapper"
+            container
+            justifyContent="space-between"
+          >
+            <Controller
+              name="cert"
+              control={control}
+              render={({ field }) => (
+                <GrTextField
+                  {...field}
+                  className="register-form__field"
+                  size="small"
+                  label="인증번호"
+                />
+              )}
+            />
+            <GrButton className="register-form__innerBtn" variant="contained">
+              인증
+            </GrButton>
+          </Grid>
+        )}
+        <GrButton
+          className="register-form__button"
+          variant="contained"
+          onClick={onClickNext}
+          disabled
+        >
+          다음
+        </GrButton>
+      </Grid>
+    </form>
   );
 }
 
