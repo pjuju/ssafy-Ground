@@ -26,6 +26,9 @@ public class Follow  {
     @ManyToOne(fetch = FetchType.LAZY)
     private User to;
 
+    @Column(name = "flag")
+    private boolean flag;
+
     @Builder
     public Follow(User from, User to) {
         this.from = from;
