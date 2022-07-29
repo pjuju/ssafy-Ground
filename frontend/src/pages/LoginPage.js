@@ -127,7 +127,7 @@ function LoginPage() {
           justifyContent="space-between"
         >
           <Grid item>
-            <a href="/">회원가입</a>
+            <a href="/register">회원가입</a>
           </Grid>
           <Grid item>
             <a href="/">아이디 찾기 / 비밀번호 찾기</a>
