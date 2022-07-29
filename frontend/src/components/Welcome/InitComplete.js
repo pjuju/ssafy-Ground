@@ -1,10 +1,12 @@
-import theme from "components/common/theme.js";
+import GrButton from "components/common/GrButton";
 
-import { Button, Grid, Divider } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
+import { useState } from "react";
+import { Grid, Divider } from "@mui/material";
 import axios from "axios";
 
 function InitComplete() {
+  const [userName, setUserName] = useState("username");
+
   /* 마지막 '다음' 버튼을 눌렀을 때 실행되는 핸들러 */
   const handleClickComplete = () => {
     console.log("완료");
@@ -33,18 +35,24 @@ function InitComplete() {
       <Divider className="initial-settings__complete__divider" />
       <Grid item>
         <h3 className="initial-settings__complete__title">
-          <span>반갑습니다. username님</span>
+          <span>
+            반갑습니다.{" "}
+            <span className="initial-settings__complete__username">
+              {userName}
+            </span>
+            님
+          </span>
           <br />
           <span>이제 GROUND를 이용할 준비가 완료되었습니다!</span>
         </h3>
       </Grid>
       <Divider className="initial-settings__complete__divider" />
       <Grid className="initial-settings__complete__submit-button" item>
-        <ThemeProvider theme={theme}>
-          <Button variant="contained" onClick={handleClickComplete}>
-            시작하기
-          </Button>
-        </ThemeProvider>
+        <GrButton
+          variant="contained"
+          children="시작하기"
+          onClick={handleClickComplete}
+        />
       </Grid>
     </Grid>
   );

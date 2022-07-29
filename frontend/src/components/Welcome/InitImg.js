@@ -4,6 +4,7 @@ import userImageInput from "assets/images/userImageInput.png";
 import { useEffect, useRef } from "react";
 import { Button, Grid } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import GrButton from "components/common/GrButton";
 
 function InitImg({ img, onSetImg, onSetImgFlag }) {
   const selectUserImg = useRef("");
@@ -60,14 +61,11 @@ function InitImg({ img, onSetImg, onSetImgFlag }) {
         </button>
       </Grid>
       <Grid className="initial-settings__img__submit-button" item>
-        <ThemeProvider theme={theme}>
-          <Button
-            variant={img === "" ? "outlined" : "contained"}
-            onClick={handleClickSubmit}
-          >
-            {img === "" ? "건너뛰기" : "다음"}
-          </Button>
-        </ThemeProvider>
+        <GrButton
+          variant={img === "" ? "outlined" : "contained"}
+          children={img === "" ? "건너뛰기" : "다음"}
+          onClick={handleClickSubmit}
+        />
       </Grid>
     </Grid>
   );

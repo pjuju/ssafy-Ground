@@ -3,6 +3,8 @@ import theme from "components/common/theme.js";
 import { useEffect } from "react";
 import { Button, Grid, TextField } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import GrTextField from "components/common/GrTextField";
+import GrButton from "components/common/GrButton";
 
 function InitDesc({ desc, onSetDesc, onSetDescFlag }) {
   useEffect(() => {});
@@ -24,25 +26,20 @@ function InitDesc({ desc, onSetDesc, onSetDescFlag }) {
         </h3>
       </Grid>
       <Grid className="initial-settings__desc__input" item>
-        <ThemeProvider theme={theme}>
-          <TextField
-            value={desc}
-            className="initial-settings__desc__input__textfield"
-            variant="outlined"
-            label="한줄 소개"
-            onChange={handleChangeDesc}
-          />
-        </ThemeProvider>
+        <GrTextField
+          value={desc}
+          className="initial-settings__desc__input__textfield"
+          variant="outlined"
+          label="한줄 소개"
+          onChange={handleChangeDesc}
+        />
       </Grid>
       <Grid className="initial-settings__desc__submit-button" item>
-        <ThemeProvider theme={theme}>
-          <Button
-            variant={desc === "" ? "outlined" : "contained"}
-            onClick={handleClickSubmit}
-          >
-            {desc === "" ? "건너뛰기" : "다음"}
-          </Button>
-        </ThemeProvider>
+        <GrButton
+          variant={desc === "" ? "outlined" : "contained"}
+          children={desc === "" ? "건너뛰기" : "다음"}
+          onClick={handleClickSubmit}
+        />
       </Grid>
     </Grid>
   );
