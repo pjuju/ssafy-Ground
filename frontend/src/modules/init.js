@@ -3,18 +3,14 @@ const SET_IMG = "init/SET_IMG";
 const SET_DESC = "init/SEC_DESC";
 const TOGGLE_INTEREST = "init/TOGGLE_INTEREST";
 const SET_INTEREST_CNT = "init/ADD_INTEREST_CNT";
-const SET_IMG_FLAG = "init/SET_IMG_FLAG";
-const SET_DESC_FLAG = "init/SET_DESC_FLAG";
-const SET_INTEREST_FLAG = "init/SET_INTEREST_FLAG";
+const SET_INIT_FLAG = "init/SET_INIT_FLAG";
 
 /* 액션 생성 함수 */
 export const setImg = (img) => ({ type: SET_IMG, img });
 export const setDesc = (desc) => ({ type: SET_DESC, desc });
 export const toggleInterest = (id) => ({ type: TOGGLE_INTEREST, id });
 export const setInterestCnt = (cnt) => ({ type: SET_INTEREST_CNT, cnt });
-export const setImgFlag = () => ({ type: SET_IMG_FLAG });
-export const setDescFlag = () => ({ type: SET_DESC_FLAG });
-export const setInterestFlag = () => ({ type: SET_INTEREST_FLAG });
+export const setInitFlag = (flag) => ({ type: SET_INIT_FLAG, flag });
 
 /* 초기 상태 */
 const initialState = {
@@ -39,9 +35,7 @@ const initialState = {
     { id: 16, value: "기타", isInterested: false },
   ],
   interestCnt: 0,
-  imgFlag: false,
-  descFlag: false,
-  interestFlag: false,
+  initFlag: 0,
 };
 
 /* 리듀서 */
@@ -72,20 +66,10 @@ export default function init(state = initialState, action) {
         ...state,
         interestCnt: action.cnt,
       };
-    case SET_IMG_FLAG:
+    case SET_INIT_FLAG:
       return {
         ...state,
-        imgFlag: !state.imgFlag,
-      };
-    case SET_DESC_FLAG:
-      return {
-        ...state,
-        descFlag: !state.descFlag,
-      };
-    case SET_INTEREST_FLAG:
-      return {
-        ...state,
-        interestFlag: !state.interestFlag,
+        initFlag: action.flag,
       };
     default:
       return state;
