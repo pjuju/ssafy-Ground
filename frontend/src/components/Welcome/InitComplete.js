@@ -4,8 +4,13 @@ import { useState } from "react";
 import { Grid, Divider } from "@mui/material";
 import axios from "axios";
 
-function InitComplete() {
+function InitComplete({ img, desc, interest, onSetInitFlag }) {
   const [userName, setUserName] = useState("username");
+
+  /* 이전 버튼을 눌렀을 때 실행되는 핸들러 */
+  const handleClickPrevious = () => {
+    onSetInitFlag(2);
+  };
 
   /* 마지막 '다음' 버튼을 눌렀을 때 실행되는 핸들러 */
   const handleClickComplete = () => {
@@ -20,6 +25,8 @@ function InitComplete() {
     //     "content-type": "multipart/form-data"
     //   }
     // }
+
+    // 객체를 만들고 그 안에 이미지 데이터, 한줄 소개 데이터, 관심 종목 데이터 넣어서 보내기
 
     // axios.post('/', formData)
     //   .then((res) => {
@@ -47,12 +54,21 @@ function InitComplete() {
         </h3>
       </Grid>
       <Divider className="initial-settings__complete__divider" />
-      <Grid className="initial-settings__complete__submit-button" item>
-        <GrButton
-          variant="contained"
-          children="시작하기"
-          onClick={handleClickComplete}
-        />
+      <Grid className="initial-settings__complete__button" item>
+        <Grid className="initial-settings__complete__button--previous">
+          <GrButton
+            variant="outlined"
+            children="이전"
+            onClick={handleClickPrevious}
+          />
+        </Grid>
+        <Grid className="initial-settings__complete__button--submit">
+          <GrButton
+            variant="contained"
+            children="시작하기"
+            onClick={handleClickComplete}
+          />
+        </Grid>
       </Grid>
     </Grid>
   );

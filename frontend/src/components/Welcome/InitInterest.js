@@ -1,14 +1,15 @@
 import theme from "components/common/theme.js";
 
-import { Button, Checkbox, FormControlLabel, Grid } from "@mui/material";
+import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import GrButton from "components/common/GrButton";
 
 function InitInterest({
   interest,
   interestCnt,
   onToggleInterest,
   onSetInterestCnt,
-  onSetInterestFlag,
+  onSetInitFlag,
 }) {
   /* 관심 운동 종목 설정에서 체크박스가 바뀔 때 호출되는 핸들러 */
   const handleChangeInterest = (id) => {
@@ -20,9 +21,14 @@ function InitInterest({
     }
   };
 
+  /* 이전 버튼을 눌렀을 때 실행되는 핸들러 */
+  const handleClickPrevious = () => {
+    onSetInitFlag(1);
+  };
+
   /* 건너뛰기 혹은 다음 버튼을 눌렀을 때 실행되는 핸들러 */
   const handleClickSubmit = () => {
-    onSetInterestFlag();
+    onSetInitFlag(3);
   };
 
   return (
@@ -42,22 +48,31 @@ function InitInterest({
                 label={item.value}
                 value={item.isInterested}
                 control={
-                  <Checkbox onChange={() => handleChangeInterest(item.id)} />
+                  <Checkbox
+                    checked={item.isInterested}
+                    onChange={() => handleChangeInterest(item.id)}
+                  />
                 }
               />
             );
           })}
         </ThemeProvider>
       </Grid>
-      <Grid className="initial-settings__desc__submit-button" item>
-        <ThemeProvider theme={theme}>
-          <Button
+      <Grid className="initial-settings__interest__button" item>
+        <Grid className="initial-settings__interest__button--previous">
+          <GrButton
+            variant="outlined"
+            children="이전"
+            onClick={handleClickPrevious}
+          />
+        </Grid>
+        <Grid className="initial-settings__interest__button--submit">
+          <GrButton
             variant={interestCnt === 0 ? "outlined" : "contained"}
+            children={interestCnt === 0 ? "건너뛰기" : "다음"}
             onClick={handleClickSubmit}
-          >
-            {interestCnt === 0 ? "건너뛰기" : "다음"}
-          </Button>
-        </ThemeProvider>
+          />
+        </Grid>
       </Grid>
     </Grid>
   );

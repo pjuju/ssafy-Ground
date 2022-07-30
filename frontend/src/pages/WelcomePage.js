@@ -7,12 +7,10 @@ import InitInterest from "components/Welcome/InitInterest";
 import InitComplete from "components/Welcome/InitComplete";
 import {
   setDesc,
-  setDescFlag,
   setImg,
-  setImgFlag,
-  setInterestFlag,
   toggleInterest,
   setInterestCnt,
+  setInitFlag,
 } from "modules/init";
 
 import { useEffect } from "react";
@@ -25,9 +23,7 @@ function WelcomePage() {
   const desc = useSelector((state) => state.init.desc);
   const interest = useSelector((state) => state.init.interest);
   const interestCnt = useSelector((state) => state.init.interestCnt);
-  const imgFlag = useSelector((state) => state.init.imgFlag);
-  const descFlag = useSelector((state) => state.init.descFlag);
-  const interestFlag = useSelector((state) => state.init.interestFlag);
+  const initFlag = useSelector((state) => state.init.initFlag);
 
   const dispatch = useDispatch();
 
@@ -35,9 +31,7 @@ function WelcomePage() {
   const onSetDesc = (desc) => dispatch(setDesc(desc));
   const onToggleInterest = (id) => dispatch(toggleInterest(id));
   const onSetInterestCnt = (cnt) => dispatch(setInterestCnt(cnt));
-  const onSetImgFlag = () => dispatch(setImgFlag());
-  const onSetDescFlag = () => dispatch(setDescFlag());
-  const onSetInterestFlag = () => dispatch(setInterestFlag());
+  const onSetInitFlag = (flag) => dispatch(setInitFlag(flag));
 
   useEffect(() => {
     console.log(state);
@@ -53,24 +47,33 @@ function WelcomePage() {
     >
       <img className="logo" src={logo} alt="text_logo" width="300px" />
       <Grid item>
-        {imgFlag === false ? (
-          <InitImg img={img} onSetImg={onSetImg} onSetImgFlag={onSetImgFlag} />
-        ) : imgFlag === true && descFlag === false ? (
+        {initFlag === 0 ? (
+          <InitImg
+            img={img}
+            onSetImg={onSetImg}
+            onSetInitFlag={onSetInitFlag}
+          />
+        ) : initFlag === 1 ? (
           <InitDesc
             desc={desc}
             onSetDesc={onSetDesc}
-            onSetDescFlag={onSetDescFlag}
+            onSetInitFlag={onSetInitFlag}
           />
-        ) : imgFlag === true && descFlag === true && interestFlag === false ? (
+        ) : initFlag === 2 ? (
           <InitInterest
             interest={interest}
             interestCnt={interestCnt}
             onToggleInterest={onToggleInterest}
             onSetInterestCnt={onSetInterestCnt}
-            onSetInterestFlag={onSetInterestFlag}
+            onSetInitFlag={onSetInitFlag}
           />
-        ) : imgFlag === true && descFlag === true && interestFlag === true ? (
-          <InitComplete />
+        ) : initFlag === 3 ? (
+          <InitComplete
+            img={img}
+            desc={desc}
+            interest={interest}
+            onSetInitFlag={onSetInitFlag}
+          />
         ) : (
           <div>잘못된 접근입니다.</div>
         )}

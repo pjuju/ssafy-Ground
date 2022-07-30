@@ -6,7 +6,7 @@ import { Button, Grid } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import GrButton from "components/common/GrButton";
 
-function InitImg({ img, onSetImg, onSetImgFlag }) {
+function InitImg({ img, onSetImg, onSetInitFlag }) {
   const selectUserImg = useRef("");
 
   useEffect(() => {
@@ -35,7 +35,8 @@ function InitImg({ img, onSetImg, onSetImgFlag }) {
 
   /* 건너뛰기 혹은 다음 버튼을 눌렀을 때 실행되는 핸들러 */
   const handleClickSubmit = () => {
-    onSetImgFlag();
+    console.log("클릭");
+    onSetInitFlag(1);
   };
 
   return (

@@ -6,16 +6,19 @@ import { ThemeProvider } from "@emotion/react";
 import GrTextField from "components/common/GrTextField";
 import GrButton from "components/common/GrButton";
 
-function InitDesc({ desc, onSetDesc, onSetDescFlag }) {
-  useEffect(() => {});
-
+function InitDesc({ desc, onSetDesc, onSetInitFlag }) {
   const handleChangeDesc = (event) => {
     onSetDesc(event.target.value);
   };
 
+  /* 이전 버튼을 눌렀을 때 실행되는 핸들러 */
+  const handleClickPrevious = () => {
+    onSetInitFlag(0);
+  };
+
   /* 건너뛰기 혹은 다음 버튼을 눌렀을 때 실행되는 핸들러 */
   const handleClickSubmit = (type) => {
-    onSetDescFlag();
+    onSetInitFlag(2);
   };
 
   return (
@@ -34,12 +37,21 @@ function InitDesc({ desc, onSetDesc, onSetDescFlag }) {
           onChange={handleChangeDesc}
         />
       </Grid>
-      <Grid className="initial-settings__desc__submit-button" item>
-        <GrButton
-          variant={desc === "" ? "outlined" : "contained"}
-          children={desc === "" ? "건너뛰기" : "다음"}
-          onClick={handleClickSubmit}
-        />
+      <Grid className="initial-settings__desc__button" item>
+        <Grid className="initial-settings__desc__button--previous">
+          <GrButton
+            variant="outlined"
+            children="이전"
+            onClick={handleClickPrevious}
+          />
+        </Grid>
+        <Grid className="initial-settings__desc__button--submit">
+          <GrButton
+            variant={desc === "" ? "outlined" : "contained"}
+            children={desc === "" ? "건너뛰기" : "다음"}
+            onClick={handleClickSubmit}
+          />
+        </Grid>
       </Grid>
     </Grid>
   );
