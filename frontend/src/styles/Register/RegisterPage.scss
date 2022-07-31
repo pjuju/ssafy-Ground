@@ -6,7 +6,7 @@
 .register-form {
   min-height: 100vh;
 
-  &__inner-wrapper {
+  &__inner-wrapper, &__select-field, &__logo {
     @include set-margin();
   }
 
@@ -19,6 +19,10 @@
 
   &__password {
     width: 100%;
+  }
+
+  &__password:first-child {
+    margin-bottom: 1rem;
   }
 
   &__innerBtn {
