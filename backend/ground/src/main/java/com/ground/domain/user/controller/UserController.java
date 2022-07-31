@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ground.domain.user.dto.UserDto;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -53,10 +55,16 @@ public class UserController {
     public String deleteUser(){
         return "test!";
     }
-    
+
+    @GetMapping("/modifyUser")
+    @ApiOperation(value = "회원정보 수정 페이지 이동", response = String.class)
+    public String getModifyUser() {
+        return "/modifyUser";
+    }
+
     @PutMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public String modifyUser(){
+    public String modifyUser() {
         return "test!";
     }
     
