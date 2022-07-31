@@ -4,6 +4,8 @@ import { Grid }  from "@mui/material";
 import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
+import GrTextField from 'components/common/GrTextField';
+import GrButton from 'components/common/GrButton';
 
 function PasswordResult() {
 	const [password, setPassword] = React.useState("");
@@ -28,18 +30,15 @@ function PasswordResult() {
 				alignItems="center"
 			>
 				<Grid item>
-          <ThemeProvider theme={theme}>
-            <TextField
-                className="findid-form__field"
-                id="new-password"
-                label="변경할 비밀번호"
-                type="password"
-                size="small"
-                value={password}
-                onChange={onPasswordHandler}
-
-              />
-          </ThemeProvider>
+          <GrTextField
+              className="findid-form__field"
+              id="new-password"
+              label="변경할 비밀번호"
+              type="password"
+              size="small"
+              value={password}
+              onChange={onPasswordHandler}
+          />
 				</Grid>
 			</Grid>
 			<Grid

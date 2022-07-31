@@ -1,9 +1,7 @@
 import React from "react";
-import { TextField } from "@mui/material";
 import { Grid }  from "@mui/material";
-import { Button } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
-import theme from "components/common/theme.js";
+import GrTextField from 'components/common/GrTextField';
+import GrButton from 'components/common/GrButton';
 
 function PasswordCheck({handleIsAuth}) {
 	const [email, setEmail] = React.useState();
@@ -40,16 +38,14 @@ function PasswordCheck({handleIsAuth}) {
           alignItems="flex-start"
         >
           <Grid item>
-						<ThemeProvider theme={theme}>
-              <TextField
-                className="findid-form__field"
-                id="id"
-                label="아이디"
-                size="small"
-                value={userId}
-                onChange={onUserIdHandler}
-              />
-            </ThemeProvider>
+            <GrTextField
+              className="findid-form__field"
+              id="id"
+              label="아이디"
+              size="small"
+              value={userId}
+              onChange={onUserIdHandler}
+            />
 				  </Grid>
         </Grid>
         <Grid
@@ -57,27 +53,23 @@ function PasswordCheck({handleIsAuth}) {
         direction="row"
         >
           <Grid item>
-						<ThemeProvider theme={theme}>
-              <TextField
+            <GrTextField
               className="findid-form__field"
               id="email"
               label="이메일"
               size="small"
               value={email}
               onChange={onEmailHandler}
-              />
-            </ThemeProvider>
+            />
 					</Grid>
           <Grid item>
-						<ThemeProvider theme={theme}>
-              <Button
+            <GrButton
               className="findid-form__button"
               variant="contained"
               onClick={onClickEmail}
               >
                 인증번호 전송
-              </Button>
-            </ThemeProvider>
+            </GrButton>
 					</Grid>
         </Grid>
         <Grid
@@ -85,27 +77,23 @@ function PasswordCheck({handleIsAuth}) {
           direction="row"
         >
           <Grid item>
-						<ThemeProvider theme={theme}>
-              <TextField
+            <GrTextField
               className="findid-form__field"
               id="verification-number"
               label="인증번호"
               size="small"
               value={valNumber}
               onChange={onValNumberHandler}
-              />
-            </ThemeProvider>
+            />
 					</Grid>
           <Grid item>
-            <ThemeProvider theme={theme}>
-              <Button
+            <GrButton
               className="findid-form__button"
               variant="contained"
               onClick={onClickPasswordCheck}
               >
                 인증
-              </Button>
-            </ThemeProvider>
+            </GrButton>
 					</Grid>
         </Grid>        
       </Grid>		

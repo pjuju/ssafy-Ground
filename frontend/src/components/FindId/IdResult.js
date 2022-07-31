@@ -1,7 +1,5 @@
 import { Grid }  from "@mui/material";
-import { Button } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
-import theme from "components/common/theme.js";
+import GrButton from 'components/common/GrButton';
 
 function IdResult() {
 	return (
@@ -18,14 +16,12 @@ function IdResult() {
 					</div>
 				</Grid>
 				<Grid item>
-					<ThemeProvider theme={theme}>
-            <Button
-              className="findid-form__button"
-              variant="contained"
-            >
-              로그인 하러 가기
-            </Button>
-          </ThemeProvider>
+          <GrButton
+            className="findid-form__button"
+            variant="contained"
+          >
+            로그인 하러 가기
+          </GrButton>
 				</Grid>
 			</div>
 	)
