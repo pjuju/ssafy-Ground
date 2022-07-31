@@ -114,6 +114,7 @@ function LoginPage() {
           variant="contained"
           onClick={submitLogin}
         >
+          로그인
         </GrButton>
         <Grid container className="social-login">
           <Grid item className="social-login__button">
