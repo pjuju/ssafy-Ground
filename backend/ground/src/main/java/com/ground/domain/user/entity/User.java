@@ -1,23 +1,44 @@
 package com.ground.domain.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ground.domain.board.entity.BoardImage;
-import com.ground.domain.global.entity.Image;
-import com.ground.domain.global.entity.Location;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ground.domain.global.entity.Image;
+import com.ground.domain.global.entity.Location;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_user")
@@ -33,10 +54,10 @@ public class User {
     @Column(name = "pass")
     private String pass;
 
-    @Column(name= "email")
+    @Column(name= "email", unique = true)
     private String email;
 
-    @Column(name= "nickname")
+    @Column(name= "nickname", unique = true)
     private String nickname;
 
     // 디폴트 값 넣어줄지
@@ -91,7 +112,8 @@ public class User {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    // followers, followings, likeBoards, saveBoards, 등등 mappedBy로 가져와야 할 필요성 있음.
+
+
 
 
 }
