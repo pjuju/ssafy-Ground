@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ground.domain.user.dto.SaveRequestUserDto;
+import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.service.UserService;
 
@@ -75,6 +77,12 @@ public class UserController {
         return "test!";
     }
     
+    @GetMapping("/modifyUser")
+    @ApiOperation(value = "회원정보 수정 페이지로 이동", response = String.class)
+    public String getModifyUser(){
+        return "test!";
+    }
+    
     @PutMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정", response = String.class)
     public String modifyUser(){
@@ -93,18 +101,14 @@ public class UserController {
         return "test!";
     }
     
-    @GetMapping("/profile/{user_id}")
-    @ApiOperation(value = "프로필 조회", response = String.class)
-    public String profile(){
-        return "test!";
-    }
-    
     @GetMapping("/practice/{username}")
     @ApiOperation(value = "연습해보자get", response = User.class)
     public List<User> hello1(@PathVariable("username") String username){
     	
     	List<User> user = userService.findFirstByUsernameLikeOrderByIdDesc(username);
     	log.info(username);
+    	log.error("d");
+    	
     	//log.warn("watch out!");
    
         return user;
@@ -128,4 +132,19 @@ public class UserController {
     	
         return userService.save(user);
     }
+    
+    @PostMapping("/practice/signup")
+    @ApiOperation(value = "회원가입", response = User.class)
+    public SaveRequestUserDto signUp(@RequestBody SaveRequestUserDto params){
+    	return userService.save(params);
+    }
+    
+    @GetMapping("/profile/{user_id}")
+    @ApiOperation(value = "프로필 조회", response = String.class)
+    public UserProfileDto userProfile(@PathVariable Long id) {
+
+        return userService.getUserProfile(id);
+    }
+
+
 }
