@@ -1,6 +1,5 @@
 package com.ground.domain.board.entity;
 
-import com.ground.domain.global.entity.Image;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +11,6 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "t_board_images")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardImage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,21 +20,24 @@ public class BoardImage {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "imageUrl", column = @Column(name = "post_image_url")),
-            @AttributeOverride(name = "imageType", column = @Column(name = "post_image_type"))
-    })
-    private Image image;
+    @Column(name = "post_image_url")
+    private String imageUrl;
 
-//    @Column(name = "post_image_alt_text")
-//    private String altText;
+    @Column(name = "post_image_type")
+    private String imageType;
+
 
     @Builder
-    public BoardImage(Board board, Image image) {
+    public BoardImage(String imageUrl, String imageType, Board board) {
+        this.imageUrl = imageUrl;
+        this.imageType = imageType;
         this.board = board;
-        this.image = image;
-
+        // 게시글에 현재 파일이 존재하지 않는다면
+        if(!board.getImages().contains(this)) {
+            // 파일 추가
+            board.getImages().add(this);
+        }
     }
+//
 
 }

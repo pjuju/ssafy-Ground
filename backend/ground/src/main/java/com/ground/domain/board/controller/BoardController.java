@@ -1,10 +1,15 @@
 package com.ground.domain.board.controller;
 
+import com.ground.domain.board.dto.BoardAddRequestDto;
+import com.ground.domain.board.entity.Board;
 import com.ground.domain.board.service.BoardService;
+import com.ground.domain.user.entity.User;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +24,27 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 })
 @RestController
 @RequestMapping("/rest/board")
+@RequiredArgsConstructor
 //@CrossOrigin(allowCredentials = "true", originPatterns = { "*" })
 public class BoardController {
+
+    private final BoardService boardService;
+
+
+    // =================== 게시글 작성 ===================
     @ApiOperation(value = "게시물 작성")
     @PostMapping
-    public String addBoard(){
-        return "add Board!";
+    public Long addBoard(@RequestBody final BoardAddRequestDto params){
+
+        return boardService.addBoard(params);
+        // 유저도 넣어야함
     }
 
+
+
+
+
+    // =================== 게시글 조회회===================
     @ApiOperation(value = "게시물 조회")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @GetMapping
