@@ -8,7 +8,11 @@ import OtherInfo from "components/Register/OtherInfo";
 
 import "styles/Register/RegisterPage.scss";
 
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
+=======
+import { useState } from "react";
+>>>>>>> front
 import { signUp } from "api/register";
 
 function RegisterPage() {
@@ -24,16 +28,23 @@ function RegisterPage() {
   };
   // state 변경 함수
   const changeBasicInfo = (newBasicInfo) => {
+<<<<<<< HEAD
     console.log(newBasicInfo);
     setBasicInfo(newBasicInfo);
   };
   const changeOtherInfo = (newOtherInfo) => {
     console.log(newOtherInfo);
+=======
+    setBasicInfo(newBasicInfo);
+  };
+  const changeOtherInfo = (newOtherInfo) => {
+>>>>>>> front
     setOtherInfo(newOtherInfo);
   };
   // 회원가입 요청
   const sendRequest = () => {
     const info = Object.assign({}, basicInfo, otherInfo);
+<<<<<<< HEAD
     console.log(info);
     signUp(info);
   };
@@ -54,6 +65,11 @@ function RegisterPage() {
     };
   }, []);
 
+=======
+    signUp(info);
+  };
+
+>>>>>>> front
   return (
     <Container maxWidth="xs">
       <Grid

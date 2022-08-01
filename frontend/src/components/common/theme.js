@@ -1,17 +1,17 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   status: {
-    danger: '#e53e3e',
+    danger: "#e53e3e",
   },
   palette: {
     primary: {
-      main: '#54BAB9',
-      contrastText: '#fff',
+      main: "#54BAB9",
+      contrastText: "#fff",
     },
     secondary: {
-      main: '#18978F'
-    }
+      main: "#18978F",
+    },
   },
 });
 
