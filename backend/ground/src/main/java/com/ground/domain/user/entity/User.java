@@ -29,8 +29,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ground.domain.global.entity.Image;
 import com.ground.domain.global.entity.Location;
+import com.ground.domain.user.dto.SaveRequestUserDto;
+import com.ground.domain.user.dto.SaveRequestUserDto.SaveRequestUserDtoBuilder;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,7 +41,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_user")
@@ -88,30 +90,47 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCategory> userCategories = new ArrayList<>();
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mod_user_id")
-    private User modUser;
-
-
-    // 이미지
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "imageUrl", column = @Column(name = "member_image_url")),
-            @AttributeOverride(name = "imageType", column = @Column(name = "member_image_type"))
-
-    })
-    private Image image;
+    
+    @Column(name = "mod_user_id")
+    private String modUser;
+    
+    @Lob
+    @Column(name = "member_image_url")
+    private String imageUrl;
+    
+    @Lob
+    @Column(name = "member_image_type")
+    private String imageType;
 
     @Lob
     @Column(name = "ftoken")
     private String ftoken;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @Builder
+	public User(Long id, String username, String pass, String email, String nickname, Age age, Gender gender, String introduce) {
+		this.id = id;
+		this.username = username;
+		this.pass = pass;
+		this.email = email;
+		this.nickname = nickname;
+		this.age = age;
+		this.gender = gender;
+		this.introduce = introduce;
+	}
+    
+    
+    public void profileUpdate(String pass, String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
+//      this.id = id;
+      this.pass = pass;
+      this.nickname = nickname;
+      this.privateYN = privateYN;
+      this.age = age;
+      this.gender = gender;
+      this.introduce = introduce;
+  }
 
+
+    
 
 
 
