@@ -7,7 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 
 function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDuplicated, setIsDuplicated] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const {
@@ -24,6 +24,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
     },
   });
 
+  // 다음 버튼 핸들러
   const onSubmit = (data) => {
     console.log(data);
     const newBasicInfo = {
@@ -35,6 +36,27 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
     // 컴포넌트전환
     goToOtherInfo();
   };
+
+  // 아이디 중복 확인 버튼 핸들러
+  const onIdDuplicatedCheck = () => {
+    console.log("아이디 중복 확인");
+  };
+  // 이메일 중복 확인 버튼 핸들러
+  const onEmailDuplicatedCheck = () => {
+    setIsDuplicated(!isDuplicated);
+    console.log("이메일 중복 확인");
+  };
+  // 이메일 전송 버튼 핸들러
+  const onCertCodeSend = () => {
+    if(!isSubmitted) {
+      setIsSubmitted(true);
+    }
+    console.log("인증번호 전송");
+  }
+  // 인증 버튼 핸들러
+  const onCertCodeSubmit = () => {
+    console.log("인증");
+  }
 
   return (
     <form>
@@ -64,7 +86,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
                 />
               )}
             />
-            <GrButton className="register-form__innerBtn" variant="contained">
+            <GrButton className="register-form__innerBtn" variant="contained" onClick={onIdDuplicatedCheck}>
               중복확인
             </GrButton>
           </Grid>
@@ -146,25 +168,25 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
                 />
               )}
             />
-            {!isAuthenticated && (
-              <GrButton className="register-form__innerBtn" variant="contained">
+            {isDuplicated && (
+              <GrButton className="register-form__innerBtn" variant="contained" onClick={onEmailDuplicatedCheck}>
                 중복확인
               </GrButton>
             )}
-            {isAuthenticated && !isSubmitted && (
-              <GrButton className="register-form__innerBtn" variant="contained">
+            {!isDuplicated && !isSubmitted && (
+              <GrButton className="register-form__innerBtn" variant="contained" onClick={onCertCodeSend}>
                 전송
               </GrButton>
             )}
             {isSubmitted && (
-              <GrButton className="register-form__innerBtn" variant="contained">
+              <GrButton className="register-form__innerBtn" variant="contained" onClick={onCertCodeSend}>
                 재전송
               </GrButton>
             )}
           </Grid>
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </Grid>
-        {!isSubmitted && (
+        {isSubmitted && (
           <Grid
             className="register-form__inner-wrapper"
             container
@@ -186,7 +208,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
                   />
                 )}
               />
-              <GrButton className="register-form__innerBtn" variant="contained">
+              <GrButton className="register-form__innerBtn" variant="contained" onClick={onCertCodeSubmit}>
                 인증
               </GrButton>
             </Grid>
