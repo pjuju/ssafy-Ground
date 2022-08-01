@@ -1,9 +1,5 @@
 import React from "react";
-import { TextField } from "@mui/material";
 import { Grid }  from "@mui/material";
-import { Button } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
-import theme from "components/common/theme.js";
 import GrTextField from 'components/common/GrTextField';
 import GrButton from 'components/common/GrButton';
 
@@ -47,8 +43,7 @@ function PasswordResult() {
 				alignItems="center"
 			>
 				<Grid item>
-          <ThemeProvider theme={theme}>
-            <TextField
+            <GrTextField
                 className="findid-form__field"
                 id="new-password-check"
                 label="비밀번호 확인"
@@ -56,8 +51,7 @@ function PasswordResult() {
                 size="small"
                 value={passwordCheck}
                 onChange={onPasswordCheckHandler}
-              />
-          </ThemeProvider> 
+              /> 
 				</Grid>
 			</Grid>
 			<Grid
@@ -66,15 +60,13 @@ function PasswordResult() {
 				alignItems="center"
 			>
 				<Grid item>
-          <ThemeProvider theme={theme}>
-            <Button
-              className="findid-form__button"
-              variant="contained"
-              onClick={onClickPasswordConfirm}
-            >
-              비밀번호 재설정
-					  </Button>
-          </ThemeProvider>
+          <GrButton
+            className="findid-form__button"
+            variant="contained"
+            onClick={onClickPasswordConfirm}
+          >
+            비밀번호 재설정
+					</GrButton>
 				</Grid>
 			</Grid>
 		</div>
