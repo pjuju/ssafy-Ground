@@ -32,12 +32,15 @@ const ageList = ages.map((item, index) => (
   </MenuItem>
 ));
 
+const nickNameReg = /^[가-힣a-zA-Z0-9]{2,8}$/;
+
 function OtherInfo({ changeOtherInfo, sendRequest }) {
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
+    getValues,
   } = useForm({
     defaultValues: {
       nickName: "",
@@ -54,6 +57,11 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
     };
     changeOtherInfo(newOtherInfo);
     sendRequest();
+  };
+
+  const onNickNameDuplicated = () => {
+    const nickName = getValues("nickName");
+    console.log("닉네임 중복 확인: " + nickName);
   };
 
   return (
@@ -76,14 +84,18 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
                 {...register("nickName", {
                   required: "닉네임을 입력해주세요",
                   pattern: {
-                    value: /^[가-힣a-zA-Z0-9]{2,8}$/,
+                    value: { nickNameReg },
                     message: "닉네임은 한글, 영문 대소문자, 숫자 2-8자입니다.",
                   },
                 })}
               />
             )}
           />
-          <GrButton className="register-form__innerBtn" variant="contained">
+          <GrButton
+            className="register-form__innerBtn"
+            variant="contained"
+            onClick={onNickNameDuplicated}
+          >
             중복확인
           </GrButton>
         </Grid>

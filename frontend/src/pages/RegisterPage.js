@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 import { signUp } from "api/register";
 
 function RegisterPage() {
-  const [next, setNext] = useState(true);
+  const [next, setNext] = useState(false);
   const [basicInfo, setBasicInfo] = useState({});
   const [otherInfo, setOtherInfo] = useState({});
 
@@ -34,6 +34,7 @@ function RegisterPage() {
   // 회원가입 요청
   const sendRequest = () => {
     const info = Object.assign({}, basicInfo, otherInfo);
+    console.log(info);
     signUp(info);
   };
 

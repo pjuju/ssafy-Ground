@@ -15,6 +15,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
     handleSubmit,
     control,
     formState: { errors },
+    getValues,
   } = useForm({
     defaultValues: {
       id: "",
@@ -39,23 +40,27 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
 
   // 아이디 중복 확인 버튼 핸들러
   const onIdDuplicatedCheck = () => {
-    console.log("아이디 중복 확인");
+    const id = getValues("id");
+    console.log("아이디 중복 확인: " + id);
   };
   // 이메일 중복 확인 버튼 핸들러
   const onEmailDuplicatedCheck = () => {
+    const email = getValues("email");
     setIsDuplicated(!isDuplicated);
-    console.log("이메일 중복 확인");
+    console.log("이메일 중복 확인: " + email);
   };
   // 이메일 전송 버튼 핸들러
   const onCertCodeSend = () => {
+    const email = getValues("email");
     if (!isSubmitted) {
       setIsSubmitted(true);
     }
-    console.log("인증번호 전송");
+    console.log("인증번호 전송: " + email);
   };
   // 인증 버튼 핸들러
   const onCertCodeSubmit = () => {
-    console.log("인증");
+    const certCode = getValues("cert");
+    console.log("인증: " + certCode);
   };
 
   return (
