@@ -17,18 +17,18 @@ import { useForm, Controller } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 
 const ages = [
-  { value: "0", content: "선택 안함" },
-  { value: "10", content: "10대" },
-  { value: "20", content: "20대" },
-  { value: "30", content: "30대" },
-  { value: "40", content: "40대" },
-  { value: "50", content: "50대" },
-  { value: "60", content: "60대 이상" },
+  { value: "0", label: "선택 안함" },
+  { value: "10", label: "10대" },
+  { value: "20", label: "20대" },
+  { value: "30", label: "30대" },
+  { value: "40", label: "40대" },
+  { value: "50", label: "50대" },
+  { value: "60", label: "60대 이상" },
 ];
 
 const ageList = ages.map((item, index) => (
   <MenuItem key={index} value={item.value}>
-    {item.content}
+    {item.label}
   </MenuItem>
 ));
 
@@ -44,8 +44,8 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
   } = useForm({
     defaultValues: {
       nickName: "",
-      age: "",
-      gender: "",
+      age: ages[0].value,
+      gender: "male",
     },
   });
 
@@ -99,27 +99,32 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
       >
         <FormControl sx={{ minWidth: 180 }} size="small">
           <InputLabel id="age-label">연령대</InputLabel>
-          <Select
-            labelId="age-label"
-            label="연령대"
-            value={age}
-            onChange={(e) => {
-              setAge(e.target.value);
-            }}
-          >
-            {ageList}
-          </Select>
+          <Controller
+            name="age"
+            control={control}
+            render={({ field }) => (
+              <Select labelId="age-label" label="연령대" {...field}>
+                {ageList}
+              </Select>
+            )}
+          />
         </FormControl>
         <Divider orientation="vertical" flexItem />
         <FormControl>
-          <RadioGroup
-            row
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-          >
-            <FormControlLabel value="male" control={<Radio />} label="남" />
-            <FormControlLabel value="female" control={<Radio />} label="여" />
-          </RadioGroup>
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field }) => (
+              <RadioGroup row {...field}>
+                <FormControlLabel value="male" label="남" control={<Radio />} />
+                <FormControlLabel
+                  value="female"
+                  label="여"
+                  control={<Radio />}
+                />
+              </RadioGroup>
+            )}
+          />
         </FormControl>
       </Grid>
       <GrButton
