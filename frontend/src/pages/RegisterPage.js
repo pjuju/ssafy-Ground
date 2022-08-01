@@ -8,7 +8,7 @@ import OtherInfo from "components/Register/OtherInfo";
 
 import "styles/Register/RegisterPage.scss";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signUp } from "api/register";
 
 function RegisterPage() {
@@ -34,6 +34,22 @@ function RegisterPage() {
     const info = Object.assign({}, basicInfo, otherInfo);
     signUp(info);
   };
+
+  useEffect(() => {
+    // 새로고침, 창닫기 alert
+    const preventClose = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    (() => {
+      window.addEventListener("beforeunload", preventClose);
+    })();
+
+    return () => {
+      window.removeEventListener("beforeunload", preventClose);
+    };
+  }, []);
 
   return (
     <Container maxWidth="xs">
