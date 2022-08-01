@@ -6,6 +6,14 @@
 
   &__title {
     text-align: center;
+
+    @include mobile() {
+      font-size: 1em;
+    }
+
+    @include tablet() {
+      font-size: 1em;
+    }
   }
 }
 
@@ -39,7 +47,7 @@
 }
 
 .logo {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .initial-settings {
@@ -122,18 +130,21 @@
 
       @include mobile() {
         width: 80%;
+        font-size: 1em;
       }
 
       @include tablet() {
         width: 60%;
+        font-size: 1em;
       }
     }
 
     &__button {
       padding-top: 2rem;
-      width: 35%;
+      width: 33%;
+
       @include mobile() {
-        width: 80%;
+        width: 70%;
       }
 
       @include tablet() {
@@ -147,23 +158,33 @@
     @include set-layout();
     @include previous-submit-button();
 
+    margin-top: 1rem;
     align-content: center;
 
     &__divider {
-      width: 100%;
+      width: 90%;
     }
 
     &__title {
       margin: 3rem;
+      // font-weight: 400;
     }
 
     &__username {
       color: #54bab9;
-      font-weight: 500;
+      font-weight: 700;
     }
 
     &__button {
-      margin-top: 3rem;
+      width: 80%;
+
+      &--previous {
+        margin-top: 3rem;
+      }
+
+      &--submit {
+        margin-top: 3rem;
+      }
     }
   }
 }

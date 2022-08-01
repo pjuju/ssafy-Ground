@@ -43,7 +43,7 @@ function InitComplete({ img, desc, interest, onSetInitFlag }) {
       <Grid item>
         <h3 className="initial-settings__complete__title">
           <span>
-            반갑습니다.{" "}
+            반갑습니다{" "}
             <span className="initial-settings__complete__username">
               {userName}
             </span>
