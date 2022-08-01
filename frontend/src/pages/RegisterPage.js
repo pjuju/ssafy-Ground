@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 import { signUp } from "api/register";
 
 function RegisterPage() {
-  const [next, setNext] = useState(false);
+  const [next, setNext] = useState(true);
   const [basicInfo, setBasicInfo] = useState({});
   const [otherInfo, setOtherInfo] = useState({});
 
@@ -24,9 +24,11 @@ function RegisterPage() {
   };
   // state 변경 함수
   const changeBasicInfo = (newBasicInfo) => {
+    console.log(newBasicInfo);
     setBasicInfo(newBasicInfo);
   };
   const changeOtherInfo = (newOtherInfo) => {
+    console.log(newOtherInfo);
     setOtherInfo(newOtherInfo);
   };
   // 회원가입 요청

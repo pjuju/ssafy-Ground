@@ -13,6 +13,8 @@ import GrButton from "components/common/GrButton";
 import GrTextField from "components/common/GrTextField";
 
 import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import ErrorMessage from "./ErrorMessage";
 
 const ages = [
   { value: "0", content: "선택 안함" },
@@ -31,39 +33,64 @@ const ageList = ages.map((item, index) => (
 ));
 
 function OtherInfo({ changeOtherInfo, sendRequest }) {
-  const [nickName, setNickName] = useState("");
   const [age, setAge] = useState(ages[0].value);
   const [gender, setGender] = useState("male");
 
-  // 회원가입 버튼 핸들러
-  const onClickRegister = () => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      nickName: "",
+      age: "",
+      gender: "",
+    },
+  });
+
+  const onSubmit = (data) => {
     const newOtherInfo = {
-      nickname: nickName,
-      age: age,
-      gender: gender,
+      nickName: data.nickName,
+      age: data.age,
+      gender: data.gender,
     };
     changeOtherInfo(newOtherInfo);
-
     sendRequest();
   };
 
   return (
-    <>
+    <form className="register-form__bottom">
       <Grid
         className="register-form__inner-wrapper"
         container
-        justifyContent="space-between"
+        direction="column"
       >
-        <GrTextField
-          className="register-form__field"
-          size="small"
-          label="닉네임"
-          value={nickName}
-          onChange={(e) => setNickName(e.target.value)}
-        />
-        <GrButton className="register-form__innerBtn" variant="contained">
-          중복확인
-        </GrButton>
+        <Grid container justifyContent="space-between">
+          <Controller
+            name="nickName"
+            control={control}
+            render={({ field }) => (
+              <GrTextField
+                className="register-form__field"
+                size="small"
+                label="닉네임"
+                {...field}
+                {...register("nickName", {
+                  required: "닉네임을 입력해주세요",
+                })}
+              />
+            )}
+          />
+          <GrButton className="register-form__innerBtn" variant="contained">
+            중복확인
+          </GrButton>
+        </Grid>
+        <Grid item>
+          {errors.nickName && (
+            <ErrorMessage>{errors.nickName.message}</ErrorMessage>
+          )}
+        </Grid>
       </Grid>
       <Grid
         className="register-form__select-field"
@@ -98,11 +125,11 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
       <GrButton
         className="register-form__button"
         variant="contained"
-        onClick={onClickRegister}
+        onClick={handleSubmit(onSubmit)}
       >
         회원가입
       </GrButton>
-    </>
+    </form>
   );
 }
 
