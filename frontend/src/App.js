@@ -5,6 +5,7 @@ import GoogleRedirectHandler from "components/Login/OAuth/GoogleRedirectHandler"
 import FindIdPage from "pages/FindIdPage";
 import WelcomePage from "pages/WelcomePage";
 import RegisterPage from "pages/RegisterPage";
+import CreateFeedPage from "pages/CreateFeedPage";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -24,6 +25,7 @@ function App() {
         />
         <Route path="/findid" element={<FindIdPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
+        <Route path="/feed" element={<CreateFeedPage />} />
       </Routes>
     </BrowserRouter>
   );
