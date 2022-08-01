@@ -33,9 +33,6 @@ const ageList = ages.map((item, index) => (
 ));
 
 function OtherInfo({ changeOtherInfo, sendRequest }) {
-  const [age, setAge] = useState(ages[0].value);
-  const [gender, setGender] = useState("male");
-
   const {
     register,
     handleSubmit,
@@ -78,6 +75,10 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
                 {...field}
                 {...register("nickName", {
                   required: "닉네임을 입력해주세요",
+                  pattern: {
+                    value: /^[가-힣a-zA-Z0-9]{2,8}$/,
+                    message: "닉네임은 한글, 영문 대소문자, 숫자 2-8자입니다.",
+                  },
                 })}
               />
             )}
