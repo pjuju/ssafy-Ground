@@ -87,11 +87,17 @@ public class User {
     @Column(name = "ftoken")
     private String ftoken;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
-
     // followers, followings, likeBoards, saveBoards, 등등 mappedBy로 가져와야 할 필요성 있음.
+
+    public void profileUpdate(String pass, String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
+//        this.id = id;
+        this.pass = pass;
+        this.nickname = nickname;
+        this.privateYN = privateYN;
+        this.age = age;
+        this.gender = gender;
+        this.introduce = introduce;
+    }
 
 
 }

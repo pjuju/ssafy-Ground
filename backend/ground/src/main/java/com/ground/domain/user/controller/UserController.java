@@ -1,13 +1,10 @@
 package com.ground.domain.user.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ground.domain.user.dto.UserDto;
+import com.ground.domain.user.dto.UserUpdateDto;
+import com.ground.domain.user.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,6 +22,7 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/rest/user")
 @CrossOrigin(allowCredentials = "true", originPatterns = { "*" })
 public class UserController {
+    private UserService userService;
 
     @PostMapping("/singUp")
     @ApiOperation(value = "회원가입", response = String.class)
@@ -62,10 +60,11 @@ public class UserController {
         return "/modifyUser";
     }
 
-    @PutMapping("/modifyUser")
+    @PutMapping("/modifyUser/{user_id}")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public String modifyUser() {
-        return "test!";
+    public Long modifyUser(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) {
+
+        return userService.profileUpdate(id, userUpdateDto);
     }
     
     @GetMapping("/login")
@@ -82,7 +81,8 @@ public class UserController {
     
     @GetMapping("/profile/{user_id}")
     @ApiOperation(value = "프로필 조회", response = String.class)
-    public String profile(){
-        return "test!";
+    public UserDto userProfile(@PathVariable Long id) {
+
+        return userService.getUserProfile(id);
     }
 }

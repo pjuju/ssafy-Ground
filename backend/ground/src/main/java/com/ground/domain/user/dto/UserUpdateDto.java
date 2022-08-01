@@ -22,4 +22,14 @@ public class UserUpdateDto {
     private Gender gender;
     private String introduce;
 
+    @Builder
+    public UserUpdateDto(long id, String pass, String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
+        this.id = id;
+        this.pass = pass;
+        this.nickname = nickname;
+        this.privateYN = privateYN;
+        this.age = age;
+        this.gender = gender;
+        this.introduce = introduce;
+    }
 }

@@ -14,7 +14,14 @@ public class UserDto {
     private Long id;
     private String username;
     private String nickname;
-    private Boolean u_private;
+    private Boolean privateYN;
     private String introduce;
 
+    public UserDto(User entity) {
+        this.id = entity.getId();
+        this.username = entity.getUsername();
+        this.nickname = entity.getNickname();
+        this.privateYN = entity.isPrivateYN();
+        this.introduce = entity.getIntroduce();
+    }
 }
