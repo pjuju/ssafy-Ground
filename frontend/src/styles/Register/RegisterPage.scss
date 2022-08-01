@@ -1,0 +1,38 @@
+
+@mixin set-margin {
+  margin-bottom: 2rem !important;
+}
+
+.register-form {
+  min-height: 100vh;
+
+  &__inner-wrapper, &__select-field, &__logo {
+    @include set-margin();
+  }
+
+  &__field {
+    width: 75%;
+    @media (max-width: 599px) {
+      width: 100%;
+    }
+  }
+
+  &__password {
+    width: 100%;
+  }
+
+  &__password:first-child {
+    margin-bottom: 1rem;
+  }
+
+  &__innerBtn {
+    width: 23%;
+    @media (max-width: 599px) {
+      width: 100%;
+    }
+  }
+
+  &__button {
+    width: 100%;
+  }
+}

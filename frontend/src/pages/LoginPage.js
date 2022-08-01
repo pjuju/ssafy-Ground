@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 
 import GoogleButton from "components/Login/OAuth/GoogleButton";
 import KakaoButton from "components/Login/OAuth/KakaoButton.js";
+import GrButton from "components/common/GrButton";
 
 import { useState } from "react";
 
@@ -108,13 +109,13 @@ function LoginPage() {
             setUserPW(e.target.value);
           }}
         />
-        <Button
+        <GrButton
           className="login-form__button"
           variant="contained"
           onClick={submitLogin}
         >
           로그인
-        </Button>
+        </GrButton>
         <Grid container className="social-login">
           <Grid item className="social-login__button">
             <KakaoButton />
@@ -127,7 +128,7 @@ function LoginPage() {
           justifyContent="space-between"
         >
           <Grid item>
-            <a href="/">회원가입</a>
+            <a href="/register">회원가입</a>
           </Grid>
           <Grid item>
             <a href="/">아이디 찾기 / 비밀번호 찾기</a>
