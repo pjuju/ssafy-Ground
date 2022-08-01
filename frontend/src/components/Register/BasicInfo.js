@@ -4,6 +4,7 @@ import GrTextField from "components/common/GrTextField";
 
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import ErrorMessage from "./ErrorMessage";
 
 function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,32 +42,36 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
         <Grid
           className="register-form__inner-wrapper"
           container
-          justifyContent="space-between"
+          direction="column"
         >
-          <Controller
-            name="id"
-            control={control}
-            render={({ field }) => (
-              <GrTextField
-                className="register-form__field"
-                size="small"
-                label="아이디"
-                {...field}
-                {...register("id", {
-                  required: "아이디를 입력해주세요",
-                  pattern: {
-                    value: /^[a-zA-Z0-9|]{5,20}$/,
-                    message: "아이디는 영문, 숫자 5-20자입니다",
-                  },
-                })}
-              />
-            )}
-          />
-          <GrButton className="register-form__innerBtn" variant="contained">
-            중복확인
-          </GrButton>
+          <Grid container justifyContent="space-between">
+            <Controller
+              name="id"
+              control={control}
+              render={({ field }) => (
+                <GrTextField
+                  className="register-form__field"
+                  size="small"
+                  label="아이디"
+                  {...field}
+                  {...register("id", {
+                    required: "아이디를 입력해주세요",
+                    pattern: {
+                      value: /^[a-zA-Z0-9|]{5,20}$/,
+                      message: "아이디는 영문, 숫자 5-20자입니다",
+                    },
+                  })}
+                />
+              )}
+            />
+            <GrButton className="register-form__innerBtn" variant="contained">
+              중복확인
+            </GrButton>
+          </Grid>
+          <Grid item>
+            {errors.id && <ErrorMessage>{errors.id.message}</ErrorMessage>}
+          </Grid>
         </Grid>
-        <Grid item>{errors.id && <p>{errors.id.message}</p>}</Grid>
         <Grid className="register-form__inner-wrapper" item>
           <Controller
             name="pass"
@@ -88,7 +93,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
               />
             )}
           />
-          {errors.pass && <p>{errors.pass.message}</p>}
+          {/* {errors.pass && <p>{errors.pass.message}</p>} */}
           <Controller
             name="passCheck"
             control={control}
@@ -105,7 +110,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
               />
             )}
           />
-          {errors.passCheck && <p>{errors.passCheck.message}</p>}
+          {/* {errors.passCheck && <p>{errors.passCheck.message}</p>} */}
         </Grid>
         <Grid
           className="register-form__inner-wrapper"
@@ -148,7 +153,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
             </GrButton>
           )}
         </Grid>
-        {errors.email && <p>{errors.email.message}</p>}
+        {/* {errors.email && <p>{errors.email.message}</p>} */}
         {!isSubmitted && (
           <Grid
             className="register-form__inner-wrapper"
@@ -175,7 +180,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
             </GrButton>
           </Grid>
         )}
-        {errors.cert && <p>{errors.cert.message}</p>}
+        {/* {errors.cert && <p>{errors.cert.message}</p>} */}
         <GrButton
           className="register-form__button"
           variant="contained"
