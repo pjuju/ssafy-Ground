@@ -4,9 +4,10 @@ import GrTextField from "components/common/GrTextField";
 
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import ErrorMessage from "./ErrorMessage";
 
 function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDuplicated, setIsDuplicated] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const {
@@ -14,17 +15,19 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
     handleSubmit,
     control,
     formState: { errors },
+    getValues,
   } = useForm({
     defaultValues: {
       id: "",
       pass: "",
       passCheck: "",
+      email: "",
       cert: "",
     },
   });
 
+  // 다음 버튼 핸들러
   const onSubmit = (data) => {
-    console.log(data);
     const newBasicInfo = {
       id: data.id,
       pass: data.pass,
@@ -35,14 +38,39 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
     goToOtherInfo();
   };
 
+  // 아이디 중복 확인 버튼 핸들러
+  const onIdDuplicatedCheck = () => {
+    const id = getValues("id");
+    console.log("아이디 중복 확인: " + id);
+  };
+  // 이메일 중복 확인 버튼 핸들러
+  const onEmailDuplicatedCheck = () => {
+    const email = getValues("email");
+    setIsDuplicated(!isDuplicated);
+    console.log("이메일 중복 확인: " + email);
+  };
+  // 이메일 전송 버튼 핸들러
+  const onCertCodeSend = () => {
+    const email = getValues("email");
+    if (!isSubmitted) {
+      setIsSubmitted(true);
+    }
+    console.log("인증번호 전송: " + email);
+  };
+  // 인증 버튼 핸들러
+  const onCertCodeSubmit = () => {
+    const certCode = getValues("cert");
+    console.log("인증: " + certCode);
+  };
+
   return (
-    <form>
-      <Grid className="register-form__top" item>
-        <Grid
-          className="register-form__inner-wrapper"
-          container
-          justifyContent="space-between"
-        >
+    <form className="register-form__top">
+      <Grid
+        className="register-form__inner-wrapper"
+        container
+        direction="column"
+      >
+        <Grid container justifyContent="space-between">
           <Controller
             name="id"
             control={control}
@@ -62,12 +90,24 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
               />
             )}
           />
-          <GrButton className="register-form__innerBtn" variant="contained">
+          <GrButton
+            className="register-form__innerBtn"
+            variant="contained"
+            onClick={onIdDuplicatedCheck}
+          >
             중복확인
           </GrButton>
         </Grid>
-        <Grid item>{errors.id && <p>{errors.id.message}</p>}</Grid>
-        <Grid className="register-form__inner-wrapper" item>
+        <Grid item>
+          {errors.id && <ErrorMessage>{errors.id.message}</ErrorMessage>}
+        </Grid>
+      </Grid>
+      <Grid
+        className="register-form__inner-wrapper"
+        container
+        direction="column"
+      >
+        <Grid container>
           <Controller
             name="pass"
             control={control}
@@ -88,7 +128,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
               />
             )}
           />
-          {errors.pass && <p>{errors.pass.message}</p>}
+          {errors.pass && <ErrorMessage>{errors.pass.message}</ErrorMessage>}
           <Controller
             name="passCheck"
             control={control}
@@ -100,18 +140,22 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
                 type="password"
                 {...field}
                 {...register("passCheck", {
-                  required: "비밀번호를 한번 더 입력해주세요",
+                  required: "비밀번호 확인을 해주세요",
                 })}
               />
             )}
           />
-          {errors.passCheck && <p>{errors.passCheck.message}</p>}
+          {errors.passCheck && (
+            <ErrorMessage>{errors.passCheck.message}</ErrorMessage>
+          )}
         </Grid>
-        <Grid
-          className="register-form__inner-wrapper"
-          container
-          justifyContent="space-between"
-        >
+      </Grid>
+      <Grid
+        className="register-form__inner-wrapper"
+        container
+        direction="column"
+      >
+        <Grid container justifyContent="space-between">
           <Controller
             name="email"
             control={control}
@@ -132,29 +176,43 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
               />
             )}
           />
-          {!isAuthenticated && (
-            <GrButton className="register-form__innerBtn" variant="contained">
+          {isDuplicated && (
+            <GrButton
+              className="register-form__innerBtn"
+              variant="contained"
+              onClick={onEmailDuplicatedCheck}
+            >
               중복확인
             </GrButton>
           )}
-          {isAuthenticated && !isSubmitted && (
-            <GrButton className="register-form__innerBtn" variant="contained">
+          {!isDuplicated && !isSubmitted && (
+            <GrButton
+              className="register-form__innerBtn"
+              variant="contained"
+              onClick={onCertCodeSend}
+            >
               전송
             </GrButton>
           )}
           {isSubmitted && (
-            <GrButton className="register-form__innerBtn" variant="contained">
+            <GrButton
+              className="register-form__innerBtn"
+              variant="contained"
+              onClick={onCertCodeSend}
+            >
               재전송
             </GrButton>
           )}
         </Grid>
-        {errors.email && <p>{errors.email.message}</p>}
-        {!isSubmitted && (
-          <Grid
-            className="register-form__inner-wrapper"
-            container
-            justifyContent="space-between"
-          >
+        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+      </Grid>
+      {isSubmitted && (
+        <Grid
+          className="register-form__inner-wrapper"
+          container
+          direction="column"
+        >
+          <Grid container justifyContent="space-between">
             <Controller
               name="cert"
               control={control}
@@ -170,20 +228,24 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
                 />
               )}
             />
-            <GrButton className="register-form__innerBtn" variant="contained">
+            <GrButton
+              className="register-form__innerBtn"
+              variant="contained"
+              onClick={onCertCodeSubmit}
+            >
               인증
             </GrButton>
           </Grid>
-        )}
-        {errors.cert && <p>{errors.cert.message}</p>}
-        <GrButton
-          className="register-form__button"
-          variant="contained"
-          onClick={handleSubmit(onSubmit)}
-        >
-          다음
-        </GrButton>
-      </Grid>
+          {errors.cert && <ErrorMessage>{errors.cert.message}</ErrorMessage>}
+        </Grid>
+      )}
+      <GrButton
+        className="register-form__button"
+        variant="contained"
+        onClick={handleSubmit(onSubmit)}
+      >
+        다음
+      </GrButton>
     </form>
   );
 }

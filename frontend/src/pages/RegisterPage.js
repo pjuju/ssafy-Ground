@@ -8,7 +8,7 @@ import OtherInfo from "components/Register/OtherInfo";
 
 import "styles/Register/RegisterPage.scss";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signUp } from "api/register";
 
 function RegisterPage() {
@@ -24,16 +24,35 @@ function RegisterPage() {
   };
   // state 변경 함수
   const changeBasicInfo = (newBasicInfo) => {
+    console.log(newBasicInfo);
     setBasicInfo(newBasicInfo);
   };
   const changeOtherInfo = (newOtherInfo) => {
+    console.log(newOtherInfo);
     setOtherInfo(newOtherInfo);
   };
   // 회원가입 요청
   const sendRequest = () => {
     const info = Object.assign({}, basicInfo, otherInfo);
+    console.log(info);
     signUp(info);
   };
+
+  useEffect(() => {
+    // 새로고침, 창닫기 alert
+    const preventClose = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    (() => {
+      window.addEventListener("beforeunload", preventClose);
+    })();
+
+    return () => {
+      window.removeEventListener("beforeunload", preventClose);
+    };
+  }, []);
 
   return (
     <Container maxWidth="xs">
