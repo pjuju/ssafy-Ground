@@ -1,6 +1,8 @@
 package com.ground.domain.board.controller;
 
 import com.ground.domain.board.dto.BoardAddRequestDto;
+import com.ground.domain.board.dto.BoardRequestDto;
+import com.ground.domain.board.dto.BoardResponseDto;
 import com.ground.domain.board.entity.Board;
 import com.ground.domain.board.service.BoardService;
 import com.ground.domain.user.entity.User;
@@ -10,8 +12,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -28,81 +33,104 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 //@CrossOrigin(allowCredentials = "true", originPatterns = { "*" })
 public class BoardController {
 
-    private final BoardService boardService;
+    @Autowired
+    BoardService boardService;
 
 
     // =================== 게시글 작성 ===================
     @ApiOperation(value = "게시물 작성")
     @PostMapping
-    public Long addBoard(@RequestBody final BoardAddRequestDto params){
-
-        return boardService.addBoard(params);
+    public BoardResponseDto addBoard(@RequestBody final BoardAddRequestDto params){
+        Board board = boardService.addBoard(params);
+        return new BoardResponseDto(board);
         // 유저도 넣어야함
     }
 
 
 
-
-
-    // =================== 게시글 조회회===================
+    // =================== 게시글 조회===================
     @ApiOperation(value = "게시물 조회")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @GetMapping
-    public String findBoard(){ return "게시물 조회!"; }
+    @GetMapping("/{boardId}")
+    public BoardResponseDto findBoard(@PathVariable Long boardId){
+        Board board = boardService.getBoard(boardId);
+        return new BoardResponseDto(board);
+    }
 
+
+
+    // =================== 게시글 수정===================
     @ApiOperation(value = "게시물 수정")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @PutMapping
-    public String updateBoard(){
-        return "게시물 수정!";
+    @PutMapping("/{boardId}")
+    public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody final BoardAddRequestDto params){
+        Board board = boardService.updateBoard(boardId, params);
+        return new BoardResponseDto(board);
     }
 
+
+    // =================== 게시글 삭제===================
     @ApiOperation(value = "게시물 삭제")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @DeleteMapping
-    public String deleteBoard(){
-        return "게시물 삭제!";
+    @DeleteMapping("/{boardId}")
+    public void deleteBoard(@PathVariable Long boardId){
+        boardService.deleteBoard(boardId);
     }
 
+    // =================== 게시글 좋아요===================
     @ApiOperation(value = "게시글 좋아요")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @PostMapping("/like")
-    public String likeBoard(){
-        return "게시글 좋아요!";
+    @PostMapping("/{boardId}/like")
+    public void likeBoard(@PathVariable Long boardId){
+        boardService.likeBoard(boardId);
     }
 
+    // =================== 게시글 좋아요 취소===================
     @ApiOperation(value = "게시물 좋아요 취소")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @DeleteMapping("/like")
-    public String unlikeBoard(){
-        return "게시물 좋아요 취소!";
+    @DeleteMapping("/{boardId}/like")
+    public void unlikeBoard(@PathVariable Long boardId){
+
+        boardService.unLikeBoard(boardId);
     }
 
+    // ================== 게시글 저장 ========================
     @ApiOperation(value = "게시물 저장")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @PostMapping("/save")
-    public String saveBoard(){
-        return "게시물 저장!";
+    @PostMapping("/{boardId}/save")
+    public void saveBoard(@PathVariable Long boardId){
+        boardService.saveBoard(boardId);
     }
 
+    // ================== 게시글 저장 취소========================
     @ApiOperation(value = "게시물 저장 취소")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @DeleteMapping("/save")
-    public String unsaveBoard(){
-        return "게시물 저장 취소!";
+    @DeleteMapping("/{boardId}/save")
+    public void unsaveBoard(@PathVariable Long boardId){
+        boardService.unSaveBoard(boardId);;
+    }
+
+
+
+    // ================= 저장한 피드 조회 ========================
+    @ApiOperation(value = "저장한 피드 조회")
+    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
+    @GetMapping("/save/{userId}")
+    public List<BoardResponseDto> getSaveBoard(@PathVariable Long userId){
+        return boardService.getSaveBoard(userId);
     }
 
     @ApiOperation(value = "팔로우 피드 조회")
-    @ApiImplicitParam(name = "page", value = "게시물 page", example = "1", required = true)
-    @GetMapping("/follow")
+    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
+    @GetMapping("/follow/{userId}")
     public String getFollowBoard(){
         return "팔로우 피드 조회!";
     }
 
     @ApiOperation(value = "관심종목 피드 조회")
-    @ApiImplicitParam(name = "page", value = "게시물 page", example = "1", required = true)
+    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
     @GetMapping("/interest")
-    public String geInterestBoard(){
+    public String getnterestBoard(){
         return "관심종목 피드 조회!";
     }
 

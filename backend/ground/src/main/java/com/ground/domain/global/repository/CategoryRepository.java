@@ -1,5 +1,6 @@
-package com.ground.domain.global.entity;
+package com.ground.domain.global.repository;
 
+import com.ground.domain.global.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

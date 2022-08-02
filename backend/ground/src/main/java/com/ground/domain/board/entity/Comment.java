@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.w3c.dom.Text;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static javax.persistence.FetchType.LAZY;
@@ -35,10 +36,10 @@ public class Comment {
     private String reply;
 
     @Column(name = "reg_dttm")
-    private Date regDttm;
+    private LocalDateTime regDttm;
 
     @Column(name = "mod_dttm")
-    private Date modDttm;
+    private LocalDateTime modDttm;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mod_user_id")
