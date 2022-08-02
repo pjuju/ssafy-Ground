@@ -3,7 +3,8 @@ import init from "./init";
 import menu from "./menu";
 
 const rootReducer = combineReducers({
-  init, menu,
+  init,
+  menu,
 });
 
 export default rootReducer;
