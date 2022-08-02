@@ -12,6 +12,10 @@ const theme = createTheme({
     secondary: {
       main: "#18978F",
     },
+    notification: {
+      main: '#d32f2f',
+      contrastText: '#fff',
+    }
   },
 });
 
