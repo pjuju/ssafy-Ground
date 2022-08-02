@@ -20,15 +20,18 @@
   }
 }
 
+/* 모바일 + 데스크탑 navbar 전체 */
 .navbar {
   width: 100%;
 
-  &-desktop {
+  /* 데스크탑 side navbar */
+  &-side {
     width: 22% !important;
     min-height: 100vh;
     justify-content: space-between;
     border-right: 1px solid $super-light-gray;
 
+    /* 로고 */
     &__logo {
       display: flex;
       justify-content: center;
@@ -41,19 +44,19 @@
       }
     }
 
+    /* 메뉴 목록 */
     &__menu {
       margin-left: 3rem;
-      margin-bottom: 5rem;
+      margin-bottom: 10rem;
+      display: flex;
+      flex-direction: column !important;
 
       & h3 {
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
         font-weight: 500;
-
-        & a {
-          color: #000;
-          text-decoration: none;
-        }
+        color: #000;
+        cursor: pointer;
       }
 
       &__logout {
@@ -62,34 +65,38 @@
         font-size: 0.8rem;
         font-weight: 500;
         margin-top: 4rem;
+        text-decoration: underline;
         cursor: pointer;
       }
     }
 
+    /* 프로필 버튼 박스 */
     &__profile {
       display: flex;
       justify-content: center;
     }
   }
 
-  &-mobile {
+  /* 모바일 bottom navbar */
+  &-bottom {
     width: 100%;
 
-    &__bottom-nav {
+    &__menu {
       width: 100%;
     }
   }
 }
 
+/* 하단 프로필 버튼 */
 .profile-button {
   display: flex;
   justify-content: center;
-  height: 100%;
   width: 18vw !important;
   border: 1px solid #54bab9;
   border-radius: 60px;
   padding: 0.7rem 0.3rem 0.7rem 0.3rem;
   margin: 1rem;
+  margin-bottom: 2rem;
   cursor: pointer;
 
   &__img {
@@ -122,5 +129,5 @@
 }
 
 .bold {
-  font-weight: 700;
+  font-weight: 800 !important;
 }

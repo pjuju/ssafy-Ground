@@ -1,29 +1,31 @@
 import { Grid } from "@mui/material";
-import Navbar from "components/common/Navbar/Navbar";
+import BottomNavbar from "components/common/Navbar/BottomNavbar";
+import SideNavbar from "components/common/Navbar/SideNavbar";
 import Notification from "components/common/Notification/Notification";
-import { setMenu } from "modules/menu";
+import { setMenuIdx } from "modules/menu";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
 function FeedPage() {
-  const menu = useSelector((state) => state.menu.menu);
+  const menuIdx = useSelector((state) => state.menu.menuIdx);
 
   const dispatch = useDispatch();
 
-  const onSetMenu = (menu) => dispatch(setMenu(menu));
+  const onSetMenuIdx = (menuIdx) => dispatch(setMenuIdx(menuIdx));
 
   return (
-    <Grid container>
-      <Grid item>
-        <Navbar menu={menu} onSetMenu={onSetMenu} />
-      </Grid>
-      <Grid item>
+    <div>
+      <Grid id="desktop" container>
+        <SideNavbar menuIdx={menuIdx} onSetMenuIdx={onSetMenuIdx} />
         <Outlet />
-      </Grid>
-      <Grid item>
         <Notification />
       </Grid>
-    </Grid>
+      <Grid id="mobile" container>
+        <Outlet />
+        <Notification />
+        <BottomNavbar menuIdx={menuIdx} onSetMenuIdx={onSetMenuIdx} />
+      </Grid>
+    </div>
   );
 }
 
