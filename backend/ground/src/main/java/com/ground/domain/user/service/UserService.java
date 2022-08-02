@@ -62,7 +62,7 @@ public class UserService {
     public void getModifyUser(UserUpdateDto userUpdateDto) {
 
     }
-
+	@Transactional
     public Long profileUpdate(Long id, UserUpdateDto userUpdateDto) {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));

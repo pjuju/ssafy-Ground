@@ -6,13 +6,11 @@ import com.ground.domain.user.entity.Gender;
 import lombok.*;
 
 
-@Builder
 @NoArgsConstructor
 @Getter
 @Data
 public class UserUpdateDto {
 
-    private long id;
     private String pass;
     private String nickname;
     private boolean privateYN;
@@ -21,8 +19,7 @@ public class UserUpdateDto {
     private String introduce;
 
     @Builder
-    public UserUpdateDto(long id, String pass, String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
-        this.id = id;
+    public UserUpdateDto(String pass, String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
         this.pass = pass;
         this.nickname = nickname;
         this.privateYN = privateYN;
