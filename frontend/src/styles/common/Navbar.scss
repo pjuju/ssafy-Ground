@@ -1,4 +1,4 @@
-@import './_utils.scss';
+@import "./_utils.scss";
 
 #desktop {
   @include tablet() {
@@ -86,7 +86,7 @@
   justify-content: center;
   height: 100%;
   width: 18vw !important;
-  border: 1px solid #54BAB9;
+  border: 1px solid #54bab9;
   border-radius: 60px;
   padding: 0.7rem 0.3rem 0.7rem 0.3rem;
   margin: 1rem;
@@ -119,4 +119,8 @@
   @include wide-desktop() {
     width: 16vw !important;
   }
+}
+
+.bold {
+  font-weight: 700;
 }
