@@ -5,6 +5,8 @@ import Notification from "components/common/Notification/Notification";
 import { setMenuIdx } from "modules/menu";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
+import "styles/common/Navbar.scss";
+import "styles/common/Notification.scss";
 
 function FeedPage() {
   const menuIdx = useSelector((state) => state.menu.menuIdx);
@@ -22,7 +24,6 @@ function FeedPage() {
       </Grid>
       <Grid id="mobile" container>
         <Outlet />
-        <Notification />
         <BottomNavbar menuIdx={menuIdx} onSetMenuIdx={onSetMenuIdx} />
       </Grid>
     </div>

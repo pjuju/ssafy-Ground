@@ -1,0 +1,69 @@
+@import "./_utils.scss";
+
+#mobile {
+  display: none;
+}
+
+/* 모바일 + 데스크탑 navbar 전체 */
+.notification {
+  width: 22% !important;
+  min-height: 100vh;
+  justify-content: space-between;
+  border-left: 1px solid $super-light-gray;
+  padding-top: 3rem;
+
+  &__icon {
+    text-align: right;
+    margin-right: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__tabpanel {
+    text-align: center;
+  }
+}
+
+/* 하단 프로필 버튼 */
+.profile-button {
+  display: flex;
+  justify-content: center;
+  width: 18vw !important;
+  border: 1px solid #54bab9;
+  border-radius: 60px;
+  padding: 0.7rem 0.3rem 0.7rem 0.3rem;
+  margin: 1rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
+
+  &__img {
+    img {
+      width: 40px;
+      margin-right: 0.5rem;
+    }
+  }
+
+  &__user-info {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+
+    &__name {
+      font-weight: 700;
+    }
+
+    &__email {
+      font-weight: 400;
+      color: $light-gray;
+    }
+  }
+
+  @include wide-desktop() {
+    width: 16vw !important;
+  }
+}
+
+.bold {
+  font-weight: 800 !important;
+}
