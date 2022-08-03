@@ -5,29 +5,37 @@ import { useEffect, useRef } from "react";
 
 function ArticleImg() {
   const selectUserImg = useRef("");
+  const [img, setImg] = React.useState("");
+  const [imgList, setImgList] = React.useState([]);
+  const imgIdx = ["img1", "img2", "img3", "img4", "img5"];
 
   useEffect(() => {
     preview();
   });
 
   const preview = () => {
-    if (img === "") return false;
+    if (imgList === []) return false;
 
-    const imgElement = document.querySelector(
-      ".initial-settings__img__input-button > img"
-    );
-    if (imgElement !== null) {
-      imgElement.src = img;
-    }
+    imgIdx.map((id, index) => {
+      let imgElement = document.querySelector(`.${id} > img`);
+      if (imgElement !== null) {
+        imgElement.src = imgList[index];
+      }
+    });
   };
 
-  const handleClickInput = (event) => {
+  const handleClickInput = (event, index) => {
     event.preventDefault();
+
     const file = event.target.files[0];
-    setImg(URL.createObjectURL(file));
+    let imgUrlList = [...imgList];
+    if (event.target.files.length !== 0) {
+      imgUrlList[index] = URL.createObjectURL(file);
+    }
+    setImgList(imgUrlList);
+    console.log(imgList, index);
   };
-  const [img, setImg] = React.useState("");
-  const imgIdx = ["img1", "img2", "img3", "img4", "img5"];
+
   const onLoadImg = () => {};
 
   return (
@@ -36,22 +44,30 @@ function ArticleImg() {
         <div>사진/영상</div>
       </Grid>
       <Grid item>
-        <Grid item>
-          <input
-            type="file"
-            accept="image/*"
-            ref={selectUserImg}
-            style={{ display: "none" }}
-            onChange={handleClickInput}
-            multiple
-          />
-          <button
-            onClick={() => selectUserImg.current.click()}
-            style={{ width: 200, height: 200 }}
-            className="initial-settings__img__input-button"
-          >
-            <img src={userImageInput} alt="img-input" />
-          </button>
+        <Grid container direction="row">
+          {imgIdx.map((id, index) => (
+            <Grid item key={index}>
+              <input
+                type="file"
+                accept="image/*"
+                ref={selectUserImg}
+                style={{ display: "none" }}
+                id={index}
+                onChange={(event) => handleClickInput(event, index)}
+              />
+              <button
+                onClick={() => selectUserImg.current.click()}
+                style={{ width: 200, height: 200 }}
+                className={id}
+              >
+                <img
+                  src={userImageInput}
+                  style={{ width: "100%", height: "100%" }}
+                  alt=""
+                />
+              </button>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
     </Grid>
