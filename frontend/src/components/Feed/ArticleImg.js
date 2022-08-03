@@ -1,12 +1,11 @@
-import React from "react";
 import { Grid } from "@mui/material";
 import userImageInput from "assets/images/userImageInput.png";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function ArticleImg() {
   const selectUserImg = useRef("");
-  const [img, setImg] = React.useState("");
-  const [imgList, setImgList] = React.useState([]);
+  const [imgList, setImgList] = useState([]);
+  const [isDisplay, setIsDisplay] = useState(true);
   const imgIdx = ["img1", "img2", "img3", "img4", "img5"];
 
   useEffect(() => {
@@ -24,16 +23,25 @@ function ArticleImg() {
     });
   };
 
-  const handleClickInput = (event, index) => {
+  const handleClickInput = (event) => {
     event.preventDefault();
 
     const file = event.target.files[0];
     let imgUrlList = [...imgList];
+    if (imgUrlList.length >= 4) {
+      setIsDisplay(false);
+    }
+
     if (event.target.files.length !== 0) {
-      imgUrlList[index] = URL.createObjectURL(file);
+      imgUrlList.push(URL.createObjectURL(file));
     }
     setImgList(imgUrlList);
-    console.log(imgList, index);
+    console.log(imgList);
+  };
+
+  const handleDeleteImage = (id) => {
+    setImgList(imgList.filter((_, index) => index !== id));
+    setIsDisplay(true);
   };
 
   const onLoadImg = () => {};
@@ -45,20 +53,18 @@ function ArticleImg() {
       </Grid>
       <Grid item>
         <Grid container direction="row">
-          {imgIdx.map((id, index) => (
-            <Grid item key={index}>
+          {isDisplay === true && (
+            <Grid item>
               <input
                 type="file"
                 accept="image/*"
                 ref={selectUserImg}
                 style={{ display: "none" }}
-                id={index}
-                onChange={(event) => handleClickInput(event, index)}
+                onChange={handleClickInput}
               />
               <button
                 onClick={() => selectUserImg.current.click()}
                 style={{ width: 200, height: 200 }}
-                className={id}
               >
                 <img
                   src={userImageInput}
@@ -66,6 +72,12 @@ function ArticleImg() {
                   alt=""
                 />
               </button>
+            </Grid>
+          )}
+          {imgList.map((src, index) => (
+            <Grid item key={index}>
+              <img src={src} style={{ width: 200, height: 200 }} alt="" />
+              <button onClick={() => handleDeleteImage(index)}>x</button>
             </Grid>
           ))}
         </Grid>
