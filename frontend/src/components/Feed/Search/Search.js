@@ -11,15 +11,16 @@ import {
   Typography,
   Modal,
   Box,
+  Button,
 } from "@mui/material";
 import GrButton from "components/common/GrButton";
 import GrTextField from "components/common/GrTextField";
 import { useForm, Controller } from "react-hook-form";
 import "styles/Search/Search.scss";
 
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useState } from "react";
 import FilterModal from "./FilterModal";
+import SearchBar from "./SearchBar";
 
 const date = [
   { value: "whole", label: "전체" },
@@ -35,7 +36,7 @@ const dateRadio = date.map((item, index) => (
     className="top__date-select"
     key={index}
     value={item.value}
-    label={<Typography sx={{ fontSize: "0.9rem" }}>{item.label}</Typography>}
+    label={<Typography sx={{ fontSize: "0.8rem" }}>{item.label}</Typography>}
     control={<Radio size="small" />}
   />
 ));
@@ -57,81 +58,24 @@ function Search() {
     <Grid className="search-inner" item>
       <form>
         <Grid className="search-inner__top" container direction="column">
-          <Grid className="top__search-bar" container justifyContent="center">
-            <Grid xs={2} item>
-              <FormControl size="small" sx={{ minWidth: "100%" }}>
-                <InputLabel id="search-standard" className="top__search-label">
-                  기준 선택
-                </InputLabel>
-                <Controller
-                  name="standard"
-                  control={control}
-                  render={({ field }) => (
-                    <Select
-                      labelId="search-standard"
-                      label="기준 선택"
-                      {...field}
-                    >
-                      <MenuItem className="top__search-dropdown" value="board">
-                        게시글
-                      </MenuItem>
-                      <MenuItem className="top__search-dropdown" value="user">
-                        유저
-                      </MenuItem>
-                    </Select>
-                  )}
-                />
-              </FormControl>
-            </Grid>
-            <Grid className="top__search-field-wrapper" xs={6} item>
+          <SearchBar
+            handleOpen={handleOpen}
+            onSubmit={handleSubmit(onSubmit)}
+          />
+          <FilterModal open={open} handleClose={handleClose} />
+          <Grid container justifyContent="end">
+            <FormControl>
               <Controller
-                name="word"
+                name="date"
                 control={control}
                 render={({ field }) => (
-                  <GrTextField
-                    className="top__search-field"
-                    size="small"
-                    label="검색어 입력"
-                    {...field}
-                  />
+                  <RadioGroup row {...field}>
+                    {dateRadio}
+                  </RadioGroup>
                 )}
               />
-            </Grid>
-            <Grid xs={1} item>
-              <GrButton
-                className="top__search-button"
-                variant="contained"
-                onClick={handleSubmit(onSubmit)}
-              >
-                검색
-              </GrButton>
-            </Grid>
-            <Grid xs={1} item>
-              <Grid container justifyContent="center">
-                <IconButton onClick={handleOpen}>
-                  <FilterAltIcon />
-                </IconButton>
-                <FilterModal open={open} handleClose={handleClose} />
-              </Grid>
-            </Grid>
+            </FormControl>
           </Grid>
-          {
-            !(
-              <Grid container>
-                <FormControl>
-                  <Controller
-                    name="date"
-                    control={control}
-                    render={({ field }) => (
-                      <RadioGroup row {...field}>
-                        {dateRadio}
-                      </RadioGroup>
-                    )}
-                  />
-                </FormControl>
-              </Grid>
-            )
-          }
         </Grid>
       </form>
     </Grid>

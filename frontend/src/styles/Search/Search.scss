@@ -1,6 +1,6 @@
 .search-inner {
   width: 56%;
-  margin: 1rem 2rem 0 2rem !important;
+  padding: 1rem 4rem 0 4rem !important;
   &__top {
     width: 100%;
   }
@@ -20,5 +20,9 @@
 
   &__search-field-wrapper {
     margin: 0 1rem !important;
+  }
+
+  &__date-select:last-child {
+    margin-right: 0;
   }
 }
