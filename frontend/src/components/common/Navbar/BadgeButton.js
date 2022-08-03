@@ -1,5 +1,6 @@
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { ThemeProvider } from "@emotion/react";
 
 function BadgeButton() {
   return (
