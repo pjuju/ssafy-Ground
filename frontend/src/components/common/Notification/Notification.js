@@ -1,10 +1,11 @@
-import { Badge, Grid, IconButton, Tab, Tabs } from "@mui/material";
+import theme from "components/common/theme.js";
+
+import { Badge, Grid, IconButton, Tab } from "@mui/material";
 import { useState } from "react";
 import { ThemeProvider } from "@emotion/react";
-import theme from "components/common/theme.js";
+import { styled } from '@mui/material/styles';
 import { Box } from "@mui/system";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
@@ -28,20 +29,26 @@ function Notification() {
     <Grid className="notification">
       <Grid className="notification__icon">
         {isClicked ? (
-          <IconButton onClick={() => handleIconClick()}>
-            <NotificationsNoneOutlinedIcon />
-          </IconButton>
+          <ThemeProvider theme={theme}>
+            <IconButton color="primary" onClick={() => handleIconClick()}>
+              <NotificationsIcon />
+            </IconButton>
+          </ThemeProvider>
         ) : (notifCnt === 0 ? (
           <IconButton onClick={() => handleIconClick()}>
             <NotificationsIcon />
           </IconButton>
         ) : (
-          <Badge badgeContent={notifCnt} max={99}>
-            <NotificationsIcon />
-          </Badge>
+          <ThemeProvider theme={theme}>
+            <IconButton onClick={() => handleIconClick()}>
+              <Badge badgeContent={4} color="notification">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </ThemeProvider>
         ))}
       </Grid>
-      <ThemeProvider theme={theme}>
+      {isClicked ? (<ThemeProvider theme={theme}>
         <TabContext value={value} centered>
           <Box sx={{ borderBottom: 0, borderColor: "divider" }}>
             <TabList onChange={handleTabChange} variant="fullWidth" aria-label="notification tablist">
@@ -56,7 +63,10 @@ function Notification() {
             계정 - 수신한 알림이 없습니다.
           </TabPanel>
         </TabContext>
-      </ThemeProvider>
+      </ThemeProvider>)
+        :
+        <div></div>
+      }
     </Grid>
   );
 }
