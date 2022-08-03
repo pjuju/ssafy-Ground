@@ -2,29 +2,40 @@ import { Grid } from "@mui/material";
 import BottomNavbar from "components/common/Navbar/BottomNavbar";
 import SideNavbar from "components/common/Navbar/SideNavbar";
 import Notification from "components/common/Notification/Notification";
-import { setMenuIdx } from "modules/menu";
+import { setSideMenuIdx, setBottomMenuIdx } from "modules/menu";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import "styles/common/Navbar.scss";
 import "styles/common/Notification.scss";
+import "styles/Feed/FeedPage.scss";
 
 function FeedPage() {
-  const menuIdx = useSelector((state) => state.menu.menuIdx);
+  const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);
+  const bottomMenuIdx = useSelector((state) => state.menu.bottomMenuIdx)
 
   const dispatch = useDispatch();
 
-  const onSetMenuIdx = (menuIdx) => dispatch(setMenuIdx(menuIdx));
+  const onSetSideMenuIdx = (menuIdx) => dispatch(setSideMenuIdx(menuIdx));
+  const onSetBottomMenuIdx = (menuIdx) => dispatch(setBottomMenuIdx(menuIdx));
 
   return (
     <div>
       <Grid id="desktop" container>
-        <SideNavbar menuIdx={menuIdx} onSetMenuIdx={onSetMenuIdx} />
+        <SideNavbar
+          sideMenuIdx={sideMenuIdx}
+          bottomMenuIdx={bottomMenuIdx}
+          onSetSideMenuIdx={onSetSideMenuIdx}
+          onSetBottomMenuIdx={onSetBottomMenuIdx} />
         <Outlet />
         <Notification />
       </Grid>
       <Grid id="mobile" container>
         <Outlet />
-        <BottomNavbar menuIdx={menuIdx} onSetMenuIdx={onSetMenuIdx} />
+        <BottomNavbar
+          sideMenuIdx={sideMenuIdx}
+          bottomMenuIdx={bottomMenuIdx}
+          onSetSideMenuIdx={onSetSideMenuIdx}
+          onSetBottomMenuIdx={onSetBottomMenuIdx} />
       </Grid>
     </div>
   );
