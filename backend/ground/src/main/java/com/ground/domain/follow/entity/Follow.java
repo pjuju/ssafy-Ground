@@ -4,9 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import com.ground.domain.user.entity.User;
+import lombok.Setter;
 
 import javax.persistence.*;
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(
@@ -25,18 +27,18 @@ public class Follow  {
     private long id;
 
     @JoinColumn(name = "from_user_id")
-    @ManyToOne
-    private User fromUser;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User fromUserId;
 
     @JoinColumn(name = "to_user_id")
-    @ManyToOne
-    private User toUser;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User toUserId;
 
 //    @Column(name = "flag", columnDefinition="tinyint(1) default 0")
 //    private boolean flag;
     @Builder
-    public Follow(User fromUser, User toUser) {
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+    public Follow(User fromUserId, User toUserId) {
+        this.fromUserId = fromUserId;
+        this.toUserId = toUserId;
     }
 }

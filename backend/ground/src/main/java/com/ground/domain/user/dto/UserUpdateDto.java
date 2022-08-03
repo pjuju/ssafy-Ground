@@ -11,7 +11,6 @@ import lombok.*;
 @Data
 public class UserUpdateDto {
 
-    private String pass;
     private String nickname;
     private boolean privateYN;
     private Age age;
@@ -19,8 +18,7 @@ public class UserUpdateDto {
     private String introduce;
 
     @Builder
-    public UserUpdateDto(String pass, String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
-        this.pass = pass;
+    public UserUpdateDto(String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
         this.nickname = nickname;
         this.privateYN = privateYN;
         this.age = age;

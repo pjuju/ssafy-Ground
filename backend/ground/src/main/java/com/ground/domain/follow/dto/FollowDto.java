@@ -11,14 +11,15 @@ import java.math.BigInteger;
 public class FollowDto {
 
     private long id;
-    private String name;
+    private String nickname;
 //    private String profileImgUrl;
     private int followState;
 //    private int loginUser;
 
-    public FollowDto(Long id, String name, int followState) {
+
+    public FollowDto(BigInteger id, String name, int followState) {
         this.id = id.longValue();
-        this.name = name;
+        this.nickname = nickname;
 //        this.profileImgUrl = profileImgUrl;
         this.followState = followState;
 //        this.loginUser = loginUser;

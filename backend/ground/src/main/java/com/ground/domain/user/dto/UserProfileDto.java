@@ -11,18 +11,23 @@ import lombok.*;
 @Data
 public class UserProfileDto {
 
-    private Long id;
-    private String username;
-    private String nickname;
-    private Boolean privateYN;
-    private String introduce;
 
-    public UserProfileDto(User entity) {
-        this.id = entity.getId();
-        this.username = entity.getUsername();
-        this.nickname = entity.getNickname();
-        this.privateYN = entity.isPrivateYN();
-        this.introduce = entity.getIntroduce();
-    }
+    private boolean follow;
+    private User user;
+//    private Long id;
+//    private String username;
+//    private String nickname;
+//    private Boolean privateYN;
+//    private String introduce;
+    private int userFollowerCount;
+    private int userFollowingCount;
+
+//    public UserProfileDto(User entity) {
+//        this.id = entity.getId();
+//        this.username = entity.getUsername();
+//        this.nickname = entity.getNickname();
+//        this.privateYN = entity.isPrivateYN();
+//        this.introduce = entity.getIntroduce();
+//    }
 }
 

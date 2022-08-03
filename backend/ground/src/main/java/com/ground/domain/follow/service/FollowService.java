@@ -4,6 +4,7 @@ import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.qlrm.mapper.JpaResultMapper;
 
 import com.ground.domain.follow.repository.FollowRepository;
 import com.ground.domain.follow.dto.FollowDto;
@@ -19,34 +20,55 @@ import java.util.List;
 @Service
 public class FollowService {
 
-    private FollowRepository followRepository;
-    private EntityManager em;
+    private final FollowRepository followRepository;
+    private final EntityManager em;
 
     @Transactional
-    public Long follow(long fromUserId, long toUserId) {
+    public void follow(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
         followRepository.follow(fromUserId, toUserId);
-
-        return toUserId;
-    }
-
-    private UserRepository userRepository;
-    @Transactional
-    public Follow save(Long fromUserId, Long toUserId) {
-        User fromUser = userRepository.findById(fromUserId).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
-        User toUser = userRepository.findById(toUserId).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
-
-        return followRepository.save(Follow.builder()
-                .fromUser(fromUser)
-                .toUser(toUser)
-                .build());
     }
 
     @Transactional
     public void unFollow(long fromUserId, long toUserId) {
+
         followRepository.unFollow(fromUserId, toUserId);
     }
+    @Transactional
+    public List<FollowDto> getFollower(long profileId, long userId) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SELECT u.id, u.nickname, ");
+        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
+        sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
+        sb.append("FROM t_user u, t_user_follow f ");
+        sb.append("WHERE u.id = f.from_user_id AND f.to_user_id = ?");
 
+        Query query = em.createNativeQuery(sb.toString())
+                .setParameter(1, userId)
+                .setParameter(2, userId)
+                .setParameter(3, profileId);
+
+        JpaResultMapper result = new JpaResultMapper();
+        List<FollowDto> followDtoList = result.list(query, FollowDto.class);
+        return followDtoList;
+    }
+
+    @Transactional
+    public List<FollowDto> getFollowing(long profileId, long userId) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SELECT u.id, u.nickname, ");
+        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
+        sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
+        sb.append("FROM t_user u, t_user_follow f ");
+        sb.append("WHERE u.id = f.to_user_id AND f.from_user_id = ?");
+
+        Query query = em.createNativeQuery(sb.toString())
+                .setParameter(1, userId)
+                .setParameter(2, userId)
+                .setParameter(3, profileId);
+
+        JpaResultMapper result = new JpaResultMapper();
+        List<FollowDto> followDtoList = result.list(query, FollowDto.class);
+        return followDtoList;
+    }
 }
