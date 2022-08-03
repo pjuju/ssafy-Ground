@@ -26,3 +26,19 @@
     margin-right: 0;
   }
 }
+
+.filter-modal {
+  width: 100%;
+
+  &__button-wrapper {
+    text-align: end;
+  }
+
+  &__button {
+    font-weight: 600 !important;
+  }
+
+  &__wrapper {
+    margin-bottom: 2rem;
+  }
+}
