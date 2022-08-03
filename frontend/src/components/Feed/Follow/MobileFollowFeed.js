@@ -1,13 +1,12 @@
 import { Grid } from "@mui/material";
-import { getSavedBoard } from "api/board";
-import { useEffect } from "react";
 import "styles/Feed/FollowFeed.scss";
 
 function FollowFeed() {
+  const ref = React.useRef(null);
+
   useEffect(() => {
-    const userId = "1";
-    getSavedBoard(userId, (res) => console.log(res.data));
-  })
+    // ref.current.ownerDocument.body.scrollTop = 0;
+  }, [value, setMessages]);
 
   return (
     <Grid className="content">
