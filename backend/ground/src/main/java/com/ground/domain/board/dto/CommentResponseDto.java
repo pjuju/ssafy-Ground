@@ -1,8 +1,6 @@
 package com.ground.domain.board.dto;
 
 import com.ground.domain.board.entity.Comment;
-import com.ground.domain.user.dto.UserProfileDto;
-import com.ground.domain.user.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,14 +10,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Data
-public class CommentDto {
+public class CommentResponseDto {
     private Long id;
     private BoardUserDto user;
     private String reply;
     private LocalDateTime regDttm;
     private LocalDateTime modDttm;
 
-    public CommentDto(Comment entity) {
+    public CommentResponseDto(Comment entity) {
         this.id = entity.getId();
         this.user = new BoardUserDto(entity.getUser());
         this.reply = entity.getReply();
