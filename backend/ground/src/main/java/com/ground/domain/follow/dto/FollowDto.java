@@ -13,15 +13,15 @@ public class FollowDto {
     private long id;
     private String nickname;
 //    private String profileImgUrl;
-    private int followState;
-//    private int loginUser;
+    private long followState;
+    private long loginUser;
 
 
-    public FollowDto(BigInteger id, String name, int followState) {
+    public FollowDto(BigInteger id, String nickname, BigInteger followState, BigInteger loginUser) {
         this.id = id.longValue();
         this.nickname = nickname;
 //        this.profileImgUrl = profileImgUrl;
-        this.followState = followState;
-//        this.loginUser = loginUser;
+        this.followState = followState.longValue();
+        this.loginUser = loginUser.longValue();
     }
 }

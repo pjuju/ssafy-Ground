@@ -1,4 +1,4 @@
-package com.ground.domain.user.controller;
+package com.ground.domain.board.dto.controller;
 
 import java.util.List;
 

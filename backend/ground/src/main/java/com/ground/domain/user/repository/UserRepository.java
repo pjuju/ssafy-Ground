@@ -17,5 +17,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	//void save(SaveRequestUserDto params);
 	Optional<User> findById(Long id);
 	
-	
+//	List<User> findAllByPrivateYN();
 }

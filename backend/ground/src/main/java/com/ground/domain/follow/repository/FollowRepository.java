@@ -1,5 +1,6 @@
 package com.ground.domain.follow.repository;
 
+import com.ground.domain.follow.dto.FollowDto;
 import com.ground.domain.follow.entity.Follow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,4 +25,5 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     @Modifying
     @Query(value = "DELETE FROM t_user_follow WHERE from_user_id = :fromId AND to_user_id = :toId", nativeQuery = true)
     void unFollow(@Param("fromId")long fromId, @Param("toId")long toId);
+
 }
