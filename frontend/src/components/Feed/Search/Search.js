@@ -2,19 +2,12 @@ import {
   Grid,
   Select,
   FormControl,
-  InputLabel,
-  MenuItem,
-  IconButton,
   RadioGroup,
   FormControlLabel,
   Radio,
   Typography,
-  Modal,
-  Box,
-  Button,
+  MenuItem,
 } from "@mui/material";
-import GrButton from "components/common/GrButton";
-import GrTextField from "components/common/GrTextField";
 import { useForm, Controller } from "react-hook-form";
 import "styles/Search/Search.scss";
 
@@ -42,12 +35,13 @@ const dateRadio = date.map((item, index) => (
 ));
 
 function Search() {
+  const [standard, setStandard] = useState("board");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const { control, handleSubmit } = useForm({
-    defaultValues: { standard: "", word: "", date: "" },
+    defaultValues: { standard: "board", word: "", date: "" },
   });
 
   const onSubmit = (data) => {
@@ -58,10 +52,38 @@ function Search() {
     <Grid className="search-inner" item>
       <form>
         <Grid className="search-inner__top" container direction="column">
-          <SearchBar
-            handleOpen={handleOpen}
-            onSubmit={handleSubmit(onSubmit)}
-          />
+          <Grid container justifyContent="space-around">
+            <Grid xs={2} item>
+              <FormControl sx={{ minWidth: "100%", height: "100%" }}>
+                <Select
+                  inputProps={{ "aria-label": "Without label" }}
+                  size="small"
+                  value={standard}
+                  onChange={(e) => {
+                    setStandard(e.target.value);
+                  }}
+                  sx={{ height: "100%" }}
+                >
+                  <MenuItem value="board">게시글</MenuItem>
+                  <MenuItem value="user">유저</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid xs={9} item>
+              <Controller
+                name="word"
+                control={control}
+                render={({ field }) => (
+                  <SearchBar
+                    handleOpen={handleOpen}
+                    onSubmit={handleSubmit(onSubmit)}
+                    standard={standard}
+                    field={field}
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
           <FilterModal open={open} handleClose={handleClose} />
           <Grid container justifyContent="end">
             <FormControl>
