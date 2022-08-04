@@ -95,6 +95,8 @@ function Search() {
                 handleOpen={handleOpen}
                 onSubmit={onSubmit}
                 standard={standard}
+                word={word}
+                setWord={setWord}
               />
             </Grid>
           </Grid>
