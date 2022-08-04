@@ -3,6 +3,7 @@ import { interestList } from "components/common/interestList";
 import { useEffect } from "react";
 import "styles/Feed/FollowFeed.scss";
 import Article from "../Article/Article";
+import TitleBar from "../TitleBar";
 
 function FollowFeed() {
   useEffect(() => {
@@ -25,8 +26,11 @@ function FollowFeed() {
 
   return (
     <Grid className="content">
-      <Grid className="content__title">
+      <Grid className="content__title-desktop">
         <h2>팔로우 피드</h2>
+      </Grid>
+      <Grid className="content__title-mobile">
+        <TitleBar title="팔로우 피드" />
       </Grid>
       <Grid className="content__inner">
         <Article articleData={articleData} />

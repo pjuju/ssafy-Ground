@@ -22,13 +22,13 @@
     }
 
     &__left {
-      width: 82%;
+      width: 80%;
       padding-left: 0.5rem;
       padding-right: 0.5rem;
     }
 
     &__right {
-      max-width: 10%;
+      max-width: 8%;
       float: right;
     }
   }
@@ -129,6 +129,10 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+
+  @include mobile() {
+    font-size: 0.9rem;
+  }
 }
 
 .more {

@@ -11,7 +11,7 @@ import "styles/Feed/FeedPage.scss";
 
 function FeedPage() {
   const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);
-  const bottomMenuIdx = useSelector((state) => state.menu.bottomMenuIdx)
+  const bottomMenuIdx = useSelector((state) => state.menu.bottomMenuIdx);
 
   const dispatch = useDispatch();
 
@@ -19,13 +19,14 @@ function FeedPage() {
   const onSetBottomMenuIdx = (menuIdx) => dispatch(setBottomMenuIdx(menuIdx));
 
   return (
-    <div>
+    <div className="outlet">
       <Grid id="desktop" container>
         <SideNavbar
           sideMenuIdx={sideMenuIdx}
           bottomMenuIdx={bottomMenuIdx}
           onSetSideMenuIdx={onSetSideMenuIdx}
-          onSetBottomMenuIdx={onSetBottomMenuIdx} />
+          onSetBottomMenuIdx={onSetBottomMenuIdx}
+        />
         <Outlet />
         <Notification />
       </Grid>
@@ -35,7 +36,8 @@ function FeedPage() {
           sideMenuIdx={sideMenuIdx}
           bottomMenuIdx={bottomMenuIdx}
           onSetSideMenuIdx={onSetSideMenuIdx}
-          onSetBottomMenuIdx={onSetBottomMenuIdx} />
+          onSetBottomMenuIdx={onSetBottomMenuIdx}
+        />
       </Grid>
     </div>
   );
