@@ -14,6 +14,8 @@ import "styles/Search/Search.scss";
 import { useState } from "react";
 import FilterModal from "./FilterModal";
 import SearchBar from "./SearchBar";
+import { ThemeProvider } from "@emotion/react";
+import theme from "components/common/theme.js";
 
 const date = [
   { value: "whole", label: "전체" },
@@ -36,16 +38,26 @@ const dateRadio = date.map((item, index) => (
 
 function Search() {
   const [standard, setStandard] = useState("board");
+  const [interest, setInterest] = useState([]);
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [location, setLocation] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const { control, handleSubmit } = useForm({
-    defaultValues: { standard: "board", word: "", date: "" },
+    defaultValues: { word: "", date: "" },
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    const searchData = {
+      word: data.word,
+    };
+    if (standard === "board") {
+      searchData.date = data.date;
+    }
+    console.log(searchData);
   };
 
   return (
@@ -55,18 +67,20 @@ function Search() {
           <Grid container justifyContent="space-around">
             <Grid xs={2} item>
               <FormControl sx={{ minWidth: "100%", height: "100%" }}>
-                <Select
-                  inputProps={{ "aria-label": "Without label" }}
-                  size="small"
-                  value={standard}
-                  onChange={(e) => {
-                    setStandard(e.target.value);
-                  }}
-                  sx={{ height: "100%" }}
-                >
-                  <MenuItem value="board">게시글</MenuItem>
-                  <MenuItem value="user">유저</MenuItem>
-                </Select>
+                <ThemeProvider theme={theme}>
+                  <Select
+                    inputProps={{ "aria-label": "Without label" }}
+                    size="small"
+                    value={standard}
+                    onChange={(e) => {
+                      setStandard(e.target.value);
+                    }}
+                    sx={{ height: "100%" }}
+                  >
+                    <MenuItem value="board">게시글</MenuItem>
+                    <MenuItem value="user">유저</MenuItem>
+                  </Select>
+                </ThemeProvider>
               </FormControl>
             </Grid>
             <Grid xs={9} item>
