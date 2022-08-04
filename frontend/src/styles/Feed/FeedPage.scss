@@ -1,7 +1,53 @@
+@import "../common/utils";
+
 #desktop {
   height: 100vh;
 }
 
 #mobile {
   height: 100vh;
+}
+
+.article {
+
+  &__inner {
+    justify-content: center;
+    width: 90%;
+
+    &__userimg {
+      & img {
+        width: 50px;
+        margin-right: 1rem;
+      }
+    }
+
+    s &__left {
+      width: 80%;
+      padding: 0.5rem;
+    }
+  }
+}
+
+.info {
+  &__others {
+    margin-right: 1rem;
+
+    &__username {
+      font-weight: 700;
+    }
+
+    &__category {
+      color: $light-gray;
+      font-weight: 600;
+    }
+  }
+
+  &__regtime {
+    color: $light-gray;
+  }
+}
+
+.article-content {
+  padding-top: 1rem;
+  padding-left: 3.5rem;
 }
