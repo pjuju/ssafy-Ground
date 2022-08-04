@@ -4,19 +4,14 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormGroup,
   FormLabel,
   Grid,
-  InputLabel,
   MenuItem,
   Modal,
-  Radio,
   RadioGroup,
   Select,
-  Typography,
 } from "@mui/material";
 import GrButton from "components/common/GrButton";
-import { useState } from "react";
 import theme from "components/common/theme.js";
 
 const modalStyle = {
@@ -54,18 +49,18 @@ const interest = [
   { id: 16, value: "기타", isInterested: false },
 ];
 
-function FilterModal({ open, handleClose }) {
-  const [age, setAge] = useState("");
-  const [location, setLocation] = useState("");
-
-  const handleAgeChange = (event) => {
-    setAge(event.target.value);
-  };
-
-  const handleLocationChange = (event) => {
-    setLocation(event.target.value);
-  };
-
+function FilterModal({
+  open,
+  handleClose,
+  interestList,
+  setInterestList,
+  gender,
+  setGender,
+  age,
+  setAge,
+  location,
+  setLocation,
+}) {
   const leftInterestCheckList = () => {
     let interestCheckList = [];
     for (let i = 0; i < 8; i++) {
