@@ -1,24 +1,25 @@
 package com.ground.domain.board.controller;
 
-import com.ground.domain.board.dto.BoardAddRequestDto;
 import com.ground.domain.board.dto.BoardRequestDto;
 import com.ground.domain.board.dto.BoardResponseDto;
+import com.ground.domain.board.dto.CommentRequestDto;
+import com.ground.domain.board.dto.CommentResponseDto;
 import com.ground.domain.board.entity.Board;
+import com.ground.domain.board.entity.Comment;
 import com.ground.domain.board.service.BoardService;
 import com.ground.domain.user.entity.User;
+import com.ground.domain.user.repository.UserRepository;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK~!"),
@@ -35,13 +36,16 @@ public class BoardController {
 
     @Autowired
     BoardService boardService;
+    @Autowired
+    UserRepository userRepository;
 
 
     // =================== 게시글 작성 ===================
     @ApiOperation(value = "게시물 작성")
     @PostMapping
-    public BoardResponseDto addBoard(@RequestBody final BoardAddRequestDto params){
-        Board board = boardService.addBoard(params);
+    public BoardResponseDto addBoard(@RequestBody final BoardRequestDto params){
+        User user = userRepository.findById(new Long(1)).get();
+        Board board = boardService.addBoard(params, user);
         return new BoardResponseDto(board);
         // 유저도 넣어야함
     }
@@ -63,7 +67,7 @@ public class BoardController {
     @ApiOperation(value = "게시물 수정")
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @PutMapping("/{boardId}")
-    public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody final BoardAddRequestDto params){
+    public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody final BoardRequestDto params){
         Board board = boardService.updateBoard(boardId, params);
         return new BoardResponseDto(board);
     }
@@ -112,31 +116,33 @@ public class BoardController {
 
 
 
-    // ================= 저장한 피드 조회 ========================
-    @ApiOperation(value = "저장한 피드 조회")
-    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
-    @GetMapping("/save/{userId}")
-    public List<BoardResponseDto> getSaveBoard(@PathVariable Long userId){
-        return boardService.getSaveBoard(userId);
-    }
-
-    @ApiOperation(value = "팔로우 피드 조회")
-    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
-    @GetMapping("/follow/{userId}")
-    public String getFollowBoard(){
-        return "팔로우 피드 조회!";
-    }
-
+    // ================= 관심종목 피드 조회 ========================
     @ApiOperation(value = "관심종목 피드 조회")
-    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
     @GetMapping("/interest")
-    public String getnterestBoard(){
-        return "관심종목 피드 조회!";
+    public List<BoardResponseDto> getInterestBoard(@PageableDefault(size=3) Pageable pageable){
+        User user = userRepository.findById(new Long(1)).get();
+        return boardService.getInterestBoard(user, pageable);
     }
 
+    // ================= 팔로우 피드 조회 ========================
+    @ApiOperation(value = "팔로우 피드 조회")
+    @GetMapping("/follow")
+    public List<BoardResponseDto> getFollowBoard(@PageableDefault(size=10) Pageable pageable){
+        User user = userRepository.findById(new Long(1)).get();
+        return boardService.getFollowBoard(user, pageable);
+    }
 
+    // ================== 게시글 댓글 생성 =============================
+    @ApiOperation(value = "댓글 생성")
+    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
+    @PostMapping("/{boardId}/comment")
+    public CommentResponseDto addComment(@PathVariable Long boardId, @RequestBody final CommentRequestDto params){
 
+        User user = userRepository.findById(new Long(1)).get();
+        Comment comment = boardService.addComment(params, boardId, user);
 
+        return new CommentResponseDto(comment);
+    }
 
 
 

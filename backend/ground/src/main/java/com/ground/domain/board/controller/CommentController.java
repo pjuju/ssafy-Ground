@@ -1,8 +1,15 @@
 package com.ground.domain.board.controller;
+import com.ground.domain.board.dto.CommentRequestDto;
+import com.ground.domain.board.dto.CommentResponseDto;
+import com.ground.domain.board.entity.Comment;
+import com.ground.domain.board.service.BoardService;
+import com.ground.domain.user.entity.User;
+import com.ground.domain.user.repository.UserRepository;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @ApiResponses(value = {
@@ -16,24 +23,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rest/comment")
 public class CommentController {
 
+    @Autowired
+    BoardService boardService;
+    UserRepository userRepository;
+
     @ApiOperation(value = "댓글 수정")
     @ApiImplicitParam(name = "commentId", value = "댓글 PK", example = "1", required = true)
-    @PutMapping
-    public String updateComment(){ return "댓글 수정!"; }
+    @PutMapping("/{commentId}")
+    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody final CommentRequestDto params){
+        User user = userRepository.findById(new Long(1)).get();
+        Comment comment = boardService.updateComment(params, commentId, user);
 
-    @ApiOperation(value = "댓글 삭제")
+        return new CommentResponseDto(comment);
+    }
+
+    @ApiOperation(value = "댓글 수정")
     @ApiImplicitParam(name = "commentId", value = "댓글 PK", example = "1", required = true)
-    @DeleteMapping
-    public String deleteComment(){ return "댓글 삭제!"; }
+    @DeleteMapping("/{commentId}")
+    public String deleteComment(@PathVariable Long commentId){
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.deleteComment(commentId, user);
+        return "댓글 삭제 완료!";
+    }
 
-    @ApiOperation(value = "댓글 생성")
-    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @PostMapping
-    public String addComment(){ return "게시글에 댓글 생성!"; }
 
-    @ApiOperation(value = "게시글 댓글리스트 조회")
-    @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
-    @GetMapping
-    public String getBoardComment(){ return "게시글 댓글리스트 조회!"; }
+
 
 }

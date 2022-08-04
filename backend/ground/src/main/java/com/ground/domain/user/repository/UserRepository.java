@@ -16,6 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	List<User> findFirstByUsernameLikeOrderByIdDesc(String username);
 	//void save(SaveRequestUserDto params);
 	Optional<User> findById(Long id);
-	
-	
+
+
+    List<User> findAllByPrivateYN(boolean b);
 }
