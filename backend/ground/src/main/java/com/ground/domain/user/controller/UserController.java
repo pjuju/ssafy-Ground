@@ -108,21 +108,6 @@ public class UserController {
     	return "dd";
     }
 
-
-    
-    @GetMapping("/modifyUser")
-    @ApiOperation(value = "회원정보 수정 페이지로 이동", response = String.class)
-    public String getModifyUser(){
-        return "test!";
-    }
-
-    @PutMapping("/modifyUser/{id}")
-    @ApiOperation(value = "회원정보 수정", response = String.class)
-    public Long modifyUser(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) {
-
-        return userService.profileUpdate(id, userUpdateDto);
-    }
-
     @PutMapping("/userDetail")
     @ApiOperation(value = "회원 상세정보 추가", response = String.class)
     public String userDetail(){
@@ -160,7 +145,9 @@ public class UserController {
     	
         return userService.save(user);
     }
-    
+
+    // -----------------BSH-----------------
+    // 프로필 조회 이동
     @GetMapping("/profile/{id}")
     @ApiOperation(value = "프로필 조회", response = String.class)
     public UserProfileDto userProfile(@PathVariable Long id) {
@@ -168,5 +155,19 @@ public class UserController {
         return userService.getUserProfile(id);
     }
 
+    // 회원 정보 수정 페이지로 이동
+    @GetMapping("/modifyUser")
+    @ApiOperation(value = "회원정보 수정 페이지로 이동", response = String.class)
+    public String getModifyUser(){
+        return "test!";
+    }
+
+    // 회원 정보 수정
+    @PutMapping("/modifyUser/{id}")
+    @ApiOperation(value = "회원정보 수정", response = String.class)
+    public Long modifyUser(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) {
+
+        return userService.profileUpdate(id, userUpdateDto);
+    }
 
 }

@@ -125,7 +125,9 @@ public class UserService {
 		
 		return user;
 	}
-	
+
+	// -----------------BSH-----------------
+	// 프로필 조회
 	@Transactional
     public UserProfileDto getUserProfile(Long id) {
 		UserProfileDto userProfileDto = new UserProfileDto();
@@ -140,10 +142,13 @@ public class UserService {
         return userProfileDto;
     }
 
+	// 프로필 업데이트 페이지
     @Transactional
     public void getModifyUser(UserUpdateDto userUpdateDto) {
 
     }
+
+	// 프로필 업데이트
 	@Transactional
     public Long profileUpdate(Long id, UserUpdateDto userUpdateDto) {
         User user = userRepository.findById(id).orElseThrow(()

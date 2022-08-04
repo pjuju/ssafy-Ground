@@ -24,7 +24,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+// bsh
+import org.springframework.data.domain.Page;
 
 @Service
 @Transactional(readOnly = true)
@@ -163,7 +166,7 @@ public class BoardService {
     // 게시글 저장
     @Transactional
     public void saveBoard(Long boardId) {
-        User user = userRepository.findById(new Long(1)).get();
+        User user = userRepository.findById(new Long(2)).get();
         Board board = boardRepository.findById(boardId).get();
         boardSaveRepository.save(new BoardSave(user, board));
     }
@@ -268,5 +271,25 @@ public class BoardService {
         }
     }
 
+    // -----------------BSH-----------------
+    // 유저가 쓴 피드 조회
+    @Transactional
+    public List<BoardResponseDto> getMyBoard(long userId, Pageable pageable) {
 
+        List<BoardResponseDto> boardList = boardRepository.findAllByUserId(userId, pageable);
+
+        return boardList;
+    }
+
+    // 저장한 피드 조회
+    @Transactional
+    public List<BoardResponseDto> getSaveBoard(long userId, Pageable pageable) {
+        User user = userRepository.findById(userId).get();
+        List<Long> boardIdList = new ArrayList<>();
+        List<BoardSave> saveList = boardSaveRepository.findAllByUser(user);
+        for (BoardSave boardSave : saveList) boardIdList.add(boardSave.getBoard().getId());
+        List<BoardResponseDto> boardList = boardRepository.findAllByIdInAndPrivateYN(boardIdList, false, pageable);
+
+        return boardList;
+    }
 }

@@ -9,6 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
+// bsh
+import com.ground.domain.board.dto.BoardResponseDto;
+
+
 public interface BoardSaveRepository extends JpaRepository<BoardSave, Long> {
 
     Optional<BoardSave> findByUserAndBoard(User user, Board board);

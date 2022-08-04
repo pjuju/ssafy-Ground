@@ -1,4 +1,18 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jongui7303@gmail.com
+    password: uvppuyzqcflwldaw
+    properties:
+      mail:
+        smtp:
+#          ssl:
+#            protocols: TLSv1.2
+          auth: true
+          starttls:
+            enable: true
+            
   datasource:
     url: jdbc:mysql://localhost:3306/ground?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
