@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.ground.domain.user.dto.UserUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,12 +83,14 @@ public class UserController {
     public String getModifyUser(){
         return "test!";
     }
-    
-    @PutMapping("/modifyUser")
+
+    @PutMapping("/modifyUser/{id}")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public String modifyUser(){
-        return "test!";
+    public Long modifyUser(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) {
+
+        return userService.profileUpdate(id, userUpdateDto);
     }
+
     
     @GetMapping("/login")
     @ApiOperation(value = "로그인", response = String.class)
@@ -139,7 +142,7 @@ public class UserController {
     	return userService.save(params);
     }
     
-    @GetMapping("/profile/{user_id}")
+    @GetMapping("/profile/{id}")
     @ApiOperation(value = "프로필 조회", response = String.class)
     public UserProfileDto userProfile(@PathVariable Long id) {
 
