@@ -119,9 +119,7 @@ public class User {
 	}
     
     
-    public void profileUpdate(String pass, String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
-//      this.id = id;
-      this.pass = pass;
+    public void profileUpdate(String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
       this.nickname = nickname;
       this.privateYN = privateYN;
       this.age = age;

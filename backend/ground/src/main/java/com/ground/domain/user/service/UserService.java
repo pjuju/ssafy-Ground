@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.ground.domain.follow.repository.FollowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,9 @@ import lombok.extern.log4j.Log4j2;
 public class UserService {
 	
 	@Autowired 
-	private UserRepository userRepository;
-	
+	private final UserRepository userRepository;
+	private final FollowRepository followRepository;
+
 	@Transactional
 	public List<User> findFirstByUsernameLikeOrderByIdDesc(String username){
 //		return userRepository.findFirstByUsernameLikeOrderByIdDesc(username);
@@ -52,23 +54,28 @@ public class UserService {
 	
 	@Transactional
     public UserProfileDto getUserProfile(Long id) {
+		UserProfileDto userProfileDto = new UserProfileDto();
+
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 
-        return new UserProfileDto(user);
+		userProfileDto.setUser(user);
+		userProfileDto.setUserFollowerCount(followRepository.findFollowerCountById(id));
+		userProfileDto.setUserFollowingCount(followRepository.findFollowingCountById(id));
+
+        return userProfileDto;
     }
 
     @Transactional
     public void getModifyUser(UserUpdateDto userUpdateDto) {
 
     }
-
+	@Transactional
     public Long profileUpdate(Long id, UserUpdateDto userUpdateDto) {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 
-        user.profileUpdate(userUpdateDto.getPass(),
-                userUpdateDto.getNickname(),
+        user.profileUpdate(userUpdateDto.getNickname(),
                 userUpdateDto.isPrivateYN(),
                 userUpdateDto.getAge(),
                 userUpdateDto.getGender(),
