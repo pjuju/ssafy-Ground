@@ -14,7 +14,6 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter @Setter
 @Table(name = "t_board_comment")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,7 @@ import com.ground.domain.board.dto.BoardResponseDto;
 import com.ground.domain.board.dto.CommentRequestDto;
 import com.ground.domain.board.entity.*;
 import com.ground.domain.board.repository.*;
+import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.global.entity.Category;
 import com.ground.domain.global.repository.CategoryRepository;
 import com.ground.domain.global.entity.Location;
@@ -40,7 +41,7 @@ public class BoardService {
     private final BoardLikeRepository boardLikeRepository;
     private final BoardSaveRepository boardSaveRepository;
     private final BoardComparator boardComparator;
-//    private final FollowRepository followRepository;
+    private final BoardFollowRepository followRepository;
 
     private final CommentRepository commentReository;
 
@@ -102,6 +103,9 @@ public class BoardService {
         board.setModUser(user);
         board.setModDttm(LocalDateTime.now());
         board.setPrivateYN(params.isPrivateYN());
+
+        // 게시글 내용
+        board.setContent(params.getContent());
 
         // 기존 이미지 삭제
         final List<BoardImage> boardImages = boardImageRepository.findAllByBoard(board);
@@ -175,66 +179,55 @@ public class BoardService {
     }
 
 
-    // ================= 저장한 피드 조회 ========================
-    @Transactional
-    public List<BoardResponseDto> getSaveBoard(Long userId) {
-
-        User user = userRepository.findById(new Long(1)).get();
-        List<BoardSave> saveList = boardSaveRepository.findAllByUser(user);
-        List<BoardResponseDto> lst = new ArrayList<>();
-
-        for (BoardSave boardSave : saveList) {
-            lst.add(new BoardResponseDto(boardSave.getBoard()));
-        }
-        Collections.sort(lst, boardComparator);
-        return lst;
-
-    }
-
 
     // ================= 관심종목 피드 조회 ========================
     @Transactional
-    public List<BoardResponseDto> getInterestBoard(Long userId, Pageable pageable) {
-        User user = userRepository.findById(new Long(1)).get();
+    public List<BoardResponseDto> getInterestBoard(User user, Pageable pageable) {
+
+        // 카테고리
         List<Long> categoryIdList = new ArrayList<>();
         List<BoardResponseDto> lst = new ArrayList<>();
-        for (UserCategory userCategory : user.getUserCategories()) {
-            categoryIdList.add(userCategory.getCategory().getId());
-        }
-        List<Board> boardList = boardRepository.findAllByCategoryIdIn(categoryIdList, pageable);
+        for (UserCategory userCategory : user.getUserCategories()) { categoryIdList.add(userCategory.getCategory().getId()); }
+
+        List<User> userList = new ArrayList<>();
+        // 작성자가 공개유저
+        List<User> openUserList = userRepository.findAllByPrivateYN(false);
+        userList.addAll(openUserList);
+        // 작성자가 팔로우 유저
+        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        for (Follow follow : followList) userList.add(follow.getToUserId());
+        // 작성자가 나
+        userList.add(user);
+
+        // 카테고리 포함 AND 게시글이 공개 글 AND 작성자가 공개유저 OR 작성자가 팔로우 유저 OR 작성자가 나
+        List<Board> boardList = boardRepository.findAllByCategoryIdInAndUserInAndPrivateYN(categoryIdList, userList, false, pageable);
+        for (Board board : boardList) { lst.add(new BoardResponseDto(board)); }
+        Collections.sort(lst, boardComparator);
+        return lst;
+    }
+
+
+
+    // ================= 팔로우 피드 조회 ====================
+    @Transactional
+    public List<BoardResponseDto> getFollowBoard(User user, Pageable pageable) {
+
+        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        List<User> userList = new ArrayList<>();
+        for (Follow follow : followList) userList.add(follow.getToUserId());
+        List<Board> boardList = boardRepository.findAllByUserInAndPrivateYN(userList, false, pageable);
+        List<BoardResponseDto> lst = new ArrayList<>();
 
         for (Board board : boardList) {
             lst.add(new BoardResponseDto(board));
         }
+
         Collections.sort(lst, boardComparator);
         return lst;
-
     }
 
-
-
-    // ================= 팔로우 피드 조회 ========================
-//    @Transactional
-//    public List<BoardResponseDto> getFollowBoard(Long userId, Pageable pageable) {
-//        User user = userRepository.findById(new Long(1)).get();
-//        List<Follow> followList = followRepository.findByFrom(user);
-//        List<User> userList = new ArrayList<>();
-//        for (Follow follow : followList) {
-//            userList.add(follow.getUser());
-//        }
-//        List<Board> boardList = boardRepository.findAllByUserIn(userList, pageable);
-//        List<BoardResponseDto> lst = new ArrayList<>();
-//
-//        for (Board board : boardList) {
-//            lst.add(new BoardResponseDto(board));
-//        }
-//
-//        Collections.sort(lst, boardComparator);
-//        return lst;
-//
-//    }
-
-    // ================ 댓글 생성 =======================
+    // =================== 댓글 생성 =======================
+    @Transactional
     public Comment addComment(CommentRequestDto params, Long boardId, User user) {
         Comment comment = params.toEntity();
         comment.setUser(user);
@@ -242,10 +235,12 @@ public class BoardService {
         comment.setBoard(board);
         comment.setRegDttm(LocalDateTime.now());
         Comment entity = commentReository.save(comment);
+
         return entity;
     }
 
     // ===================== 댓글 수정 ====================
+    @Transactional
     public Comment updateComment(CommentRequestDto params, Long commentId, User user) {
         // 유저 == 게시글 작성자 확인 필요
         Comment comment = commentReository.findById(commentId).get();
@@ -256,6 +251,7 @@ public class BoardService {
 
     }
     // ===================== 댓글 삭제 ======================
+    @Transactional
     public void deleteComment(Long commentId, User user) {
         // 유저 == 게시글 작성자 확인 필요
         commentReository.deleteById(commentId);

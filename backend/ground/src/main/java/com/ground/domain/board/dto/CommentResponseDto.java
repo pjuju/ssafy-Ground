@@ -5,11 +5,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Data
 public class CommentResponseDto {
     private Long id;
     private BoardUserDto user;

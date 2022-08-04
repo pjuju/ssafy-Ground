@@ -116,31 +116,21 @@ public class BoardController {
 
 
 
-    // ================= 저장한 피드 조회 ========================
-    @ApiOperation(value = "저장한 피드 조회")
-    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
-    @GetMapping("/save/{userId}")
-    public List<BoardResponseDto> getSaveBoard(@PathVariable Long userId){
-        return boardService.getSaveBoard(userId);
-    }
-
-
-
     // ================= 관심종목 피드 조회 ========================
     @ApiOperation(value = "관심종목 피드 조회")
-    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
-    @GetMapping("/interest/{userId}")
-    public List<BoardResponseDto> getInterestBoard(@PathVariable Long userId, @PageableDefault(size=3) Pageable pageable){
-        return boardService.getInterestBoard(userId, pageable);
+    @GetMapping("/interest")
+    public List<BoardResponseDto> getInterestBoard(@PageableDefault(size=3) Pageable pageable){
+        User user = userRepository.findById(new Long(1)).get();
+        return boardService.getInterestBoard(user, pageable);
     }
 
     // ================= 팔로우 피드 조회 ========================
-//    @ApiOperation(value = "팔로우 피드 조회")
-//    @ApiImplicitParam(name = "userId", value = "유저 PK", example = "1", required = true)
-//    @GetMapping("/follow/{userId}")
-//    public List<BoardResponseDto> getFollowBoard(@PathVariable Long userId, @PageableDefault(size=3) Pageable pageable){
-//        return boardService.getFollowBoard(userId, pageable);
-//    }
+    @ApiOperation(value = "팔로우 피드 조회")
+    @GetMapping("/follow")
+    public List<BoardResponseDto> getFollowBoard(@PageableDefault(size=10) Pageable pageable){
+        User user = userRepository.findById(new Long(1)).get();
+        return boardService.getFollowBoard(user, pageable);
+    }
 
     // ================== 게시글 댓글 생성 =============================
     @ApiOperation(value = "댓글 생성")
@@ -153,6 +143,7 @@ public class BoardController {
 
         return new CommentResponseDto(comment);
     }
+
 
 
 }
