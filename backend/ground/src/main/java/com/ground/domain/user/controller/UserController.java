@@ -1,11 +1,14 @@
 package com.ground.domain.user.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ground.domain.user.dto.SaveRequestUserDto;
+import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
+import com.ground.domain.user.dto.UserRegisterDto;
+import com.ground.domain.user.dto.UserUpdateDto;
 import com.ground.domain.user.entity.User;
+import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,38 +49,64 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	@Autowired
+	MailSendService mailService;
 	
 	@PersistenceContext
 	EntityManager em;
-
-    @PostMapping("/singUp")
-    @ApiOperation(value = "회원가입", response = String.class)
-    public String signUp(){
-        return "test!";
+    
+    @PostMapping("/signUp")
+    @ApiOperation(value = "회원가입", response = boolean.class)
+    public boolean signUp(@RequestBody UserRegisterDto params){
+    	return userService.saveUser(params);
     }
     
-    @GetMapping("/isUsedId")
-    @ApiOperation(value = "아이디 중복 체크", response = String.class)
-    public String isUsedId(){
-        return "test!";
+    @GetMapping("/isUsedUsername")
+    @ApiOperation(value = "아이디 중복 체크", response = boolean.class)
+    public boolean isUsedUsername(String username){
+        return userService.checkUsername(username);
     }
     
-    @GetMapping("/isUsedNick")
-    @ApiOperation(value = "닉네임 중복 체크", response = String.class)
-    public String isUsedNick(){
-        return "test!";
+    @GetMapping("/isUsedNickname")
+    @ApiOperation(value = "닉네임 중복 체크", response = boolean.class)
+    public boolean isUsedNickname(String nickname){
+        return userService.checkNickname(nickname);
+    }
+    
+    @GetMapping("/isUsedEmail")
+    @ApiOperation(value = "이메일 중복 체크", response = boolean.class)
+    public boolean isUsedEmail(String email){
+        return userService.checkEmail(email);
     }
     
     @GetMapping("/emailAuth")
     @ApiOperation(value = "이메일 인증", response = String.class)
-    public String emailAuth(){
-        return "test!";
+    public String emailAuth(String email) throws UnsupportedEncodingException{
+        return mailService.joinEmail(email);
     }
     
     @PutMapping("/deleteUser")
     @ApiOperation(value = "회원 탈퇴", response = String.class)
-    public String deleteUser(){
-        return "test!";
+    public boolean deleteUser(Long id){
+        return userService.deleteUser(id);
+    }
+    
+    @GetMapping("/findId/{email}")
+    @ApiOperation(value = "아이디 찾기", response = String.class)
+    public String findId(@PathVariable String email) {
+    	return userService.findId(email);
+    }
+    
+    @PutMapping("/modifyPass")
+    @ApiOperation(value = "비밀번호 변경", response = boolean.class)
+    public boolean modifyPass(@RequestBody UserModifyPassDto params) {
+    	return userService.modifyPass(params);
+    }
+    
+    @PostMapping("/login")
+    @ApiOperation(value = "로그인", response = ResponseEntity.class)
+    public String login(){
+    	return "dd";
     }
     
     @GetMapping("/modifyUser")
@@ -83,17 +115,13 @@ public class UserController {
         return "test!";
     }
     
-    @PutMapping("/modifyUser")
+    @PutMapping("/modifyUser/{id}")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public String modifyUser(){
-        return "test!";
+    public Long modifyUser(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) {
+
+        return userService.profileUpdate(id, userUpdateDto);
     }
     
-    @GetMapping("/login")
-    @ApiOperation(value = "로그인", response = String.class)
-    public String login(){
-        return "test!";
-    }
     
     @PutMapping("/userDetail")
     @ApiOperation(value = "회원 상세정보 추가", response = String.class)
@@ -133,15 +161,11 @@ public class UserController {
         return userService.save(user);
     }
     
-    @PostMapping("/practice/signup")
-    @ApiOperation(value = "회원가입", response = User.class)
-    public SaveRequestUserDto signUp(@RequestBody SaveRequestUserDto params){
-    	return userService.save(params);
-    }
+
     
     @GetMapping("/profile/{user_id}")
     @ApiOperation(value = "프로필 조회", response = String.class)
-    public UserProfileDto userProfile(@PathVariable Long id) {
+    public UserProfileDto getUserProfile(@PathVariable Long id) {
 
         return userService.getUserProfile(id);
     }

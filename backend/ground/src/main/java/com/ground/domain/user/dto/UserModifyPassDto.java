@@ -4,29 +4,26 @@ import java.time.LocalDateTime;
 
 import com.ground.domain.user.entity.Age;
 import com.ground.domain.user.entity.Gender;
+import com.ground.domain.user.entity.User;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UserDto {
-	private Long id;
+public class UserModifyPassDto {
 	private String username;
 	private String pass;
 	private String email;
-	private String nickname;
-	private boolean firstYN;
-	private boolean delYN;
-	private boolean privateYN;
-	private Age age;
-	private Gender gender;
-	private String introduce;
-	private LocalDateTime regDttm;
 	private LocalDateTime modDttm;
-	private String modUser;
-	private String imageUrl;
-	private String imagetype;
-	private String ftoken;
 	
+	@Builder
+	public UserModifyPassDto(String username, String pass, String email, LocalDateTime modDttm) {
+		this.username = username;
+		this.pass = pass;
+		this.email = email;
+		this.modDttm = modDttm;
+	}
+
 }
