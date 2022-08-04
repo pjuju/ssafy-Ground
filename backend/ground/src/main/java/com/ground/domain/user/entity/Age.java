@@ -1,5 +1,5 @@
 package com.ground.domain.user.entity;
 
 public enum Age {
-    twenty, thirty, forty, fifty, sixty, seventy, eighty
+    teenager, twenty, thirty, forty, fifty, sixty, seventy, eighty
 }
