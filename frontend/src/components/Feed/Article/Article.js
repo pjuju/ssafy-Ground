@@ -1,6 +1,6 @@
 import { Box, Grid, IconButton } from "@mui/material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 import ArticleActivity from "./ArticleActivity";
 import ArticleContent from "./ArticleContent";
@@ -13,6 +13,10 @@ function Article(props) {
   const userName = props.articleData.userName;
   const category = props.articleData.category;
   const time = props.articleData.time;
+  const text = props.articleData.text;
+  const location = props.articleData.location;
+  const likeCnt = props.articleData.likeCnt;
+  const commentCnt = props.articleData.commentCnt;
 
   return (
     <Box className="article">
@@ -22,8 +26,8 @@ function Article(props) {
         </Grid>
         <Grid className="article__inner__left">
           <ArticleInfo userName={userName} category={category} time={time} />
-          <ArticleContent />
-          <ArticleActivity />
+          <ArticleContent text={text} location={location} />
+          <ArticleActivity likeCnt={likeCnt} commentCnt={commentCnt} />
         </Grid>
         <Grid className="article__inner__right">
           <Grid>
@@ -39,7 +43,7 @@ function Article(props) {
         </Grid>
       </Grid>
     </Box>
-  )
+  );
 }
 
 export default Article;

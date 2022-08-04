@@ -1,0 +1,21 @@
+import { Dialog, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import MediaSlider from "./MediaSlider";
+
+function MediaModal({ open, handleClose, src }) {
+  return (
+    <Dialog fullScreen open={open} onClose={handleClose}>
+      <IconButton
+        edge="start"
+        color="inherit"
+        onClick={handleClose}
+        aria-label="close"
+      >
+        <CloseIcon />
+      </IconButton>
+      <MediaSlider />
+    </Dialog>
+  );
+}
+
+export default MediaModal;
