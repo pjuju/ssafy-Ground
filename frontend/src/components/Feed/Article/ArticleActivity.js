@@ -1,18 +1,39 @@
+import theme from "components/common/theme.js";
+
 import { Grid, IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import { ThemeProvider } from "@emotion/react";
+import { useState } from "react";
 
 function ArticleActivity(props) {
   const userName = "username";
+  const [isLikeClicked, setIsLikeClicked] = useState(props.isLiked);
+
+  const handleClickLike = () => {
+    setIsLikeClicked(!isLikeClicked);
+
+    // 좋아요 요청
+    console.log("좋아요 요청");
+  };
+
+  const handleClickUnlike = () => {
+    setIsLikeClicked(!isLikeClicked);
+
+    // 좋아요 취소 요청
+    console.log("좋아요 취소 요청");
+  };
 
   return (
     <Grid className="activity" container>
-      {props.isLiked ? (
+      {isLikeClicked ? (
         <Grid className="activity__like" item>
-          <IconButton>
-            <FavoriteIcon />
-          </IconButton>
+          <ThemeProvider theme={theme}>
+            <IconButton color="like" onClick={() => handleClickUnlike()}>
+              <FavoriteIcon />
+            </IconButton>
+          </ThemeProvider>
           <span>
             <span className="bold">{userName}님</span> 외{" "}
             <span className="bold">{props.likeCnt}명</span>이 좋아합니다.
@@ -20,7 +41,7 @@ function ArticleActivity(props) {
         </Grid>
       ) : (
         <Grid className="activity__like" item>
-          <IconButton>
+          <IconButton onClick={() => handleClickLike()}>
             <FavoriteBorderIcon />
           </IconButton>
           <span>

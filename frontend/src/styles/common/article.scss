@@ -1,18 +1,5 @@
 @import "./utils";
 
-.content {
-  width: 56% !important;
-
-  &__title {
-    padding: 2rem;
-  }
-
-  &__inner {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
 .article {
   width: 100%;
   display: flex;
@@ -142,4 +129,14 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.more {
+  &__save-icon {
+    padding-bottom: 0px !important;
+  }
+
+  &__save-cnt {
+    text-align: center;
+  }
 }

@@ -37,6 +37,37 @@ $wide-desktop: 1249px;
   }
 }
 
+#desktop {
+  .content {
+    width: 56% !important;
+
+    &__title {
+      padding: 2rem;
+    }
+
+    &__inner {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+}
+
+/* 본문 */
+#mobile {
+  .content {
+    width: 100% !important;
+
+    &__title {
+      padding: 2rem;
+    }
+
+    &__inner {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+}
+
 /* 외부 CSS 애니메이션 */
 .heartbeat:hover {
   -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
