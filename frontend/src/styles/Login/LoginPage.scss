@@ -1,28 +1,35 @@
-@import '../common/utils';
+@import "../common/utils";
 
 @mixin set-layout {
-    margin-top: 1rem !important;
-    width: 80% !important;
+  margin-top: 1rem !important;
+  width: 100% !important;
 }
 
 .login-form {
-    &__wrapper {
-        min-height: 100vh;
-    }
+  &__wrapper {
+    min-height: 100vh;
+  }
 
-    &__field, &__button {
-        @include set-layout;
-    }
+  &__field,
+  &__button {
+    @include set-layout;
+  }
 
-    &__bottom {
-        @include set-layout;
-        font-size: 0.8rem;
-    }
+  &__bottom {
+    @include set-layout;
+    font-size: 0.8rem;
+  }
+
+  &__devider {
+    font-size: 0.8rem;
+    color: rgb(120, 120, 120);
+    margin-top: 1rem !important;
+  }
 }
 
 a {
-    text-decoration: none;
-    color: rgb(120, 120, 120);
+  text-decoration: none;
+  color: rgb(120, 120, 120);
 }
 
 .social-login {
@@ -53,7 +60,7 @@ a {
   &__button {
     display: flex;
     height: auto;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 5px;
     align-items: center;
     text-decoration: none;

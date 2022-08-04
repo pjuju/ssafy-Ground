@@ -8,6 +8,7 @@ import {
   Typography,
   MenuItem,
 } from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
 import "styles/Search/Search.scss";
 
 import { useState } from "react";
@@ -15,8 +16,6 @@ import FilterModal from "./FilterModal";
 import SearchBar from "./SearchBar";
 import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
-import StartDatePicker from "./StartDatePicker";
-import EndDatePicker from "./EndDatePicker";
 
 const date = [
   { value: "whole", label: "전체" },
@@ -43,27 +42,21 @@ function Search() {
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [location, setLocation] = useState("");
-  const [word, setWord] = useState("");
-  const [dateRange, setDateRange] = useState("whole");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const { control, handleSubmit } = useForm({
+    defaultValues: { word: "", date: "" },
+  });
 
+  const onSubmit = (data) => {
     const searchData = {
-      word: word,
+      word: data.word,
     };
-
     if (standard === "board") {
-      searchData.startDate = startDate;
-      searchData.endDate = endDate;
+      searchData.date = data.date;
     }
-
     console.log(searchData);
   };
 
@@ -91,49 +84,35 @@ function Search() {
               </FormControl>
             </Grid>
             <Grid xs={9} item>
-              <SearchBar
-                handleOpen={handleOpen}
-                onSubmit={onSubmit}
-                standard={standard}
+              <Controller
+                name="word"
+                control={control}
+                render={({ field }) => (
+                  <SearchBar
+                    handleOpen={handleOpen}
+                    onSubmit={handleSubmit(onSubmit)}
+                    standard={standard}
+                    field={field}
+                  />
+                )}
               />
             </Grid>
           </Grid>
           <FilterModal open={open} handleClose={handleClose} />
           {standard === "board" && (
-            <>
-              <Grid className="top__date-picker" container justifyContent="end">
-                <FormControl>
-                  <ThemeProvider theme={theme}>
-                    <RadioGroup
-                      row
-                      value={dateRange}
-                      onChange={(e) => {
-                        setDateRange(e.target.value);
-                      }}
-                    >
+            <Grid container justifyContent="end">
+              <FormControl>
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup row {...field}>
                       {dateRadio}
                     </RadioGroup>
-                  </ThemeProvider>
-                </FormControl>
-              </Grid>
-              {dateRange === "custom" && (
-                <Grid
-                  className="top__date-picker"
-                  container
-                  justifyContent="end"
-                >
-                  <StartDatePicker
-                    startDate={startDate}
-                    setStartDate={setStartDate}
-                  />
-                  <EndDatePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    setEndDate={setEndDate}
-                  />
-                </Grid>
-              )}
-            </>
+                  )}
+                />
+              </FormControl>
+            </Grid>
           )}
         </Grid>
       </form>
