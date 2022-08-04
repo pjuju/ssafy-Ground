@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import GrButton from "components/common/GrButton";
+import GrSelect from "components/common/GrSelect";
 import { useState } from "react";
 
 function FilterModal({ open, handleClose }) {
@@ -141,6 +142,19 @@ function FilterModal({ open, handleClose }) {
                     <MenuItem value={50}>충남</MenuItem>
                     <MenuItem value={60}>부산</MenuItem>
                   </Select>
+                  {/* <GrSelect
+                    value={location}
+                    onChange={handleLocationChange}
+                    displayEmpty
+                    inputProps={{ "aria-label": "Without label" }}
+                    size="small"
+                  >                    <MenuItem value="">선택 안함</MenuItem>
+                  <MenuItem value={10}>서울</MenuItem>
+                  <MenuItem value={20}>경기</MenuItem>
+                  <MenuItem value={30}>강원</MenuItem>
+                  <MenuItem value={40}>충북</MenuItem>
+                  <MenuItem value={50}>충남</MenuItem>
+                  <MenuItem value={60}>부산</MenuItem></GrSelect> */}
                 </FormControl>
               </Grid>
             </Grid>
