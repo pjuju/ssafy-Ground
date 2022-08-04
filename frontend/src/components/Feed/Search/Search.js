@@ -85,19 +85,21 @@ function Search() {
             </Grid>
           </Grid>
           <FilterModal open={open} handleClose={handleClose} />
-          <Grid container justifyContent="end">
-            <FormControl>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field }) => (
-                  <RadioGroup row {...field}>
-                    {dateRadio}
-                  </RadioGroup>
-                )}
-              />
-            </FormControl>
-          </Grid>
+          {standard === "board" && (
+            <Grid container justifyContent="end">
+              <FormControl>
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup row {...field}>
+                      {dateRadio}
+                    </RadioGroup>
+                  )}
+                />
+              </FormControl>
+            </Grid>
+          )}
         </Grid>
       </form>
     </Grid>
