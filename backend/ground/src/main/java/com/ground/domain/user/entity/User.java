@@ -27,10 +27,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ground.domain.board.entity.BoardLike;
+import com.ground.domain.board.entity.BoardSave;
+import com.ground.domain.board.entity.Comment;
 import com.ground.domain.global.entity.Image;
 import com.ground.domain.global.entity.Location;
-import com.ground.domain.user.dto.SaveRequestUserDto;
-import com.ground.domain.user.dto.SaveRequestUserDto.SaveRequestUserDtoBuilder;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -46,7 +47,7 @@ import lombok.Setter;
 @Table(name = "t_user")
 public class User {
 
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -65,6 +66,9 @@ public class User {
     // 디폴트 값 넣어줄지
     @Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
+    
+    @Column(name = "first_YN", columnDefinition="tinyint(1) default 0")
+    private boolean firstYN;
 
     @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 0")
     private boolean privateYN;
@@ -91,6 +95,15 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCategory> userCategories = new ArrayList<>();
     
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BoardLike> boardLikes = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BoardSave> boardSaves = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+    
     @Column(name = "mod_user_id")
     private String modUser;
     
@@ -105,27 +118,43 @@ public class User {
     @Lob
     @Column(name = "ftoken")
     private String ftoken;
+    
+    public void modifyPass(String pass) {
+    	this.pass = pass;
+    }
+
 
     @Builder
-	public User(Long id, String username, String pass, String email, String nickname, Age age, Gender gender, String introduce) {
-		this.id = id;
+	public User(String username, String pass, String email, String nickname, Age age, Gender gender, String introduce, 
+			LocalDateTime regDttm, boolean delYN) {
 		this.username = username;
+		this.modUser = username;
 		this.pass = pass;
 		this.email = email;
 		this.nickname = nickname;
 		this.age = age;
 		this.gender = gender;
 		this.introduce = introduce;
+		this.regDttm = regDttm;
+		this.delYN = delYN;
+		
 	}
+
     
     
     public void profileUpdate(String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
-      this.nickname = nickname;
-      this.privateYN = privateYN;
-      this.age = age;
-      this.gender = gender;
-      this.introduce = introduce;
-  }
+        this.nickname = nickname;
+        this.privateYN = privateYN;
+        this.age = age;
+        this.gender = gender;
+        this.introduce = introduce;
+    }
+
+    
+    public void deleteUser() {
+    	this.delYN = true;
+    }
+
 
 
     

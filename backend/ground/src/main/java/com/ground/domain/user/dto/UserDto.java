@@ -16,6 +16,7 @@ public class UserDto {
 	private String pass;
 	private String email;
 	private String nickname;
+	private boolean firstYN;
 	private boolean delYN;
 	private boolean privateYN;
 	private Age age;
@@ -29,3 +30,4 @@ public class UserDto {
 	private String ftoken;
 	
 }
+

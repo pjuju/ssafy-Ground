@@ -21,7 +21,6 @@ import javax.persistence.*;
         name = "t_user_follow"
 )
 public class Follow  {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

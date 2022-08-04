@@ -1,9 +1,6 @@
 package com.ground.domain.board.dto;
 
 import com.ground.domain.board.entity.*;
-import com.ground.domain.global.entity.Category;
-import com.ground.domain.global.entity.Location;
-import com.ground.domain.user.dto.UserProfileDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +22,7 @@ public class BoardResponseDto {
     private boolean privateYN;
     private String category;
     private String location;
-    private List<CommentDto> comments = new ArrayList<>();
+    private List<CommentResponseDto> comments = new ArrayList<>();
     private int commentCnt;
     private List<BoardLikeDto> boardLikes = new ArrayList<>();
     private int likeCnt;
@@ -46,7 +43,7 @@ public class BoardResponseDto {
         this.location = entity.getLocation().getLocation();
 
         for (Comment comment : entity.getComments()) {
-            this.comments.add(new CommentDto(comment));
+            this.comments.add(new CommentResponseDto(comment));
         }
         this.commentCnt = entity.getComments().size();
 

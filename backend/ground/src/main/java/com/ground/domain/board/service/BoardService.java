@@ -1,29 +1,28 @@
 package com.ground.domain.board.service;
 
-import com.ground.domain.board.dto.BoardAddRequestDto;
 import com.ground.domain.board.dto.BoardRequestDto;
 import com.ground.domain.board.dto.BoardResponseDto;
-import com.ground.domain.board.entity.Board;
-import com.ground.domain.board.entity.BoardImage;
-import com.ground.domain.board.entity.BoardLike;
-import com.ground.domain.board.entity.BoardSave;
-import com.ground.domain.board.repository.BoardImageRepository;
-import com.ground.domain.board.repository.BoardLikeRepository;
-import com.ground.domain.board.repository.BoardRepository;
-import com.ground.domain.board.repository.BoardSaveRepository;
+import com.ground.domain.board.dto.CommentRequestDto;
+import com.ground.domain.board.entity.*;
+import com.ground.domain.board.repository.*;
+import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.global.entity.Category;
 import com.ground.domain.global.repository.CategoryRepository;
 import com.ground.domain.global.entity.Location;
 import com.ground.domain.global.repository.LocationRepository;
 import com.ground.domain.user.entity.User;
+import com.ground.domain.user.entity.UserCategory;
 import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -41,10 +40,15 @@ public class BoardService {
     private final UserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final BoardSaveRepository boardSaveRepository;
+    private final BoardComparator boardComparator;
+    private final BoardFollowRepository followRepository;
+
+    private final CommentRepository commentReository;
+
 
     // 게시글 생성
     @Transactional
-    public Board addBoard(BoardAddRequestDto params) {
+    public Board addBoard(BoardRequestDto params, User user) {
 
         Board board = params.toEntity();
 
@@ -55,7 +59,6 @@ public class BoardService {
         board.setLocation(location);
 
         // 유저, 작성시간, 공개유무
-        User user = userRepository.findById(new Long(1)).get();
         board.setUser(user);
         board.setPrivateYN(params.isPrivateYN());
         board.setRegDttm(LocalDateTime.now());
@@ -85,7 +88,7 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional
-    public Board updateBoard(Long boardId, BoardAddRequestDto params) {
+    public Board updateBoard(Long boardId, BoardRequestDto params) {
         // 게시글 찾기
         Board board = boardRepository.findById(boardId).get();
 
@@ -100,6 +103,9 @@ public class BoardService {
         board.setModUser(user);
         board.setModDttm(LocalDateTime.now());
         board.setPrivateYN(params.isPrivateYN());
+
+        // 게시글 내용
+        board.setContent(params.getContent());
 
         // 기존 이미지 삭제
         final List<BoardImage> boardImages = boardImageRepository.findAllByBoard(board);
@@ -172,17 +178,95 @@ public class BoardService {
         boardSaveRepository.delete(boardSave);
     }
 
+
+
+    // ================= 관심종목 피드 조회 ========================
     @Transactional
-    public List<BoardResponseDto> getSaveBoard(Long userId) {
-        User user = userRepository.findById(new Long(1)).get();
-        List<BoardSave> saveList = boardSaveRepository.findAllByUser(user);
+    public List<BoardResponseDto> getInterestBoard(User user, Pageable pageable) {
+
+        // 카테고리
+        List<Long> categoryIdList = new ArrayList<>();
+        List<BoardResponseDto> lst = new ArrayList<>();
+        for (UserCategory userCategory : user.getUserCategories()) { categoryIdList.add(userCategory.getCategory().getId()); }
+
+        List<User> userList = new ArrayList<>();
+        // 작성자가 공개유저
+        List<User> openUserList = userRepository.findAllByPrivateYN(false);
+        userList.addAll(openUserList);
+        // 작성자가 팔로우 유저
+        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        for (Follow follow : followList) userList.add(follow.getToUserId());
+        // 작성자가 나
+        userList.add(user);
+
+        // 카테고리 포함 AND 게시글이 공개 글 AND 작성자가 공개유저 OR 작성자가 팔로우 유저 OR 작성자가 나
+        List<Board> boardList = boardRepository.findAllByCategoryIdInAndUserInAndPrivateYN(categoryIdList, userList, false, pageable);
+        for (Board board : boardList) { lst.add(new BoardResponseDto(board)); }
+        Collections.sort(lst, boardComparator);
+        return lst;
+    }
+
+
+
+    // ================= 팔로우 피드 조회 ====================
+    @Transactional
+    public List<BoardResponseDto> getFollowBoard(User user, Pageable pageable) {
+
+        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        List<User> userList = new ArrayList<>();
+        for (Follow follow : followList) userList.add(follow.getToUserId());
+        List<Board> boardList = boardRepository.findAllByUserInAndPrivateYN(userList, false, pageable);
         List<BoardResponseDto> lst = new ArrayList<>();
 
-        for (BoardSave boardSave : saveList) {
-            lst.add(new BoardResponseDto(boardSave.getBoard()));
+        for (Board board : boardList) {
+            lst.add(new BoardResponseDto(board));
         }
 
+        Collections.sort(lst, boardComparator);
         return lst;
+    }
+
+    // =================== 댓글 생성 =======================
+    @Transactional
+    public Comment addComment(CommentRequestDto params, Long boardId, User user) {
+        Comment comment = params.toEntity();
+        comment.setUser(user);
+        Board board = boardRepository.findById(boardId).get();
+        comment.setBoard(board);
+        comment.setRegDttm(LocalDateTime.now());
+        Comment entity = commentReository.save(comment);
+
+        return entity;
+    }
+
+    // ===================== 댓글 수정 ====================
+    @Transactional
+    public Comment updateComment(CommentRequestDto params, Long commentId, User user) {
+        // 유저 == 게시글 작성자 확인 필요
+        Comment comment = commentReository.findById(commentId).get();
+        comment.setModDttm(LocalDateTime.now());
+        comment.setReply(params.getReply());
+        Comment entity = commentReository.save(comment);
+        return entity;
 
     }
+    // ===================== 댓글 삭제 ======================
+    @Transactional
+    public void deleteComment(Long commentId, User user) {
+        // 유저 == 게시글 작성자 확인 필요
+        commentReository.deleteById(commentId);
+    }
+
+    @Component
+    public static class BoardComparator implements Comparator<BoardResponseDto> {
+        @Override
+        public int compare(BoardResponseDto a, BoardResponseDto b) {
+            if (a.getRegDttm().isAfter(b.getRegDttm())) {
+                return 1;
+            }
+            return -1;
+        }
+    }
+
+
 }
