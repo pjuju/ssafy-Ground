@@ -16,6 +16,7 @@ import FilterModal from "./FilterModal";
 import SearchBar from "./SearchBar";
 import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
+import CustomDatePicker from "./CustomDatePicker";
 
 const date = [
   { value: "whole", label: "전체" },
@@ -116,6 +117,8 @@ function Search() {
               </FormControl>
             </Grid>
           )}
+          <CustomDatePicker />
+          <CustomDatePicker />
         </Grid>
       </form>
     </Grid>
