@@ -25,24 +25,34 @@ public class FollowService {
     private final UserRepository userRepository;
     private final EntityManager em;
 
+    // 팔로우
     @Transactional
     public void follow(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
         followRepository.follow(fromUserId, toUserId);
     }
 
+    // 언팔로우
     @Transactional
     public void unFollow(long fromUserId, long toUserId) {
 
         followRepository.unFollow(fromUserId, toUserId);
     }
+
+    // 팔로워 목록 조회
     @Transactional
     public List<FollowDto> getFollower(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
+
+        // 3. userId와 userNickname 을 가져옴
         sb.append("SELECT u.id, u.nickname,");
+        // 4. 그중 fromUserId(팔로워)가 userId(로그인한 유저) 이면 followState 를 True로 해줌
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
+        // 5.
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
+        // 1. follow 테이블에서 (user 테이블 정보도 들고옴)
         sb.append("FROM t_user u, t_user_follow f ");
+        // 2. fromUserId 가 userId 인것중 toUserId 가 profileId 인 <-> (profileId 를 팔로우 하고 있는 유저의)
         sb.append("WHERE u.id = f.from_user_id AND f.to_user_id = ?");
 
         Query query = em.createNativeQuery(sb.toString())
@@ -55,7 +65,7 @@ public class FollowService {
         return followDtoList;
     }
 
-
+    // 팔로잉 목록 조회
     @Transactional
     public List<FollowDto> getFollowing(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
