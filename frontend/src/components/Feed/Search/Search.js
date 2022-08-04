@@ -39,7 +39,7 @@ const dateRadio = date.map((item, index) => (
 
 function Search() {
   const [standard, setStandard] = useState("board");
-  const [interest, setInterest] = useState([]);
+  const [interestList, setInterestList] = useState([]);
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [location, setLocation] = useState("");
@@ -100,7 +100,18 @@ function Search() {
               />
             </Grid>
           </Grid>
-          <FilterModal open={open} handleClose={handleClose} />
+          <FilterModal
+            open={open}
+            handleClose={handleClose}
+            interestList={interestList}
+            setInterestList={setInterestList}
+            gender={gender}
+            setGender={setGender}
+            age={age}
+            setAge={setAge}
+            location={location}
+            setLocation={setLocation}
+          />
           {standard === "board" && (
             <>
               <Grid className="top__date-picker" container justifyContent="end">
