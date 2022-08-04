@@ -102,15 +102,17 @@ function Search() {
           {standard === "board" && (
             <Grid container justifyContent="end">
               <FormControl>
-                <Controller
-                  name="date"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup row {...field}>
-                      {dateRadio}
-                    </RadioGroup>
-                  )}
-                />
+                <ThemeProvider theme={theme}>
+                  <Controller
+                    name="date"
+                    control={control}
+                    render={({ field }) => (
+                      <RadioGroup row {...field}>
+                        {dateRadio}
+                      </RadioGroup>
+                    )}
+                  />
+                </ThemeProvider>
               </FormControl>
             </Grid>
           )}

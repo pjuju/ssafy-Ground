@@ -118,12 +118,16 @@ function FilterModal({ open, handleClose }) {
                 <Grid container>
                   <Grid xs={6} item>
                     <Grid container direction="column">
-                      {leftInterestCheckList()}
+                      <ThemeProvider theme={theme}>
+                        {leftInterestCheckList()}
+                      </ThemeProvider>
                     </Grid>
                   </Grid>
                   <Grid xs={6} item>
                     <Grid container direction="column">
-                      {rightInterestCheckList()}
+                      <ThemeProvider theme={theme}>
+                        {rightInterestCheckList()}
+                      </ThemeProvider>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -144,16 +148,18 @@ function FilterModal({ open, handleClose }) {
                     defaultValue="female"
                     name="radio-buttons-group"
                   >
-                    <FormControlLabel
-                      value="male"
-                      control={<Checkbox />}
-                      label="남"
-                    />
-                    <FormControlLabel
-                      value="female"
-                      control={<Checkbox />}
-                      label="여"
-                    />
+                    <ThemeProvider theme={theme}>
+                      <FormControlLabel
+                        value="male"
+                        control={<Checkbox />}
+                        label="남"
+                      />
+                      <FormControlLabel
+                        value="female"
+                        control={<Checkbox />}
+                        label="여"
+                      />
+                    </ThemeProvider>
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -170,23 +176,25 @@ function FilterModal({ open, handleClose }) {
                   연령대
                 </FormLabel>
                 <FormControl fullWidth>
-                  <Select
-                    value={age}
-                    onChange={(e) => {
-                      setAge(e.target.value);
-                    }}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    size="small"
-                  >
-                    <MenuItem value="">선택 안함</MenuItem>
-                    <MenuItem value={10}>10대</MenuItem>
-                    <MenuItem value={20}>20대</MenuItem>
-                    <MenuItem value={30}>30대</MenuItem>
-                    <MenuItem value={40}>40대</MenuItem>
-                    <MenuItem value={50}>50대</MenuItem>
-                    <MenuItem value={60}>60대 이상</MenuItem>
-                  </Select>
+                  <ThemeProvider theme={theme}>
+                    <Select
+                      value={age}
+                      onChange={(e) => {
+                        setAge(e.target.value);
+                      }}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      size="small"
+                    >
+                      <MenuItem value="">선택 안함</MenuItem>
+                      <MenuItem value={10}>10대</MenuItem>
+                      <MenuItem value={20}>20대</MenuItem>
+                      <MenuItem value={30}>30대</MenuItem>
+                      <MenuItem value={40}>40대</MenuItem>
+                      <MenuItem value={50}>50대</MenuItem>
+                      <MenuItem value={60}>60대 이상</MenuItem>
+                    </Select>
+                  </ThemeProvider>
                 </FormControl>
               </Grid>
               <Grid
@@ -202,23 +210,25 @@ function FilterModal({ open, handleClose }) {
                   지역
                 </FormLabel>
                 <FormControl fullWidth>
-                  <Select
-                    value={location}
-                    onChange={(e) => {
-                      setLocation(e.target.value);
-                    }}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    size="small"
-                  >
-                    <MenuItem value="">선택 안함</MenuItem>
-                    <MenuItem value="서울">서울</MenuItem>
-                    <MenuItem value="경기">경기</MenuItem>
-                    <MenuItem value="강원">강원</MenuItem>
-                    <MenuItem value="충북">충북</MenuItem>
-                    <MenuItem value="충남">충남</MenuItem>
-                    <MenuItem value="부산">부산</MenuItem>
-                  </Select>
+                  <ThemeProvider theme={theme}>
+                    <Select
+                      value={location}
+                      onChange={(e) => {
+                        setLocation(e.target.value);
+                      }}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      size="small"
+                    >
+                      <MenuItem value="">선택 안함</MenuItem>
+                      <MenuItem value="서울">서울</MenuItem>
+                      <MenuItem value="경기">경기</MenuItem>
+                      <MenuItem value="강원">강원</MenuItem>
+                      <MenuItem value="충북">충북</MenuItem>
+                      <MenuItem value="충남">충남</MenuItem>
+                      <MenuItem value="부산">부산</MenuItem>
+                    </Select>
+                  </ThemeProvider>
                 </FormControl>
               </Grid>
             </Grid>
