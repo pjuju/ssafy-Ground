@@ -17,7 +17,7 @@ import java.util.Optional;
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "t_board")
 public class Board {
@@ -40,7 +40,7 @@ public class Board {
 
     @CreatedDate
     @Column(name = "reg_dttm")
-    private Timestamp regDttm;
+    private LocalDateTime regDttm;
 
     @Column(name = "mod_dttm")
     private LocalDateTime modDttm;
@@ -81,6 +81,11 @@ public class Board {
     //==연관관계 메서드==//
     public void setUser(User user) {
         this.user = user;
+//        user.getBoard().add(this);
+    }
+
+    public void setModUser(User user) {
+        this.modUser = user;
 //        user.getBoard().add(this);
     }
 

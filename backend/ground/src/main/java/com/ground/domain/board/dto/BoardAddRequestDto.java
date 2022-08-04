@@ -3,10 +3,6 @@ package com.ground.domain.board.dto;
 
 import com.ground.domain.board.entity.Board;
 import com.ground.domain.board.entity.BoardImage;
-import com.ground.domain.global.entity.Category;
-import com.ground.domain.global.entity.CategoryRepository;
-import com.ground.domain.global.entity.Location;
-import com.ground.domain.global.entity.LocationRepository;
 import com.ground.domain.user.entity.User;
 import lombok.*;
 
