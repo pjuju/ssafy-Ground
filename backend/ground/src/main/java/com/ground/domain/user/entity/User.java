@@ -119,11 +119,15 @@ public class User {
     @Column(name = "ftoken")
     private String ftoken;
     
+    
+    
     public void modifyPass(String pass) {
     	this.pass = pass;
     }
 
-
+    public void saveFtoken(String ftoken) {
+    	this.ftoken = ftoken;
+    }
     @Builder
 	public User(String username, String pass, String email, String nickname, Age age, Gender gender, String introduce, 
 			LocalDateTime regDttm, boolean delYN) {
@@ -140,7 +144,6 @@ public class User {
 		
 	}
 
-    
     
     public void profileUpdate(String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
         this.nickname = nickname;

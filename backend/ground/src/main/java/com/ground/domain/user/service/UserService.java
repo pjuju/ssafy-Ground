@@ -6,9 +6,12 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.ground.domain.follow.repository.FollowRepository;
+import com.ground.domain.jwt.JwtTokenProvider;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ground.domain.user.dto.UserLoginDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.dto.UserRegisterDto;
@@ -26,7 +29,10 @@ public class UserService {
 	
 	@Autowired 
 	private final UserRepository userRepository;
+	@Autowired
 	private final FollowRepository followRepository;
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	
 	@Transactional
 	//회원가입
@@ -109,6 +115,33 @@ public class UserService {
 		catch(Exception e){
 			return false;
 		}
+	}
+	
+//	@Transactional
+//	//일반 로그인
+//	public String login(UserLoginDto params) {
+//		Optional<User> user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass());
+//		if(user.isEmpty()) {
+//			return "아이디나 비밀번호가 틀렸습니다.";
+//		}
+//		else {
+//			try {
+//				MakeJwtToken maketoken = new MakeJwtToken();
+//				String ftoken = maketoken.makeJwtToken(user.get().getUsername(), user.get().getEmail());
+//				user.get().saveFtoken(ftoken);
+//				return user.get().getFtoken();
+//			}
+//			catch(Exception e){
+//				return "오류가 발생했습니다.";
+//			}		
+//		}
+//	}
+	
+	public String createToken(UserLoginDto params) {
+	    User user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass())
+	            .orElseThrow(IllegalArgumentException::new);
+	      //비밀번호 확인 등의 유효성 검사 진행
+	    return jwtTokenProvider.createToken(user.getUsername());
 	}
 
 

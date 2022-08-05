@@ -5,18 +5,23 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
 import com.ground.domain.user.dto.UserUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ground.domain.jwt.TokenResponse;
+import com.ground.domain.user.dto.UserLoginDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.dto.UserRegisterDto;
@@ -98,14 +103,16 @@ public class UserController {
     
     @PutMapping("/modifyPass")
     @ApiOperation(value = "비밀번호 변경", response = boolean.class)
-    public boolean modifyPass(@RequestBody UserModifyPassDto params) {
+    public boolean modifyPass(@RequestHeader String header, @RequestBody UserModifyPassDto params) {
     	return userService.modifyPass(params);
     }
     
     @PostMapping("/login")
     @ApiOperation(value = "로그인", response = String.class)
-    public String login(){
-    	return "dd";
+    public ResponseEntity<TokenResponse> login(@RequestBody UserLoginDto params){
+    	String ftoken = userService.createToken(params);
+    	log.info(ftoken);
+    	return ResponseEntity.ok().body(new TokenResponse(ftoken, "bearer"));   	
     }
 
 
