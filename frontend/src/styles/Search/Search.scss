@@ -1,6 +1,6 @@
 .search-inner {
   width: 56%;
-  padding: 4rem 4rem 0 4rem !important;
+  padding: 2rem 4rem 0 4rem !important;
   &__top {
     width: 100%;
   }
@@ -24,16 +24,6 @@
 
   &__date-select:last-child {
     margin-right: 0;
-  }
-
-  &__date-picker {
-    margin-top: 0.6rem;
-  }
-}
-
-.date-picker {
-  &__startDate {
-    margin-right: 1rem !important;
   }
 }
 
