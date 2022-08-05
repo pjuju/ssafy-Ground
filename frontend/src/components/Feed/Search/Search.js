@@ -17,15 +17,7 @@ import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
 import StartDatePicker from "./StartDatePicker";
 import EndDatePicker from "./EndDatePicker";
-
-const date = [
-  { value: "whole", label: "전체" },
-  { value: "today", label: "오늘" },
-  { value: "week", label: "1주일" },
-  { value: "month", label: "1개월" },
-  { value: "year", label: "1년" },
-  { value: "custom", label: "직접 입력" },
-];
+import { interest, date } from "./initData";
 
 const dateRadio = date.map((item, index) => (
   <FormControlLabel

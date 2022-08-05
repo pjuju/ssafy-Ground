@@ -4,15 +4,20 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
+  FormGroup,
   FormLabel,
   Grid,
   MenuItem,
   Modal,
+  Radio,
   RadioGroup,
   Select,
 } from "@mui/material";
 import GrButton from "components/common/GrButton";
 import theme from "components/common/theme.js";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { interest } from "./initData";
 
 const modalStyle = {
   position: "absolute",
@@ -30,46 +35,49 @@ const labelStyle = {
   fontWeight: "600",
 };
 
-const interest = [
-  { id: 1, value: "헬스", isInterested: false },
-  { id: 2, value: "요가", isInterested: false },
-  { id: 3, value: "필라테스", isInterested: false },
-  { id: 4, value: "러닝", isInterested: false },
-  { id: 5, value: "홈트레이닝", isInterested: false },
-  { id: 6, value: "축구", isInterested: false },
-  { id: 7, value: "야구", isInterested: false },
-  { id: 8, value: "농구", isInterested: false },
-  { id: 9, value: "테니스", isInterested: false },
-  { id: 10, value: "배드민턴", isInterested: false },
-  { id: 11, value: "등산", isInterested: false },
-  { id: 12, value: "수영", isInterested: false },
-  { id: 13, value: "골프", isInterested: false },
-  { id: 14, value: "볼링", isInterested: false },
-  { id: 15, value: "자전거/사이클", isInterested: false },
-  { id: 16, value: "기타", isInterested: false },
-];
+function FilterModal({ open, handleClose, ...props }) {
+  const [interestList, setInterestList] = useState([]);
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [location, setLocation] = useState("");
+  const [interestRadio, setInterestRadio] = useState("all");
 
-function FilterModal({
-  open,
-  handleClose,
-  interestList,
-  setInterestList,
-  gender,
-  setGender,
-  age,
-  setAge,
-  location,
-  setLocation,
-}) {
+  const { control } = useForm({ defaultValues: { interestList: [] } });
+
+
+  const handleInterestCheckBoxChange = (e) => {
+    const isCheck = e.target.checked;
+    const name = e.target.name;
+    if (isCheck) {
+      setInterestList([...interestList, name]);
+    } else {
+      setInterestList(interestList.filter((i) => i !== name));
+    }
+  };
+
+  const handleGenderCheckBoxChange = (e) => {
+    const isCheck = e.target.checked;
+    const name = e.target.name;
+    if (isCheck) {
+      setGender([...gender, name]);
+    } else {
+      setGender(gender.filter((i) => i !== name));
+    }
+  };
+
   const leftInterestCheckList = () => {
     let interestCheckList = [];
     for (let i = 0; i < 8; i++) {
       let item = interest[i];
       interestCheckList.push(
         <FormControlLabel
-          key={item.id}
-          control={<Checkbox name={item.value} />}
+          control={
+            <Controller 
+
+            />
+          }
           label={item.value}
+          key={item.id}
         />
       );
     }
@@ -82,19 +90,44 @@ function FilterModal({
       let item = interest[i];
       interestCheckList.push(
         <FormControlLabel
-          key={item.id}
-          control={<Checkbox name={item.value} />}
+          control={
+            <Checkbox
+              name={item.value}
+              onChange={handleInterestCheckBoxChange}
+            />
+          }
           label={item.value}
+          key={item.id}
         />
       );
     }
     return interestCheckList;
   };
 
+  const onModalClose = () => {
+    setInterestList(props.interestList);
+    setGender(props.gender);
+    setAge(props.age);
+    setLocation(props.location);
+    handleClose();
+  };
+
+  const onSubmit = () => {
+    console.log(interestList);
+    console.log(gender);
+    console.log(age);
+    console.log(location);
+    props.setInterestList(interestList);
+    props.setGender(gender);
+    props.setAge(age);
+    props.setLocation(location);
+    handleClose();
+  };
+
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={onModalClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -110,22 +143,45 @@ function FilterModal({
                 >
                   운동 종목
                 </FormLabel>
-                <Grid container>
-                  <Grid xs={6} item>
-                    <Grid container direction="column">
-                      <ThemeProvider theme={theme}>
-                        {leftInterestCheckList()}
-                      </ThemeProvider>
-                    </Grid>
-                  </Grid>
-                  <Grid xs={6} item>
-                    <Grid container direction="column">
-                      <ThemeProvider theme={theme}>
-                        {rightInterestCheckList()}
-                      </ThemeProvider>
-                    </Grid>
-                  </Grid>
-                </Grid>
+                <ThemeProvider theme={theme}>
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      value={interestRadio}
+                      onChange={(e) => {
+                        setInterestRadio(e.target.value);
+                      }}
+                    >
+                      <FormControlLabel
+                        value="all"
+                        label="전체"
+                        control={<Radio />}
+                      />
+                      <FormControlLabel
+                        value="custom"
+                        label="직접 선택"
+                        control={<Radio />}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+
+                  {interestRadio === "custom" && (
+                    <FormControl>
+                      <Grid container>
+                        <Grid xs={6} item>
+                          <Grid container direction="column">
+                            {leftInterestCheckList()}
+                          </Grid>
+                        </Grid>
+                        <Grid xs={6} item>
+                          <Grid container direction="column">
+                            {rightInterestCheckList()}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </FormControl>
+                  )}
+                </ThemeProvider>
               </Grid>
             </Grid>
             <Grid xs={5} item>
@@ -134,28 +190,29 @@ function FilterModal({
                 container
                 direction="column"
               >
-                <FormLabel id="filter-modal__gender" sx={labelStyle}>
+                <FormLabel
+                  className="filter-modal__label"
+                  id="filter-modal__gender"
+                  sx={labelStyle}
+                >
                   성별
                 </FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    row
-                    defaultValue="female"
-                    name="radio-buttons-group"
-                  >
-                    <ThemeProvider theme={theme}>
-                      <FormControlLabel
-                        value="male"
-                        control={<Checkbox />}
-                        label="남"
-                      />
-                      <FormControlLabel
-                        value="female"
-                        control={<Checkbox />}
-                        label="여"
-                      />
-                    </ThemeProvider>
-                  </RadioGroup>
+                <FormControl fullWidth>
+                  <ThemeProvider theme={theme}>
+                    <Select
+                      value={gender}
+                      onChange={(e) => {
+                        setGender(e.target.value);
+                      }}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      size="small"
+                    >
+                      <MenuItem value="">선택 안함</MenuItem>
+                      <MenuItem value="male">남</MenuItem>
+                      <MenuItem value="female">여</MenuItem>
+                    </Select>
+                  </ThemeProvider>
                 </FormControl>
               </Grid>
               <Grid
@@ -233,6 +290,7 @@ function FilterModal({
               className="filter-modal__button"
               xs={1}
               variant="contained"
+              onClick={onSubmit}
             >
               필터 설정
             </GrButton>
