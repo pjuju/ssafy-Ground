@@ -8,7 +8,6 @@ import { ThemeProvider } from "@emotion/react";
 import { useState } from "react";
 
 function ArticleActivity(props) {
-  const userName = "username";
   const [isLikeClicked, setIsLikeClicked] = useState(props.isLiked);
 
   const handleClickLike = () => {
@@ -35,7 +34,7 @@ function ArticleActivity(props) {
             </IconButton>
           </ThemeProvider>
           <span>
-            <span className="bold">{userName}님</span> 외{" "}
+            <span className="bold">{props.nickname}님</span> 외{" "}
             <span className="bold">{props.likeCnt}명</span>이 좋아합니다.
           </span>
         </Grid>

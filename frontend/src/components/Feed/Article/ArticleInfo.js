@@ -1,5 +1,3 @@
-import userImage from "assets/images/userImage.png";
-
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -51,7 +49,7 @@ function ArticleInfo(props) {
   return (
     <Grid className="info" container direction="row">
       <Grid className="info__others">
-        <Grid className="info__others__username bold">{props.userName}</Grid>
+        <Grid className="info__others__username bold">{props.nickname}</Grid>
         <Grid className="info__others__category">{props.category}</Grid>
       </Grid>
       <Grid className="info__regtime">{date}</Grid>

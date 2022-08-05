@@ -1,28 +1,20 @@
 import { Grid } from "@mui/material";
+import { getFollowBoard } from "api/board";
 import { interestList } from "components/common/interestList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "styles/Feed/FollowFeed.scss";
 import Article from "../Article/Article";
 import TitleBar from "../TitleBar";
 
 function FollowFeed() {
-  useEffect(() => {
-    console.log(interestList);
-  });
+  const [pageNumber, setPageNumber] = useState(1);
+  const [articles, setArticles] = useState([]);
 
-  const articleData = {
-    userImg: "assets/images/userImage.png",
-    userName: "username",
-    category: "헬스",
-    date: "2022-08-04T22:15:01",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nisl tincidunt eget nullam non. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Volutpat odio facilisis mauris sit amet massa. Commodo odio aenean sed adipiscing diam donec adipiscing tristique. Mi eget mauris pharetra et. Non tellus orci ac auctor augue. Elit at imperdiet dui accumsan sit. Ornare arcu dui vivamus arcu felis. Egestas integer eget aliquet nibh praesent. In hac habitasse platea dictumst quisque sagittis purus. Pulvinar elementum integer enim neque volutpat ac.",
-    location: "대구광역시",
-    isLiked: true,
-    likeCnt: 15,
-    commentCnt: 10,
-    isSaved: true,
-    saveCnt: 3,
-  };
+  useEffect(() => {
+    getFollowBoard(pageNumber, (res) => {
+      setArticles(res.data.reverse());
+    });
+  }, [pageNumber]);
 
   return (
     <Grid className="content">
@@ -33,7 +25,9 @@ function FollowFeed() {
         <TitleBar title="팔로우 피드" />
       </Grid>
       <Grid className="content__inner">
-        <Article articleData={articleData} />
+        {articles.map((article) => (
+          <Article key={article.id} articleData={article} />
+        ))}
       </Grid>
     </Grid>
   );

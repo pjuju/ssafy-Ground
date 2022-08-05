@@ -1,5 +1,4 @@
-import { Grid, IconButton } from "@mui/material";
-import { useState } from "react";
+import { Grid } from "@mui/material";
 import MediaSlider from "./MediaSlider";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 
@@ -7,7 +6,7 @@ function ArticleContent(props) {
   return (
     <Grid className="article-content">
       <Grid className="article-content__text">
-        <span>{props.text}</span>
+        <span>{props.content}</span>
         <span>더보기</span>
       </Grid>
       <Grid className="article-content__media">

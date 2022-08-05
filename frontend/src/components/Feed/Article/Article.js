@@ -5,19 +5,24 @@ import ArticleActivity from "./ArticleActivity";
 import ArticleContent from "./ArticleContent";
 import ArticleInfo from "./ArticleInfo";
 import ArticleMore from "./ArticleMore";
+import { useEffect } from "react";
 
-function Article(props) {
-  const userImg = props.articleData.userImg;
-  const userName = props.articleData.userName;
-  const category = props.articleData.category;
-  const date = props.articleData.date;
-  const text = props.articleData.text;
-  const location = props.articleData.location;
-  const isLiked = props.articleData.isLiked;
-  const likeCnt = props.articleData.likeCnt;
-  const commentCnt = props.articleData.commentCnt;
-  const isSaved = props.articleData.isSaved;
-  const saveCnt = props.articleData.saveCnt;
+function Article({ key, articleData }) {
+  const id = articleData.id;
+  const user = articleData.user;
+  const category = articleData.category;
+  const date = articleData.regDttm;
+  const content = articleData.content;
+  const location = articleData.location;
+  const likeCnt = articleData.likeCnt;
+  const commentCnt = articleData.commentCnt;
+  const saveCnt = articleData.saveCnt;
+  const isLiked = false;
+  const isSaved = false;
+
+  useEffect(() => {
+    // console.log(articleData);
+  });
 
   return (
     <Box className="article">
@@ -26,16 +31,22 @@ function Article(props) {
           <img src={userImage} />
         </Grid>
         <Grid className="article__inner__left">
-          <ArticleInfo userName={userName} category={category} date={date} />
-          <ArticleContent text={text} location={location} />
+          <ArticleInfo
+            nickname={user.nickname}
+            category={category}
+            date={date}
+          />
+          <ArticleContent id={id} content={content} location={location} />
           <ArticleActivity
+            id={id}
+            nickname={user.nickname}
             isLiked={isLiked}
             likeCnt={likeCnt}
             commentCnt={commentCnt}
           />
         </Grid>
         <Grid className="article__inner_right">
-          <ArticleMore isSaved={isSaved} saveCnt={saveCnt} />
+          <ArticleMore id={id} isSaved={isSaved} saveCnt={saveCnt} />
         </Grid>
       </Grid>
     </Box>

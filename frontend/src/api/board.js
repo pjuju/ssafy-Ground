@@ -6,4 +6,8 @@ function getSavedBoard(userId, success) {
   api.get(`/rest/board/save/${userId}`).then(success);
 }
 
-export { getSavedBoard };
+function getFollowBoard(pageNumber, success) {
+  api.get(`/rest/board/follow?${pageNumber}`).then(success);
+}
+
+export { getSavedBoard, getFollowBoard };
