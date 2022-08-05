@@ -39,13 +39,39 @@ $wide-desktop: 1249px;
 
 #desktop {
   height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  @include tablet() {
+    display: none;
+  }
+
+  @include mobile() {
+    display: none;
+  }
 
   .content {
     width: 56% !important;
+    height: 100%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $primary;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #54bab824;
+    }
 
     &__title {
       &-desktop {
         padding: 2rem;
+        padding-bottom: 0.5rem;
+        top: 0;
+        background-color: #fff;
 
         @include tablet() {
           display: none;
@@ -73,8 +99,26 @@ $wide-desktop: 1249px;
 #mobile {
   height: 100vh;
 
+  @include wide-desktop() {
+    display: none;
+  }
+
+  @include desktop() {
+    display: none;
+  }
+
   .content {
     width: 100% !important;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $primary;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #54bab824;
+    }
 
     &__title {
       padding: 2rem;
@@ -116,6 +160,9 @@ $wide-desktop: 1249px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px !important;
 
   & .titlebar {
+    position: fixed;
+    top: 0;
+
     &__toolbar {
       width: 100%;
     }
