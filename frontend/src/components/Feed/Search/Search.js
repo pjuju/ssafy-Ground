@@ -11,12 +11,12 @@ import {
 import "styles/Search/Search.scss";
 
 import { useState } from "react";
-import FilterModal from "./FilterModal";
+import FilterModal from "./Filter/FilterModal";
 import SearchBar from "./SearchBar";
 import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
-import StartDatePicker from "./StartDatePicker";
-import EndDatePicker from "./EndDatePicker";
+import StartDatePicker from "./Filter/StartDatePicker";
+import EndDatePicker from "./Filter/EndDatePicker";
 import { interest, date } from "./initData";
 
 const dateRadio = date.map((item, index) => (
