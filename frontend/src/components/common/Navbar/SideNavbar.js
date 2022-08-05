@@ -6,11 +6,13 @@ import ProfileButton from "./ProfileButton";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-function SideNavbar({ sideMenuIdx, bottomMenuIdx, onSetSideMenuIdx, onSetBottomMenuIdx }) {
+function SideNavbar({
+  sideMenuIdx,
+  bottomMenuIdx,
+  onSetSideMenuIdx,
+  onSetBottomMenuIdx,
+}) {
   useEffect(() => {
-    console.log("sideMenuIdx: " + sideMenuIdx);
-    console.log("bottomMenuIdx: " + bottomMenuIdx);
-
     const element = document
       .querySelector(`.navbar-side__menu a:nth-child(${sideMenuIdx + 1})`)
       .querySelector("h3");
@@ -28,11 +30,10 @@ function SideNavbar({ sideMenuIdx, bottomMenuIdx, onSetSideMenuIdx, onSetBottomM
         onSetBottomMenuIdx(menuIdx + 1);
         break;
       default:
-
         onSetBottomMenuIdx(menuIdx);
     }
     onSetSideMenuIdx(menuIdx);
-  }
+  };
 
   return (
     <Grid className="navbar-side" container direction="column">

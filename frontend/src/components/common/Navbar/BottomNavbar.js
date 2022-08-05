@@ -1,5 +1,10 @@
 import { ThemeProvider } from "@emotion/react";
-import { Grid, BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
+import {
+  Grid,
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper,
+} from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import FiberNewOutlinedIcon from "@mui/icons-material/FiberNewOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -9,16 +14,19 @@ import theme from "../theme";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
-function BottomNavbar({ sideMenuIdx, bottomMenuIdx, onSetSideMenuIdx, onSetBottomMenuIdx }) {
-  useEffect(() => {
-    console.log("sideMenuIdx: " + sideMenuIdx);
-    console.log("bottomMenuIdx: " + bottomMenuIdx);
-  })
-
+function BottomNavbar({
+  sideMenuIdx,
+  bottomMenuIdx,
+  onSetSideMenuIdx,
+  onSetBottomMenuIdx,
+}) {
   return (
     <Grid className="navbar-bottom">
       <ThemeProvider theme={theme}>
-        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <Paper
+          sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+          elevation={3}
+        >
           <BottomNavigation
             showLabels
             value={bottomMenuIdx}
@@ -27,7 +35,7 @@ function BottomNavbar({ sideMenuIdx, bottomMenuIdx, onSetSideMenuIdx, onSetBotto
                 case 2:
                 case 3:
                   onSetSideMenuIdx(newValue - 1);
-                  break
+                  break;
                 default:
                   onSetSideMenuIdx(newValue);
                   break;
@@ -38,23 +46,28 @@ function BottomNavbar({ sideMenuIdx, bottomMenuIdx, onSetSideMenuIdx, onSetBotto
             <BottomNavigationAction
               component={Link}
               to="/feed/follow"
-              icon={<HomeIcon />} />
+              icon={<HomeIcon />}
+            />
             <BottomNavigationAction
               component={Link}
               to="/notification"
-              icon={<BadgeButton />} />
+              icon={<BadgeButton />}
+            />
             <BottomNavigationAction
               component={Link}
               to="/feed/latest"
-              icon={<FiberNewOutlinedIcon />} />
+              icon={<FiberNewOutlinedIcon />}
+            />
             <BottomNavigationAction
               component={Link}
               to="/feed/search"
-              icon={<SearchOutlinedIcon />} />
+              icon={<SearchOutlinedIcon />}
+            />
             <BottomNavigationAction
               component={Link}
               to="/profile"
-              icon={<PersonIcon />} />
+              icon={<PersonIcon />}
+            />
           </BottomNavigation>
         </Paper>
       </ThemeProvider>

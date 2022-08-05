@@ -7,6 +7,10 @@
   justify-content: space-between;
   border-left: 1px solid $super-light-gray;
   padding-top: 3rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  overflow: hidden;
 
   &__icon {
     text-align: right;

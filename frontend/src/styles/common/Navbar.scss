@@ -30,6 +30,10 @@
     min-height: 100vh;
     justify-content: space-between;
     border-right: 1px solid $super-light-gray;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
 
     /* 로고 */
     &__logo {
