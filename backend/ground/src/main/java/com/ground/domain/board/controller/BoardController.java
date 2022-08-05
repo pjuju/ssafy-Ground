@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// bsh
+import org.springframework.data.domain.Page;
 @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK~!"),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -145,5 +147,18 @@ public class BoardController {
     }
 
 
+    // -----------------BSH-----------------
+    // 유저가 쓴 피드 조회
+    @ApiOperation(value = "유저가 쓴 피드 조회")
+    @GetMapping("/list/me/{userId}")
+    public List<BoardResponseDto> getMyBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable) {
+        return boardService.getMyBoard(userId, pageable);
+    }
 
+    // 저장한 피드 조회
+    @ApiOperation(value = "저장한 피드 조회")
+    @GetMapping("/list/save/{userId}")
+    public List<BoardResponseDto> getSaveBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable) {
+        return boardService.getSaveBoard(userId, pageable);
+    }
 }
