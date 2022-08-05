@@ -3,6 +3,7 @@ package com.ground.domain.notification.entity;
 import com.ground.domain.user.entity.User;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -43,4 +44,11 @@ public class NotificationAccount {
     @Column(name = "reg_dttm")
     private LocalDateTime regDttm;
 
+	@Builder
+	public NotificationAccount(User from, User to, boolean type, LocalDateTime regDttm) {
+		this.from = from;
+		this.to = to;
+		this.type = type;
+		this.regDttm = regDttm;
+	}
 }

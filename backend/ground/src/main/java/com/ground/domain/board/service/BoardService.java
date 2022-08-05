@@ -284,12 +284,27 @@ public class BoardService {
     // 저장한 피드 조회
     @Transactional
     public List<BoardResponseDto> getSaveBoard(long userId, Pageable pageable) {
-        User user = userRepository.findById(userId).get();
         List<Long> boardIdList = new ArrayList<>();
-        List<BoardSave> saveList = boardSaveRepository.findAllByUser(user);
+        List<BoardSave> saveList = boardSaveRepository.findAllByUserId(userId);
         for (BoardSave boardSave : saveList) boardIdList.add(boardSave.getBoard().getId());
-        List<BoardResponseDto> boardList = boardRepository.findAllByIdInAndPrivateYN(boardIdList, false, pageable);
 
-        return boardList;
+        User user = userRepository.findById(new Long(1)).get();
+        List<User> userList = new ArrayList<>();
+        // 작성자가 공개유저
+        List<User> openUserList = userRepository.findAllByPrivateYN(false);
+        userList.addAll(openUserList);
+        // 작성자가 팔로우 유저
+        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        for (Follow follow : followList) userList.add(follow.getToUserId());
+        // 작성자가 나
+        userList.add(user);
+
+        List<Board> boardList = boardRepository.findAllByIdInAndUserInAndPrivateYN(boardIdList, userList,false, pageable);
+//        List<Board> boardList = boardRepository.findAllByIdInAndPrivateYN(boardIdList, false, pageable);
+        List<BoardResponseDto> result = new ArrayList<>();
+        for (Board board : boardList) result.add(new BoardResponseDto(board));
+
+
+        return result;
     }
 }
