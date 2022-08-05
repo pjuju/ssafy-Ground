@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Checkboxes from "./Checkboxes";
 import FilterRadio from "./FilterRadio";
-import { age, gender, interest, location } from "../initData";
 
 const modalStyle = {
   position: "absolute",
@@ -23,27 +22,38 @@ const labelStyle = {
   fontWeight: "600",
 };
 
-function FilterModal({ open, handleClose, ...props }) {
+function FilterModal({ open, handleClose, data, setData, radio, setRadio }) {
   const [interestRadio, setInterestRadio] = useState("all");
   const [genderRadio, setGenderRadio] = useState("all");
   const [ageRadio, setAgeRadio] = useState("all");
   const [locationRadio, setLocationRadio] = useState("all");
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues, setValue } = useForm({
     defaultValues: {
-      interest: interest,
-      gender: gender,
-      age: age,
-      location: location,
+      interest: data.interest,
+      gender: data.gender,
+      age: data.age,
+      location: data.location,
     },
   });
 
   const onModalClose = () => {
+    setInterestRadio(radio[0]);
+    setGenderRadio(radio[1]);
+    setAgeRadio(radio[2]);
+    setLocationRadio(radio[3]);
+    setValue("interest", data.interest);
+    setValue("gender", data.gender);
+    setValue("age", data.age);
+    setValue("location", data.location);
     handleClose();
   };
 
   const onSubmit = (data) => {
     console.log(data);
+    setData(data);
+    setRadio([interestRadio, genderRadio, ageRadio, locationRadio]);
+    handleClose();
   };
 
   return (
@@ -71,7 +81,7 @@ function FilterModal({ open, handleClose, ...props }) {
               <FilterRadio radio={interestRadio} setRadio={setInterestRadio} />
               {interestRadio === "custom" && (
                 <Checkboxes
-                  options={interest}
+                  options={getValues("interest")}
                   control={control}
                   name="interest"
                   radio={interestRadio}
@@ -96,7 +106,7 @@ function FilterModal({ open, handleClose, ...props }) {
                   <FilterRadio radio={genderRadio} setRadio={setGenderRadio} />
                   {genderRadio === "custom" && (
                     <Checkboxes
-                      options={gender}
+                      options={getValues("gender")}
                       control={control}
                       name="gender"
                       radio={genderRadio}
@@ -121,7 +131,7 @@ function FilterModal({ open, handleClose, ...props }) {
                   <FilterRadio radio={ageRadio} setRadio={setAgeRadio} />
                   {ageRadio === "custom" && (
                     <Checkboxes
-                      options={age}
+                      options={getValues("age")}
                       control={control}
                       name="age"
                       radio={ageRadio}
@@ -145,7 +155,7 @@ function FilterModal({ open, handleClose, ...props }) {
               <FilterRadio radio={locationRadio} setRadio={setLocationRadio} />
               {locationRadio === "custom" && (
                 <Checkboxes
-                  options={location}
+                  options={getValues("location")}
                   control={control}
                   name="age"
                   radio={locationRadio}

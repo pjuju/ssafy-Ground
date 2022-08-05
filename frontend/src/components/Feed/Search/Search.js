@@ -17,7 +17,7 @@ import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
 import StartDatePicker from "./Filter/StartDatePicker";
 import EndDatePicker from "./Filter/EndDatePicker";
-import { interest, date } from "./initData";
+import { age, date, gender, interest, location } from "./initData";
 
 const dateRadio = date.map((item, index) => (
   <FormControlLabel
@@ -31,15 +31,18 @@ const dateRadio = date.map((item, index) => (
 
 function Search() {
   const [standard, setStandard] = useState("board");
-  const [interestList, setInterestList] = useState([]);
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
-  const [location, setLocation] = useState("");
+  const [data, setData] = useState({
+    interest: interest,
+    gender: gender,
+    age: age,
+    location: location,
+  });
   const [word, setWord] = useState("");
   const [dateRange, setDateRange] = useState("whole");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [radio, setRadio] = useState(["all", "all", "all", "all"]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -47,14 +50,15 @@ function Search() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const searchData = {
-      word: word,
-    };
+    let searchData = {};
 
     if (standard === "board") {
+      searchData = { ...data };
       searchData.startDate = startDate;
       searchData.endDate = endDate;
     }
+
+    searchData.word = word;
 
     console.log(searchData);
   };
@@ -95,14 +99,10 @@ function Search() {
           <FilterModal
             open={open}
             handleClose={handleClose}
-            interestList={interestList}
-            setInterestList={setInterestList}
-            gender={gender}
-            setGender={setGender}
-            age={age}
-            setAge={setAge}
-            location={location}
-            setLocation={setLocation}
+            data={data}
+            setData={setData}
+            radio={radio}
+            setRadio={setRadio}
           />
           {standard === "board" && (
             <>
