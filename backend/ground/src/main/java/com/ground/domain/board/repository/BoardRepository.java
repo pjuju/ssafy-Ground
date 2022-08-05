@@ -21,5 +21,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     // -----------------BSH-----------------
     List<BoardResponseDto> findAllByUserId(long userId, Pageable pageable);
-    List<BoardResponseDto> findAllByIdInAndPrivateYN(List<Long> boardIdList, boolean a, Pageable pageable);
+    List<Board> findAllByIdInAndPrivateYN(List<Long> Id, boolean tf, Pageable pageable);
+    List<Board> findAllByIdInAndUserInAndPrivateYN(List<Long> Id, List<User> userList, boolean tf, Pageable pageable);
 }
