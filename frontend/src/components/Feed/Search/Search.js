@@ -19,6 +19,7 @@ import StartDatePicker from "./Filter/StartDatePicker";
 import EndDatePicker from "./Filter/EndDatePicker";
 import { age, date, gender, interest, location } from "./initData";
 import moment from "moment";
+import { search } from "api/search";
 
 const dateRadio = date.map((item, index) => (
   <FormControlLabel
@@ -99,6 +100,18 @@ function Search() {
     }
 
     console.log(searchData);
+    
+    // 검색 요청
+    search(
+      standard,
+      data,
+      (response) => {
+        console.log(response.data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   return (
