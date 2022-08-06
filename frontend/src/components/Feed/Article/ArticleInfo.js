@@ -2,17 +2,9 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 
 function ArticleInfo(props) {
-  const [date, setDate] = useState("");
-
-  useEffect(() => {
-    setDate(formatDate(props.date));
-    console.log(date);
-  });
-
   const formatDate = (date) => {
     // let converted = new Date();
     let converted = new Date(Date.parse(date));
-    console.log(converted);
     let diff = new Date() - converted; // 차이(ms)
 
     // 차이가 1초 미만이라면
@@ -52,7 +44,7 @@ function ArticleInfo(props) {
         <Grid className="info__others__username bold">{props.nickname}</Grid>
         <Grid className="info__others__category">{props.category}</Grid>
       </Grid>
-      <Grid className="info__regtime">{date}</Grid>
+      <Grid className="info__regtime">{formatDate(props.date)}</Grid>
     </Grid>
   );
 }

@@ -7,7 +7,7 @@ import ArticleInfo from "./ArticleInfo";
 import ArticleMore from "./ArticleMore";
 import { useEffect } from "react";
 
-function Article({ key, articleData }) {
+function Article({ articleData }) {
   const id = articleData.id;
   const user = articleData.user;
   const category = articleData.category;

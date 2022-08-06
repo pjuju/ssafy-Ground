@@ -37,6 +37,23 @@ $wide-desktop: 1249px;
   }
 }
 
+@mixin custom-scrollbar {
+  height: 100%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $primary;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    margin-top: 6rem;
+    background: #54bab824;
+  }
+}
+
 #desktop {
   height: 100vh;
   display: flex;
@@ -51,27 +68,26 @@ $wide-desktop: 1249px;
   }
 
   .content {
+    @include custom-scrollbar();
+
     width: 56% !important;
-    height: 100%;
-    overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: $primary;
-      border-radius: 10px;
-    }
-    &::-webkit-scrollbar-track {
-      background: #54bab824;
-    }
-
     &__title {
       &-desktop {
+        display: flex;
+        align-items: center;
         padding: 2rem;
+        padding-top: 1rem;
         padding-bottom: 0.5rem;
+        position: fixed;
+        width: 56%;
         top: 0;
-        background-color: #fff;
+        z-index: 1;
+        background: #fff;
+
+        & h2 {
+          display: inline;
+          cursor: pointer;
+        }
 
         @include tablet() {
           display: none;
@@ -91,6 +107,7 @@ $wide-desktop: 1249px;
       &__inner {
         padding-left: 2rem;
         padding-right: 2rem;
+        margin-bottom: 2rem;
       }
     }
   }
@@ -109,15 +126,10 @@ $wide-desktop: 1249px;
 
   .content {
     width: 100% !important;
-    &::-webkit-scrollbar {
-      width: 8px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: $primary;
-      border-radius: 10px;
-    }
+    @include custom-scrollbar();
+
     &::-webkit-scrollbar-track {
-      background: #54bab824;
+      margin-top: 4rem;
     }
 
     &__title {
@@ -137,9 +149,19 @@ $wide-desktop: 1249px;
     }
 
     &__inner {
-      padding-left: 2rem;
-      padding-right: 2rem;
+      padding-top: 3rem;
+      padding-bottom: 2rem;
     }
+  }
+}
+
+#inner {
+  padding-top: 13%;
+
+  & .fab-write {
+    position: fixed;
+    bottom: 5%;
+    right: 25%;
   }
 }
 
@@ -152,12 +174,13 @@ $wide-desktop: 1249px;
     display: none;
   }
 
+  position: fixed;
+  z-index: 1;
   text-align: center;
   padding-right: 2.5rem;
-  background-color: #fff !important;
-  color: #000 !important;
-  margin-bottom: 2rem !important;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px !important;
+  background-color: #fff;
+  color: #000;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 
   & .titlebar {
     position: fixed;
@@ -172,6 +195,13 @@ $wide-desktop: 1249px;
       padding-bottom: 1rem;
     }
   }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2rem;
+  padding-top: 1rem;
 }
 
 /* 외부 CSS 애니메이션 */
