@@ -50,7 +50,6 @@ function FilterModal({ open, handleClose, data, setData, radio, setRadio }) {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     setData(data);
     setRadio([interestRadio, genderRadio, ageRadio, locationRadio]);
     handleClose();

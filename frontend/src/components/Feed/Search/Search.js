@@ -18,6 +18,7 @@ import theme from "components/common/theme.js";
 import StartDatePicker from "./Filter/StartDatePicker";
 import EndDatePicker from "./Filter/EndDatePicker";
 import { age, date, gender, interest, location } from "./initData";
+import moment from "moment";
 
 const dateRadio = date.map((item, index) => (
   <FormControlLabel
@@ -29,16 +30,39 @@ const dateRadio = date.map((item, index) => (
   />
 ));
 
+const getAllValues = (list) => {
+  return list.map((item) => item.id);
+};
+
+const getCheckedValues = (radio, list) => {
+  // 전체 선택
+  if (radio === "all") {
+    return getAllValues(list);
+  }
+  // 직접 선택
+  let checkedValues = [];
+  for (let item of list) {
+    if (item.checked === true) {
+      checkedValues.push(item.id);
+    }
+  }
+  // 직접 선택한게 하나도 없을때
+  if (checkedValues.length === 0) {
+    checkedValues = getAllValues(list);
+  }
+  return checkedValues;
+};
+
 function Search() {
-  const [standard, setStandard] = useState("board");
   const [data, setData] = useState({
     interest: interest,
     gender: gender,
     age: age,
     location: location,
   });
+  const [standard, setStandard] = useState("board");
   const [word, setWord] = useState("");
-  const [dateRange, setDateRange] = useState("whole");
+  const [dateRange, setDateRange] = useState("all");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -51,14 +75,28 @@ function Search() {
     e.preventDefault();
 
     let searchData = {};
-
-    if (standard === "board") {
-      searchData = { ...data };
-      searchData.startDate = startDate;
-      searchData.endDate = endDate;
-    }
-
     searchData.word = word;
+
+    // 게시글 검색일때만 필터 적용
+    if (standard === "board") {
+      searchData.interest = getCheckedValues(radio[0], data.interest);
+      searchData.gender = getCheckedValues(radio[1], data.gender);
+      searchData.age = getCheckedValues(radio[2], data.age);
+      searchData.location = getCheckedValues(radio[3], data.location);
+
+      if (dateRange !== "all") {
+        if (dateRange === "custom") {
+          searchData.startDate = moment(startDate).format("YYYY-MM-DD");
+          searchData.endDate = moment(endDate).format("YYYY-MM-DD");
+        } else if (dateRange === "days") {
+          searchData.startDate = moment().format("YYYY-MM-DD");
+        } else {
+          searchData.startDate = moment()
+            .subtract(1, dateRange)
+            .format("YYYY-MM-DD");
+        }
+      }
+    }
 
     console.log(searchData);
   };

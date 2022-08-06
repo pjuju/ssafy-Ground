@@ -51,11 +51,11 @@ const location = [
 ];
 
 const date = [
-  { value: "whole", label: "전체" },
-  { value: "today", label: "오늘" },
-  { value: "week", label: "1주일" },
-  { value: "month", label: "1개월" },
-  { value: "year", label: "1년" },
+  { value: "all", label: "전체" },
+  { value: "days", label: "오늘" },
+  { value: "weeks", label: "1주일" },
+  { value: "months", label: "1개월" },
+  { value: "years", label: "1년" },
   { value: "custom", label: "직접 입력" },
 ];
 
