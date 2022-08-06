@@ -6,7 +6,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { Divider } from "@mui/material";
 
-export default function SearchBar({ handleOpen, onSubmit, standard, field }) {
+export default function SearchBar({
+  handleOpen,
+  onSubmit,
+  standard,
+  word,
+  setWord,
+}) {
   const style = {
     p: "2px 4px",
     display: "flex",
@@ -33,7 +39,10 @@ export default function SearchBar({ handleOpen, onSubmit, standard, field }) {
         sx={{ ml: 1, flex: 1 }}
         placeholder="검색어 입력"
         inputProps={{ "aria-label": "search google maps" }}
-        {...field}
+        value={word}
+        onChange={(e) => {
+          setWord(e.target.value);
+        }}
       />
       <IconButton
         type="submit"
