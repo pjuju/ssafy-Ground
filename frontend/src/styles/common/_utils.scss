@@ -71,6 +71,7 @@ $wide-desktop: 1249px;
     @include custom-scrollbar();
 
     width: 56% !important;
+
     &__title {
       &-desktop {
         display: flex;
@@ -111,6 +112,16 @@ $wide-desktop: 1249px;
       }
     }
   }
+
+  & #inner {
+    padding-top: 13%;
+
+    & .fab-write {
+      position: fixed;
+      bottom: 5%;
+      right: 25%;
+    }
+  }
 }
 
 #mobile {
@@ -136,8 +147,6 @@ $wide-desktop: 1249px;
       padding: 2rem;
 
       &-desktop {
-        padding: 2rem;
-
         @include tablet() {
           display: none !important;
         }
@@ -153,15 +162,15 @@ $wide-desktop: 1249px;
       padding-bottom: 2rem;
     }
   }
-}
 
-#inner {
-  padding-top: 13%;
+  & #inner {
+    padding-top: 10%;
 
-  & .fab-write {
-    position: fixed;
-    bottom: 5%;
-    right: 25%;
+    & .fab-write {
+      position: fixed;
+      bottom: 10%;
+      right: 5%;
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import { Fab, Grid } from "@mui/material";
 import { getFollowBoard } from "api/board";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "styles/Feed/FollowFeed.scss";
 import Article from "../Article/Article";
 import TitleBar from "../../common/TitleBar";
@@ -44,7 +44,7 @@ function FollowFeed() {
     let observer;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4, // 관찰요소와 80%만큼 겹쳤을 때 onIntersect을 수행
+        threshold: 0.4, // 관찰요소와 40%만큼 겹쳤을 때 onIntersect을 수행
       });
       setIsLoading((isLoading) => !isLoading);
       observer.observe(target);
