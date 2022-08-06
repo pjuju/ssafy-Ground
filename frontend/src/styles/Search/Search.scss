@@ -32,13 +32,16 @@
 
   &__button-wrapper {
     text-align: end;
+    padding-top: 1rem;
   }
 
   &__button {
     font-weight: 600 !important;
   }
 
-  &--middle {
-    margin: 1rem 0;
+  &__wrapper {
+    &--right {
+      margin-bottom: 1rem;
+    }
   }
 }

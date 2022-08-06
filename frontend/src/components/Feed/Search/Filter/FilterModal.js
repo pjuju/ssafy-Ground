@@ -66,38 +66,43 @@ function FilterModal({ open, handleClose, data, setData, radio, setRadio }) {
       <Box sx={modalStyle}>
         <form>
           <Grid className="filter-modal" container direction="column">
-            <Grid
-              className="filter-modal__wrapper"
-              container
-              direction="column"
-            >
-              <FormLabel
-                className="filter-modal__label"
-                id="filter-modal__interest"
-                sx={labelStyle}
-              >
-                운동 종목
-              </FormLabel>
-              <FilterRadio radio={interestRadio} setRadio={setInterestRadio} />
-              {interestRadio === "custom" && (
-                <Checkboxes
-                  options={getValues("interest")}
-                  control={control}
-                  name="interest"
-                  radio={interestRadio}
-                  xs={2.4}
-                />
-              )}
-            </Grid>
-            <Grid className="filter-modal--middle" container>
-              <Grid item xs={6}>
+            <Grid container>
+              <Grid item xs={6.5}>
                 <Grid
                   className="filter-modal__wrapper"
                   container
                   direction="column"
                 >
                   <FormLabel
-                    className="filter-modal__label filter-modal__middle"
+                    className="filter-modal__label"
+                    id="filter-modal__interest"
+                    sx={labelStyle}
+                  >
+                    운동 종목
+                  </FormLabel>
+                  <FilterRadio
+                    radio={interestRadio}
+                    setRadio={setInterestRadio}
+                  />
+                  {interestRadio === "custom" && (
+                    <Checkboxes
+                      options={getValues("interest")}
+                      control={control}
+                      name="interest"
+                      radio={interestRadio}
+                      xs={6}
+                    />
+                  )}
+                </Grid>
+              </Grid>
+              <Grid item xs={5.5}>
+                <Grid
+                  className="filter-modal__wrapper filter-modal__wrapper--right"
+                  container
+                  direction="column"
+                >
+                  <FormLabel
+                    className="filter-modal__label"
                     id="filter-modal__gender"
                     sx={labelStyle}
                   >
@@ -114,15 +119,13 @@ function FilterModal({ open, handleClose, data, setData, radio, setRadio }) {
                     />
                   )}
                 </Grid>
-              </Grid>
-              <Grid item xs={6}>
                 <Grid
-                  className="filter-modal__wrapper"
+                  className="filter-modal__wrapper filter-modal__wrapper--right"
                   container
                   direction="column"
                 >
                   <FormLabel
-                    className="filter-modal__label filter-modal__middle"
+                    className="filter-modal__label"
                     id="filter-modal__age"
                     sx={labelStyle}
                   >
@@ -138,34 +141,36 @@ function FilterModal({ open, handleClose, data, setData, radio, setRadio }) {
                     />
                   )}
                 </Grid>
+                <Grid
+                  className="filter-modal__wrapper"
+                  container
+                  direction="column"
+                >
+                  <FormLabel
+                    className="filter-modal__label"
+                    id="filter-modal__location"
+                    sx={labelStyle}
+                  >
+                    지역
+                  </FormLabel>
+                  <FilterRadio
+                    radio={locationRadio}
+                    setRadio={setLocationRadio}
+                  />
+                  {locationRadio === "custom" && (
+                    <Checkboxes
+                      options={getValues("location")}
+                      control={control}
+                      name="age"
+                      radio={locationRadio}
+                    />
+                  )}
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid
-              className="filter-modal__wrapper"
-              container
-              direction="column"
-            >
-              <FormLabel
-                className="filter-modal__label"
-                id="filter-modal__location"
-                sx={labelStyle}
-              >
-                지역
-              </FormLabel>
-              <FilterRadio radio={locationRadio} setRadio={setLocationRadio} />
-              {locationRadio === "custom" && (
-                <Checkboxes
-                  options={getValues("location")}
-                  control={control}
-                  name="age"
-                  radio={locationRadio}
-                />
-              )}
             </Grid>
             <Grid className="filter-modal__button-wrapper" item>
               <GrButton
                 className="filter-modal__button"
-                xs={1}
                 variant="contained"
                 onClick={handleSubmit(onSubmit)}
               >
