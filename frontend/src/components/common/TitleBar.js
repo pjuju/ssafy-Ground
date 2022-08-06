@@ -3,6 +3,10 @@ import { Box } from "@mui/system";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function TitleBar(props) {
+  const handleClickTitle = () => {
+    document.querySelector(".content").scrollTo(0, 0);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar id="titlebar" position="static">
@@ -20,6 +24,7 @@ function TitleBar(props) {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1 }}
+            onClick={handleClickTitle}
           >
             {props.title}
           </Typography>
