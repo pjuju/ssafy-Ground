@@ -141,7 +141,9 @@ public class UserService {
 	    User user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass())
 	            .orElseThrow(IllegalArgumentException::new);
 	      //비밀번호 확인 등의 유효성 검사 진행
-	    return jwtTokenProvider.createToken(user.getUsername());
+	    String ftoken = jwtTokenProvider.createToken(user.getUsername());
+	    user.saveFtoken(ftoken);
+	    return ftoken;
 	}
 
 
