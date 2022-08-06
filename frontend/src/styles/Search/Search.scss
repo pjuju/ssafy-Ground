@@ -1,8 +1,13 @@
 .search-inner {
   width: 56%;
   padding: 2rem 4rem 0 4rem !important;
+
   &__top {
     width: 100%;
+  }
+
+  &__result {
+    padding: 2rem 0.5rem 0 1rem;
   }
 }
 
@@ -42,6 +47,45 @@
   &__wrapper {
     &--right {
       margin-bottom: 1rem;
+    }
+  }
+}
+
+.user-result {
+  &__inner {
+    border: 2px solid rgb(223, 223, 223);
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__profile {
+    text-align: center;
+  }
+
+  &__profile-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  &__profile-img {
+    height: 100%;
+  }
+
+  &__info-wrapper {
+    height: 100%;
+    margin-left: 1rem;
+  }
+
+  &__info {
+    &__nickname {
+      font-weight: bold;
+      margin-bottom: 0.5rem !important;
+    }
+
+    &__userId {
+      font-weight: bold;
+      color:rgb(148, 148, 148);
     }
   }
 }

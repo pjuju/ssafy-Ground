@@ -20,6 +20,7 @@ import EndDatePicker from "./Filter/EndDatePicker";
 import { age, date, gender, interest, location } from "./initData";
 import moment from "moment";
 import { search } from "api/search";
+import UserSearchResult from "./UserSearchResult";
 
 const dateRadio = date.map((item, index) => (
   <FormControlLabel
@@ -69,6 +70,15 @@ function Search() {
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
 
+  const [userSearch, setUserSearch] = useState([
+    { nickname: "김주영", user_id: "nullyng" },
+    { nickname: "배시현", user_id: "아무말도안할거야" },
+    { nickname: "박종욱", user_id: "종긔이긔" },
+    { nickname: "박주현", user_id: "노지희" },
+    { nickname: "조인후", user_id: "mischievinu" },
+    { nickname: "한유빈", user_id: "mint_frog" },
+  ]);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -100,7 +110,7 @@ function Search() {
     }
 
     console.log(searchData);
-    
+
     // 검색 요청
     search(
       standard,
@@ -193,6 +203,11 @@ function Search() {
           )}
         </Grid>
       </form>
+      <Grid className="search-inner__result" container direction="column">
+        {userSearch.map((user, index) => (
+          <UserSearchResult key={index} user={user} />
+        ))}
+      </Grid>
     </Grid>
   );
 }
