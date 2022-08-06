@@ -10,7 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import theme from "components/common/theme.js";
 
 function FollowFeed() {
-  const target = useRef("");
+  const [target, setTarget] = useState("");
   // 게시글 데이터를 담을 배열
   const [articles, setArticles] = useState([]);
   // 스크롤이 하단에 닿았을 때 pageNumber를 1만큼 증가시켜서 새로운 데이터를 요청한다.
@@ -31,26 +31,26 @@ function FollowFeed() {
     console.log("onIntersect");
     if (entry.isIntersecting && !isLoading) {
       // 관찰 요소 리셋
+      setIsLoading((isLoading) => !isLoading);
       observer.unobserve(entry.target);
-      setIsLoading(true);
       // 데이터 더 불러오기
       fetchArticles();
-      // 관찰 요소 재설정
-      setIsLoading(false);
-      observer.observe(entry.target);
+      // setIsLoading((isLoading) => !isLoading);
+      // observer.observe(entry.target);
     }
   };
 
   useEffect(() => {
     let observer;
-    if (target.current) {
+    if (target) {
       observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.8, // 관찰요소와 80%만큼 겹쳤을 때 onIntersect을 수행
+        threshold: 0.4, // 관찰요소와 80%만큼 겹쳤을 때 onIntersect을 수행
       });
-      observer.observe(target.current);
+      setIsLoading((isLoading) => !isLoading);
+      observer.observe(target);
     }
     return () => observer && observer.disconnect();
-  }, [onIntersect]);
+  }, [target, pageNumber]);
 
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);
@@ -68,14 +68,15 @@ function FollowFeed() {
         {articles.map((article, index) => (
           <Article key={index} articleData={article} />
         ))}
-        <div className="loading" ref={target}>
-          <ReactLoading type="spinningBubbles" color="#54BAB9" />
-        </div>
         <ThemeProvider theme={theme}>
           <Fab className="fab-write" color="primary" aria-label="edit">
             <EditIcon />
           </Fab>
         </ThemeProvider>
+        <div className="loading">
+          <ReactLoading type="spin" color="#54BAB9" />
+        </div>
+        <div ref={setTarget} style={{ height: "100px" }}></div>
       </Grid>
     </Grid>
   );
