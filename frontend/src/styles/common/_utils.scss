@@ -49,8 +49,41 @@ $wide-desktop: 1249px;
     border-radius: 10px;
   }
   &::-webkit-scrollbar-track {
-    margin-top: 6rem;
+    margin-top: 6.5rem;
     background: #54bab824;
+  }
+}
+
+@mixin interest-filter {
+  width: 100%;
+  padding: 0rem 2rem 0.5rem 2rem;
+
+  &__chips {
+    width: 94%;
+    left: 0;
+    overflow-x: scroll;
+    white-space: nowrap;
+
+    & div {
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      &.MuiChip-root {
+        color: rgba(24, 151, 143, 1);
+        background-color: rgba(84, 186, 185, 0.15);
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      & .MuiChip-deleteIcon {
+        color: rgba(24, 151, 143, 0.7);
+      }
+    }
+  }
+
+  &__icon {
+    width: 6%;
+    text-align: end;
   }
 }
 
@@ -67,7 +100,7 @@ $wide-desktop: 1249px;
     display: none;
   }
 
-  .content {
+  & .content {
     @include custom-scrollbar();
 
     width: 56% !important;
@@ -83,6 +116,7 @@ $wide-desktop: 1249px;
         width: 56%;
         top: 0;
         z-index: 1;
+        font-size: 1.3vw;
         background: #fff;
 
         & h2 {
@@ -104,18 +138,20 @@ $wide-desktop: 1249px;
           display: none;
         }
       }
+    }
 
-      &__inner {
-        padding-left: 2rem;
-        padding-right: 2rem;
-        margin-bottom: 2rem;
+    &__inner {
+      /* 최신 글 피드의 운동 종목 칩들 */
+      &__filter {
+        @include interest-filter();
       }
     }
   }
 
   & #inner {
-    padding-top: 13%;
+    padding-top: 15%;
 
+    /* 플로팅 버튼 */
     & .fab-write {
       position: fixed;
       bottom: 5%;
@@ -135,7 +171,7 @@ $wide-desktop: 1249px;
     display: none;
   }
 
-  .content {
+  & .content {
     width: 100% !important;
     @include custom-scrollbar();
 
@@ -160,6 +196,21 @@ $wide-desktop: 1249px;
     &__inner {
       padding-top: 3rem;
       padding-bottom: 2rem;
+      /* 최신 글 피드의 운동 종목 칩들 */
+      &__filter {
+        @include interest-filter();
+
+        padding: 0rem 2.6rem 0.5rem 2.6rem;
+
+        &__chips {
+          width: 94%;
+        }
+
+        &__icon {
+          width: 6%;
+          text-align: end;
+        }
+      }
     }
   }
 
