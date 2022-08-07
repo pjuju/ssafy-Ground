@@ -1,4 +1,4 @@
-import logo from "assets/images/text_logo.png";
+import logo from "assets/images/underline_logo.png";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -33,9 +33,10 @@ function RegisterPage() {
   };
   // 회원가입 요청
   const sendRequest = () => {
-    const info = Object.assign({}, basicInfo, otherInfo);
+    let info = {};
+    Object.assign(info, basicInfo, otherInfo);
     console.log(info);
-    signUp(info);
+    // signUp(info);
   };
 
   useEffect(() => {
@@ -63,8 +64,21 @@ function RegisterPage() {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid className="register-form__logo" item>
-          <img className="logo" src={logo} alt="text_logo" width="300rem" />
+        <Grid item>
+          <Grid
+            className="register-form__logo-box"
+            container
+            direction="column"
+          >
+            <div className="register-form__logo-wrapper">
+              <img
+                className="register-form__logo"
+                src={logo}
+                alt="underline_logo"
+              />
+            </div>
+            <div className="register-form__register">회원가입</div>
+          </Grid>
         </Grid>
         {!next && (
           <BasicInfo
