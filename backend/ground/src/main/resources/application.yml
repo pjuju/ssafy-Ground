@@ -23,8 +23,8 @@ spring:
     hibernate:
       ddl-auto: update
     properties:
+      show_sql: true
       hibernate:
-#        show_sql: true
       format_sql: true
    
   mvc:

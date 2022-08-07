@@ -137,6 +137,7 @@ public class UserService {
 //		}
 //	}
 	
+	@Transactional
 	public String createToken(UserLoginDto params) {
 	    User user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass())
 	            .orElseThrow(IllegalArgumentException::new);

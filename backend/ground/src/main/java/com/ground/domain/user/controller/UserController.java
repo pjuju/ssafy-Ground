@@ -103,7 +103,8 @@ public class UserController {
     
     @PutMapping("/modifyPass")
     @ApiOperation(value = "비밀번호 변경", response = boolean.class)
-    public boolean modifyPass(@RequestHeader String header, @RequestBody UserModifyPassDto params) {
+    //@RequestHeader String header, 
+    public boolean modifyPass(@RequestBody UserModifyPassDto params) {
     	return userService.modifyPass(params);
     }
     
@@ -111,7 +112,6 @@ public class UserController {
     @ApiOperation(value = "로그인", response = String.class)
     public ResponseEntity<TokenResponse> login(@RequestBody UserLoginDto params){
     	String ftoken = userService.createToken(params);
-    	log.info(ftoken);
     	return ResponseEntity.ok().body(new TokenResponse(ftoken, "bearer"));   	
     }
 
