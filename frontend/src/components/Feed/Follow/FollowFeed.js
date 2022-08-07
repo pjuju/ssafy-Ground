@@ -1,15 +1,18 @@
 import { Fab, Grid } from "@mui/material";
 import { getFollowBoard } from "api/board";
 import { useEffect, useState } from "react";
-import "styles/Feed/FollowFeed.scss";
 import Article from "../Article/Article";
 import TitleBar from "../../common/TitleBar";
 import ReactLoading from "react-loading";
 import { ThemeProvider } from "@emotion/react";
 import EditIcon from "@mui/icons-material/Edit";
 import theme from "components/common/theme.js";
+import { useOutletContext } from "react-router-dom";
 
 function FollowFeed() {
+  // Outlet에 생성한 context를 가져온다.
+  const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
+
   const [target, setTarget] = useState("");
   // 게시글 데이터를 담을 배열
   const [articles, setArticles] = useState([]);
@@ -28,7 +31,6 @@ function FollowFeed() {
   };
 
   const onIntersect = ([entry], observer) => {
-    console.log("onIntersect");
     if (entry.isIntersecting && !isLoading) {
       // 관찰 요소 리셋
       setIsLoading((isLoading) => !isLoading);
@@ -41,10 +43,16 @@ function FollowFeed() {
   };
 
   useEffect(() => {
+    // 새로고침 시 Navbar가 알맞은 메뉴 인덱스를 가리키도록 함
+    onSetSideMenuIdx(0);
+    onSetBottomMenuIdx(1);
+  }, []);
+
+  useEffect(() => {
     let observer;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4, // 관찰요소와 40%만큼 겹쳤을 때 onIntersect을 수행
+        threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
       });
       setIsLoading((isLoading) => !isLoading);
       observer.observe(target);

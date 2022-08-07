@@ -27,11 +27,11 @@ function FeedPage() {
           onSetSideMenuIdx={onSetSideMenuIdx}
           onSetBottomMenuIdx={onSetBottomMenuIdx}
         />
-        <Outlet />
+        <Outlet context={[onSetSideMenuIdx, onSetBottomMenuIdx]} />
         <Notification />
       </Grid>
       <Grid id="mobile" container>
-        <Outlet />
+        <Outlet context={[onSetSideMenuIdx, onSetBottomMenuIdx]} />
         <BottomNavbar
           sideMenuIdx={sideMenuIdx}
           bottomMenuIdx={bottomMenuIdx}
