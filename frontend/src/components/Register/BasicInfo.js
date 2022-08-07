@@ -15,6 +15,8 @@ const emailReg =
 function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
   const [isIdDupChecked, setIsIdDupChecked] = useState(false);
   const [isEmailDupChecked, setIsEmailDupChecked] = useState(false);
+  const [certCode, setCertCode] = useState(0);
+  const [isCertcodeAuth, setIsCertcodeAuth] = useState(false);
 
   const {
     register,
@@ -92,6 +94,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
       getValues("email"),
       (res) => {
         console.log(res.data);
+        setCertCode(res.data);
       },
       (err) => {
         console.log(err);
@@ -101,8 +104,16 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
 
   // 인증 버튼 핸들러
   const onCertCodeSubmit = () => {
-    const certCode = getValues("cert");
-    console.log("인증: " + certCode);
+    console.log(certCode);
+    if (+getValues("cert") === certCode) {
+      clearErrors("cert");
+      setIsCertcodeAuth(true);
+    } else {
+      setError("cert", {
+        type: "invalidCert",
+        message: "인증번호가 일치하지 않습니다.",
+      });
+    }
   };
 
   return (
@@ -279,6 +290,11 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
             </GrButton>
           </Grid>
           {errors.cert && <ErrorMessage>{errors.cert.message}</ErrorMessage>}
+          {isCertcodeAuth && (
+            <OkMessage>
+              <span>인증되었습니다.</span>
+            </OkMessage>
+          )}
         </Grid>
       )}
       <GrButton
