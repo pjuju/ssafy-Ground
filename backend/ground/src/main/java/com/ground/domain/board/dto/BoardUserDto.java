@@ -15,6 +15,8 @@ public class BoardUserDto {
     private String nickname;
     private Boolean privateYN;
     private String introduce;
+    // 이미지
+    private String introduce;
 
     public BoardUserDto(User entity) {
         this.id = entity.getId();

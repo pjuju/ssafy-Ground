@@ -37,7 +37,7 @@ public class CommentController {
         return new CommentResponseDto(comment);
     }
 
-    @ApiOperation(value = "댓글 수정")
+    @ApiOperation(value = "댓글 삭제")
     @ApiImplicitParam(name = "commentId", value = "댓글 PK", example = "1", required = true)
     @DeleteMapping("/{commentId}")
     public String deleteComment(@PathVariable Long commentId){

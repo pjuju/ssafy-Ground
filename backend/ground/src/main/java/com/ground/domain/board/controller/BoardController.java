@@ -36,7 +36,7 @@ public class BoardController {
 
     @Autowired
     BoardService boardService;
-    @Autowired
+
     UserRepository userRepository;
 
 
