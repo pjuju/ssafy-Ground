@@ -10,4 +10,8 @@ function getFollowBoard(pageNumber, success) {
   api.get(`/rest/board/follow?${pageNumber}`).then(success);
 }
 
-export { getSavedBoard, getFollowBoard };
+function getLatestBoard(pageNumber, success) {
+  api.get(`/rest/board/interest?${pageNumber}`).then(success);
+}
+
+export { getSavedBoard, getFollowBoard, getLatestBoard };
