@@ -4,6 +4,7 @@ import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.entity.User;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -47,7 +48,20 @@ public class NotificationBoard {
     @CreatedDate
     @Column(name = "reg_dttm")
     private LocalDateTime regDttm;
-    
 
+	@Builder
+	public NotificationBoard(User from, User to, Board board, int type, LocalDateTime regDttm) {
+		this.from = from;
+		this.to = to;
+		this.boardId = board;
+		this.type = type;
+		this.regDttm = regDttm;
+	}
+
+	public void NotificationBoardUpdate(boolean checkYN) { this.checkYN = checkYN; }
+
+	public void NotificationBoardDelete(boolean delYN) {
+		this.delYN = delYN;
+	}
 }
 

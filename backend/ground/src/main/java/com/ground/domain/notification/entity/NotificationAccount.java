@@ -1,5 +1,7 @@
 package com.ground.domain.notification.entity;
 
+import com.ground.domain.user.entity.Age;
+import com.ground.domain.user.entity.Gender;
 import com.ground.domain.user.entity.User;
 
 import lombok.AccessLevel;
@@ -32,12 +34,12 @@ public class NotificationAccount {
 	private User to;
 	
 	@Column(name = "type")
-	private boolean type;
+	private int type;
 	
-	@Column(name = "del_YN", columnDefinition="tinyint(1) default 1")
+	@Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
 
-    @Column(name = "check_YN" ,columnDefinition="tinyint(1) default 1")
+    @Column(name = "check_YN" ,columnDefinition="tinyint(1) default 0")
     private boolean checkYN;
     
     @CreatedDate
@@ -45,10 +47,16 @@ public class NotificationAccount {
     private LocalDateTime regDttm;
 
 	@Builder
-	public NotificationAccount(User from, User to, boolean type, LocalDateTime regDttm) {
+	public NotificationAccount(User from, User to, int type, LocalDateTime regDttm) {
 		this.from = from;
 		this.to = to;
 		this.type = type;
 		this.regDttm = regDttm;
+	}
+
+	public void NotificationAccountUpdate(boolean checkYN) { this.checkYN = checkYN; }
+
+	public void NotificationAccountDelete(boolean delYN) {
+		this.delYN = delYN;
 	}
 }
