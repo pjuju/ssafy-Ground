@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ground.domain.jwt.TokenResponse;
+import com.ground.domain.user.dto.UserFindPassDto;
 import com.ground.domain.user.dto.UserLoginDto;
+import com.ground.domain.user.dto.UserLoginResponseDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.dto.UserRegisterDto;
@@ -102,6 +104,12 @@ public class UserController {
     	return userService.findId(email);
     }
     
+    @PostMapping("/modifyPass")
+    @ApiOperation(value = "비밀번호 변경을 위한 아이디, 이메일 확인", response = boolean.class)
+    public boolean modifyPassCheck(@RequestBody UserFindPassDto params) {
+    	return userService.modifyPassCheck(params);
+    }
+    
     @PutMapping("/modifyPass")
     @ApiOperation(value = "비밀번호 변경", response = boolean.class)
     //@RequestHeader String header, 
@@ -116,10 +124,17 @@ public class UserController {
 //    	return ResponseEntity.ok().body(new TokenResponse(ftoken, "bearer"));   	
 //    }
     
+    
     @PostMapping("/login")
-    @ApiOperation(value = "로그인", response = String.class)
-    public UserStateDto login(@RequestBody UserLoginDto params){
+    @ApiOperation(value = "로그인", response = UserStateDto.class)
+    public UserLoginResponseDto login(@RequestBody UserLoginDto params){
     	return userService.login(params);
+    }
+    
+    @GetMapping("/state")
+    @ApiOperation(value = "유저상태정보 전송", response = UserStateDto.class)
+    public UserStateDto userState(@RequestHeader String ftoken) {
+    	return userService.userState(ftoken);
     }
     
     @GetMapping("/token/{ftoken}")
