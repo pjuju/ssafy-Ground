@@ -15,6 +15,7 @@ import javax.swing.text.html.parser.Entity;
 @NoArgsConstructor
 public class SearchUserDto {
     private String word;
+    // response에서만 쓰임.
     private Long id;
 
     public SearchUser toEntity() {

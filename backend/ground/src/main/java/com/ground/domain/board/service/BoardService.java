@@ -10,6 +10,7 @@ import com.ground.domain.global.entity.Category;
 import com.ground.domain.global.repository.CategoryRepository;
 import com.ground.domain.global.entity.Location;
 import com.ground.domain.global.repository.LocationRepository;
+import com.ground.domain.search.repository.sUserRepository;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.entity.UserCategory;
 import com.ground.domain.user.repository.UserRepository;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.System.in;
 import static org.springframework.data.domain.PageRequest.of;
 
 
@@ -42,7 +44,7 @@ public class BoardService {
     private final CategoryRepository categoryRepository;
     private final LocationRepository locationRepository;
     private final BoardImageRepository boardImageRepository;
-    private final UserRepository userRepository;
+    private final sUserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final BoardSaveRepository boardSaveRepository;
 
@@ -93,9 +95,14 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional
-    public Board updateBoard(Long boardId, BoardRequestDto params) {
+    public Board updateBoard(Long boardId, BoardRequestDto params, User user) {
         // 게시글 찾기
         Board board = boardRepository.findById(boardId).get();
+
+        if (user != board.getUser()) {
+            throw new RuntimeException("사용자가 해당 글의 작성자가 아닙니다.");
+        }
+
 
         // 카테고리, 지역
         Category category = categoryRepository.findById(params.getCategoryId()).get();
@@ -104,7 +111,6 @@ public class BoardService {
         board.setLocation(location);
 
         //수정한 유저, 시간, 공개유무
-        User user = userRepository.findById(new Long(1)).get();
         board.setModUser(user);
         board.setModDttm(LocalDateTime.now());
         board.setPrivateYN(params.isPrivateYN());
@@ -138,8 +144,13 @@ public class BoardService {
     // 게시글 삭제
     // 로그인 유저 확인 필요함 (수정도)
     @Transactional
-    public void deleteBoard(Long boardId) {
+    public void deleteBoard(Long boardId, User user) {
         Board board = boardRepository.findById(boardId).get();
+
+        if (user != board.getUser()) {
+            throw new RuntimeException("사용자가 해당 글의 작성자가 아닙니다.");
+        }
+
         boardRepository.delete(board);
 
     }
@@ -147,9 +158,13 @@ public class BoardService {
     // 게시글 좋아요
     // 로그인 유저 확인 필요함 (수정도)
     @Transactional
-    public void likeBoard(Long boardId) {
-        User user = userRepository.findById(new Long(1)).get();
+    public void likeBoard(Long boardId, User user) {
         Board board = boardRepository.findById(boardId).get();
+        for (BoardLike boardLike : board.getBoardLikes()) {
+            if (boardLike.getUser().equals(user)) {
+                throw new RuntimeException("이미 좋아하는 게시글입니다.");
+            }
+        }
         board.setLikeCnt(board.getLikeCnt()+1);
         boardLikeRepository.save(new BoardLike(user, board));
 
@@ -158,29 +173,34 @@ public class BoardService {
     // 게시글 좋아요 취소
     // 로그인 유저 확인 필요함
     @Transactional
-    public void unLikeBoard(Long boardId) {
-        User user = userRepository.findById(new Long(1)).get();
+    public void unLikeBoard(Long boardId, User user) {
+
         Board board = boardRepository.findById(boardId).get();
         BoardLike boardLike = boardLikeRepository.findByUserAndBoard(user, board).get();
-        board.setLikeCnt(board.getLikeCnt()-1);
         boardLikeRepository.delete(boardLike);
+        board.setLikeCnt(board.getLikeCnt()-1);
+
     }
 
 
     // 게시글 저장
     @Transactional
-    public void saveBoard(Long boardId) {
-        User user = userRepository.findById(new Long(1)).get();
+    public void saveBoard(Long boardId, User user) {
         Board board = boardRepository.findById(boardId).get();
-        board.setSaveCnt(board.getSaveCnt()+1);
+        for (BoardSave boardSave : board.getBoardSaves()) {
+            if (boardSave.getUser().equals(user)) {
+                throw new RuntimeException("이미 저장한 게시글입니다.");
+            }
+        }
         boardSaveRepository.save(new BoardSave(user, board));
+        board.setSaveCnt(board.getSaveCnt()+1);
     }
 
     // 게시글 저장 취소
     // 로그인 유저 확인 필요함
     @Transactional
-    public void unSaveBoard(Long boardId) {
-        User user = userRepository.findById(new Long(1)).get();
+    public void unSaveBoard(Long boardId, User user) {
+
         Board board = boardRepository.findById(boardId).get();
         BoardSave boardSave = boardSaveRepository.findByUserAndBoard(user, board).get();
         board.setSaveCnt(board.getSaveCnt()-1);
@@ -257,6 +277,9 @@ public class BoardService {
     public Comment updateComment(CommentRequestDto params, Long commentId, User user) {
         // 유저 == 게시글 작성자 확인 필요
         Comment comment = commentReository.findById(commentId).get();
+        if (user != comment.getUser()) {
+            throw new RuntimeException("사용자가 해당 댓글의 작성자가 아닙니다.");
+        }
         comment.setModDttm(LocalDateTime.now());
         comment.setReply(params.getReply());
         Comment entity = commentReository.save(comment);
@@ -268,6 +291,9 @@ public class BoardService {
     public void deleteComment(Long commentId, User user) {
         // 유저 == 게시글 작성자 확인 필요
         Comment comment = commentReository.findById(commentId).get();
+        if (user != comment.getUser()) {
+            throw new RuntimeException("사용자가 해당 댓의 작성자가 아닙니다.");
+        }
         commentReository.deleteById(commentId);
         Board board = boardRepository.findById(comment.getBoard().getId()).get();
         board.setCommentCnt(board.getCommentCnt()-1);

@@ -24,10 +24,10 @@ public class sUserDto {
     private String introduce;
     private String imageUrl;
     private String imagetype;
-    private String word;
 
 
-    public sUserDto(User entity, String word) {
+
+    public sUserDto(User entity) {
         this.id = entity.getId();
         this.username = entity.getUsername();
         this.email = entity.getEmail();
@@ -38,7 +38,7 @@ public class sUserDto {
         this.gender = entity.getGender();
         this.introduce = entity.getIntroduce();
         this.imageUrl = entity.getImageUrl();
-        this.word = word;
+
     }
 }
 

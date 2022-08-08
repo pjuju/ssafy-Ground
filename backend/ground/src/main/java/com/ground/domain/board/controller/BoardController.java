@@ -75,7 +75,7 @@ public class BoardController {
     @PutMapping("/{boardId}")
     public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody final BoardRequestDto params){
         User user = userRepository.findById(new Long(1)).get();
-        Board board = boardService.updateBoard(boardId, params);
+        Board board = boardService.updateBoard(boardId, params, user);
         return new BoardResponseDto(board, user);
     }
 
@@ -85,7 +85,8 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @DeleteMapping("/{boardId}")
     public void deleteBoard(@PathVariable Long boardId){
-        boardService.deleteBoard(boardId);
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.deleteBoard(boardId, user);
     }
 
     // =================== 게시글 좋아요===================
@@ -93,7 +94,9 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @PostMapping("/{boardId}/like")
     public void likeBoard(@PathVariable Long boardId){
-        boardService.likeBoard(boardId);
+
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.likeBoard(boardId, user);
     }
 
     // =================== 게시글 좋아요 취소===================
@@ -101,8 +104,8 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @DeleteMapping("/{boardId}/like")
     public void unlikeBoard(@PathVariable Long boardId){
-
-        boardService.unLikeBoard(boardId);
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.unLikeBoard(boardId, user);
     }
 
     // ================== 게시글 저장 ========================
@@ -110,7 +113,8 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @PostMapping("/{boardId}/save")
     public void saveBoard(@PathVariable Long boardId){
-        boardService.saveBoard(boardId);
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.saveBoard(boardId, user);
     }
 
     // ================== 게시글 저장 취소========================
@@ -118,7 +122,8 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @DeleteMapping("/{boardId}/save")
     public void unsaveBoard(@PathVariable Long boardId){
-        boardService.unSaveBoard(boardId);;
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.unSaveBoard(boardId, user);
     }
 
 
@@ -137,7 +142,7 @@ public class BoardController {
     @ApiOperation(value = "팔로우 피드 조회")
     @GetMapping("/follow/{pageNumber}")
     public List<BoardResponseDto> getFollowBoard(@PathVariable int pageNumber){
-        User user = userRepository.findById(new Long(1)).get();
+        User user = userRepository.findById(new Long(3)).get();
         return boardService.getFollowBoard(user, pageNumber);
     }
 
