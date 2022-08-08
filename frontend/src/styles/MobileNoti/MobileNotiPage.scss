@@ -1,0 +1,13 @@
+.content {
+  &__inner {
+    &__noti {
+      padding-top: 4rem;
+
+      & .notification__bottom {
+
+        bottom: 10%;
+      }
+
+    }
+  }
+}

@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import FeedPage from "pages/FeedPage";
 import FollowFeed from "components/Feed/Follow/FollowFeed";
 import LatestFeed from "components/Feed/Latest/LatestFeed";
+import MobileNotiPage from "pages/MobileNotiPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="follow" element={<FollowFeed />} />
           <Route path="latest" element={<LatestFeed />} />
         </Route>
+        <Route path="/notification" element={<MobileNotiPage />} />
       </Routes>
     </BrowserRouter>
   );
