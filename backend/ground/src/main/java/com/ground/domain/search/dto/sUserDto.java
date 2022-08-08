@@ -20,7 +20,7 @@ public class sUserDto {
     private Age age;
     private Gender gender;
     private String introduce;
-    private String imageUrl;
+    private String userImage;
     private String imagetype;
 
 
@@ -35,7 +35,7 @@ public class sUserDto {
         this.age = entity.getAge();
         this.gender = entity.getGender();
         this.introduce = entity.getIntroduce();
-        this.imageUrl = entity.getImageUrl();
+        this.userImage = entity.getUserImage();
 
     }
 }
