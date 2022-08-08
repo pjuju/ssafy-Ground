@@ -41,6 +41,7 @@ function BottomNavbar({
                   break;
               }
               onSetBottomMenuIdx(newValue);
+              console.log(bottomMenuIdx);
             }}
           >
             <BottomNavigationAction
