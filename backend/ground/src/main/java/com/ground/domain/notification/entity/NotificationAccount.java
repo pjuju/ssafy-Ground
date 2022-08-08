@@ -34,7 +34,7 @@ public class NotificationAccount {
 	private User to;
 	
 	@Column(name = "type")
-	private int type;
+	private boolean type;
 	
 	@Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
@@ -47,7 +47,7 @@ public class NotificationAccount {
     private LocalDateTime regDttm;
 
 	@Builder
-	public NotificationAccount(User from, User to, int type, LocalDateTime regDttm) {
+	public NotificationAccount(User from, User to, boolean type, LocalDateTime regDttm) {
 		this.from = from;
 		this.to = to;
 		this.type = type;

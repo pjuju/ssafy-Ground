@@ -17,7 +17,7 @@ public class NotificationBoardDto {
     private Board boardId;
     //    private String profileImgUrl;
     private boolean checkYN;
-    private int type;
+    private boolean type;
     private LocalDateTime regDttm;
 
     public NotificationBoardDto(NotificationBoard entity) {
@@ -25,7 +25,7 @@ public class NotificationBoardDto {
         this.nickname = entity.getFrom().getNickname();
         this.boardId = entity.getBoardId();
         this.checkYN = entity.isCheckYN();
-        this.type = entity.getType();
+        this.type = entity.isType();
         this.regDttm = entity.getRegDttm();
     }
 }

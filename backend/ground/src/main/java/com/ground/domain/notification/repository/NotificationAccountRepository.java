@@ -16,5 +16,7 @@ import java.util.Optional;
 public interface NotificationAccountRepository extends JpaRepository<NotificationAccount, Long>{
 
     Optional<NotificationAccount> findById(Long id);
-    List<NotificationAccountDto> findAllByTo(User user);
+    List<NotificationAccount> findAllByToAndCheckYN(User user, boolean c);
+
+    List<NotificationAccountDto> findAllByToOrderByCheckYN(User user);
 }
