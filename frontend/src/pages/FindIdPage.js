@@ -46,7 +46,7 @@ function FindIdPage() {
   });
 
 	return (
-    <Container className="findid-form" maxwidth="xs" fixed>
+    <Container maxWidth="sm">
       <Grid
         container
         className="findid-form__wrapper"
@@ -57,7 +57,7 @@ function FindIdPage() {
         <Grid className="login-form__logo" item>
           <img className="logo" src={logo} alt="text_logo" width="300px" />
         </Grid>
-        <Grid item>
+        <Grid className="findid-form__inner" item>
           <TabContext value={value}>
             <ThemeProvider theme={theme}>
               <Box
@@ -65,7 +65,6 @@ function FindIdPage() {
               >
                 <TabList
                   onChange={handleChange}
-                  aria-label="basic tabs example"
                   variant="fullWidth"
                 >
                   <Tab label="아이디 찾기" value="1" onClick={onFlagHandler}/>

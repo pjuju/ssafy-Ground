@@ -5,18 +5,7 @@ import GrButton from 'components/common/GrButton';
 import { Box } from "@mui/system";
 import { confirmPass } from "api/find";
 
-const boxStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'white',
-  border: '2px solid #000',
-  boxShadow: 24,
-  borderRadius: "10px",
-  p: 4,
-};
+
 
 function PasswordResult({userId, userEmail}) {
 	const [password, setPassword] = useState("");
@@ -47,16 +36,15 @@ function PasswordResult({userId, userEmail}) {
 		setCheckOpen(false);
 	}
 	return (
-		<div style={{width:512}}>
+		<div>
 			<Grid
 				container
-				direction="row"
-				justifyContent="center"
+				className="pw-result__inner-wrapper"
 				alignItems="center"
 			>
-				<Grid item>
+				<Grid container justifyContent="center">
           <GrTextField
-              className="findid-form__field"
+              className="pw-result__field"
               id="new-password"
               label="변경할 비밀번호"
               type="password"
@@ -68,12 +56,12 @@ function PasswordResult({userId, userEmail}) {
 			</Grid>
 			<Grid
 				container
-				justifyContent="center"
+				className="pw-result__inner-wrapper"
 				alignItems="center"
 			>
-				<Grid item>
+				<Grid container justifyContent="center">
             <GrTextField
-                className="findid-form__field"
+                className="pw-result__field"
                 id="new-password-check"
                 label="비밀번호 확인"
                 type="password"
@@ -85,12 +73,12 @@ function PasswordResult({userId, userEmail}) {
 			</Grid>
 			<Grid
 				container
-				justifyContent="center"
+				className="pw-result__inner-wrapper"
 				alignItems="center"
 			>
-				<Grid item>
+				<Grid container justifyContent="center">
           <GrButton
-            className="findid-form__button"
+            className="pw-result__button"
             variant="contained"
             onClick={onClickPasswordConfirm}
           >
@@ -99,14 +87,13 @@ function PasswordResult({userId, userEmail}) {
 				</Grid>
 			</Grid>
 			<Modal open={checkOpen}>
-        <Box sx={boxStyle}>
+        <Box className="pw-result__box">
           <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
+             container
+						 className="pw-result__modal-wrapper"
+						 alignItems="flex-end"
           >
-            <Grid item>
+            <Grid container justifyContent="center">
               {isCheck === true && (
                 <div> 비밀번호가 변경되었습니다. </div>
               )}
@@ -114,7 +101,7 @@ function PasswordResult({userId, userEmail}) {
                 <div> 비밀번호가 일치하지 않습니다. </div>
               )}
             </Grid>
-            <Grid item>
+            <Grid container justifyContent="center" className="pw-result__modal">
               <GrButton onClick={onClickCheck}>확인</GrButton>
             </Grid>
           </Grid>

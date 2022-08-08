@@ -5,30 +5,26 @@ import GrButton from 'components/common/GrButton';
 import { emailAuth, modifyPass } from "api/find";
 import { Box } from "@mui/system";
 
-const boxStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'white',
-  border: '2px solid #000',
-  boxShadow: 24,
-  borderRadius: "10px",
-  p: 4,
-};
+
 function PasswordCheck({userId, userEmail, onSetUserId, onSetUserEmail, onSetPwFlag }) {
   const [userValNumber, setUserValNumber] = useState("");
 	const [valNumber, setValNumber] = useState("");
   const [checkOpen, setCheckOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isInfoError, setisInfoError] = useState(false);
 
 	const onEmailHandler = (event) => {
 		onSetUserEmail(event.target.value)
 	};
 	const onUserValNumberHandler = (event) => {
-		setUserValNumber(parseInt(event.target.value))
+    if (event.target.value !== "") {
+      setUserValNumber(parseInt(event.target.value));
+    }
+    if (event.target.value === "") {
+      setUserValNumber("");
+    }
 	};
 	const onUserIdHandler = (event) => {
 		onSetUserId(event.target.value)
@@ -41,15 +37,25 @@ function PasswordCheck({userId, userEmail, onSetUserId, onSetUserEmail, onSetPwF
     console.log(info)
     modifyPass(info, (res) => {
       console.log(res.data)
-      setIsCheck(res.data)
+      if (res.data === true) {
+        setIsCheck(res.data);
+        setisInfoError(!res.data);
+        setCheckOpen(true);
+      }
+      if (res.data === false) {
+        setisInfoError(!res.data);
+      }
     });
-    setCheckOpen(true);
   };
   const onClickPasswordCheck = () => {
     console.log(userValNumber)
     console.log(valNumber)
     if ((valNumber === userValNumber) && (userValNumber !== "")){
       setAuthOpen(true);
+      setIsError(false);
+    }
+    if ((valNumber !== userValNumber)) {
+      setIsError(true);
     }
   }
   const onClickAuth = () => {
@@ -66,119 +72,98 @@ function PasswordCheck({userId, userEmail, onSetUserId, onSetUserEmail, onSetPwF
     };
   }
 	return (
-		<div>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid
-          container
-          direction="row"
-          alignItems="flex-start"
-        >
-          <Grid item>
-            <GrTextField
-              className="findid-form__field"
-              id="id"
-              label="아이디"
-              size="small"
-              value={userId}
-              onChange={onUserIdHandler}
-            />
-				  </Grid>
+    <div>
+      <Grid container className="pw-check__inner-wrapper" alignItems="center">
+        <Grid container justifyContent="space-between">
+          <GrTextField
+            className="pw-check__field"
+            id="id"
+            label="아이디"
+            size="small"
+            error={isInfoError}
+            helperText={isInfoError ? "회원정보가 일치하지 않습니다." : ""}
+            value={userId}
+            onChange={onUserIdHandler}
+          />
         </Grid>
-        <Grid
-        container
-        direction="row"
-        >
-          <Grid item>
-            <GrTextField
-              className="findid-form__field"
-              id="email"
-              label="이메일"
-              size="small"
-              value={userEmail}
-              onChange={onEmailHandler}
-            />
-					</Grid>
-          <Grid item>
-            <GrButton
-              className="findid-form__button"
-              variant="contained"
-              onClick={onClickEmail}
-              >
-                인증번호 전송
-            </GrButton>
-					</Grid>
+      </Grid>
+      <Grid container className="pw-check__inner-wrapper" alignItems="center">
+        <Grid container justifyContent="space-between">
+          <GrTextField
+            className="pw-check__field"
+            id="email"
+            label="이메일"
+            size="small"
+            value={userEmail}
+            error={isInfoError}
+            helperText={isInfoError ? "회원정보가 일치하지 않습니다." : ""}
+            onChange={onEmailHandler}
+          />
+          <GrButton
+            className="pw-check__button"
+            variant="contained"
+            onClick={onClickEmail}
+          >
+            인증번호 전송
+          </GrButton>
         </Grid>
-        <Grid
-          container
-          direction="row"
-        >
-          <Grid item>
-            <GrTextField
-              className="findid-form__field"
-              id="verification-number"
-              label="인증번호"
-              size="small"
-              value={userValNumber}
-              onChange={onUserValNumberHandler}
-            />
-					</Grid>
-          <Grid item>
-            <GrButton
-              className="findid-form__button"
-              variant="contained"
-              onClick={onClickPasswordCheck}
-              >
-                인증
-            </GrButton>
-					</Grid>
-        </Grid>        
+      </Grid>
+      <Grid container className="pw-check__inner-wrapper" alignItems="center">
+        <Grid container justifyContent="space-between">
+          <GrTextField
+            className="pw-check__field"
+            id="verification-number"
+            label="인증번호"
+            size="small"
+            error={isError}
+            helperText={isError ? "인증번호가 일치하지 않습니다." : ""}
+            value={userValNumber}
+            onChange={onUserValNumberHandler}
+          />
+          <GrButton
+            className="pw-check__button"
+            variant="contained"
+            onClick={onClickPasswordCheck}
+          >
+            인증
+          </GrButton>
+        </Grid>
       </Grid>
       <Modal open={authOpen}>
-        <Box sx={boxStyle}>
+        <Box className="pw-check__box">
           <Grid
             container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
+            className="pw-check__modal-wrapper"
+            alignItems="flex-end"
           >
-            <Grid item>
+            <Grid container justifyContent="center">
               <div> 인증되었습니다. </div>
             </Grid>
-            <Grid item>
+            <Grid container justifyContent="center" className="pw-check__modal">
               <GrButton onClick={onClickAuth}>확인</GrButton>
             </Grid>
           </Grid>
         </Box>
       </Modal>
       <Modal open={checkOpen}>
-        <Box sx={boxStyle}>
+        <Box className="pw-check__box">
           <Grid
             container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
+            className="pw-check__modal-wrapper"
+            alignItems="flex-end"
           >
-            <Grid item>
-              {isCheck === true && (
-                <div> 인증 메일이 발송되었습니다. </div>
-              )}
-              {isCheck === false && (
-                <div> 회원정보가 일치하지 않습니다. </div>
-              )}
+            <Grid container justifyContent="center">
+              {isCheck === true && <div> 인증 메일이 발송되었습니다. </div>}
+              {isCheck === false && <div> 회원정보가 일치하지 않습니다. </div>}
             </Grid>
-            <Grid item>
+            <Grid container justifyContent="center" className="pw-check__modal">
               <GrButton onClick={onClickCheck}>확인</GrButton>
             </Grid>
           </Grid>
         </Box>
-      </Modal>		
-		</div>
-		)
+      </Modal>
+    </div>
+  );
 };
 
 export default PasswordCheck;

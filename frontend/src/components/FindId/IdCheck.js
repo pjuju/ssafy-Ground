@@ -6,18 +6,6 @@ import GrTextField from 'components/common/GrTextField';
 import { Box } from "@mui/system";
 import find from "modules/find";
 
-const boxStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'white',
-  border: '2px solid #000',
-  boxShadow: 24,
-  borderRadius: "10px",
-  p: 4,
-};
 
 function IdCheck({idFlag, onSetIdFlag, userId, onSetUserId}) {
 	const [email, setEmail] = useState("");
@@ -25,19 +13,31 @@ function IdCheck({idFlag, onSetIdFlag, userId, onSetUserId}) {
   const [valNumber, setValNumber] = useState("");
   const [authOpen, setAuthOpen] = useState(false);
   const [emailOpen, setEmailOpen] = useState(false);
-  const [isCheck, setIsCheck] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isEmailError, setisEmailError] = useState(false);
 
 	const onEmailHandler = (event) => {
 		setEmail(event.target.value)
 	};
 	const onUserValNumberHandler = (event) => {
-		setUserValNumber(parseInt(event.target.value))
+    if (event.target.value !== "") {
+      setUserValNumber(parseInt(event.target.value));
+    }
+    if (event.target.value === "") {
+      setUserValNumber("");
+    }
 	};
+
   const onClickIdCheck = () => {
     console.log(userValNumber)
     console.log(valNumber)
     if ((valNumber === userValNumber) && (userValNumber !== "")){
       setAuthOpen(true);
+      setIsError(false);
+    }
+
+    if ((valNumber !== userValNumber)) {
+      setIsError(true);
     }
   };
   const onClickAuth = () =>{
@@ -50,19 +50,22 @@ function IdCheck({idFlag, onSetIdFlag, userId, onSetUserId}) {
   }
   const onClickEmail = () => {
     usedEmail(email, (res) => {
-      setEmailOpen(true);
-      setIsCheck(!res.data);
+      if (res.data === false) {
+        setEmailOpen(true);
+        setisEmailError(false);
+      }
+      if (res.data === true) {
+        setisEmailError(true);
+      }
     });
   };
 
   const onClickCheck = () => {
     setEmailOpen(false);
-    if (isCheck === true) {
       emailAuth(email, (res) => {
         setValNumber(res.data);
         console.log(res.data);
       })
-    }
   }
 
   useEffect(() => {
@@ -71,25 +74,20 @@ function IdCheck({idFlag, onSetIdFlag, userId, onSetUserId}) {
  
 	return (
     <div>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid item>
+      <Grid container alignItems="center" className="id-check__inner-wrapper">
+        <Grid container justifyContent="space-between">
           <GrTextField
-            className="findid-form__field"
             id="email"
             label="이메일"
             size="small"
+            className="id-check__field"
             value={email}
+            error={isEmailError}
+            helperText={isEmailError ? "존재하지 않는 이메일입니다." : ""}
             onChange={onEmailHandler}
           />
-        </Grid>
-        <Grid item>
           <GrButton
-            className="findid-form__button"
+            className="id-check__button"
             variant="contained"
             onClick={onClickEmail}
           >
@@ -97,20 +95,20 @@ function IdCheck({idFlag, onSetIdFlag, userId, onSetUserId}) {
           </GrButton>
         </Grid>
       </Grid>
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item>
+      <Grid container alignItems="center" className="id-check__inner-wrapper">
+        <Grid container justifyContent="space-between">
           <GrTextField
-            className="findid-form__field"
+            className="id-check__field"
             id="verification-number"
             label="인증번호"
             size="small"
+            error={isError}
+            helperText={isError ? "인증번호가 일치하지 않습니다." : ""}
             value={userValNumber}
             onChange={onUserValNumberHandler}
           />
-        </Grid>
-        <Grid item>
           <GrButton
-            className="findid-form__button"
+            className="id-check__button"
             variant="contained"
             onClick={onClickIdCheck}
           >
@@ -119,39 +117,32 @@ function IdCheck({idFlag, onSetIdFlag, userId, onSetUserId}) {
         </Grid>
       </Grid>
       <Modal open={authOpen}>
-        <Box sx={boxStyle}>
+        <Box className="id-check__box">
           <Grid
             container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
+            className="id-check__modal-wrapper"
+            alignItems="flex-end"
           >
-            <Grid item>
+            <Grid container justifyContent="center">
               <div> 인증되었습니다. </div>
             </Grid>
-            <Grid item>
+            <Grid container justifyContent="center" className="id-check__modal">
               <GrButton onClick={onClickAuth}>확인</GrButton>
             </Grid>
           </Grid>
         </Box>
       </Modal>
       <Modal open={emailOpen}>
-        <Box sx={boxStyle}>
+        <Box className="id-check__box">
           <Grid
             container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
+            className="id-check__modal-wrapper"
+            alignItems="flex-end"
           >
-            <Grid item>
-              {isCheck === true && (
-                <div> 인증메일이 발송되었습니다.</div>
-              )}
-              {isCheck === false && (
-                <div> 존재하지 않는 이메일입니다. </div>
-              )}
+            <Grid container justifyContent="center">
+              <div> 인증메일이 발송되었습니다.</div>
             </Grid>
-            <Grid item>
+            <Grid container justifyContent="center" className="id-check__modal">
               <GrButton onClick={onClickCheck}>확인</GrButton>
             </Grid>
           </Grid>
