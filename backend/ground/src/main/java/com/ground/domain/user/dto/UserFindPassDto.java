@@ -1,22 +1,20 @@
 package com.ground.domain.user.dto;
 
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UserLoginDto {
+public class UserFindPassDto {
 	private String username;
-	private String pass;
+	private String email;
 	
 	@Builder
-	public UserLoginDto(String username, String pass) {
+	public UserFindPassDto(String username, String email) {
 		this.username = username;
-		this.pass = pass;
+		this.email = email;
 	}
 
 
 }
-

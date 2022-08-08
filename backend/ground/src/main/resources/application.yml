@@ -34,7 +34,7 @@ spring:
 jwt:
   secret: 1234
   token-validity-in-seconds: 60000
-  #30000 -> 30초
+  #60000 -> 1분
     
 
 logging.level:

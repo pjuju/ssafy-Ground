@@ -12,6 +12,7 @@ import com.ground.domain.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ground.domain.user.dto.UserFindPassDto;
 import com.ground.domain.user.dto.UserLoginDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
@@ -105,6 +106,16 @@ public class UserService {
 		return user.getUsername();
 	}
 	
+	public boolean modifyPassCheck(UserFindPassDto params) {
+		Optional<User> result = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
+		if(result.isEmpty()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
 	@Transactional
 	//비밀번호 변경
 	public boolean modifyPass(UserModifyPassDto params) {
@@ -118,17 +129,6 @@ public class UserService {
 			return false;
 		}
 	}
-	
-//	//토큰 생성
-//	@Transactional
-//	public String createToken(UserLoginDto params) {
-//	    User user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass())
-//	            .orElseThrow(IllegalArgumentException::new);
-//	      //비밀번호 확인 등의 유효성 검사 진행
-//	    String ftoken = jwtTokenProvider.createToken(user.getUsername());
-//	    user.saveFtoken(ftoken);
-//	    return ftoken;
-//	}
 	
 	//토큰 생성 후 저장 로그인
 	@Transactional
