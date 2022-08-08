@@ -211,15 +211,11 @@ public class UserService {
 
 	// 프로필 업데이트
 	@Transactional
-    public Long profileUpdate(Long id, UserUpdateDto userUpdateDto) {
+    public Long profileUpdate(Long id, UserUpdateDto entity) {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 
-        user.profileUpdate(userUpdateDto.getNickname(),
-                userUpdateDto.isPrivateYN(),
-                userUpdateDto.getAge(),
-                userUpdateDto.getGender(),
-                userUpdateDto.getIntroduce());
+        user.profileUpdate(entity, LocalDateTime.now());
 
         return id;
     }

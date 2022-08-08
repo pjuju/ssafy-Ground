@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 // bsh
-import org.springframework.data.domain.Page;
+
 @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK~!"),
         @ApiResponse(code = 401, message = "Unauthorized"),

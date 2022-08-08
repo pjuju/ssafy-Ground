@@ -13,10 +13,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface NotificationAccountRepository extends JpaRepository<NotificationAccount, Long>{
+public interface NotificationBoardRepository extends JpaRepository<NotificationBoard, Long>{
 
-    Optional<NotificationAccount> findById(Long id);
-    List<NotificationAccount> findAllByToAndCheckYN(User user, boolean c);
+    Optional<NotificationBoard> findById(Long id);
 
-    List<NotificationAccountDto> findAllByToOrderByCheckYN(User user);
+    List<NotificationBoard> findAllByToAndCheckYN(User user, boolean c);
+
+    List<NotificationBoardDto> findAllByToOrderByCheckYN(User user);
 }
