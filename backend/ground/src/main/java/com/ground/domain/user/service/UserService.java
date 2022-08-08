@@ -107,7 +107,7 @@ public class UserService {
 	@Transactional
 	//비밀번호 변경
 	public boolean modifyPass(UserModifyPassDto params) {
-		User user = userRepository.findByEmail(params.getEmail()).orElseThrow(()
+		User user = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername()).orElseThrow(()
 				-> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 		try {
 			user.modifyPass(params.getPass());
@@ -143,6 +143,11 @@ public class UserService {
 	    
 	    
 	    return userState;
+	}
+	
+	public boolean checkValidity(String ftoken) {
+		boolean result = jwtTokenProvider.validateToken(ftoken);
+		return result;
 	}
 
 
