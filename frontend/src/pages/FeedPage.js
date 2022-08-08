@@ -1,29 +1,44 @@
-import { Grid } from "@mui/material";
+import "styles/common/Navbar.scss";
+import "styles/common/Notification.scss";
+import "styles/Feed/FeedPage.scss";
 import BottomNavbar from "components/common/Navbar/BottomNavbar";
 import SideNavbar from "components/common/Navbar/SideNavbar";
 import Notification from "components/common/Notification/Notification";
-import { setMenuIdx } from "modules/menu";
+import { setSideMenuIdx, setBottomMenuIdx } from "modules/menu";
+
+import { Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
 function FeedPage() {
-  const menuIdx = useSelector((state) => state.menu.menuIdx);
+  const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);
+  const bottomMenuIdx = useSelector((state) => state.menu.bottomMenuIdx);
 
   const dispatch = useDispatch();
 
-  const onSetMenuIdx = (menuIdx) => dispatch(setMenuIdx(menuIdx));
+  const onSetSideMenuIdx = (menuIdx) => dispatch(setSideMenuIdx(menuIdx));
+  const onSetBottomMenuIdx = (menuIdx) => dispatch(setBottomMenuIdx(menuIdx));
 
   return (
-    <div>
+    <div className="outlet">
       <Grid id="desktop" container>
-        <SideNavbar menuIdx={menuIdx} onSetMenuIdx={onSetMenuIdx} />
-        <Outlet />
+        <SideNavbar
+          sideMenuIdx={sideMenuIdx}
+          bottomMenuIdx={bottomMenuIdx}
+          onSetSideMenuIdx={onSetSideMenuIdx}
+          onSetBottomMenuIdx={onSetBottomMenuIdx}
+        />
+        <Outlet context={[onSetSideMenuIdx, onSetBottomMenuIdx]} />
         <Notification />
       </Grid>
       <Grid id="mobile" container>
-        <Outlet />
-        <Notification />
-        <BottomNavbar menuIdx={menuIdx} onSetMenuIdx={onSetMenuIdx} />
+        <Outlet context={[onSetSideMenuIdx, onSetBottomMenuIdx]} />
+        <BottomNavbar
+          sideMenuIdx={sideMenuIdx}
+          bottomMenuIdx={bottomMenuIdx}
+          onSetSideMenuIdx={onSetSideMenuIdx}
+          onSetBottomMenuIdx={onSetBottomMenuIdx}
+        />
       </Grid>
     </div>
   );

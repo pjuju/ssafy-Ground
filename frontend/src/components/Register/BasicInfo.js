@@ -14,6 +14,7 @@ const emailReg =
 
 function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
   const [isIdDupChecked, setIsIdDupChecked] = useState(false);
+  const [isSamePass, setIsSamePass] = useState(false);
   const [isEmailDupChecked, setIsEmailDupChecked] = useState(false);
   const [certCode, setCertCode] = useState(0);
   const [isCertcodeAuth, setIsCertcodeAuth] = useState(false);
@@ -27,6 +28,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
     setError,
     trigger,
     clearErrors,
+    setValue,
   } = useForm({
     defaultValues: {
       id: "",
@@ -35,19 +37,9 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
       email: "",
       cert: "",
     },
+    mode: "onBlur",
+    reValidateMode: "onChange",
   });
-
-  // 다음 버튼 핸들러
-  const onSubmit = (data) => {
-    const newBasicInfo = {
-      username: data.id,
-      pass: data.pass,
-      email: data.email,
-    };
-    changeBasicInfo(newBasicInfo);
-    // 컴포넌트전환
-    goToOtherInfo();
-  };
 
   // 아이디 중복 확인 버튼 핸들러
   const handleIdDupCheck = async () => {
@@ -64,6 +56,18 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
           clearErrors("id");
           setIsIdDupChecked(true);
         }
+      });
+    }
+  };
+
+  const handlePassCheck = () => {
+    if (getValues("pass") === getValues("passCheck")) {
+      setIsSamePass(true);
+      clearErrors("passCheck");
+    } else {
+      setError("passCheck", {
+        type: "notSamePass",
+        message: "비밀번호가 일치하지 않습니다.",
       });
     }
   };
@@ -113,6 +117,35 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
         type: "invalidCert",
         message: "인증번호가 일치하지 않습니다.",
       });
+    }
+  };
+
+  // 다음 버튼 핸들러
+  const onSubmit = (data) => {
+    if (isIdDupChecked === false) {
+      setError("id", {
+        type: "idDupCheck",
+        message: "아이디 중복확인을 해주세요.",
+      });
+    } else if (isEmailDupChecked === false) {
+      setError("email", {
+        type: "emailDupCheck",
+        message: "이메일 중복확인을 해주세요.",
+      });
+    } else if (isCertcodeAuth === false) {
+      setError("cert", {
+        type: "certAuth",
+        message: "인증번호 확인을 해주세요.",
+      });
+    } else {
+      const newBasicInfo = {
+        username: data.id,
+        pass: data.pass,
+        email: data.email,
+      };
+      changeBasicInfo(newBasicInfo);
+      // 컴포넌트전환
+      goToOtherInfo();
     }
   };
 
@@ -190,16 +223,20 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
           <Controller
             name="passCheck"
             control={control}
-            render={({ field }) => (
+            rules={{ required: "비밀번호를 한번 더 입력해주세요." }}
+            render={({ field: { name, ref, value } }) => (
               <GrTextField
                 className="register-form__password"
+                ref={ref}
+                name={name}
                 size="small"
                 label="비밀번호 확인"
                 type="password"
-                {...field}
-                {...register("passCheck", {
-                  required: "비밀번호를 한번 더 입력해주세요.",
-                })}
+                value={value}
+                onChange={(e) => {
+                  setValue("passCheck", e.target.value);
+                  handlePassCheck();
+                }}
               />
             )}
           />

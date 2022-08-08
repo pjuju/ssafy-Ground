@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import init from "./init";
-import menu from "./menu";
+import init from "modules/init";
+import menu from "modules/menu";
 
 const rootReducer = combineReducers({
   init,

@@ -10,11 +10,13 @@ import "styles/Register/RegisterPage.scss";
 
 import { useState, useEffect } from "react";
 import { signUp } from "api/register";
+import RegisterModal from "components/Register/RegisterModal";
 
 function RegisterPage() {
   const [next, setNext] = useState(false);
   const [basicInfo, setBasicInfo] = useState({});
   const [otherInfo, setOtherInfo] = useState({});
+  const [open, setOpen] = useState(false);
 
   // 다음 버튼 핸들러
   const goToOtherInfo = () => {
@@ -24,19 +26,28 @@ function RegisterPage() {
   };
   // state 변경 함수
   const changeBasicInfo = (newBasicInfo) => {
-    console.log(newBasicInfo);
     setBasicInfo(newBasicInfo);
   };
   const changeOtherInfo = (newOtherInfo) => {
-    console.log(newOtherInfo);
     setOtherInfo(newOtherInfo);
+    sendRequest();
   };
   // 회원가입 요청
   const sendRequest = () => {
     let info = {};
     Object.assign(info, basicInfo, otherInfo);
     console.log(info);
-    // signUp(info);
+    signUp(
+      info,
+      (res) => {
+        if (res.data === true) {
+          setOpen(true);
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   };
 
   useEffect(() => {
@@ -93,6 +104,7 @@ function RegisterPage() {
           />
         )}
       </Grid>
+      <RegisterModal open={open} setOpen={setOpen}/>
     </Container>
   );
 }

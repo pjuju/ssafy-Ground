@@ -2,8 +2,10 @@
 $oauth-mobile-button-size: 200px;
 $oauth-tablet-button-size: 200px;
 $oauth-desktop-button-size: 200px;
+
+$primary: #54bab9;
 $light-gray: #757575;
-$super-light-gray: #dcdcdc;
+$super-light-gray: rgba(0, 0, 0, 0.1);
 
 /* 반응형 화면 크기*/
 $mobile: 767px;
@@ -12,150 +14,386 @@ $desktop: 1024px;
 $wide-desktop: 1249px;
 
 @mixin mobile {
-	@media (max-width: $mobile) {
-		@content;
-	}
+  @media (max-width: $mobile) {
+    @content;
+  }
 }
 
 @mixin tablet {
-	@media (min-width: #{$mobile+1}) and (max-width: $tablet) {
-		@content;
-	}
+  @media (min-width: #{$mobile+1}) and (max-width: $tablet) {
+    @content;
+  }
 }
 
 @mixin desktop {
-	@media (min-width: $desktop) and (max-width: #{#{$wide-desktop}-1
-
-	}) {
-	@content;
-}
+  @media (min-width: $desktop) and (max-width: #{$wide-desktop}) {
+    @content;
+  }
 }
 
 @mixin wide-desktop {
-	@media (min-width: $wide-desktop) {
-		@content;
-	}
+  @media (min-width: #{$wide-desktop + 1}) {
+    @content;
+  }
+}
+
+@mixin custom-scrollbar {
+  height: 100%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $primary;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    margin-top: 6rem;
+    background: #54bab824;
+  }
+}
+
+@mixin interest-filter {
+  width: 100%;
+  padding: 0rem 2rem 0.5rem 2rem;
+
+  &__chips {
+    width: 94%;
+    left: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+
+    @include custom-scrollbar();
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+
+    & div {
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      &.MuiChip-root {
+        color: rgba(24, 151, 143, 1);
+        background-color: rgba(84, 186, 185, 0.12);
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      & .MuiChip-deleteIcon {
+        color: rgba(24, 151, 143, 0.7);
+      }
+    }
+  }
+
+  &__icon {
+    width: 6%;
+    text-align: end;
+  }
+}
+
+#desktop {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  @include tablet() {
+    display: none;
+  }
+
+  @include mobile() {
+    display: none;
+  }
+
+  & .content {
+    @include custom-scrollbar();
+
+    width: 56% !important;
+
+    &__title {
+      &-desktop {
+        display: flex;
+        align-items: center;
+        padding: 2rem;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+        position: fixed;
+        width: 56%;
+        top: 0;
+        z-index: 1;
+        font-size: 1vw;
+        background: #fff;
+
+        & h2 {
+          display: inline;
+          cursor: pointer;
+        }
+
+        @include tablet() {
+          display: none;
+        }
+
+        @include mobile() {
+          display: none;
+        }
+      }
+
+      &-mobile {
+        @include desktop() {
+          display: none;
+        }
+      }
+    }
+
+    &__inner {
+
+      /* 최신 글 피드의 운동 종목 칩들 */
+      &__filter {
+        @include interest-filter();
+      }
+    }
+  }
+
+  & #inner {
+    padding-top: 13%;
+
+    /* 플로팅 버튼 */
+    & .fab-write {
+      position: fixed;
+      bottom: 5%;
+      right: 25%;
+    }
+  }
+}
+
+#mobile {
+  height: 100vh;
+
+  @include wide-desktop() {
+    display: none;
+  }
+
+  @include desktop() {
+    display: none;
+  }
+
+  & .content {
+    width: 100% !important;
+    @include custom-scrollbar();
+
+    &::-webkit-scrollbar-track {
+      margin-top: 4rem;
+    }
+
+    &__title {
+      padding: 2rem;
+
+      &-desktop {
+        @include tablet() {
+          display: none !important;
+        }
+
+        @include mobile() {
+          display: none !important;
+        }
+      }
+    }
+
+    &__inner {
+      padding-top: 3rem;
+      padding-bottom: 2rem;
+
+      /* 최신 글 피드의 운동 종목 칩들 */
+      &__filter {
+        @include interest-filter();
+
+        padding: 0rem 2.6rem 0.5rem 2.6rem;
+
+        &__chips {
+          width: 94%;
+        }
+
+        &__icon {
+          width: 6%;
+          text-align: end;
+        }
+      }
+    }
+  }
+
+  & #inner {
+    padding-top: 10%;
+
+    & .fab-write {
+      position: fixed;
+      bottom: 10%;
+      right: 5%;
+    }
+  }
+}
+
+#titlebar {
+  @include desktop() {
+    display: none;
+  }
+
+  @include wide-desktop() {
+    display: none;
+  }
+
+  position: fixed;
+  z-index: 1;
+  text-align: center;
+  padding-right: 2.5rem;
+  background-color: #fff;
+  color: #000;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+
+  & .titlebar {
+    position: fixed;
+    top: 0;
+
+    &__toolbar {
+      width: 100%;
+    }
+
+    &__text {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2rem;
+  padding-top: 1rem;
 }
 
 /* 외부 CSS 애니메이션 */
 .heartbeat:hover {
-	-webkit-animation: heartbeat 1.5s ease-in-out infinite both;
-	animation: heartbeat 1.5s ease-in-out infinite both;
+  -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
+  animation: heartbeat 1.5s ease-in-out infinite both;
 }
 
 @-webkit-keyframes heartbeat {
-	from {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-		-webkit-transform-origin: center center;
-		transform-origin: center center;
-		-webkit-animation-timing-function: ease-out;
-		animation-timing-function: ease-out;
-	}
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
 
-	10% {
-		-webkit-transform: scale(0.91);
-		transform: scale(0.91);
-		-webkit-animation-timing-function: ease-in;
-		animation-timing-function: ease-in;
-	}
+  10% {
+    -webkit-transform: scale(0.91);
+    transform: scale(0.91);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
 
-	17% {
-		-webkit-transform: scale(0.98);
-		transform: scale(0.98);
-		-webkit-animation-timing-function: ease-out;
-		animation-timing-function: ease-out;
-	}
+  17% {
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
 
-	33% {
-		-webkit-transform: scale(0.87);
-		transform: scale(0.87);
-		-webkit-animation-timing-function: ease-in;
-		animation-timing-function: ease-in;
-	}
+  33% {
+    -webkit-transform: scale(0.87);
+    transform: scale(0.87);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
 
-	45% {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-		-webkit-animation-timing-function: ease-out;
-		animation-timing-function: ease-out;
-	}
+  45% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
 }
 
 @keyframes heartbeat {
-	from {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-		-webkit-transform-origin: center center;
-		transform-origin: center center;
-		-webkit-animation-timing-function: ease-out;
-		animation-timing-function: ease-out;
-	}
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
 
-	10% {
-		-webkit-transform: scale(0.91);
-		transform: scale(0.91);
-		-webkit-animation-timing-function: ease-in;
-		animation-timing-function: ease-in;
-	}
+  10% {
+    -webkit-transform: scale(0.91);
+    transform: scale(0.91);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
 
-	17% {
-		-webkit-transform: scale(0.98);
-		transform: scale(0.98);
-		-webkit-animation-timing-function: ease-out;
-		animation-timing-function: ease-out;
-	}
+  17% {
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
 
-	33% {
-		-webkit-transform: scale(0.87);
-		transform: scale(0.87);
-		-webkit-animation-timing-function: ease-in;
-		animation-timing-function: ease-in;
-	}
+  33% {
+    -webkit-transform: scale(0.87);
+    transform: scale(0.87);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
 
-	45% {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-		-webkit-animation-timing-function: ease-out;
-		animation-timing-function: ease-out;
-	}
+  45% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
 }
 
 .pulsate-fwd:hover {
-	-webkit-animation: pulsate-fwd 0.5s ease-in-out infinite both;
-	animation: pulsate-fwd 0.5s ease-in-out infinite both;
+  -webkit-animation: pulsate-fwd 0.5s ease-in-out infinite both;
+  animation: pulsate-fwd 0.5s ease-in-out infinite both;
 }
 
 @-webkit-keyframes pulsate-fwd {
-	0% {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-	}
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
 
-	50% {
-		-webkit-transform: scale(1.1);
-		transform: scale(1.1);
-	}
+  50% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
 
-	100% {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-	}
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
 }
 
 @keyframes pulsate-fwd {
-	0% {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-	}
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
 
-	50% {
-		-webkit-transform: scale(1.1);
-		transform: scale(1.1);
-	}
+  50% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
 
-	100% {
-		-webkit-transform: scale(1);
-		transform: scale(1);
-	}
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
 }
