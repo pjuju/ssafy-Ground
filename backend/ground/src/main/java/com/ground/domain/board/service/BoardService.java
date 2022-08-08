@@ -292,7 +292,43 @@ public class BoardService {
         board.setCommentCnt(board.getCommentCnt()-1);
     }
 
+    // -----------------BSH-----------------
+    // 유저가 쓴 피드 조회
+    @Transactional
+    public List<BoardResponseDto> getMyBoard(long userId, Pageable pageable, long fromId) {
 
+        User user = userRepository.findById(fromId).get();
+        List<BoardResponseDto> result = new ArrayList<>();
+        List<Board> boardList = boardRepository.findAllByUserId(userId, pageable);
 
+        for (Board board : boardList) {
+            result.add(new BoardResponseDto(board, user));
+        }
+        return result;
+    }
 
+    // 저장한 피드 조회
+    @Transactional
+    public List<BoardResponseDto> getSaveBoard(long userId, Pageable pageable, long fromId) {
+        List<Long> boardIdList = new ArrayList<>();
+        List<BoardSave> saveList = boardSaveRepository.findAllByUserId(userId);
+        for (BoardSave boardSave : saveList) boardIdList.add(boardSave.getBoard().getId());
+
+        User user = userRepository.findById(fromId).get();
+        List<User> userList = new ArrayList<>();
+        // 작성자가 공개유저
+        List<User> openUserList = userRepository.findAllByPrivateYN(false);
+        userList.addAll(openUserList);
+        // 작성자가 팔로우 유저
+        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        for (Follow follow : followList) userList.add(follow.getToUserId());
+        // 작성자가 나
+        userList.add(user);
+
+        List<Board> boardList = boardRepository.findAllByIdInAndUserInAndPrivateYN(boardIdList, userList,false, pageable);
+        List<BoardResponseDto> result = new ArrayList<>();
+        for (Board board : boardList) result.add(new BoardResponseDto(board, user));
+
+        return result;
+    }
 }

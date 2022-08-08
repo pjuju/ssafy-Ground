@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -151,6 +153,19 @@ public class BoardController {
         return new CommentResponseDto(comment);
     }
 
+    // -----------------BSH-----------------
+    // 유저가 쓴 피드 조회
+    @ApiOperation(value = "유저가 쓴 피드 조회")
+    @GetMapping("/list/me/{userId}/{fromId}")
+    public List<BoardResponseDto> getMyBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable, @PathVariable long fromId) {
+        return boardService.getMyBoard(userId, pageable, fromId);
+    }
 
+    // 저장한 피드 조회
+    @ApiOperation(value = "저장한 피드 조회")
+    @GetMapping("/list/save/{userId}/{fromId}")
+    public List<BoardResponseDto> getSaveBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable, @PathVariable long fromId) {
+        return boardService.getSaveBoard(userId, pageable, fromId);
+    }
 
 }

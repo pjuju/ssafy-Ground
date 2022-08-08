@@ -13,4 +13,6 @@ public interface BoardSaveRepository extends JpaRepository<BoardSave, Long> {
     Optional<BoardSave> findByUserAndBoard(User user, Board board);
 
     List<BoardSave> findAllByUser(User user);
+
+    List<BoardSave> findAllByUserId(long userId);
 }

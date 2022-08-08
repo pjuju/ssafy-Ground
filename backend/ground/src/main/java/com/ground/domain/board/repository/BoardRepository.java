@@ -1,5 +1,6 @@
 package com.ground.domain.board.repository;
 
+import com.ground.domain.board.dto.BoardResponseDto;
 import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -20,5 +21,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findAllByCategoryIdInAndLocationIdInAndContentContainingIgnoreCaseAndRegDttmBetweenAndPrivateYNAndUserIn(List<Long> category, List<Long> location, String word, LocalDateTime startDate, LocalDateTime endDate, boolean b, List<User> userList, Pageable pageable);
 
-
+    // -----------------BSH-----------------
+    List<Board> findAllByUserId(long userId, Pageable pageable);
+    List<Board> findAllByIdInAndUserInAndPrivateYN(List<Long> Id, List<User> userList, boolean tf, Pageable pageable);
 }
