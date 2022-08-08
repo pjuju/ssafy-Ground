@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ground.domain.jwt.TokenResponse;
 import com.ground.domain.user.dto.UserFindPassDto;
 import com.ground.domain.user.dto.UserLoginDto;
+import com.ground.domain.user.dto.UserLoginResponseDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.dto.UserRegisterDto;
@@ -125,12 +126,16 @@ public class UserController {
     
     
     @PostMapping("/login")
-    @ApiOperation(value = "로그인", response = String.class)
-    public UserStateDto login(@RequestBody UserLoginDto params){
+    @ApiOperation(value = "로그인", response = UserStateDto.class)
+    public UserLoginResponseDto login(@RequestBody UserLoginDto params){
     	return userService.login(params);
     }
     
     @GetMapping("/state")
+    @ApiOperation(value = "유저상태정보 전송", response = UserStateDto.class)
+    public UserStateDto userState(@RequestHeader String ftoken) {
+    	return userService.userState(ftoken);
+    }
     
     @GetMapping("/token/{ftoken}")
     @ApiOperation(value = "유효성검사", response = boolean.class)

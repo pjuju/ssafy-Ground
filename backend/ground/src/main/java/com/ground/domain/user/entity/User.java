@@ -130,6 +130,10 @@ public class User {
     	this.ftoken = ftoken;
     }
     
+    public void saveModDttm(LocalDateTime modDttm) {
+    	this.modDttm = modDttm;
+    }
+    
     @Builder
 	public User(String username, String pass, String email, String nickname, Age age, Gender gender, String introduce, 
 			LocalDateTime regDttm, boolean delYN, boolean registerYN, String userImage) {

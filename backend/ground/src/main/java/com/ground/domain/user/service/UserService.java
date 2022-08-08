@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.ground.domain.user.dto.UserFindPassDto;
 import com.ground.domain.user.dto.UserLoginDto;
+import com.ground.domain.user.dto.UserLoginResponseDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.dto.UserRegisterDto;
@@ -123,6 +124,7 @@ public class UserService {
 				-> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 		try {
 			user.modifyPass(params.getPass());
+			user.saveModDttm(LocalDateTime.now());
 			return true;
 		}
 		catch(Exception e){
@@ -132,19 +134,38 @@ public class UserService {
 	
 	//토큰 생성 후 저장 로그인
 	@Transactional
-	public UserStateDto login(UserLoginDto params) {
-	    User user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass())
-	            .orElseThrow(IllegalArgumentException::new);
-	      //비밀번호 확인 등의 유효성 검사 진행
-	    String ftoken = jwtTokenProvider.createToken(user.getUsername());
-	    user.saveFtoken(ftoken);
-	    UserStateDto userState = new UserStateDto(user.getUsername(), user.getEmail(), user.getNickname(), 
+	public UserLoginResponseDto login(UserLoginDto params) {
+		UserLoginResponseDto ulrd = new UserLoginResponseDto();
+		try {
+			Optional<User> user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass());
+			if(user.isEmpty()) {
+				ulrd.setResult("fail");
+				return ulrd;
+			}
+			else {
+				String ftoken = jwtTokenProvider.createToken(user.get().getUsername());
+				user.get().saveFtoken(ftoken);
+				ulrd.setResult("success");
+				ulrd.setFtoken(ftoken);
+				ulrd.setRegisterYN(user.get().isRegisterYN());
+				return ulrd;
+			}
+		}
+		catch(Exception e) {
+			ulrd.setResult("fail");
+			return ulrd;
+		}
+	}
+	
+	public UserStateDto userState(String ftoken) {
+		String username = jwtTokenProvider.getSubject(ftoken);
+		User user = userRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
+		UserStateDto userstate = new UserStateDto(user.getUsername(), user.getEmail(), user.getNickname(), 
 	    		user.getFtoken(), user.getIntroduce(), user.getUserImage(), user.getGender(), user.getAge(), 
 	    		user.isPrivateYN(), user.isRegisterYN());
-	    
-	    
-	    return userState;
+		return userstate;
 	}
+	
 	
 	public boolean checkValidity(String ftoken) {
 		boolean result = jwtTokenProvider.validateToken(ftoken);
