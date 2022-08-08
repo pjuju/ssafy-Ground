@@ -23,6 +23,7 @@ import moment from "moment";
 
 import { search } from "api/search";
 import UserSearchResult from "./UserSearchResult";
+import LatestSearch from "./LatestSearch";
 
 const dateRadio = date.map((item, index) => (
   <FormControlLabel
@@ -169,43 +170,40 @@ function Search() {
             radio={radio}
             setRadio={setRadio}
           />
-          {standard === "board" && (
-            <>
-              <Grid className="top__date-picker" container justifyContent="end">
-                <FormControl>
-                  <ThemeProvider theme={theme}>
-                    <RadioGroup
-                      row
-                      value={dateRange}
-                      onChange={(e) => {
-                        setDateRange(e.target.value);
-                      }}
-                    >
-                      {dateRadio}
-                    </RadioGroup>
-                  </ThemeProvider>
-                </FormControl>
-              </Grid>
-              {dateRange === "custom" && (
-                <Grid
-                  className="top__date-picker"
-                  container
-                  justifyContent="end"
-                >
-                  <StartDatePicker
-                    startDate={startDate}
-                    setStartDate={setStartDate}
-                  />
-                  <EndDatePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    setEndDate={setEndDate}
-                  />
-                </Grid>
-              )}
-            </>
-          )}
         </Grid>
+        <LatestSearch />
+        {standard === "board" && (
+          <>
+            <Grid className="top__date-picker" container justifyContent="end">
+              <FormControl>
+                <ThemeProvider theme={theme}>
+                  <RadioGroup
+                    row
+                    value={dateRange}
+                    onChange={(e) => {
+                      setDateRange(e.target.value);
+                    }}
+                  >
+                    {dateRadio}
+                  </RadioGroup>
+                </ThemeProvider>
+              </FormControl>
+            </Grid>
+            {dateRange === "custom" && (
+              <Grid className="top__date-picker" container justifyContent="end">
+                <StartDatePicker
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                />
+                <EndDatePicker
+                  startDate={startDate}
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                />
+              </Grid>
+            )}
+          </>
+        )}
       </form>
       <Grid className="search-inner__result" container direction="column">
         {searchResult.length !== 0 && standard === "board" && (
@@ -216,7 +214,9 @@ function Search() {
                 key={index}
                 item
                 sx={
-                  sortType === item.id ? { color: "black", fontWeight: "bold" } : {}
+                  sortType === item.id
+                    ? { color: "black", fontWeight: "bold" }
+                    : {}
                 }
                 onClick={(e) => {
                   setSortType(item.id);

@@ -37,6 +37,15 @@
   &__date-select:last-child {
     margin-right: 0;
   }
+
+  &__date-picker {
+    position: relative;
+  }
+}
+
+.latest-search {
+  position: relative;
+  z-index: 2000;
 }
 
 .filter-modal {
