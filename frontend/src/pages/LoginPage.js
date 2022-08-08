@@ -12,6 +12,7 @@ import GrButton from "components/common/GrButton";
 import { useState } from "react";
 import { Divider } from "@mui/material";
 import { login } from "api/login";
+import GrTextField from "components/common/GrTextField";
 
 function LoginPage() {
   const [userId, setUserId] = useState("");
@@ -62,11 +63,11 @@ function LoginPage() {
         username: userId,
         pass: userPW,
       };
-      console.log(info);
       login(
         info,
         (res) => {
-          console.log(res.data);
+          window.localStorage.setItem("token", res.data.ftoken);
+          // console.log(res.data);
         },
         (err) => {
           console.log(err);
@@ -87,14 +88,14 @@ function LoginPage() {
         <Grid className="login-form__logo" item>
           <img className="logo" src={logo} alt="text_logo" width="300px" />
         </Grid>
-        <TextField
+        <GrTextField 
           {...idProps}
           value={userId}
           onChange={(e) => {
             setUserId(e.target.value);
           }}
         />
-        <TextField
+        <GrTextField
           {...pwProps}
           value={userPW}
           type="password"
