@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ground.domain.jwt.TokenResponse;
+import com.ground.domain.user.dto.UserFindPassDto;
 import com.ground.domain.user.dto.UserLoginDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
@@ -100,6 +101,12 @@ public class UserController {
     @ApiOperation(value = "아이디 찾기", response = String.class)
     public String findId(@PathVariable String email) {
     	return userService.findId(email);
+    }
+    
+    @GetMapping("/modifyPass")
+    @ApiOperation(value = "비밀번호 변경을 위한 아이디, 이메일 확인", response = boolean.class)
+    public boolean modifyPassCheck(@RequestBody UserFindPassDto params) {
+    	return userService.modifyPassCheck(params);
     }
     
     @PutMapping("/modifyPass")
