@@ -114,7 +114,7 @@ function LoginPage() {
             <a href="/register">회원가입</a>
           </Grid>
           <Grid item>
-            <a href="/">아이디 찾기 / 비밀번호 찾기</a>
+            <a href="/findid">아이디 찾기 / 비밀번호 찾기</a>
           </Grid>
         </Grid>
       </Grid>
