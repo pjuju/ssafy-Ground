@@ -84,7 +84,7 @@ public class UserController {
         return userService.checkEmail(email);
     }
     
-    @GetMapping("/emailAuth/{email}")
+    @GetMapping("/emailAuth")
     @ApiOperation(value = "이메일 인증", response = String.class)
     public String emailAuth(String email) throws UnsupportedEncodingException{
         return mailService.joinEmail(email);
@@ -121,6 +121,10 @@ public class UserController {
     public UserStateDto login(@RequestBody UserLoginDto params){
     	return userService.login(params);
     }
+    
+    //유효성검사
+    @GetMapping("/token/{ftoken}")
+    @
 
     @PutMapping("/userDetail")
     @ApiOperation(value = "회원 상세정보 추가", response = String.class)
