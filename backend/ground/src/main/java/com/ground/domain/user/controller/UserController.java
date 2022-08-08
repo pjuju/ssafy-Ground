@@ -122,9 +122,11 @@ public class UserController {
     	return userService.login(params);
     }
     
-    //유효성검사
     @GetMapping("/token/{ftoken}")
-    @
+    @ApiOperation(value = "유효성검사", response = boolean.class)
+    public boolean checkValidity(@PathVariable String ftoken) {
+    	return userService.checkValidity(ftoken);
+    }
 
     @PutMapping("/userDetail")
     @ApiOperation(value = "회원 상세정보 추가", response = String.class)
