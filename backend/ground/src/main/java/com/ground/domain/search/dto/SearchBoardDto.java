@@ -25,7 +25,7 @@ public class SearchBoardDto {
     private List<Integer> location;   // 지역 id들 리스트 (필터링 없으면 다)
     private LocalDate startDate;      // 필터링 시작일
     private LocalDate endDate;        // 필터링 마지막일 ( 없으면 오늘 날짜로 )
-
+    private int typel; // 최신, 좋아요, 댓글, 스크랩
     public SearchBoard toEntity() {
         return SearchBoard.builder()
                 .word(word)

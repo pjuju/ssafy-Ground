@@ -15,6 +15,7 @@ import javax.swing.text.html.parser.Entity;
 @NoArgsConstructor
 public class SearchUserDto {
     private String word;
+    private Long id;
 
     public SearchUser toEntity() {
         return SearchUser.builder()
@@ -25,6 +26,7 @@ public class SearchUserDto {
     @Builder
     public SearchUserDto(SearchUser entity){
         this.word = entity.getWord();
+        this.id = entity.getId();
     }
 
 }

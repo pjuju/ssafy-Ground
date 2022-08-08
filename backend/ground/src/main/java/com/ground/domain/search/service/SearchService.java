@@ -1,6 +1,8 @@
 package com.ground.domain.search.service;
 
 import com.ground.domain.board.dto.BoardResponseDto;
+import com.ground.domain.board.entity.Board;
+import com.ground.domain.board.repository.BoardRepository;
 import com.ground.domain.board.service.BoardService;
 import com.ground.domain.search.dto.SearchBoardDto;
 import com.ground.domain.search.dto.SearchUserDto;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class SearchService {
 
     private final SearchUserRepository searchUserRepository;
     private final SearchBoardRepository searchBoardRepository;
+    private final BoardRepository boardRepository;
     private final sUserRepository userRepository;
     private final UserComparator userComparator;
 
@@ -104,45 +108,47 @@ public class SearchService {
 
 
     // ========================= 게시글 검색 ================================
-    @Transactional
-    public List<BoardResponseDto> searchBoard(SearchBoardDto params, User user, Pageable pageable) {
-        SearchBoard now = params.toEntity();
-        String word = now.getWord();
-        now.setUser(user);
-        searchBoardRepository.save(now);
-
-        List<SearchBoard> searchBoardList = searchBoardRepository.findAllByUserOrderByIdDesc(user);
-
-        // 하나라도 있으면
-        if (searchBoardList.size() >= 1) {
-            SearchBoard first = searchBoardList.get(1);
-            // 이전 첫번째꺼랑 같으면 그거 삭제해줌
-            if (word.equals(first.getWord())) {
-                searchBoardList.remove(first);
-                searchBoardRepository.delete(first);
-            }
-            // 10개 넘어가면 삭제해줌(한 사람당 10개씩만 유지)
-            if (searchBoardList.size() == 11) {
-                searchBoardRepository.delete(searchBoardList.get(10));
-                searchBoardList.remove(10);
-            }
-        }
-
-
-        List<String> age = params.getAge();
-        List<Integer> category = params.getCategory();
-        LocalDateTime startDate = params.getStartDate().atTime(LocalTime.MIN);
-        LocalDateTime endDate = params.getEndDate().atTime(LocalTime.MAX);
-
-        params.getStartDate();
-        params.getLocation();
-        List<String> gender = params.getGender();
-
-
-
-    }
-
-
+//    @Transactional
+//    public List<BoardResponseDto> searchBoard(SearchBoardDto params, User user, int pageNumber) {
+//        SearchBoard now = params.toEntity();
+//        String word = now.getWord();
+//        now.setUser(user);
+//        searchBoardRepository.save(now);
+//
+//        List<SearchBoard> searchBoardList = searchBoardRepository.findAllByUserOrderByIdDesc(user);
+//
+//        // 하나라도 있으면
+//        if (searchBoardList.size() >= 1) {
+//            SearchBoard first = searchBoardList.get(1);
+//            // 이전 첫번째꺼랑 같으면 그거 삭제해줌
+//            if (word.equals(first.getWord())) {
+//                searchBoardList.remove(first);
+//                searchBoardRepository.delete(first);
+//            }
+//            // 10개 넘어가면 삭제해줌(한 사람당 10개씩만 유지)
+//            if (searchBoardList.size() == 11) {
+//                searchBoardRepository.delete(searchBoardList.get(10));
+//                searchBoardList.remove(10);
+//            }
+//        }
+//
+//        List<String> age = params.getAge();
+//        List<Integer> category = params.getCategory();
+//        LocalDateTime startDate = params.getStartDate().atTime(LocalTime.MIN);
+//        LocalDateTime endDate = params.getEndDate().atTime(LocalTime.MAX);
+//        List<String> gender = params.getGender();
+//        List<Integer> location = params.getLocation();
+//        List<User> userList = new ArrayList<>();
+//        userList.addAll(userRepository.findAllByAgeIn(age));
+//        userList.addAll(userRepository.findAllByGender(gender));
+//
+//        List<Board> boardList =
+//
+//
+//
+//    }
+//
+//
     @Component
     public static class UserComparator implements Comparator<sUserDto> {
         @Override

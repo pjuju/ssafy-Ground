@@ -14,7 +14,10 @@ import com.ground.domain.user.entity.User;
 import com.ground.domain.user.entity.UserCategory;
 import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.springframework.data.domain.PageRequest.of;
 
 
 @Service
@@ -40,7 +45,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final BoardSaveRepository boardSaveRepository;
-    private final BoardComparator boardComparator;
+
     private final BoardFollowRepository followRepository;
 
     private final CommentRepository commentReository;
@@ -145,6 +150,7 @@ public class BoardService {
     public void likeBoard(Long boardId) {
         User user = userRepository.findById(new Long(1)).get();
         Board board = boardRepository.findById(boardId).get();
+        board.setLikeCnt(board.getLikeCnt()+1);
         boardLikeRepository.save(new BoardLike(user, board));
 
     }
@@ -156,6 +162,7 @@ public class BoardService {
         User user = userRepository.findById(new Long(1)).get();
         Board board = boardRepository.findById(boardId).get();
         BoardLike boardLike = boardLikeRepository.findByUserAndBoard(user, board).get();
+        board.setLikeCnt(board.getLikeCnt()-1);
         boardLikeRepository.delete(boardLike);
     }
 
@@ -165,6 +172,7 @@ public class BoardService {
     public void saveBoard(Long boardId) {
         User user = userRepository.findById(new Long(1)).get();
         Board board = boardRepository.findById(boardId).get();
+        board.setSaveCnt(board.getSaveCnt()+1);
         boardSaveRepository.save(new BoardSave(user, board));
     }
 
@@ -175,6 +183,7 @@ public class BoardService {
         User user = userRepository.findById(new Long(1)).get();
         Board board = boardRepository.findById(boardId).get();
         BoardSave boardSave = boardSaveRepository.findByUserAndBoard(user, board).get();
+        board.setSaveCnt(board.getSaveCnt()-1);
         boardSaveRepository.delete(boardSave);
     }
 
@@ -182,7 +191,7 @@ public class BoardService {
 
     // ================= 관심종목 피드 조회 ========================
     @Transactional
-    public List<BoardResponseDto> getInterestBoard(User user, Pageable pageable) {
+    public List<BoardResponseDto> getInterestBoard(User user, int pageNumber) {
 
         // 카테고리
         List<Long> categoryIdList = new ArrayList<>();
@@ -199,10 +208,12 @@ public class BoardService {
         // 작성자가 나
         userList.add(user);
 
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
+
         // 카테고리 포함 AND 게시글이 공개 글 AND 작성자가 공개유저 OR 작성자가 팔로우 유저 OR 작성자가 나
-        List<Board> boardList = boardRepository.findAllByCategoryIdInAndUserInAndPrivateYN(categoryIdList, userList, false, pageable);
-        for (Board board : boardList) { lst.add(new BoardResponseDto(board)); }
-        Collections.sort(lst, boardComparator);
+        Page<Board> boardList = boardRepository.findAllByCategoryIdInAndUserInAndPrivateYN(categoryIdList, userList, false, pageable);
+        for (Board board : boardList) { lst.add(new BoardResponseDto(board, user)); }
+//        Collections.sort(lst, boardComparator);
         return lst;
     }
 
@@ -210,19 +221,21 @@ public class BoardService {
 
     // ================= 팔로우 피드 조회 ====================
     @Transactional
-    public List<BoardResponseDto> getFollowBoard(User user, Pageable pageable) {
+    public List<BoardResponseDto> getFollowBoard(User user, int pageNumber) {
 
         List<Follow> followList = followRepository.findAllByfromUserId(user);
         List<User> userList = new ArrayList<>();
         for (Follow follow : followList) userList.add(follow.getToUserId());
-        List<Board> boardList = boardRepository.findAllByUserInAndPrivateYN(userList, false, pageable);
+
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
+        Page<Board> boardList = boardRepository.findAllByUserInAndPrivateYN(userList, false, pageable);
         List<BoardResponseDto> lst = new ArrayList<>();
 
         for (Board board : boardList) {
-            lst.add(new BoardResponseDto(board));
+            lst.add(new BoardResponseDto(board, user));
         }
 
-        Collections.sort(lst, boardComparator);
+//        Collections.sort(lst, boardComparator);
         return lst;
     }
 
@@ -235,7 +248,7 @@ public class BoardService {
         comment.setBoard(board);
         comment.setRegDttm(LocalDateTime.now());
         Comment entity = commentReository.save(comment);
-
+        board.setCommentCnt(board.getCommentCnt()+1);
         return entity;
     }
 
@@ -254,19 +267,13 @@ public class BoardService {
     @Transactional
     public void deleteComment(Long commentId, User user) {
         // 유저 == 게시글 작성자 확인 필요
+        Comment comment = commentReository.findById(commentId).get();
         commentReository.deleteById(commentId);
+        Board board = boardRepository.findById(comment.getBoard().getId()).get();
+        board.setCommentCnt(board.getCommentCnt()-1);
     }
 
-    @Component
-    public static class BoardComparator implements Comparator<BoardResponseDto> {
-        @Override
-        public int compare(BoardResponseDto a, BoardResponseDto b) {
-            if (a.getRegDttm().isAfter(b.getRegDttm())) {
-                return 1;
-            }
-            return -1;
-        }
-    }
+
 
 
 }

@@ -6,6 +6,11 @@ import java.util.List;
 
 public interface sUserRepository extends JpaRepository<User, Long> {
     List<User> findByNicknameStartingWithIgnoreCase(String wordA);
+//    List<User> findAllByAgeIn(String wordA);
+//    List<User> findAllByAgeIn(String wordA);
+//
+//    userList.addAll(userRepository.findAllByAgeIn(age));
+//    userList.addAll(userRepository.findAllByGenderIn(gender));
 }
 
 

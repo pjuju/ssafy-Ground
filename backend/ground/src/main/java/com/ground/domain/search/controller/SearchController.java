@@ -78,22 +78,22 @@ public class SearchController {
 
 
 	// ============================ 게시글 검색! ========================
-	@ApiOperation(value = "게시글 검색")
-	@PostMapping("/board")
-	public List<BoardResponseDto> searchBoard(@RequestBody final SearchBoardDto params, @PageableDefault(size=3) Pageable pageable){
-		User user = userRepository.findById(new Long(1)).get();
-		return searchService.searchBoard(params, user, pageable);
-	}
-
-	// ============================ 게시글 최근 검색어 조회 ========================
-	@ApiOperation(value = "게시글 최근 검색어 조회")
-	@GetMapping("/board")
-	public String getSearchBoard(){ return "게시글 검색 리스트 조회!"; }
-
-	// ============================ 게시글 검색어 삭제 ========================
-	@ApiOperation(value = "게시글 검색어 삭제")
-	@ApiImplicitParam(name = "searchBoardId", value = "게시글 검색 PK", example = "1", required = true)
-	@DeleteMapping("/board/{searchBoardId}")
-	public String deleteSearchBoard(){ return "게시글 검색 결과 삭제!"; }
+//	@ApiOperation(value = "게시글 검색")
+//	@PostMapping("/board/{pageNumber}")
+//	public List<BoardResponseDto> searchBoard(@PathVariable int pageNumber, @RequestBody final SearchBoardDto params){
+//		User user = userRepository.findById(new Long(1)).get();
+//		return searchService.searchBoard(params, user, pageNumber);
+//	}
+//
+//	// ============================ 게시글 최근 검색어 조회 ========================
+//	@ApiOperation(value = "게시글 최근 검색어 조회")
+//	@GetMapping("/board")
+//	public String getSearchBoard(){ return "게시글 검색 리스트 조회!"; }
+//
+//	// ============================ 게시글 검색어 삭제 ========================
+//	@ApiOperation(value = "게시글 검색어 삭제")
+//	@ApiImplicitParam(name = "searchBoardId", value = "게시글 검색 PK", example = "1", required = true)
+//	@DeleteMapping("/board/{searchBoardId}")
+//	public String deleteSearchBoard(){ return "게시글 검색 결과 삭제!"; }
 
 }

@@ -3,6 +3,7 @@ package com.ground.domain.board.entity;
 import com.ground.domain.global.entity.Category;
 
 import com.ground.domain.global.entity.Location;
+import com.ground.domain.user.entity.Gender;
 import com.ground.domain.user.entity.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -68,6 +69,16 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    @Column(name = "likeCnt")
+    private int likeCnt = 0;
+
+    @Column(name = "saveCnt")
+    private int saveCnt = 0;
+
+    @Column(name = "commentCnt")
+    private int commentCnt = 0;
+
 
 
     @Builder
