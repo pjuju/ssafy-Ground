@@ -5,21 +5,27 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
 import com.ground.domain.user.dto.UserUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ground.domain.jwt.TokenResponse;
+import com.ground.domain.user.dto.UserLoginDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.dto.UserRegisterDto;
+import com.ground.domain.user.dto.UserStateDto;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
@@ -78,7 +84,7 @@ public class UserController {
         return userService.checkEmail(email);
     }
     
-    @GetMapping("/emailAuth")
+    @GetMapping("/emailAuth/{email}")
     @ApiOperation(value = "이메일 인증", response = String.class)
     public String emailAuth(String email) throws UnsupportedEncodingException{
         return mailService.joinEmail(email);
@@ -98,14 +104,22 @@ public class UserController {
     
     @PutMapping("/modifyPass")
     @ApiOperation(value = "비밀번호 변경", response = boolean.class)
+    //@RequestHeader String header, 
     public boolean modifyPass(@RequestBody UserModifyPassDto params) {
     	return userService.modifyPass(params);
     }
     
+//    @PostMapping("/login")
+//    @ApiOperation(value = "로그인", response = String.class)
+//    public ResponseEntity<TokenResponse> login(@RequestBody UserLoginDto params){
+//    	String ftoken = userService.createToken(params);
+//    	return ResponseEntity.ok().body(new TokenResponse(ftoken, "bearer"));   	
+//    }
+    
     @PostMapping("/login")
     @ApiOperation(value = "로그인", response = String.class)
-    public String login(){
-    	return "dd";
+    public UserStateDto login(@RequestBody UserLoginDto params){
+    	return userService.login(params);
     }
 
     @PutMapping("/userDetail")

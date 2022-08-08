@@ -6,12 +6,16 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.ground.domain.follow.repository.FollowRepository;
+import com.ground.domain.jwt.JwtTokenProvider;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ground.domain.user.dto.UserLoginDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.dto.UserRegisterDto;
+import com.ground.domain.user.dto.UserStateDto;
 import com.ground.domain.user.dto.UserUpdateDto;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
@@ -26,7 +30,10 @@ public class UserService {
 	
 	@Autowired 
 	private final UserRepository userRepository;
+	@Autowired
 	private final FollowRepository followRepository;
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	
 	@Transactional
 	//회원가입
@@ -109,6 +116,33 @@ public class UserService {
 		catch(Exception e){
 			return false;
 		}
+	}
+	
+//	//토큰 생성
+//	@Transactional
+//	public String createToken(UserLoginDto params) {
+//	    User user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass())
+//	            .orElseThrow(IllegalArgumentException::new);
+//	      //비밀번호 확인 등의 유효성 검사 진행
+//	    String ftoken = jwtTokenProvider.createToken(user.getUsername());
+//	    user.saveFtoken(ftoken);
+//	    return ftoken;
+//	}
+	
+	//토큰 생성 후 저장 로그인
+	@Transactional
+	public UserStateDto login(UserLoginDto params) {
+	    User user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass())
+	            .orElseThrow(IllegalArgumentException::new);
+	      //비밀번호 확인 등의 유효성 검사 진행
+	    String ftoken = jwtTokenProvider.createToken(user.getUsername());
+	    user.saveFtoken(ftoken);
+	    UserStateDto userState = new UserStateDto(user.getUsername(), user.getEmail(), user.getNickname(), 
+	    		user.getFtoken(), user.getIntroduce(), user.getUserImage(), user.getGender(), user.getAge(), 
+	    		user.isPrivateYN(), user.isRegisterYN());
+	    
+	    
+	    return userState;
 	}
 
 
