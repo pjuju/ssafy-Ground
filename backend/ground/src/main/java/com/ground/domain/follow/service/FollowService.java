@@ -1,8 +1,6 @@
 package com.ground.domain.follow.service;
 
-import com.ground.domain.follow.entity.Follow;
-import com.ground.domain.user.entity.User;
-import com.ground.domain.user.repository.UserRepository;
+import com.ground.domain.user.dto.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
 
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.math.BigInteger;
 import java.util.List;
 
 @RequiredArgsConstructor

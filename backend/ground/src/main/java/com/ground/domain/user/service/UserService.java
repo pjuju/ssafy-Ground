@@ -19,7 +19,7 @@ import com.ground.domain.user.dto.UserRegisterDto;
 import com.ground.domain.user.dto.UserStateDto;
 import com.ground.domain.user.dto.UserUpdateDto;
 import com.ground.domain.user.entity.User;
-import com.ground.domain.user.repository.UserRepository;
+import com.ground.domain.user.dto.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

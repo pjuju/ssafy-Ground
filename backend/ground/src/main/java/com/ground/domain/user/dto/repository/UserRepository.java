@@ -1,4 +1,4 @@
-package com.ground.domain.user.repository;
+package com.ground.domain.user.dto.repository;
 
 import java.util.List;
 import java.util.Optional;

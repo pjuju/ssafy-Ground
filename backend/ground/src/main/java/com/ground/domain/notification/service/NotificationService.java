@@ -7,18 +7,13 @@ import com.ground.domain.notification.entity.*;
 import com.ground.domain.notification.repository.NotificationAccountRepository;
 import com.ground.domain.notification.repository.NotificationBoardRepository;
 import com.ground.domain.user.entity.User;
-import com.ground.domain.user.repository.UserRepository;
+import com.ground.domain.user.dto.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
