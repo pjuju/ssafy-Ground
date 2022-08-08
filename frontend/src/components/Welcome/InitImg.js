@@ -1,10 +1,8 @@
-import theme from "components/common/theme.js";
 import userImageInput from "assets/images/userImageInput.png";
+import GrButton from "components/common/GrButton";
 
 import { useEffect, useRef } from "react";
-import { Button, Grid } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
-import GrButton from "components/common/GrButton";
+import { Grid } from "@mui/material";
 
 function InitImg({ img, onSetImg, onSetInitFlag }) {
   const selectUserImg = useRef("");

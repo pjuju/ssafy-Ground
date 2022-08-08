@@ -1,5 +1,6 @@
+import MediaSlider from "components/Feed/Article/MediaSlider";
+
 import { Grid } from "@mui/material";
-import MediaSlider from "./MediaSlider";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 
 function ArticleContent(props) {

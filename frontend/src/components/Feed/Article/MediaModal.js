@@ -1,6 +1,7 @@
+import MediaSlider from "components/Feed/Article/MediaSlider";
+
 import { Dialog, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import MediaSlider from "./MediaSlider";
 
 function MediaModal({ open, handleClose, src }) {
   return (

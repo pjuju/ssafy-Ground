@@ -1,13 +1,14 @@
-import { Grid } from "@mui/material";
+import "styles/common/Navbar.scss";
+import "styles/common/Notification.scss";
+import "styles/Feed/FeedPage.scss";
 import BottomNavbar from "components/common/Navbar/BottomNavbar";
 import SideNavbar from "components/common/Navbar/SideNavbar";
 import Notification from "components/common/Notification/Notification";
 import { setSideMenuIdx, setBottomMenuIdx } from "modules/menu";
+
+import { Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import "styles/common/Navbar.scss";
-import "styles/common/Notification.scss";
-import "styles/Feed/FeedPage.scss";
 
 function FeedPage() {
   const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);

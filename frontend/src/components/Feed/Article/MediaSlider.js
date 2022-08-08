@@ -1,12 +1,12 @@
 import temp1 from "assets/images/temp1.jpeg";
 import temp2 from "assets/images/temp2.jpeg";
 import temp3 from "assets/images/temp3.jpeg";
+import MediaModal from "components/Feed/Article/MediaModal";
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useState } from "react";
-import MediaModal from "./MediaModal";
 
 function MediaSlider() {
   const [open, setOpen] = useState(false);

@@ -1,3 +1,6 @@
+import theme from "../theme";
+import BadgeButton from "./BadgeButton";
+
 import { ThemeProvider } from "@emotion/react";
 import {
   Grid,
@@ -8,11 +11,8 @@ import {
 import HomeIcon from "@mui/icons-material/Home";
 import FiberNewOutlinedIcon from "@mui/icons-material/FiberNewOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import BadgeButton from "./BadgeButton";
 import PersonIcon from "@mui/icons-material/Person";
-import theme from "../theme";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 function BottomNavbar({
   sideMenuIdx,

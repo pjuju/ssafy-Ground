@@ -44,12 +44,14 @@ $wide-desktop: 1249px;
   &::-webkit-scrollbar {
     width: 8px;
   }
+
   &::-webkit-scrollbar-thumb {
     background: $primary;
     border-radius: 10px;
   }
+
   &::-webkit-scrollbar-track {
-    margin-top: 6.5rem;
+    margin-top: 6rem;
     background: #54bab824;
   }
 }
@@ -61,8 +63,15 @@ $wide-desktop: 1249px;
   &__chips {
     width: 94%;
     left: 0;
-    overflow-x: scroll;
+    overflow-x: auto;
     white-space: nowrap;
+
+    @include custom-scrollbar();
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
 
     & div {
       margin-right: 0.5rem;
@@ -70,7 +79,7 @@ $wide-desktop: 1249px;
 
       &.MuiChip-root {
         color: rgba(24, 151, 143, 1);
-        background-color: rgba(84, 186, 185, 0.15);
+        background-color: rgba(84, 186, 185, 0.12);
         font-weight: 700;
         font-size: 0.9rem;
       }
@@ -116,7 +125,7 @@ $wide-desktop: 1249px;
         width: 56%;
         top: 0;
         z-index: 1;
-        font-size: 1.3vw;
+        font-size: 1vw;
         background: #fff;
 
         & h2 {
@@ -141,6 +150,7 @@ $wide-desktop: 1249px;
     }
 
     &__inner {
+
       /* 최신 글 피드의 운동 종목 칩들 */
       &__filter {
         @include interest-filter();
@@ -149,7 +159,7 @@ $wide-desktop: 1249px;
   }
 
   & #inner {
-    padding-top: 15%;
+    padding-top: 13%;
 
     /* 플로팅 버튼 */
     & .fab-write {
@@ -196,6 +206,7 @@ $wide-desktop: 1249px;
     &__inner {
       padding-top: 3rem;
       padding-bottom: 2rem;
+
       /* 최신 글 피드의 운동 종목 칩들 */
       &__filter {
         @include interest-filter();

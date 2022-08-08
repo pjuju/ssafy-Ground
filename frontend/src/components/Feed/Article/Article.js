@@ -1,10 +1,10 @@
 import userImage from "assets/images/userImage.png";
+import ArticleActivity from "components/Feed/Article/ArticleActivity";
+import ArticleContent from "components/Feed/Article/ArticleContent";
+import ArticleInfo from "components/Feed/Article/ArticleInfo";
+import ArticleMore from "components/Feed/Article/ArticleMore";
 
 import { Box, Grid } from "@mui/material";
-import ArticleActivity from "./ArticleActivity";
-import ArticleContent from "./ArticleContent";
-import ArticleInfo from "./ArticleInfo";
-import ArticleMore from "./ArticleMore";
 import { useEffect } from "react";
 
 function Article({ articleData }) {

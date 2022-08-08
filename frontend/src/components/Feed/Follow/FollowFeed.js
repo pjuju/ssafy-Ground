@@ -1,12 +1,13 @@
-import { Fab, Grid } from "@mui/material";
 import { getFollowBoard } from "api/board";
+import Article from "components/Feed/Article/Article";
+import TitleBar from "components/common/TitleBar";
+import theme from "components/common/theme.js";
+
+import { Fab, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import Article from "../Article/Article";
-import TitleBar from "../../common/TitleBar";
 import ReactLoading from "react-loading";
 import { ThemeProvider } from "@emotion/react";
 import EditIcon from "@mui/icons-material/Edit";
-import theme from "components/common/theme.js";
 import { useOutletContext } from "react-router-dom";
 
 function FollowFeed() {

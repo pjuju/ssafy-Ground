@@ -5,7 +5,6 @@ import temp3 from "assets/images/temp3.jpeg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useState } from "react";
 
 function ModalSlider() {
   const settings = {

@@ -1,8 +1,8 @@
 import UnderLineLogo from "assets/images/underline_logo.png";
+import ProfileButton from "components/common/Navbar/ProfileButton";
 import "styles/common/Navbar.scss";
 
 import { Grid } from "@mui/material";
-import ProfileButton from "./ProfileButton";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 

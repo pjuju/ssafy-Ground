@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import { useEffect, useState } from "react";
 
 function ArticleInfo(props) {
   const formatDate = (date) => {
@@ -21,6 +20,11 @@ function ArticleInfo(props) {
     let min = Math.floor(diff / 60000); // 차이를 분으로 변환
     if (min < 60) {
       return min + "분 전";
+    }
+
+    let hour = Math.floor(diff / 360000); // 차이를 분으로 변환
+    if (hour < 24) {
+      return min + "시간 전";
     }
 
     // 날짜의 포맷을 변경
