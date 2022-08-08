@@ -23,14 +23,17 @@ spring:
     hibernate:
       ddl-auto: update
     properties:
+      show_sql: true
       hibernate:
-#        show_sql: true
       format_sql: true
-
-      
+   
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
+      
+jwt:
+  secret: 1234
+  token-validity-in-seconds: 30000
     
 
 logging.level:
