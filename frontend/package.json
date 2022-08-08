@@ -4,14 +4,11 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
-<<<<<<< HEAD
-    "@material-ui/icons": "^4.11.3",
-    "@mui/lab": "^5.0.0-alpha.93",
-=======
+    "@emotion/styled": "^11.10.0",
     "@hookform/resolvers": "^2.9.7",
+    "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.8.4",
->>>>>>> 7a966ffae713d94247237a6451fc77ca6a760f6f
+    "@mui/lab": "^5.0.0-alpha.93",
     "@mui/material": "^5.9.1",
     "@mui/x-date-pickers": "^5.0.0-beta.3",
     "@testing-library/jest-dom": "^5.16.4",

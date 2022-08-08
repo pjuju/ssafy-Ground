@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "styles/FindId/FindIdPage.scss";
 import { Grid }  from "@mui/material";
 import { Container } from "@mui/material";
@@ -10,14 +11,39 @@ import theme from "components/common/theme.js";
 import logo from "assets/images/text_logo.png";
 import IdTab from "components/FindId/IdTab";
 import PasswordTab from "components/FindId/PasswordTab";
+import { setIdFlag, setPwFlag, setUserEmail, setUserId } from "modules/find";
 
 function FindIdPage() {
-	const [value, setValue] = React.useState('1');
-	
+	const [value, setValue] = useState('1');
+  const state = useSelector((state) => state);
+	const userId = useSelector((state) => state.find.userId);
+  const idFlag = useSelector((state) => state.find.idFlag);
+  const pwFlag = useSelector((state) => state.find.pwFlag);
+  const userEmail = useSelector((state) => state.find.userEmail);
+
+  const dispatch = useDispatch();
+
+  const onSetUserId = (userId) => dispatch(setUserId(userId));
+  const onSetUserEmail = (userEmail) => dispatch(setUserEmail(userEmail));
+  const onSetIdFlag = (idFlag) => dispatch(setIdFlag(idFlag));
+  const onSetPwFlag = (pwFlag) => dispatch(setPwFlag(pwFlag));
+  
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    console.log(newValue);
   };
+
+  const onFlagHandler = (event) => {
+    onSetIdFlag(0);
+    onSetPwFlag(0);
+    onSetUserId("");
+    onSetUserEmail("");
+  }
+
+  useEffect(() => {
+    console.log(state);
+  });
 
 	return (
     <Container className="findid-form" maxwidth="xs" fixed>
@@ -42,16 +68,28 @@ function FindIdPage() {
                   aria-label="basic tabs example"
                   variant="fullWidth"
                 >
-                  <Tab label="아이디 찾기" value="1"/>
-                  <Tab label="비밀번호 찾기" value="2" />
+                  <Tab label="아이디 찾기" value="1" onClick={onFlagHandler}/>
+                  <Tab label="비밀번호 찾기" value="2" onClick={onFlagHandler}/>
                 </TabList>
               </Box>
             </ThemeProvider>
             <TabPanel value="1">
-              <IdTab />
+              <IdTab
+                userId={userId}
+                idFlag={idFlag}
+                onSetUserId={onSetUserId}
+                onSetIdFlag={onSetIdFlag}
+              />
             </TabPanel>
             <TabPanel value="2">
-              <PasswordTab />
+              <PasswordTab
+                userId={userId}
+                userEmail={userEmail}
+                pwFlag={pwFlag}
+                onSetUserId={onSetUserId}
+                onSetUserEmail={onSetUserEmail}
+                onSetPwFlag={onSetPwFlag}
+              />
             </TabPanel>
           </TabContext>
         </Grid>

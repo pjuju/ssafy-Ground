@@ -1,11 +1,28 @@
-import React from "react";
-import { Grid }  from "@mui/material";
+import { useState } from "react";
+import { Grid, Modal }  from "@mui/material";
 import GrTextField from 'components/common/GrTextField';
 import GrButton from 'components/common/GrButton';
+import { Box } from "@mui/system";
+import { confirmPass } from "api/find";
 
-function PasswordResult() {
-	const [password, setPassword] = React.useState("");
-	const [passwordCheck, setPasswordCheck] = React.useState("");
+const boxStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'white',
+  border: '2px solid #000',
+  boxShadow: 24,
+  borderRadius: "10px",
+  p: 4,
+};
+
+function PasswordResult({userId, userEmail}) {
+	const [password, setPassword] = useState("");
+	const [passwordCheck, setPasswordCheck] = useState("");
+	const [checkOpen, setCheckOpen] = useState(false);
+	const [isCheck, setIsCheck] = useState(false);
 	const onPasswordHandler = (event) => {
 		setPassword(event.target.value)
 	}
@@ -13,10 +30,22 @@ function PasswordResult() {
 		setPasswordCheck(event.target.value)
 	}
   const onClickPasswordConfirm = () => {
-    console.log(password)
-    console.log(passwordCheck)
+		const info = {
+			email: userEmail,
+			password: password,
+			username: userId,
+		}
+    if (passwordCheck === password) {
+			setIsCheck(true);
+			confirmPass(info, (res) => {
+				console.log(res.data);
+			})
+		}
+		setCheckOpen(true);
   }
-
+	const onClickCheck = () => {
+		setCheckOpen(false);
+	}
 	return (
 		<div style={{width:512}}>
 			<Grid
@@ -69,6 +98,28 @@ function PasswordResult() {
 					</GrButton>
 				</Grid>
 			</Grid>
+			<Modal open={checkOpen}>
+        <Box sx={boxStyle}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item>
+              {isCheck === true && (
+                <div> 비밀번호가 변경되었습니다. </div>
+              )}
+              {isCheck === false && (
+                <div> 비밀번호가 일치하지 않습니다. </div>
+              )}
+            </Grid>
+            <Grid item>
+              <GrButton onClick={onClickCheck}>확인</GrButton>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
 		</div>
 	)
 }

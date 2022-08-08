@@ -2,21 +2,16 @@ import React from "react";
 import IdCheck from "components/FindId/IdCheck.js";
 import IdResult from "components/FindId/IdResult.js";
 
-function IdTab() {
-	const [isAuth, setIsAuth] = React.useState(false);
-	
-	const handleIsAuth = (bool) => {
-		setIsAuth(bool)
-	};
+function IdTab({idFlag, onSetIdFlag, userId, onSetUserId}) {
 
 
 	return (
 		<div>
-			{isAuth === false && (
-				<IdCheck handleIsAuth={handleIsAuth}/>
+			{idFlag === 0 && (
+				<IdCheck onSetIdFlag={onSetIdFlag} idFlag={idFlag} onSetUserId={onSetUserId} userId={userId}/>
 			)}
-			{isAuth === true && (
-				<IdResult handleIsAuth={handleIsAuth}/>
+			{idFlag === 1 && (
+				<IdResult onSetIdFlag={onSetIdFlag} idFlag={idFlag} userId={userId}/>
 			)}
 		</div>
 		)

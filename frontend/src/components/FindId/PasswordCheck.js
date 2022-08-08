@@ -1,28 +1,69 @@
-import React from "react";
-import { Grid }  from "@mui/material";
+import { useState } from "react";
+import { Grid, Modal }  from "@mui/material";
 import GrTextField from 'components/common/GrTextField';
 import GrButton from 'components/common/GrButton';
+import { emailAuth, modifyPass } from "api/find";
+import { Box } from "@mui/system";
 
-function PasswordCheck({handleIsAuth}) {
-	const [email, setEmail] = React.useState();
-	const [valNumber, setValNumber] = React.useState();
-	const [userId, setUserId] = React.useState();
+const boxStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'white',
+  border: '2px solid #000',
+  boxShadow: 24,
+  borderRadius: "10px",
+  p: 4,
+};
+function PasswordCheck({userId, userEmail, onSetUserId, onSetUserEmail, onSetPwFlag }) {
+  const [userValNumber, setUserValNumber] = useState("");
+	const [valNumber, setValNumber] = useState("");
+  const [checkOpen, setCheckOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [isCheck, setIsCheck] = useState(false);
+
 	const onEmailHandler = (event) => {
-		setEmail(event.target.value)
+		onSetUserEmail(event.target.value)
 	};
-	const onValNumberHandler = (event) => {
-		setValNumber(event.target.value)
+	const onUserValNumberHandler = (event) => {
+		setUserValNumber(parseInt(event.target.value))
 	};
 	const onUserIdHandler = (event) => {
-		setUserId(event.target.value)
+		onSetUserId(event.target.value)
 	};
   const onClickEmail = () => {
-    console.log(userId)
-    console.log(email)
-  }
+    const info = {
+      email: userEmail,
+      username: userId
+    };
+    console.log(info)
+    modifyPass(info, (res) => {
+      console.log(res.data)
+      setIsCheck(res.data)
+    });
+    setCheckOpen(true);
+  };
   const onClickPasswordCheck = () => {
+    console.log(userValNumber)
     console.log(valNumber)
-    handleIsAuth(true)
+    if ((valNumber === userValNumber) && (userValNumber !== "")){
+      setAuthOpen(true);
+    }
+  }
+  const onClickAuth = () => {
+    setAuthOpen(false);
+    onSetPwFlag(1);
+  }
+  const onClickCheck = () => {
+    setCheckOpen(false);
+    if (isCheck === true) {
+      emailAuth(userEmail, (res) => {
+        setValNumber(res.data);
+        console.log(res.data);
+      });
+    };
   }
 	return (
 		<div>
@@ -58,7 +99,7 @@ function PasswordCheck({handleIsAuth}) {
               id="email"
               label="이메일"
               size="small"
-              value={email}
+              value={userEmail}
               onChange={onEmailHandler}
             />
 					</Grid>
@@ -82,8 +123,8 @@ function PasswordCheck({handleIsAuth}) {
               id="verification-number"
               label="인증번호"
               size="small"
-              value={valNumber}
-              onChange={onValNumberHandler}
+              value={userValNumber}
+              onChange={onUserValNumberHandler}
             />
 					</Grid>
           <Grid item>
@@ -96,7 +137,46 @@ function PasswordCheck({handleIsAuth}) {
             </GrButton>
 					</Grid>
         </Grid>        
-      </Grid>		
+      </Grid>
+      <Modal open={authOpen}>
+        <Box sx={boxStyle}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item>
+              <div> 인증되었습니다. </div>
+            </Grid>
+            <Grid item>
+              <GrButton onClick={onClickAuth}>확인</GrButton>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
+      <Modal open={checkOpen}>
+        <Box sx={boxStyle}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item>
+              {isCheck === true && (
+                <div> 인증 메일이 발송되었습니다. </div>
+              )}
+              {isCheck === false && (
+                <div> 회원정보가 일치하지 않습니다. </div>
+              )}
+            </Grid>
+            <Grid item>
+              <GrButton onClick={onClickCheck}>확인</GrButton>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>		
 		</div>
 		)
 };
