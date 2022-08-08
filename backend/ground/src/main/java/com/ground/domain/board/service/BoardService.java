@@ -12,7 +12,7 @@ import com.ground.domain.global.entity.Location;
 import com.ground.domain.global.repository.LocationRepository;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.entity.UserCategory;
-import com.ground.domain.user.dto.repository.UserRepository;
+import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;

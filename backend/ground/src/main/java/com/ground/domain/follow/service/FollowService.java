@@ -1,6 +1,6 @@
 package com.ground.domain.follow.service;
 
-import com.ground.domain.user.dto.repository.UserRepository;
+import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
 
@@ -25,6 +25,13 @@ public class FollowService {
     // 팔로우
     @Transactional
     public void follow(Long fromUserId, Long toUserId) {
+//        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+        followRepository.follow(fromUserId, toUserId);
+    }
+
+    // 팔로우 수락
+    @Transactional
+    public void followAccept(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
         followRepository.follow(fromUserId, toUserId);
     }

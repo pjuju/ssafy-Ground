@@ -7,7 +7,7 @@ import com.ground.domain.notification.entity.*;
 import com.ground.domain.notification.repository.NotificationAccountRepository;
 import com.ground.domain.notification.repository.NotificationBoardRepository;
 import com.ground.domain.user.entity.User;
-import com.ground.domain.user.dto.repository.UserRepository;
+import com.ground.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -33,8 +33,8 @@ public class Follow  {
     @ManyToOne(fetch = FetchType.LAZY)
     private User toUserId;
 
-//    @Column(name = "flag", columnDefinition="tinyint(1) default 0")
-//    private boolean flag;
+    @Column(name = "flag", columnDefinition="tinyint(1) default 0")
+    private boolean flag;
     @Builder
     public Follow(User fromUserId, User toUserId) {
         this.fromUserId = fromUserId;
