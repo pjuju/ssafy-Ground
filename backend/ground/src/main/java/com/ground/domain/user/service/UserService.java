@@ -1,5 +1,6 @@
 package com.ground.domain.user.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,6 +124,7 @@ public class UserService {
 				-> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 		try {
 			user.modifyPass(params.getPass());
+			user.saveModDttm(LocalDateTime.now());
 			return true;
 		}
 		catch(Exception e){
