@@ -67,8 +67,8 @@ public class User {
     @Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
     
-    @Column(name = "first_YN", columnDefinition="tinyint(1) default 0")
-    private boolean firstYN;
+    @Column(name = "register_YN", columnDefinition="tinyint(1) default 0")
+    private boolean registerYN;
 
     @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 0")
     private boolean privateYN;
@@ -108,12 +108,12 @@ public class User {
     private String modUser;
     
     @Lob
-    @Column(name = "member_image_url")
-    private String imageUrl;
+    @Column(name = "user_image")
+    private String userImage;
     
-    @Lob
-    @Column(name = "member_image_type")
-    private String imageType;
+//    @Lob
+//    @Column(name = "member_image_type")
+//    private String imageType;
 
     @Lob
     @Column(name = "ftoken")
@@ -131,7 +131,7 @@ public class User {
     
     @Builder
 	public User(String username, String pass, String email, String nickname, Age age, Gender gender, String introduce, 
-			LocalDateTime regDttm, boolean delYN) {
+			LocalDateTime regDttm, boolean delYN, boolean registerYN, String userImage) {
 		this.username = username;
 		this.modUser = username;
 		this.pass = pass;
@@ -142,6 +142,8 @@ public class User {
 		this.introduce = introduce;
 		this.regDttm = regDttm;
 		this.delYN = delYN;
+		this.registerYN = registerYN;
+		this.userImage = userImage;
 		
 	}
 

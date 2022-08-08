@@ -25,6 +25,7 @@ import com.ground.domain.user.dto.UserLoginDto;
 import com.ground.domain.user.dto.UserModifyPassDto;
 import com.ground.domain.user.dto.UserProfileDto;
 import com.ground.domain.user.dto.UserRegisterDto;
+import com.ground.domain.user.dto.UserStateDto;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
@@ -83,7 +84,7 @@ public class UserController {
         return userService.checkEmail(email);
     }
     
-    @GetMapping("/emailAuth")
+    @GetMapping("/emailAuth/{email}")
     @ApiOperation(value = "이메일 인증", response = String.class)
     public String emailAuth(String email) throws UnsupportedEncodingException{
         return mailService.joinEmail(email);
@@ -108,11 +109,17 @@ public class UserController {
     	return userService.modifyPass(params);
     }
     
+//    @PostMapping("/login")
+//    @ApiOperation(value = "로그인", response = String.class)
+//    public ResponseEntity<TokenResponse> login(@RequestBody UserLoginDto params){
+//    	String ftoken = userService.createToken(params);
+//    	return ResponseEntity.ok().body(new TokenResponse(ftoken, "bearer"));   	
+//    }
+    
     @PostMapping("/login")
     @ApiOperation(value = "로그인", response = String.class)
-    public ResponseEntity<TokenResponse> login(@RequestBody UserLoginDto params){
-    	String ftoken = userService.createToken(params);
-    	return ResponseEntity.ok().body(new TokenResponse(ftoken, "bearer"));   	
+    public UserStateDto login(@RequestBody UserLoginDto params){
+    	return userService.login(params);
     }
 
     @PutMapping("/userDetail")
