@@ -103,7 +103,7 @@ public class UserController {
     	return userService.findId(email);
     }
     
-    @GetMapping("/modifyPass")
+    @PostMapping("/modifyPass")
     @ApiOperation(value = "비밀번호 변경을 위한 아이디, 이메일 확인", response = boolean.class)
     public boolean modifyPassCheck(@RequestBody UserFindPassDto params) {
     	return userService.modifyPassCheck(params);
@@ -123,11 +123,14 @@ public class UserController {
 //    	return ResponseEntity.ok().body(new TokenResponse(ftoken, "bearer"));   	
 //    }
     
+    
     @PostMapping("/login")
     @ApiOperation(value = "로그인", response = String.class)
     public UserStateDto login(@RequestBody UserLoginDto params){
     	return userService.login(params);
     }
+    
+    @GetMapping("/state")
     
     @GetMapping("/token/{ftoken}")
     @ApiOperation(value = "유효성검사", response = boolean.class)
