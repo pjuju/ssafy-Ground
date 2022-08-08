@@ -59,4 +59,11 @@ const date = [
   { value: "custom", label: "직접 입력" },
 ];
 
-export { interest, gender, age, location, date };
+const type = [
+  { id: 1, value: "최신순" },
+  { id: 2, value: "좋아요순" },
+  { id: 3, value: "댓글순" },
+  { id: 4, value: "스크랩순" },
+];
+
+export { interest, gender, age, location, date, type };

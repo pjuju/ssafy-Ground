@@ -8,6 +8,13 @@
 
   &__result {
     padding: 2rem 0.5rem 0 1rem;
+
+    &__sort {
+      color: gray;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding-right: 1rem;
+    }
   }
 }
 
@@ -85,7 +92,7 @@
 
     &__userId {
       font-weight: bold;
-      color:rgb(148, 148, 148);
+      color: rgb(148, 148, 148);
     }
   }
 }

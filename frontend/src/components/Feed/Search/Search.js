@@ -7,6 +7,7 @@ import {
   Radio,
   Typography,
   MenuItem,
+  Button,
 } from "@mui/material";
 import "styles/Search/Search.scss";
 
@@ -17,7 +18,7 @@ import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
 import StartDatePicker from "./Filter/StartDatePicker";
 import EndDatePicker from "./Filter/EndDatePicker";
-import { age, date, gender, interest, location } from "./initData";
+import { age, date, gender, interest, location, type } from "./initData";
 import moment from "moment";
 
 import { search } from "api/search";
@@ -70,6 +71,8 @@ function Search() {
   const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
+  const [searchResult, setSearchResult] = useState([]);
+  const [sortType, setSortType] = useState(1);
 
   const [userSearch, setUserSearch] = useState([
     { nickname: "김주영", user_id: "nullyng" },
@@ -85,44 +88,44 @@ function Search() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // 검색어가 있을 때만 검색
+    if (word.trim() !== "") {
+      let searchData = {};
+      searchData.word = word;
+      // 게시글 검색일때만 필터 적용
+      if (standard === "board") {
+        searchData.interest = getCheckedValues(radio[0], data.interest);
+        searchData.gender = getCheckedValues(radio[1], data.gender);
+        searchData.age = getCheckedValues(radio[2], data.age);
+        searchData.location = getCheckedValues(radio[3], data.location);
+        searchData.type = sortType;
 
-    let searchData = {};
-    searchData.word = word;
-
-    // 게시글 검색일때만 필터 적용
-    if (standard === "board") {
-      searchData.interest = getCheckedValues(radio[0], data.interest);
-      searchData.gender = getCheckedValues(radio[1], data.gender);
-      searchData.age = getCheckedValues(radio[2], data.age);
-      searchData.location = getCheckedValues(radio[3], data.location);
-
-      if (dateRange !== "all") {
-        if (dateRange === "custom") {
-          searchData.startDate = moment(startDate).format("YYYY-MM-DD");
-          searchData.endDate = moment(endDate).format("YYYY-MM-DD");
-        } else if (dateRange === "days") {
-          searchData.startDate = moment().format("YYYY-MM-DD");
-        } else {
-          searchData.startDate = moment()
-            .subtract(1, dateRange)
-            .format("YYYY-MM-DD");
+        if (dateRange !== "all") {
+          if (dateRange === "custom") {
+            searchData.startDate = moment(startDate).format("YYYY-MM-DD");
+            searchData.endDate = moment(endDate).format("YYYY-MM-DD");
+          } else if (dateRange === "days") {
+            searchData.startDate = moment().format("YYYY-MM-DD");
+          } else {
+            searchData.startDate = moment()
+              .subtract(1, dateRange)
+              .format("YYYY-MM-DD");
+          }
         }
       }
+      console.log(searchData);
+      // 검색 요청
+      search(
+        standard,
+        data,
+        (response) => {
+          console.log(response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     }
-
-    console.log(searchData);
-
-    // 검색 요청
-    search(
-      standard,
-      data,
-      (response) => {
-        console.log(response.data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
   };
 
   return (
@@ -205,9 +208,28 @@ function Search() {
         </Grid>
       </form>
       <Grid className="search-inner__result" container direction="column">
-        {userSearch.map((user, index) => (
+        {searchResult.length !== 0 && standard === "board" && (
+          <Grid container>
+            {type.map((item, index) => (
+              <Grid
+                className="search-inner__result__sort"
+                key={index}
+                item
+                sx={
+                  sortType === item.id ? { color: "black", fontWeight: "bold" } : {}
+                }
+                onClick={(e) => {
+                  setSortType(item.id);
+                }}
+              >
+                {item.value}
+              </Grid>
+            ))}
+          </Grid>
+        )}
+        {/* {userSearch.map((user, index) => (
           <UserSearchResult key={index} user={user} />
-        ))}
+        ))} */}
       </Grid>
     </Grid>
   );
