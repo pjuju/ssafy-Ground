@@ -60,10 +60,10 @@ const date = [
 ];
 
 const type = [
-  { id: 1, value: "최신순" },
-  { id: 2, value: "좋아요순" },
-  { id: 3, value: "댓글순" },
-  { id: 4, value: "스크랩순" },
+  { id: "id", value: "최신순" },
+  { id: "likeCnt", value: "좋아요순" },
+  { id: "commentCnt", value: "댓글순" },
+  { id: "saveCnt", value: "스크랩순" },
 ];
 
 export { interest, gender, age, location, date, type };

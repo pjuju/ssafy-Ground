@@ -1,39 +1,16 @@
-import {
-  Grid,
-  Select,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Typography,
-  MenuItem,
-  Button,
-} from "@mui/material";
+import { Grid } from "@mui/material";
 import "styles/Search/Search.scss";
 
 import { useState } from "react";
 import FilterModal from "./Filter/FilterModal";
 import SearchBar from "./SearchBar";
-import { ThemeProvider } from "@emotion/react";
-import theme from "components/common/theme.js";
-import StartDatePicker from "./Filter/StartDatePicker";
-import EndDatePicker from "./Filter/EndDatePicker";
 import { age, date, gender, interest, location, type } from "./initData";
 import moment from "moment";
 
 import { search } from "api/search";
-import UserSearchResult from "./UserSearchResult";
-import LatestSearch from "./LatestSearch";
-
-const dateRadio = date.map((item, index) => (
-  <FormControlLabel
-    className="top__date-select"
-    key={index}
-    value={item.value}
-    label={<Typography sx={{ fontSize: "0.8rem" }}>{item.label}</Typography>}
-    control={<Radio size="small" />}
-  />
-));
+import SearchSort from "./Filter/SearchSort";
+import SearchStandard from "./Filter/SearchStandard";
+import SearchDatePicker from "./Filter/Date/SearchDatePicker";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -73,7 +50,7 @@ function Search() {
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
   const [searchResult, setSearchResult] = useState([]);
-  const [sortType, setSortType] = useState(1);
+  const [sortType, setSortType] = useState("id");
 
   const [userSearch, setUserSearch] = useState([
     { nickname: "김주영", user_id: "nullyng" },
@@ -135,22 +112,7 @@ function Search() {
         <Grid className="search-inner__top" container direction="column">
           <Grid container justifyContent="space-around">
             <Grid xs={2} item>
-              <FormControl sx={{ minWidth: "100%", height: "100%" }}>
-                <ThemeProvider theme={theme}>
-                  <Select
-                    inputProps={{ "aria-label": "Without label" }}
-                    size="small"
-                    value={standard}
-                    onChange={(e) => {
-                      setStandard(e.target.value);
-                    }}
-                    sx={{ height: "100%" }}
-                  >
-                    <MenuItem value="board">게시글</MenuItem>
-                    <MenuItem value="user">유저</MenuItem>
-                  </Select>
-                </ThemeProvider>
-              </FormControl>
+              <SearchStandard standard={standard} setStandard={setStandard} />
             </Grid>
             <Grid xs={9} item>
               <SearchBar
@@ -171,61 +133,21 @@ function Search() {
             setRadio={setRadio}
           />
         </Grid>
-        <LatestSearch />
+        {/* <LatestSearch /> */}
         {standard === "board" && (
-          <>
-            <Grid className="top__date-picker" container justifyContent="end">
-              <FormControl>
-                <ThemeProvider theme={theme}>
-                  <RadioGroup
-                    row
-                    value={dateRange}
-                    onChange={(e) => {
-                      setDateRange(e.target.value);
-                    }}
-                  >
-                    {dateRadio}
-                  </RadioGroup>
-                </ThemeProvider>
-              </FormControl>
-            </Grid>
-            {dateRange === "custom" && (
-              <Grid className="top__date-picker" container justifyContent="end">
-                <StartDatePicker
-                  startDate={startDate}
-                  setStartDate={setStartDate}
-                />
-                <EndDatePicker
-                  startDate={startDate}
-                  endDate={endDate}
-                  setEndDate={setEndDate}
-                />
-              </Grid>
-            )}
-          </>
+          <SearchDatePicker
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+          />
         )}
       </form>
       <Grid className="search-inner__result" container direction="column">
         {searchResult.length !== 0 && standard === "board" && (
-          <Grid container>
-            {type.map((item, index) => (
-              <Grid
-                className="search-inner__result__sort"
-                key={index}
-                item
-                sx={
-                  sortType === item.id
-                    ? { color: "black", fontWeight: "bold" }
-                    : {}
-                }
-                onClick={(e) => {
-                  setSortType(item.id);
-                }}
-              >
-                {item.value}
-              </Grid>
-            ))}
-          </Grid>
+          <SearchSort sortType={sortType} setSortType={setSortType} />
         )}
         {/* {userSearch.map((user, index) => (
           <UserSearchResult key={index} user={user} />
