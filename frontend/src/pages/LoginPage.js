@@ -4,7 +4,6 @@ import logo from "assets/images/text_logo.png";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 
 import GoogleButton from "components/Login/OAuth/GoogleButton";
 import KakaoButton from "components/Login/OAuth/KakaoButton.js";
@@ -12,6 +11,7 @@ import GrButton from "components/common/GrButton";
 
 import { useState } from "react";
 import { Divider } from "@mui/material";
+import { login } from "api/login";
 
 function LoginPage() {
   const [userId, setUserId] = useState("");
@@ -58,7 +58,20 @@ function LoginPage() {
     setPwProps(newPwProps);
 
     if (isLoginOk) {
-      // 로그인 요청
+      const info = {
+        username: userId,
+        pass: userPW,
+      };
+      console.log(info);
+      login(
+        info,
+        (res) => {
+          console.log(res.data);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
   }
 
@@ -84,6 +97,7 @@ function LoginPage() {
         <TextField
           {...pwProps}
           value={userPW}
+          type="password"
           onChange={(e) => {
             setUserPW(e.target.value);
           }}
