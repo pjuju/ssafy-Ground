@@ -37,18 +37,18 @@ public class FollowController {
         followService.follow(fromUserId, toUserId);
     }
 
+    // 팔로우 수락
+    @PostMapping("/Accept/{toUserId}/{fromUserId}")
+    @ApiOperation(value = "팔로우 수락")
+    public void followAccept(@PathVariable Long toUserId, @PathVariable Long fromUserId){
+        followService.followAccept(fromUserId, toUserId);
+    }
+
     // 언팔로우
     @DeleteMapping("/{toUserId}/{fromUserId}")
     @ApiOperation(value = "언팔로우")
     public void unFollowUser(@PathVariable Long toUserId, @PathVariable Long fromUserId){
         followService.unFollow(fromUserId, toUserId);
-    }
-
-    // 팔로워 삭제
-    @DeleteMapping("/{from_user_id}/follower")
-    @ApiOperation(value = "팔로워 삭제")
-    public String unFollower(){
-        return "test!";
     }
 
     // 팔로워 목록 조회

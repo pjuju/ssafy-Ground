@@ -145,11 +145,7 @@ public class User {
 		this.delYN = delYN;
 		this.registerYN = registerYN;
 		this.userImage = userImage;
-		
 	}
-
-    
-
     
     public void profileUpdate(UserUpdateDto entity, LocalDateTime modDttm) {
         this.nickname = entity.getNickname();
@@ -160,10 +156,9 @@ public class User {
         this.modDttm = modDttm;
     }
 
-
     public void deleteUser () {
         this.delYN = true;
     }
 
-
+//    public void firstLogin()
 }

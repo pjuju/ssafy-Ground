@@ -14,10 +14,10 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     Follow findFollowByFromUserIdAndToUserId(long from_user_id, long to_user_id);
 
     //
-    @Query(value = "SELECT COUNT(*) FROM t_user_follow WHERE to_user_id = :profileId", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM t_user_follow WHERE to_user_id = :profileId AND flag = true", nativeQuery = true)
     int findFollowerCountById(@Param("profileId")long profileId);
 
-    @Query(value = "SELECT COUNT(*) FROM t_user_follow WHERE from_user_id = :profileId", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM t_user_follow WHERE from_user_id = :profileId AND flag = true", nativeQuery = true)
     int findFollowingCountById(@Param("profileId")long profileId);
 
     @Modifying
