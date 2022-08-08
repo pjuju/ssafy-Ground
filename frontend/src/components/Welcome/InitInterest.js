@@ -1,8 +1,8 @@
 import theme from "components/common/theme.js";
+import GrButton from "components/common/GrButton";
 
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import GrButton from "components/common/GrButton";
 
 function InitInterest({
   interest,

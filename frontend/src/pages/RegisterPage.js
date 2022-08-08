@@ -1,4 +1,4 @@
-import logo from "assets/images/text_logo.png";
+import logo from "assets/images/underline_logo.png";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -10,11 +10,13 @@ import "styles/Register/RegisterPage.scss";
 
 import { useState, useEffect } from "react";
 import { signUp } from "api/register";
+import RegisterModal from "components/Register/RegisterModal";
 
 function RegisterPage() {
   const [next, setNext] = useState(false);
   const [basicInfo, setBasicInfo] = useState({});
   const [otherInfo, setOtherInfo] = useState({});
+  const [open, setOpen] = useState(false);
 
   // 다음 버튼 핸들러
   const goToOtherInfo = () => {
@@ -24,18 +26,28 @@ function RegisterPage() {
   };
   // state 변경 함수
   const changeBasicInfo = (newBasicInfo) => {
-    console.log(newBasicInfo);
     setBasicInfo(newBasicInfo);
   };
   const changeOtherInfo = (newOtherInfo) => {
-    console.log(newOtherInfo);
     setOtherInfo(newOtherInfo);
+    sendRequest();
   };
   // 회원가입 요청
   const sendRequest = () => {
-    const info = Object.assign({}, basicInfo, otherInfo);
+    let info = {};
+    Object.assign(info, basicInfo, otherInfo);
     console.log(info);
-    signUp(info);
+    signUp(
+      info,
+      (res) => {
+        if (res.data === true) {
+          setOpen(true);
+        }
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   };
 
   useEffect(() => {
@@ -63,8 +75,21 @@ function RegisterPage() {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid className="register-form__logo" item>
-          <img className="logo" src={logo} alt="text_logo" width="300rem" />
+        <Grid item>
+          <Grid
+            className="register-form__logo-box"
+            container
+            direction="column"
+          >
+            <div className="register-form__logo-wrapper">
+              <img
+                className="register-form__logo"
+                src={logo}
+                alt="underline_logo"
+              />
+            </div>
+            <div className="register-form__register">회원가입</div>
+          </Grid>
         </Grid>
         {!next && (
           <BasicInfo
@@ -79,6 +104,7 @@ function RegisterPage() {
           />
         )}
       </Grid>
+      <RegisterModal open={open} setOpen={setOpen}/>
     </Container>
   );
 }

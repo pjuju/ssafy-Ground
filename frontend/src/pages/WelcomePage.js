@@ -1,6 +1,5 @@
 import logo from "assets/images/text_logo.png";
 import "styles/Welcome/WelcomePage.scss";
-
 import InitImg from "components/Welcome/InitImg";
 import InitDesc from "components/Welcome/InitDesc";
 import InitInterest from "components/Welcome/InitInterest";
