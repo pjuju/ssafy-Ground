@@ -4,7 +4,7 @@ import com.ground.domain.board.dto.CommentResponseDto;
 import com.ground.domain.board.entity.Comment;
 import com.ground.domain.board.service.BoardService;
 import com.ground.domain.user.entity.User;
-import com.ground.domain.user.repository.UserRepository;
+import com.ground.domain.user.dto.repository.UserRepository;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

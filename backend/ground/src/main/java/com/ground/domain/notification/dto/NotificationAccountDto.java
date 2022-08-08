@@ -13,16 +13,17 @@ import java.time.LocalDateTime;
 public class NotificationAccountDto {
     private long id;
     private String nickname;
-//    private String profileImgUrl;
+    private String memberImageUrl;
     private boolean checkYN;
-    private int type;
+    private boolean type;
     private LocalDateTime regDttm;
 
     public NotificationAccountDto(NotificationAccount entity) {
         this.id = entity.getId();
         this.nickname = entity.getFrom().getNickname();
+        this.memberImageUrl = entity.getFrom().getUserImage();
         this.checkYN = entity.isCheckYN();
-        this.type = entity.getType();
+        this.type = entity.isType();
         this.regDttm = entity.getRegDttm();
     }
 }

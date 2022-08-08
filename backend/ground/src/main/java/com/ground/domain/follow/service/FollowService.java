@@ -1,8 +1,6 @@
 package com.ground.domain.follow.service;
 
-import com.ground.domain.follow.entity.Follow;
-import com.ground.domain.user.entity.User;
-import com.ground.domain.user.repository.UserRepository;
+import com.ground.domain.user.dto.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
 
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.math.BigInteger;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -45,7 +42,7 @@ public class FollowService {
         StringBuffer sb = new StringBuffer();
 
         // 3. userId와 userNickname 을 가져옴
-        sb.append("SELECT u.id, u.nickname, u.member_image_url,");
+        sb.append("SELECT u.id, u.nickname, u.user_image,");
         // 4. 그중 fromUserId(팔로워)가 userId(로그인한 유저) 이면 followState 를 True로 해줌
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
         // 5.
@@ -69,7 +66,7 @@ public class FollowService {
     @Transactional
     public List<FollowDto> getFollowing(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
-        sb.append("SELECT u.id, u.nickname, u.member_image_url, ");
+        sb.append("SELECT u.id, u.nickname, u.user_image, ");
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");

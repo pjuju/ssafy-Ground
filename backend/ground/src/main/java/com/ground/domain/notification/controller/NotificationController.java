@@ -22,7 +22,7 @@ public class NotificationController {
     // 계정 알림 생성
     @PostMapping("/account/{toUserId}/{fromUserId}")
     @ApiOperation(value = "계정 알림 생성")
-    public void postNotifyAccount(@PathVariable Long toUserId, @PathVariable Long fromUserId, @RequestBody int params){
+    public void postNotifyAccount(@PathVariable Long toUserId, @PathVariable Long fromUserId, @RequestBody boolean params){
         notificationService.postNotifyAccount(fromUserId, toUserId, params);
     }
 
@@ -33,11 +33,18 @@ public class NotificationController {
         return notificationService.getNotifyAccount(userId);
     }
 
-    // 계정 알림 확인
-    @PostMapping("/account/check/{notiId}")
-    @ApiOperation(value = "계정 알림 확인")
+    // 계정 알림 1개 확인
+    @PostMapping("/account/check/noti/{notiId}")
+    @ApiOperation(value = "계정 알림 1개 확인")
     public void checkNotifyAccount(@PathVariable Long notiId){
         notificationService.checkNotifyAccount(notiId);
+    }
+
+    // 계정 알림 전체 확인
+    @PostMapping("/account/check/{userId}")
+    @ApiOperation(value = "계정 알림 전체 확인")
+    public void checkAllNotifyAccount(@PathVariable Long userId){
+        notificationService.checkAllNotifyAccount(userId);
     }
 
     // 계정 알림 삭제
@@ -50,7 +57,7 @@ public class NotificationController {
     // 게시글 알림 생성
     @PostMapping("/board/{boardId}/{fromUserId}")
     @ApiOperation(value = "게시글 알림 생성")
-    public void postNotifyBoard(@PathVariable Long boardId, @PathVariable Long fromUserId, @RequestBody int params){
+    public void postNotifyBoard(@PathVariable Long boardId, @PathVariable Long fromUserId, @RequestBody boolean params){
         notificationService.postNotifyBoard(fromUserId, boardId, params);
     }
 
@@ -61,11 +68,18 @@ public class NotificationController {
         return notificationService.getNotifyBoard(userId);
     }
 
-    // 게시글 알림 확인
-    @PostMapping("/board/check/{notiId}")
-    @ApiOperation(value = "게시글 알림 확인")
+    // 게시글 알림 1개 확인
+    @PostMapping("/board/check/noti/{notiId}")
+    @ApiOperation(value = "게시글 알림 1개 확인")
     public void checkNotifyBoard(@PathVariable Long notiId){
         notificationService.checkNotifyBoard(notiId);
+    }
+
+    // 게시글 알림 전체 확인
+    @PostMapping("/board/check/{userId}")
+    @ApiOperation(value = "게시글 알림 전체 확인")
+    public void checkAllNotifyBoard(@PathVariable Long userId){
+        notificationService.checkAllNotifyBoard(userId);
     }
 
 

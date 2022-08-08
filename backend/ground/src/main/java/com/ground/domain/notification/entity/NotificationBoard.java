@@ -33,7 +33,7 @@ public class NotificationBoard {
 	private User to;
 	
 	@Column(name = "type")
-	private int type;
+	private boolean type;
 	
 	@JoinColumn(name = "board_id")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -50,7 +50,7 @@ public class NotificationBoard {
     private LocalDateTime regDttm;
 
 	@Builder
-	public NotificationBoard(User from, User to, Board board, int type, LocalDateTime regDttm) {
+	public NotificationBoard(User from, User to, Board board, boolean type, LocalDateTime regDttm) {
 		this.from = from;
 		this.to = to;
 		this.boardId = board;
