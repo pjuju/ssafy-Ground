@@ -40,4 +40,6 @@ public class Follow  {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
     }
+
+    public void FollowAccept(boolean flag) { this.flag = flag; }
 }
