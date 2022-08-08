@@ -14,15 +14,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// bsh
-
+@Log4j2
 @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK~!"),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -37,9 +35,9 @@ import java.util.List;
 public class BoardController {
 
     @Autowired
-    BoardService boardService;
-    @Autowired
-    UserRepository userRepository;
+    private final BoardService boardService;
+
+    private final UserRepository userRepository;
 
 
     // =================== 게시글 작성 ===================
@@ -48,7 +46,7 @@ public class BoardController {
     public BoardResponseDto addBoard(@RequestBody final BoardRequestDto params){
         User user = userRepository.findById(new Long(1)).get();
         Board board = boardService.addBoard(params, user);
-        return new BoardResponseDto(board);
+        return new BoardResponseDto(board, user);
         // 유저도 넣어야함
     }
 
@@ -59,8 +57,9 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @GetMapping("/{boardId}")
     public BoardResponseDto findBoard(@PathVariable Long boardId){
+        User user = userRepository.findById(new Long(1)).get();
         Board board = boardService.getBoard(boardId);
-        return new BoardResponseDto(board);
+        return new BoardResponseDto(board, user);
     }
 
 
@@ -70,8 +69,9 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @PutMapping("/{boardId}")
     public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody final BoardRequestDto params){
-        Board board = boardService.updateBoard(boardId, params);
-        return new BoardResponseDto(board);
+        User user = userRepository.findById(new Long(1)).get();
+        Board board = boardService.updateBoard(boardId, params, user);
+        return new BoardResponseDto(board, user);
     }
 
 
@@ -80,7 +80,8 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @DeleteMapping("/{boardId}")
     public void deleteBoard(@PathVariable Long boardId){
-        boardService.deleteBoard(boardId);
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.deleteBoard(boardId, user);
     }
 
     // =================== 게시글 좋아요===================
@@ -88,7 +89,9 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @PostMapping("/{boardId}/like")
     public void likeBoard(@PathVariable Long boardId){
-        boardService.likeBoard(boardId);
+
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.likeBoard(boardId, user);
     }
 
     // =================== 게시글 좋아요 취소===================
@@ -96,8 +99,8 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @DeleteMapping("/{boardId}/like")
     public void unlikeBoard(@PathVariable Long boardId){
-
-        boardService.unLikeBoard(boardId);
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.unLikeBoard(boardId, user);
     }
 
     // ================== 게시글 저장 ========================
@@ -105,7 +108,8 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @PostMapping("/{boardId}/save")
     public void saveBoard(@PathVariable Long boardId){
-        boardService.saveBoard(boardId);
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.saveBoard(boardId, user);
     }
 
     // ================== 게시글 저장 취소========================
@@ -113,25 +117,26 @@ public class BoardController {
     @ApiImplicitParam(name = "boardId", value = "게시물 PK", example = "1", required = true)
     @DeleteMapping("/{boardId}/save")
     public void unsaveBoard(@PathVariable Long boardId){
-        boardService.unSaveBoard(boardId);;
+        User user = userRepository.findById(new Long(1)).get();
+        boardService.unSaveBoard(boardId, user);
     }
-
-
 
     // ================= 관심종목 피드 조회 ========================
     @ApiOperation(value = "관심종목 피드 조회")
-    @GetMapping("/interest")
-    public List<BoardResponseDto> getInterestBoard(@PageableDefault(size=3) Pageable pageable){
+    @GetMapping("/interest/{pageNumber}")
+    public List<BoardResponseDto> getInterestBoard(@PathVariable int pageNumber){
+
         User user = userRepository.findById(new Long(1)).get();
-        return boardService.getInterestBoard(user, pageable);
+
+        return boardService.getInterestBoard(user, pageNumber);
     }
 
     // ================= 팔로우 피드 조회 ========================
     @ApiOperation(value = "팔로우 피드 조회")
-    @GetMapping("/follow")
-    public List<BoardResponseDto> getFollowBoard(@PageableDefault(size=10) Pageable pageable){
-        User user = userRepository.findById(new Long(1)).get();
-        return boardService.getFollowBoard(user, pageable);
+    @GetMapping("/follow/{pageNumber}")
+    public List<BoardResponseDto> getFollowBoard(@PathVariable int pageNumber){
+        User user = userRepository.findById(new Long(3)).get();
+        return boardService.getFollowBoard(user, pageNumber);
     }
 
     // ================== 게시글 댓글 생성 =============================
@@ -147,18 +152,5 @@ public class BoardController {
     }
 
 
-    // -----------------BSH-----------------
-    // 유저가 쓴 피드 조회
-    @ApiOperation(value = "유저가 쓴 피드 조회")
-    @GetMapping("/list/me/{userId}")
-    public List<BoardResponseDto> getMyBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable) {
-        return boardService.getMyBoard(userId, pageable);
-    }
 
-    // 저장한 피드 조회
-    @ApiOperation(value = "저장한 피드 조회")
-    @GetMapping("/list/save/{userId}")
-    public List<BoardResponseDto> getSaveBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable) {
-        return boardService.getSaveBoard(userId, pageable);
-    }
 }

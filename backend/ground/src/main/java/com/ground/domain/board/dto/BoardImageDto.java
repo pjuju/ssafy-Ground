@@ -1,7 +1,6 @@
 package com.ground.domain.board.dto;
 
 import com.ground.domain.board.entity.BoardImage;
-import com.ground.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

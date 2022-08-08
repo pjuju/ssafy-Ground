@@ -1,6 +1,7 @@
 package com.ground.domain.board.dto;
 
 import com.ground.domain.board.entity.*;
+import com.ground.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,10 @@ public class BoardResponseDto {
     private int saveCnt;
     private List<BoardImageDto> images = new ArrayList<>();
 
-    public BoardResponseDto(Board entity) {
+    private boolean likeCheck = false;
+    private boolean saveCheck = false;
+
+    public BoardResponseDto(Board entity, User user) {
         this.id = entity.getId();
         this.user = new BoardUserDto(entity.getUser());
         if (this.modUser != null) {
@@ -45,17 +49,23 @@ public class BoardResponseDto {
         for (Comment comment : entity.getComments()) {
             this.comments.add(new CommentResponseDto(comment));
         }
-        this.commentCnt = entity.getComments().size();
+        this.commentCnt = entity.getCommentCnt();
 
         for (BoardLike boardLike : entity.getBoardLikes()) {
             this.boardLikes.add(new BoardLikeDto(boardLike));
+            if (boardLike.getUser().equals(user)) {
+                this.likeCheck = true;
+            }
         }
-        this.likeCnt = entity.getBoardLikes().size();
+        this.likeCnt = entity.getLikeCnt();
 
         for (BoardSave boardSave : entity.getBoardSaves()) {
             this.boardSaves.add(new BoardSaveDto(boardSave));
+            if (boardSave.getUser().equals(user)) {
+                this.saveCheck = true;
+            }
         }
-        this.saveCnt = entity.getBoardSaves().size();
+        this.saveCnt = entity.getSaveCnt();
 
         for (BoardImage boardImage : entity.getImages()) {
             this.images.add(new BoardImageDto(boardImage));

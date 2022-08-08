@@ -1,6 +1,5 @@
 package com.ground.domain.board.entity;
 
-import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
