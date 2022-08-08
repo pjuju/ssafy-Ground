@@ -1,0 +1,47 @@
+.search-inner {
+  width: 56%;
+  padding: 2rem 4rem 0 4rem !important;
+  &__top {
+    width: 100%;
+  }
+}
+
+.top {
+  &__search-dropdown,
+  &__search-label {
+    font-size: 0.9rem !important;
+  }
+
+  &__search-standard,
+  &__search-field,
+  &__search-button {
+    width: 100%;
+  }
+
+  &__search-field-wrapper {
+    margin: 0 1rem !important;
+  }
+
+  &__date-select:last-child {
+    margin-right: 0;
+  }
+}
+
+.filter-modal {
+  width: 100%;
+
+  &__button-wrapper {
+    text-align: end;
+    padding-top: 1rem;
+  }
+
+  &__button {
+    font-weight: 600 !important;
+  }
+
+  &__wrapper {
+    &--right {
+      margin-bottom: 1rem;
+    }
+  }
+}

@@ -7,22 +7,22 @@ function ProfileButton() {
   const userEmail = "user@email.com";
 
   return (
-    <Grid className="profile-button heartbeat" container>
+    <Grid className="profile-button" container>
       <Grid className="profile-button__img" item>
         <img src={userImage} />
       </Grid>
       <Grid item>
-        <Grid className="profile-button__user-info" container direction="column">
-          <Grid className="profile-button__user-info__name">
-            {userName}
-          </Grid>
-          <Grid className="profile-button__user-info__email">
-            {userEmail}
-          </Grid>
+        <Grid
+          className="profile-button__user-info"
+          container
+          direction="column"
+        >
+          <Grid className="profile-button__user-info__name">{userName}</Grid>
+          <Grid className="profile-button__user-info__email">{userEmail}</Grid>
         </Grid>
       </Grid>
     </Grid>
-  )
+  );
 }
 
 export default ProfileButton;
