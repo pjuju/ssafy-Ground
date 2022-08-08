@@ -4,13 +4,14 @@ import "styles/Search/Search.scss";
 import { useState } from "react";
 import FilterModal from "./Filter/FilterModal";
 import SearchBar from "./SearchBar";
-import { age, date, gender, interest, location, type } from "./initData";
+import { age, gender, interest, location } from "./initData";
 import moment from "moment";
 
 import { search } from "api/search";
 import SearchSort from "./Filter/SearchSort";
 import SearchStandard from "./Filter/SearchStandard";
 import SearchDatePicker from "./Filter/Date/SearchDatePicker";
+import UserSearchResult from "./UserSearchResult";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -110,11 +111,11 @@ function Search() {
     <Grid className="search-inner" item>
       <form>
         <Grid className="search-inner__top" container direction="column">
-          <Grid container justifyContent="space-around">
+          <Grid container justifyContent="space-between">
             <Grid xs={2} item>
               <SearchStandard standard={standard} setStandard={setStandard} />
             </Grid>
-            <Grid xs={9} item>
+            <Grid xs={9.5} item>
               <SearchBar
                 handleOpen={handleOpen}
                 onSubmit={onSubmit}
@@ -124,16 +125,7 @@ function Search() {
               />
             </Grid>
           </Grid>
-          <FilterModal
-            open={open}
-            handleClose={handleClose}
-            data={data}
-            setData={setData}
-            radio={radio}
-            setRadio={setRadio}
-          />
         </Grid>
-        {/* <LatestSearch /> */}
         {standard === "board" && (
           <SearchDatePicker
             dateRange={dateRange}
@@ -144,14 +136,23 @@ function Search() {
             setEndDate={setEndDate}
           />
         )}
+        <FilterModal
+          open={open}
+          handleClose={handleClose}
+          data={data}
+          setData={setData}
+          radio={radio}
+          setRadio={setRadio}
+        />
       </form>
       <Grid className="search-inner__result" container direction="column">
         {searchResult.length !== 0 && standard === "board" && (
           <SearchSort sortType={sortType} setSortType={setSortType} />
         )}
-        {/* {userSearch.map((user, index) => (
-          <UserSearchResult key={index} user={user} />
-        ))} */}
+        {standard === "user" &&
+          userSearch.map((user, index) => (
+            <UserSearchResult key={index} user={user} />
+          ))}
       </Grid>
     </Grid>
   );

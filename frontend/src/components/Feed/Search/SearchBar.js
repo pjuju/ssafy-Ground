@@ -4,8 +4,9 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { Divider } from "@mui/material";
-import LatestSearch from "./LatestSearch";
+import { Divider, Grid } from "@mui/material";
+import LatestSearchBox from "./Latest/LatestSearchBox";
+import { useState } from "react";
 
 export default function SearchBar({
   handleOpen,
@@ -14,8 +15,9 @@ export default function SearchBar({
   word,
   setWord,
 }) {
+  const [openLatest, setOpenLatest] = useState(false);
   const style = {
-    p: "2px 4px",
+    boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
     width: "100%",
@@ -24,7 +26,7 @@ export default function SearchBar({
   };
 
   return (
-    <>
+    <Grid className="search-bar" container>
       <Paper component="div" sx={style}>
         {standard === "board" && (
           <>
@@ -49,6 +51,8 @@ export default function SearchBar({
           onChange={(e) => {
             setWord(e.target.value);
           }}
+          onFocus={() => setOpenLatest(true)}
+          onBlur={() => setOpenLatest(false)}
         />
         <IconButton
           type="submit"
@@ -59,7 +63,7 @@ export default function SearchBar({
           <SearchIcon />
         </IconButton>
       </Paper>
-      {/* <LatestSearch /> */}
-    </>
+      {openLatest && <LatestSearchBox standard={standard} />}
+    </Grid>
   );
 }
