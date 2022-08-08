@@ -19,7 +19,7 @@ function emailAuth(email, success, fail) {
 }
 
 function nicknameDupCheck(nickname, success, fail) {
-  api.get(`/user/isUsedNickname`, nickname).then(success).catch(fail);
+  api.get(`/user/isUsedNickname?nickname=${nickname}`).then(success).catch(fail);
 }
 
 export { signUp, idDupCheck, emailDupCheck, emailAuth, nicknameDupCheck };

@@ -1,6 +1,4 @@
 import Grid from "@mui/material/Grid";
-// import TextField from "@mui/material/TextField";
-// import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,56 +10,87 @@ import Select from "@mui/material/Select";
 import GrButton from "components/common/GrButton";
 import GrTextField from "components/common/GrTextField";
 
-import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 
-const ages = [
-  { value: "0", label: "선택 안함" },
-  { value: "10", label: "10대" },
-  { value: "20", label: "20대" },
-  { value: "30", label: "30대" },
-  { value: "40", label: "40대" },
-  { value: "50", label: "50대" },
-  { value: "60", label: "60대 이상" },
+import theme from "components/common/theme";
+import { ThemeProvider } from "@mui/material/styles";
+import OkMessage from "./OkMessage";
+import { nicknameDupCheck } from "api/register";
+import { useState } from "react";
+
+const age = [
+  { id: "teenager", value: "10대", checked: false },
+  { id: "twenty", value: "20대", checked: false },
+  { id: "thirty", value: "30대", checked: false },
+  { id: "forty", value: "40대", checked: false },
+  { id: "fifty", value: "50대", checked: false },
+  { id: "sixty", value: "60대 이상", checked: false },
 ];
 
-const ageList = ages.map((item, index) => (
-  <MenuItem key={index} value={item.value}>
-    {item.label}
+const ageList = age.map((item, index) => (
+  <MenuItem key={index} value={item.id}>
+    {item.value}
   </MenuItem>
 ));
 
 const nickNameReg = /^[가-힣a-zA-Z0-9]{2,8}$/;
 
 function OtherInfo({ changeOtherInfo, sendRequest }) {
+  const [isNicknameDupChecked, setIsNicknameDupChecked] = useState(false);
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
     getValues,
+    setError,
+    trigger,
+    clearErrors,
   } = useForm({
     defaultValues: {
-      nickName: "",
-      age: ages[0].value,
-      gender: "male",
+      nickname: "",
+      age: age[0].id,
+      gender: "MALE",
     },
+    mode: "onBlur",
+    reValidateMode: "onChange",
   });
 
   const onSubmit = (data) => {
-    const newOtherInfo = {
-      nickName: data.nickName,
-      age: data.age,
-      gender: data.gender,
-    };
-    changeOtherInfo(newOtherInfo);
-    sendRequest();
+    if (isNicknameDupChecked === false) {
+      setError("nickname", {
+        type: "nicknameDupCheck",
+        message: "닉네임 중복 확인을 해주세요.",
+      });
+    }
+    else {
+      const newOtherInfo = {
+        nickname: data.nickname,
+        age: data.age,
+        gender: data.gender,
+      };
+      changeOtherInfo(newOtherInfo);
+    }
   };
 
-  const onNickNameDuplicated = () => {
-    const nickName = getValues("nickName");
-    console.log("닉네임 중복 확인: " + nickName);
+  const handleNicknameDupCheck = async () => {
+    const valid = await trigger("nickname");
+    if (valid === true) {
+      nicknameDupCheck(getValues("nickname"), (res) => {
+        if (res.data === false) {
+          setIsNicknameDupChecked(false);
+          setError("nickname", {
+            type: "nicknameDup",
+            message: "이미 사용 중인 닉네임입니다.",
+          });
+        } else {
+          clearErrors("nickname");
+          setIsNicknameDupChecked(true);
+        }
+      });
+    }
   };
 
   return (
@@ -73,7 +102,7 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
       >
         <Grid container justifyContent="space-between">
           <Controller
-            name="nickName"
+            name="nickname"
             control={control}
             render={({ field }) => (
               <GrTextField
@@ -81,10 +110,10 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
                 size="small"
                 label="닉네임"
                 {...field}
-                {...register("nickName", {
+                {...register("nickname", {
                   required: "닉네임을 입력해주세요",
                   pattern: {
-                    value: { nickNameReg },
+                    value: nickNameReg,
                     message: "닉네임은 한글, 영문 대소문자, 숫자 2-8자입니다.",
                   },
                 })}
@@ -94,14 +123,19 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
           <GrButton
             className="register-form__innerBtn"
             variant="contained"
-            onClick={onNickNameDuplicated}
+            onClick={handleNicknameDupCheck}
           >
             중복확인
           </GrButton>
         </Grid>
         <Grid item>
-          {errors.nickName && (
-            <ErrorMessage>{errors.nickName.message}</ErrorMessage>
+          {errors.nickname && (
+            <ErrorMessage>{errors.nickname.message}</ErrorMessage>
+          )}
+          {isNicknameDupChecked && (
+            <OkMessage>
+              <span>사용 가능한 닉네임입니다.</span>
+            </OkMessage>
           )}
         </Grid>
       </Grid>
@@ -116,9 +150,11 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
             name="age"
             control={control}
             render={({ field }) => (
-              <Select labelId="age-label" label="연령대" {...field}>
-                {ageList}
-              </Select>
+              <ThemeProvider theme={theme}>
+                <Select labelId="age-label" label="연령대" value="teenager" {...field}>
+                  {ageList}
+                </Select>
+              </ThemeProvider>
             )}
           />
         </FormControl>
@@ -128,14 +164,20 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
             name="gender"
             control={control}
             render={({ field }) => (
-              <RadioGroup row {...field}>
-                <FormControlLabel value="male" label="남" control={<Radio />} />
-                <FormControlLabel
-                  value="female"
-                  label="여"
-                  control={<Radio />}
-                />
-              </RadioGroup>
+              <ThemeProvider theme={theme}>
+                <RadioGroup row {...field}>
+                  <FormControlLabel
+                    value="MALE"
+                    label="남"
+                    control={<Radio />}
+                  />
+                  <FormControlLabel
+                    value="FEMALE"
+                    label="여"
+                    control={<Radio />}
+                  />
+                </RadioGroup>
+              </ThemeProvider>
             )}
           />
         </FormControl>
@@ -143,6 +185,7 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
       <GrButton
         className="register-form__button"
         variant="contained"
+        color="secondary"
         onClick={handleSubmit(onSubmit)}
       >
         회원가입
