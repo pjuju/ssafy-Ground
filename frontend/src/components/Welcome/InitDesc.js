@@ -1,10 +1,7 @@
-import theme from "components/common/theme.js";
-
-import { useEffect } from "react";
-import { Button, Grid, TextField } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
 import GrTextField from "components/common/GrTextField";
 import GrButton from "components/common/GrButton";
+
+import { Grid } from "@mui/material";
 
 function InitDesc({ desc, onSetDesc, onSetInitFlag }) {
   const handleChangeDesc = (event) => {
