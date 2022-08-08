@@ -45,7 +45,7 @@ public class FollowService {
         StringBuffer sb = new StringBuffer();
 
         // 3. userId와 userNickname 을 가져옴
-        sb.append("SELECT u.id, u.nickname,");
+        sb.append("SELECT u.id, u.nickname, u.member_image_url,");
         // 4. 그중 fromUserId(팔로워)가 userId(로그인한 유저) 이면 followState 를 True로 해줌
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
         // 5.
@@ -69,7 +69,7 @@ public class FollowService {
     @Transactional
     public List<FollowDto> getFollowing(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
-        sb.append("SELECT u.id, u.nickname,");
+        sb.append("SELECT u.id, u.nickname, u.member_image_url, ");
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");

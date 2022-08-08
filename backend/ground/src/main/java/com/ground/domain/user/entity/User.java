@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.ground.domain.user.dto.UserUpdateDto;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -148,24 +149,21 @@ public class User {
 	}
 
     
-    public void profileUpdate(String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
-        this.nickname = nickname;
-        this.privateYN = privateYN;
-        this.age = age;
-        this.gender = gender;
-        this.introduce = introduce;
-    }
 
     
-    public void deleteUser() {
-    	this.delYN = true;
+    public void profileUpdate(UserUpdateDto entity, LocalDateTime modDttm) {
+        this.nickname = entity.getNickname();
+        this.privateYN = entity.isPrivateYN();
+        this.age = entity.getAge();
+        this.gender = entity.getGender();
+        this.introduce = entity.getIntroduce();
+        this.modDttm = modDttm;
     }
 
 
-
-    
-
-
+    public void deleteUser () {
+        this.delYN = true;
+    }
 
 
 }
