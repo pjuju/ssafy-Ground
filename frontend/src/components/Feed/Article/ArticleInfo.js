@@ -22,9 +22,9 @@ function ArticleInfo(props) {
       return min + "분 전";
     }
 
-    let hour = Math.floor(diff / 360000); // 차이를 분으로 변환
+    let hour = Math.floor(min / 60); // 시간으로 변환
     if (hour < 24) {
-      return min + "시간 전";
+      return hour + "시간 전";
     }
 
     // 날짜의 포맷을 변경
