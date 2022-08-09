@@ -36,7 +36,7 @@ const ageList = age.map((item, index) => (
 
 const nickNameReg = /^[가-힣a-zA-Z0-9]{2,8}$/;
 
-function OtherInfo({ changeOtherInfo, sendRequest }) {
+function OtherInfo({ sendRequest }) {
   const [isNicknameDupChecked, setIsNicknameDupChecked] = useState(false);
 
   const {
@@ -71,7 +71,7 @@ function OtherInfo({ changeOtherInfo, sendRequest }) {
         age: data.age,
         gender: data.gender,
       };
-      changeOtherInfo(newOtherInfo);
+      sendRequest(newOtherInfo);
     }
   };
 
