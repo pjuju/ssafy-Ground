@@ -142,11 +142,6 @@ public class UserController {
     	return userService.checkValidity(ftoken);
     }
 
-    @PutMapping("/userDetail")
-    @ApiOperation(value = "회원 상세정보 추가", response = String.class)
-    public String userDetail(){
-        return "test!";
-    }
     
     @GetMapping("/practice/{username}")
     @ApiOperation(value = "연습해보자get", response = User.class)
@@ -206,10 +201,12 @@ public class UserController {
         return userService.profileUpdate(userId, userUpdateDto);
     }
 
-    // 첫 로그인
-    @PostMapping("/firstLogin/{userId}")
-    @ApiOperation(value = "첫 로그인")
-    public void firstLogin(@PathVariable Long userId, @RequestBody UserFirstLoginDto userFirstLoginDto) {
+    // 회원 상세정보 추가
+    @PostMapping("/userDetail")
+    @ApiOperation(value = "회원 상세정보 추가")
+    public void firstLogin(@RequestHeader String ftoken, @RequestBody UserFirstLoginDto userFirstLoginDto) {
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long userId = user.getId();
 
         userService.firstLogin(userId, userFirstLoginDto);
     }

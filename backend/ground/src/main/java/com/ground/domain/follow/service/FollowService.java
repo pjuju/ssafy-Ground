@@ -56,7 +56,7 @@ public class FollowService {
 
         NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
         noti.NotificationAccountDelete(true);
-        
+
         notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
     }
 
