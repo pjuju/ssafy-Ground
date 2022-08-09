@@ -11,6 +11,7 @@ import FollowFeed from "components/Feed/Follow/FollowFeed";
 import LatestFeed from "components/Feed/Latest/LatestFeed";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProfilePage from "pages/ProfilePage";
 
 function App() {
   return (
@@ -33,9 +34,10 @@ function App() {
           <Route path="latest" element={<LatestFeed />} />
           <Route path="search" element={<Search />} />
         </Route>
+        <Route path="/profile/:userId" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
- export default App;
+export default App;
