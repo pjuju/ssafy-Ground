@@ -2,6 +2,7 @@ import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 function TitleBar(props) {
   const handleClickTitle = () => {
@@ -12,7 +13,7 @@ function TitleBar(props) {
     <Box sx={{ flexGrow: 1 }} display="flex" justifyContent="center">
       <AppBar id="titlebar" position="static">
         <Toolbar id="titlebar__toolbar">
-          {props.isBack ?
+          {props.isBack ? (
             <IconButton
               size="large"
               edge="start"
@@ -21,12 +22,11 @@ function TitleBar(props) {
             >
               <ArrowBackIcon />
             </IconButton>
-            : (props.title === "최신 글 피드"
-              &&
-              <div style={{ width: '50.25px' }}>
-              </div>
+          ) : (
+            (props.title === "최신 글 피드" || props.title === "알림") && (
+              <div style={{ width: "50.25px" }}></div>
             )
-          }
+          )}
           <Typography
             className="titlebar__text"
             variant="h6"
@@ -35,19 +35,30 @@ function TitleBar(props) {
           >
             <span onClick={() => handleClickTitle()}>{props.title}</span>
           </Typography>
-          {props.title === "최신 글 피드" &&
+          {props.title === "최신 글 피드" ? (
             <IconButton
               size="large"
-              edge="center"
+              edge="end"
               color="inherit"
               aria-label="filter"
             >
               <AutoAwesomeOutlinedIcon />
             </IconButton>
-          }
+          ) : (
+            props.title === "알림" && (
+              <IconButton
+                size="large"
+                edge="end"
+                color="inherit"
+                aria-label="filter"
+              >
+                <DeleteOutlineIcon />
+              </IconButton>
+            )
+          )}
         </Toolbar>
       </AppBar>
-    </Box >
+    </Box>
   );
 }
 
