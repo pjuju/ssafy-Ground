@@ -1,13 +1,89 @@
+@import "../common/utils";
+
 .content {
+  height: 100vh;
+
   &__inner {
+    height: 100%;
+
     &__noti {
-      padding-top: 4rem;
+      height: 100%;
+      padding-top: 3.7rem;
 
-      & .notification__bottom {
-
-        bottom: 10%;
+      & .MuiTabs-flexContainer {
+        height: 7vw;
       }
 
+      & .notification__tabpanel {
+        & .noti {
+          &-like,
+          &-comment,
+          &-follow {
+            padding: 1rem 0 1rem 0.5rem;
+
+            &__img {
+              margin-right: 0.6rem;
+              width: 6%;
+            }
+
+            &__text {
+              width: 76%;
+            }
+
+            &__delete {
+              width: 8% !important;
+
+              & button {
+                width: 100%;
+              }
+            }
+
+            &.checked {
+              background: #fff;
+            }
+          }
+
+          &-fr {
+            padding: 1rem 0 1rem 0.5rem;
+
+            &__top {
+              padding-left: 0;
+              justify-content: center;
+
+              &__img {
+                margin-right: 0.6rem;
+                width: 6%;
+              }
+
+              &__text {
+                width: 84%;
+              }
+            }
+
+            &__button {
+              margin-right: 1.5rem;
+            }
+
+            &.checked {
+              background: #fff;
+            }
+          }
+        }
+      }
+
+      & .notification__bottom {
+        bottom: 10%;
+      }
     }
+  }
+}
+
+#titlebar {
+  @include desktop() {
+    display: block;
+  }
+
+  @include wide-desktop() {
+    display: block;
   }
 }
