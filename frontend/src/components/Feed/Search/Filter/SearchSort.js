@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { type } from "../initData";
 
-function SearchSort({sortType, setSortType}) {
+function SearchSort({ sortType, setSortType, onSubmit }) {
   return (
     <Grid container>
       {type.map((item, index) => (
@@ -14,6 +14,7 @@ function SearchSort({sortType, setSortType}) {
           }
           onClick={(e) => {
             setSortType(item.id);
+            onSubmit();
           }}
         >
           {item.value}

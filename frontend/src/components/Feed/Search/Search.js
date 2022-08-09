@@ -12,6 +12,7 @@ import SearchSort from "./Filter/SearchSort";
 import SearchStandard from "./Filter/SearchStandard";
 import SearchDatePicker from "./Filter/Date/SearchDatePicker";
 import UserSearchResult from "./UserSearchResult";
+import Article from "../Article/Article";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -50,8 +51,10 @@ function Search() {
   const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
-  const [searchResult, setSearchResult] = useState([]);
   const [sortType, setSortType] = useState("id");
+
+  const [boardSearchResult, setBoardSearchResult] = useState([]);
+  const [userSearchResult, setUserSearchResult] = useState([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -88,7 +91,7 @@ function Search() {
           searchData,
           (res) => {
             console.log(res.data);
-            setSearchResult(res.data);
+            setBoardSearchResult(res.data);
           },
           (err) => {
             console.log(err);
@@ -100,7 +103,7 @@ function Search() {
           searchData,
           (res) => {
             console.log(res.data);
-            setSearchResult(res.data);
+            setUserSearchResult(res.data);
           },
           (err) => {
             console.log(err);
@@ -149,12 +152,19 @@ function Search() {
         />
       </form>
       <Grid className="search-inner__result" container direction="column">
-        {searchResult.length !== 0 && standard === "board" && (
-          <SearchSort sortType={sortType} setSortType={setSortType} />
+        {boardSearchResult.length !== 0 && standard === "board" && (
+          <>
+            <SearchSort sortType={sortType} setSortType={setSortType} onSubmit={onSubmit}/>
+            {boardSearchResult.map((item, index) => (
+              <Article key={index} articleData={item} />
+            ))}
+          </>
         )}
-        {searchResult.length !== 0 &&
+        {setUserSearchResult.length !== 0 &&
           standard === "user" &&
-          searchResult.map((item, index) => <UserSearchResult key={index} user={item} />)}
+          userSearchResult.map((item, index) => (
+            <UserSearchResult key={index} user={item} />
+          ))}
       </Grid>
     </Grid>
   );
