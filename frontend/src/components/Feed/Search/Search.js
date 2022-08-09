@@ -7,7 +7,7 @@ import SearchBar from "./SearchBar";
 import { age, gender, interest, location } from "./initData";
 import moment from "moment";
 
-import { search } from "api/search";
+import { searchBoard } from "api/search";
 import SearchSort from "./Filter/SearchSort";
 import SearchStandard from "./Filter/SearchStandard";
 import SearchDatePicker from "./Filter/Date/SearchDatePicker";
@@ -53,31 +53,23 @@ function Search() {
   const [searchResult, setSearchResult] = useState([]);
   const [sortType, setSortType] = useState("id");
 
-  const [userSearch, setUserSearch] = useState([
-    { nickname: "김주영", username: "rlawndud" },
-    { nickname: "배시현", username: "qotlgus" },
-    { nickname: "박종욱", username: "qkrwhddnr" },
-    { nickname: "박주현", username: "qkrwngus" },
-    { nickname: "조인후", username: "whdlsgn" },
-    { nickname: "한유빈", username: "gksdbqls" },
-  ]);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = () => {
     // 검색어가 있을 때만 검색
     if (word.trim() !== "") {
       let searchData = {};
       searchData.word = word;
       // 게시글 검색일때만 필터 적용
       if (standard === "board") {
-        searchData.interest = getCheckedValues(radio[0], data.interest);
+        searchData.category = getCheckedValues(radio[0], data.interest);
         searchData.gender = getCheckedValues(radio[1], data.gender);
         searchData.age = getCheckedValues(radio[2], data.age);
         searchData.location = getCheckedValues(radio[3], data.location);
         searchData.type = sortType;
+        searchData.startDate = "1900-01-01";
+        searchData.endDate = moment().format("YYYY-MM-DD");
 
         if (dateRange !== "all") {
           if (dateRange === "custom") {
@@ -92,11 +84,9 @@ function Search() {
           }
         }
       }
-      console.log(searchData);
       // 검색 요청
-      search(
-        standard,
-        data,
+      searchBoard(
+        searchData,
         (response) => {
           console.log(response.data);
         },
@@ -149,10 +139,10 @@ function Search() {
         {searchResult.length !== 0 && standard === "board" && (
           <SearchSort sortType={sortType} setSortType={setSortType} />
         )}
-        {standard === "user" &&
+        {/* {standard === "user" &&
           userSearch.map((user, index) => (
             <UserSearchResult key={index} user={user} />
-          ))}
+          ))} */}
       </Grid>
     </Grid>
   );

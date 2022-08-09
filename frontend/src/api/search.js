@@ -2,8 +2,13 @@ import { apiInstance } from "api";
 
 const api = apiInstance();
 
-function search(type, data, success, fail) {
-  api.get(`/${type}`, data).then(success).catch(fail);
+function searchBoard(data, success, fail) {
+  console.log(data)
+  api.post(`/search/board/1`, data).then(success).catch(fail);
+}
+
+function searchUser(word, success, fail) {
+  api.post(`/search/user`, word).then(success).catch(fail);
 }
 
 function getSearchBoard(success, fail) {
@@ -31,7 +36,8 @@ function deleteAllSearchBoard(success, fail) {
 }
 
 export {
-  search,
+  searchBoard,
+  searchUser,
   getSearchBoard,
   getSearchUser,
   deleteSearchUser,

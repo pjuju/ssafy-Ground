@@ -1,28 +1,51 @@
-import { Grid, IconButton } from "@mui/material";
+import { Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Fragment } from "react";
 
-function LatestSearch({ latest, handleDeleteItem }) {
+function LatestSearch({ latest, handleDeleteItem, setOpenLatest }) {
   return (
-    <Grid container>
-      {latest.map((item, index) => (
-        <Fragment key={index}>
-          <Grid item xs={11}>
+    <>
+      {latest?.map((item, index) => (
+        <Grid
+          className="search-latest-box__item-wrapper"
+          container
+          key={index}
+          justifyContent="center"
+        >
+          <Grid
+            className="search-latest-box__item"
+            item
+            xs={10}
+            tabIndex={-1}
+            onBlur={(e) => {
+              const tabIndex = e.relatedTarget?.tabIndex;
+              if (tabIndex !== -1) {
+                setOpenLatest(false);
+              }
+            }}
+          >
             {item.word}
           </Grid>
-          <Grid item xs={1}>
-            <IconButton
-              onClick={() => {
-                // console.log(item.id + " 삭제!")
-               handleDeleteItem(item.id);
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Grid>
-        </Fragment>
+          <CloseIcon
+            className="search-latest-box__delete"
+            tabIndex={-1}
+            onClick={() => {
+              handleDeleteItem(item.id);
+            }}
+            onBlur={(e) => {
+              const tabIndex = e.relatedTarget?.tabIndex;
+              if (tabIndex !== -1) {
+                setOpenLatest(false);
+              }
+            }}
+          />
+        </Grid>
       ))}
-    </Grid>
+      {latest.length === 0 && (
+        <div className="search-latest-box__no-item">
+          최근 검색어가 없습니다.
+        </div>
+      )}
+    </>
   );
 }
 

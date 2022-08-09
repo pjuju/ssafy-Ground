@@ -2,31 +2,42 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 import LatestSearch from "./LatestSearch";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   deleteAllSearchBoard,
   deleteAllSearchUser,
   deleteSearchBoard,
   deleteSearchUser,
-  getSearchBoard,
-  getSearchUser,
 } from "api/search";
 
-function LatestSearchBox({ standard, setOpenLatest }) {
-  const [latestBoard, setLatestBoard] = useState([]);
-  const [latestUser, setLatestUser] = useState([]);
+function LatestSearchBox({
+  standard,
+  setOpenLatest,
+  latestBoard,
+  latestUser,
+  setLatestSearchBoard,
+  setLatestSearchUser,
+}) {
+  const [curLatestBoard, setCurLatestBoard] = useState(latestBoard);
+  const [curLatestUser, setCurLatestUser] = useState(latestUser);
 
   const handleDeleteItem = (id) => {
     if (standard === "board") {
       deleteSearchBoard(id, (res) => {
-        const deletedList = latestBoard.filter((board) => {return board.id !== id});
-        setLatestBoard(deletedList);
+        const deletedList = latestBoard.filter((board) => {
+          return board.id !== id;
+        });
+        setCurLatestBoard(deletedList);
+        setLatestSearchBoard(deletedList);
       });
     } else if (standard === "user") {
       deleteSearchUser(id, (res) => {
-        const deletedList = latestUser.filter((user) => {return user.id !== id});
-        setLatestUser(deletedList);
-      })
+        const deletedList = latestUser.filter((user) => {
+          return user.id !== id;
+        });
+        setCurLatestUser(deletedList);
+        setLatestSearchUser(deletedList);
+      });
     }
   };
 
@@ -35,16 +46,18 @@ function LatestSearchBox({ standard, setOpenLatest }) {
     if (standard === "board") {
       deleteAllSearchBoard(
         (res) => {
-          setLatestBoard([]);
+          setCurLatestBoard([]);
+          setLatestSearchBoard([]);
         },
         (err) => {
           console.log(err);
         }
       );
-    }  else if (standard === "user") {
+    } else if (standard === "user") {
       deleteAllSearchUser(
         (res) => {
-          setLatestUser([]);
+          setCurLatestUser([]);
+          setLatestSearchUser([]);
         },
         (err) => {
           console.log(err);
@@ -53,43 +66,24 @@ function LatestSearchBox({ standard, setOpenLatest }) {
     }
   };
 
-  useEffect(() => {
-    // 보드 최근 검색 기록
-    getSearchBoard(
-      (res) => {
-        setLatestBoard(res.data);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-    // 유저 최근 검색 기록
-    getSearchUser(
-      (res) => {
-        setLatestUser(res.data);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }, []);
-
   return (
     <Grid container justifyContent="end">
       <Box className="search-latest-box-wrapper">
         <Grid container className="search-latest-box" direction="column">
           <h4>최근 검색어</h4>
-          <Grid className="search-latest-box__content" item xs={9.3}>
+          <Grid className="search-latest-box__content" item>
             {standard === "board" && (
               <LatestSearch
-                latest={latestBoard}
+                latest={curLatestBoard}
                 handleDeleteItem={handleDeleteItem}
+                setOpenLatest={setOpenLatest}
               />
             )}
             {standard === "user" && (
               <LatestSearch
-                latest={latestUser}
+                latest={curLatestUser}
                 handleDeleteItem={handleDeleteItem}
+                setOpenLatest={setOpenLatest}
               />
             )}
           </Grid>
@@ -99,10 +93,16 @@ function LatestSearchBox({ standard, setOpenLatest }) {
             textAlign="end"
           >
             <span
+              tabIndex={-1}
               className="search-latest-box__deleteAll"
               onClick={(e) => {
-                setOpenLatest(true);
                 handleDeleteAll(e);
+              }}
+              onBlur={(e) => {
+                const tabIndex = e.relatedTarget?.tabIndex;
+                if(tabIndex !== -1) {
+                  setOpenLatest(false);
+                }
               }}
             >
               전체 삭제
