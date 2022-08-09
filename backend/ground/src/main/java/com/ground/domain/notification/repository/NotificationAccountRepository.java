@@ -19,4 +19,6 @@ public interface NotificationAccountRepository extends JpaRepository<Notificatio
     List<NotificationAccount> findAllByToAndCheckYN(User user, boolean c);
 
     List<NotificationAccountDto> findAllByToAndDelYNOrderByCheckYN(User user, boolean d);
+
+    NotificationAccount findByFromAndToAndType(User from, User to, boolean t);
 }
