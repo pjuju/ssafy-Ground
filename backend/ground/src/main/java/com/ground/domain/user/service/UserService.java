@@ -9,17 +9,10 @@ import javax.transaction.Transactional;
 import com.ground.domain.follow.repository.FollowRepository;
 import com.ground.domain.jwt.JwtTokenProvider;
 
+import com.ground.domain.user.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ground.domain.user.dto.UserFindPassDto;
-import com.ground.domain.user.dto.UserLoginDto;
-import com.ground.domain.user.dto.UserLoginResponseDto;
-import com.ground.domain.user.dto.UserModifyPassDto;
-import com.ground.domain.user.dto.UserProfileDto;
-import com.ground.domain.user.dto.UserRegisterDto;
-import com.ground.domain.user.dto.UserStateDto;
-import com.ground.domain.user.dto.UserUpdateDto;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
 
@@ -220,4 +213,11 @@ public class UserService {
         return id;
     }
 
+	// 첫 로그인
+	@Transactional
+	public void firstLogin(Long userId, UserFirstLoginDto entity) {
+		User user = userRepository.findById(userId).get();
+
+		user.firstLogin(entity);
+	}
 }

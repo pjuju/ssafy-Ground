@@ -1,6 +1,9 @@
 package com.ground.domain.follow.service;
 
 import com.ground.domain.follow.entity.Follow;
+import com.ground.domain.notification.entity.NotificationAccount;
+import com.ground.domain.notification.repository.NotificationAccountRepository;
+import com.ground.domain.notification.repository.NotificationBoardRepository;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,6 +25,8 @@ import java.util.List;
 public class FollowService {
 
     private final FollowRepository followRepository;
+    private final NotificationAccountRepository notificationAccountRepository;
+    private final NotificationBoardRepository notificationBoardRepository;
     private final UserRepository userRepository;
     private final EntityManager em;
 
@@ -29,6 +35,10 @@ public class FollowService {
     public void follow(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
         followRepository.follow(fromUserId, toUserId);
+
+        User from = userRepository.findById(fromUserId).get();
+        User to = userRepository.findById(toUserId).get();
+        notificationAccountRepository.save(new NotificationAccount(from, to, false, LocalDateTime.now()));
     }
 
     // 팔로우 수락
@@ -40,6 +50,8 @@ public class FollowService {
 
         Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
         follow.FollowAccept(true);
+
+        notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
     }
 
     // 언팔로우
