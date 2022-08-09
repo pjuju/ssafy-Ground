@@ -117,13 +117,6 @@ public class UserController {
     	return userService.modifyPass(params);
     }
     
-//    @PostMapping("/login")
-//    @ApiOperation(value = "로그인", response = String.class)
-//    public ResponseEntity<TokenResponse> login(@RequestBody UserLoginDto params){
-//    	String ftoken = userService.createToken(params);
-//    	return ResponseEntity.ok().body(new TokenResponse(ftoken, "bearer"));   	
-//    }
-    
     
     @PostMapping("/login")
     @ApiOperation(value = "로그인", response = UserStateDto.class)
