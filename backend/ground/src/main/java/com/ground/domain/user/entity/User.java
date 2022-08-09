@@ -164,6 +164,7 @@ public class User {
         this.age = entity.getAge();
         this.gender = entity.getGender();
         this.introduce = entity.getIntroduce();
+        this.userCategories = entity.getUserCategories();
         this.modDttm = modDttm;
     }
 

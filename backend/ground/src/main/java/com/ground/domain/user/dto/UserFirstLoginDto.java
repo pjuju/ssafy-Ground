@@ -13,9 +13,9 @@ import java.util.List;
 @Getter
 @Data
 public class UserFirstLoginDto {
-    String userImage;
-    String introduce;
-    List<UserCategory> userCategories;
+    private String userImage;
+    private String introduce;
+    private List<UserCategory> userCategories;
 
     @Builder
     public UserFirstLoginDto(UserFirstLoginDto entity) {
