@@ -54,12 +54,12 @@ function Search() {
   const [sortType, setSortType] = useState("id");
 
   const [userSearch, setUserSearch] = useState([
-    { nickname: "김주영", user_id: "nullyng" },
-    { nickname: "배시현", user_id: "아무말도안할거야" },
-    { nickname: "박종욱", user_id: "종긔이긔" },
-    { nickname: "박주현", user_id: "노지희" },
-    { nickname: "조인후", user_id: "mischievinu" },
-    { nickname: "한유빈", user_id: "mint_frog" },
+    { nickname: "김주영", username: "rlawndud" },
+    { nickname: "배시현", username: "qotlgus" },
+    { nickname: "박종욱", username: "qkrwhddnr" },
+    { nickname: "박주현", username: "qkrwngus" },
+    { nickname: "조인후", username: "whdlsgn" },
+    { nickname: "한유빈", username: "gksdbqls" },
   ]);
 
   const handleOpen = () => setOpen(true);

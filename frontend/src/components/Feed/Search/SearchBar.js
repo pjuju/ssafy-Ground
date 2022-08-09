@@ -63,7 +63,8 @@ export default function SearchBar({
           <SearchIcon />
         </IconButton>
       </Paper>
-      {openLatest && <LatestSearchBox standard={standard} />}
+      {/* {openLatest && <LatestSearchBox standard={standard} setOpenLatest={setOpenLatest} />} */}
+      <LatestSearchBox standard={standard} setOpenLatest={setOpenLatest}/>
     </Grid>
   );
 }

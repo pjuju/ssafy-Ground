@@ -22,7 +22,7 @@ function UserSearchResult({ user }) {
               {user.nickname}
             </Grid>
             <Grid className="user-result__info__userId" item>
-              {user.user_id}
+              {user.username}
             </Grid>
           </Grid>
         </Grid>
