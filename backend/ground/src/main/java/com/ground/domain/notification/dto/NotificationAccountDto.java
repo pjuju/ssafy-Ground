@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class NotificationAccountDto {
     private long id;
+    private String username;
     private String nickname;
     private String memberImageUrl;
     private boolean checkYN;
@@ -20,6 +21,7 @@ public class NotificationAccountDto {
 
     public NotificationAccountDto(NotificationAccount entity) {
         this.id = entity.getId();
+        this.username = entity.getFrom().getUsername();
         this.nickname = entity.getFrom().getNickname();
         this.memberImageUrl = entity.getFrom().getUserImage();
         this.checkYN = entity.isCheckYN();

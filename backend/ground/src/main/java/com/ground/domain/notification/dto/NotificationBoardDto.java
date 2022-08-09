@@ -13,16 +13,19 @@ import java.time.LocalDateTime;
 public class NotificationBoardDto {
 
     private long id;
+    private String username;
     private String nickname;
     private Board boardId;
-    //    private String profileImgUrl;
+    private String memberImageUrl;
     private boolean checkYN;
     private boolean type;
     private LocalDateTime regDttm;
 
     public NotificationBoardDto(NotificationBoard entity) {
         this.id = entity.getId();
+        this.username = entity.getFrom().getUsername();
         this.nickname = entity.getFrom().getNickname();
+        this.memberImageUrl = entity.getFrom().getUserImage();
         this.boardId = entity.getBoardId();
         this.checkYN = entity.isCheckYN();
         this.type = entity.isType();
