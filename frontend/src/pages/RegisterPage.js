@@ -15,7 +15,6 @@ import RegisterModal from "components/Register/RegisterModal";
 function RegisterPage() {
   const [next, setNext] = useState(false);
   const [basicInfo, setBasicInfo] = useState({});
-  const [otherInfo, setOtherInfo] = useState({});
   const [open, setOpen] = useState(false);
 
   // 다음 버튼 핸들러
@@ -29,13 +28,12 @@ function RegisterPage() {
     setBasicInfo(newBasicInfo);
   };
   const changeOtherInfo = (newOtherInfo) => {
-    setOtherInfo(newOtherInfo);
-    sendRequest();
+    sendRequest(newOtherInfo);
   };
   // 회원가입 요청
-  const sendRequest = () => {
+  const sendRequest = (newOtherInfo) => {
     let info = {};
-    Object.assign(info, basicInfo, otherInfo);
+    Object.assign(info, basicInfo, newOtherInfo);
     console.log(info);
     signUp(
       info,
@@ -99,7 +97,6 @@ function RegisterPage() {
         )}
         {next && (
           <OtherInfo
-            changeOtherInfo={changeOtherInfo}
             sendRequest={sendRequest}
           />
         )}
