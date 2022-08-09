@@ -1,0 +1,171 @@
+.search-inner {
+  width: 56%;
+  padding: 4rem 4rem 0 4rem !important;
+
+  &__top {
+    width: 100%;
+  }
+
+  &__result {
+    padding: 2rem 0.5rem 0 1rem;
+
+    &__sort {
+      color: gray;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding-right: 1rem;
+    }
+  }
+}
+
+.top {
+  &__search-dropdown,
+  &__search-label {
+    font-size: 0.9rem !important;
+  }
+
+  &__search-standard,
+  &__search-field,
+  &__search-button {
+    width: 100%;
+  }
+
+  &__search-field-wrapper {
+    margin: 0 1rem !important;
+  }
+
+  &__date-select:last-child {
+    margin-right: 0;
+  }
+
+  &__date-picker {
+    position: relative;
+  }
+}
+
+.latest-search {
+  position: relative;
+  z-index: 2000;
+}
+
+.filter-modal {
+  width: 100%;
+
+  &__button-wrapper {
+    text-align: end;
+    padding-top: 1rem;
+  }
+
+  &__button {
+    font-weight: 600 !important;
+  }
+
+  &__wrapper {
+    &--right {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.user-result {
+  &__inner {
+    border: 2px solid rgb(223, 223, 223);
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__profile {
+    text-align: center;
+  }
+
+  &__profile-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  &__profile-img {
+    height: 100%;
+  }
+
+  &__info-wrapper {
+    height: 100%;
+    margin-left: 1rem;
+  }
+
+  &__info {
+    &__nickname {
+      font-weight: bold;
+      margin-bottom: 0.5rem !important;
+    }
+
+    &__userId {
+      font-weight: bold;
+      color: rgb(148, 148, 148);
+    }
+  }
+}
+
+.search-bar {
+  position: relative;
+
+  &__wrapper {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 2px solid #54bab9;
+    box-shadow: none;
+  }
+}
+
+.search-latest-box {
+  height: 100%;
+
+  & > h4 {
+    margin: 0 0 1rem 0;
+    padding: 1.2rem 1.5rem 0 1.5rem;
+  }
+
+  &__delete {
+    cursor: pointer;
+  }
+
+  &__deleteAll {
+    text-align: end;
+    font-size: 0.75rem;
+    color: rgb(163, 163, 163);
+    cursor: pointer;
+
+    &--wrapper {
+      padding: 0 1.5rem 1.2rem 0;
+    }
+  }
+
+  &__item {
+    cursor: pointer;
+  }
+
+  &__item-wrapper {
+    padding: 0.5rem 0;
+    &:hover {
+      background-color: rgb(236, 236, 236);
+    }
+  }
+
+  &__no-item {
+    padding: 0.5rem 1.7rem;
+    color: rgb(192, 192, 192);
+  }
+}
+
+.search-latest-box-wrapper {
+  width: 100%;
+  background-color: #fff;
+  position: absolute;
+  z-index: 10;
+  border: 2px solid #54bab9;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border-top: none;
+}
