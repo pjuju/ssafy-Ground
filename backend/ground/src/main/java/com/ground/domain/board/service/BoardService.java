@@ -13,6 +13,7 @@ import com.ground.domain.global.repository.LocationRepository;
 import com.ground.domain.search.repository.sUserRepository;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.entity.UserCategory;
+import com.ground.domain.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,6 +43,7 @@ public class BoardService {
     private final BoardSaveRepository boardSaveRepository;
 
     private final BoardFollowRepository followRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final CommentRepository commentReository;
 
@@ -295,39 +297,37 @@ public class BoardService {
     // -----------------BSH-----------------
     // 유저가 쓴 피드 조회
     @Transactional
-    public List<BoardResponseDto> getMyBoard(long userId, Pageable pageable, long fromId) {
+    public List<BoardResponseDto> getMyBoard(long userId, Pageable pageable, User loginUser) {
 
-        User user = userRepository.findById(fromId).get();
         List<BoardResponseDto> result = new ArrayList<>();
         List<Board> boardList = boardRepository.findAllByUserId(userId, pageable);
 
         for (Board board : boardList) {
-            result.add(new BoardResponseDto(board, user));
+            result.add(new BoardResponseDto(board, loginUser));
         }
         return result;
     }
 
     // 저장한 피드 조회
     @Transactional
-    public List<BoardResponseDto> getSaveBoard(long userId, Pageable pageable, long fromId) {
+    public List<BoardResponseDto> getSaveBoard(long userId, Pageable pageable, User loginUser) {
         List<Long> boardIdList = new ArrayList<>();
         List<BoardSave> saveList = boardSaveRepository.findAllByUserId(userId);
         for (BoardSave boardSave : saveList) boardIdList.add(boardSave.getBoard().getId());
 
-        User user = userRepository.findById(fromId).get();
         List<User> userList = new ArrayList<>();
         // 작성자가 공개유저
         List<User> openUserList = userRepository.findAllByPrivateYN(false);
         userList.addAll(openUserList);
         // 작성자가 팔로우 유저
-        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        List<Follow> followList = followRepository.findAllByfromUserId(loginUser);
         for (Follow follow : followList) userList.add(follow.getToUserId());
         // 작성자가 나
-        userList.add(user);
+        userList.add(loginUser);
 
         List<Board> boardList = boardRepository.findAllByIdInAndUserInAndPrivateYN(boardIdList, userList,false, pageable);
         List<BoardResponseDto> result = new ArrayList<>();
-        for (Board board : boardList) result.add(new BoardResponseDto(board, user));
+        for (Board board : boardList) result.add(new BoardResponseDto(board, loginUser));
 
         return result;
     }

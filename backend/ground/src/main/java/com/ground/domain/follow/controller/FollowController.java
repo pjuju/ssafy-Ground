@@ -31,12 +31,17 @@ public class FollowController {
 //    }
 
     // 팔로우
-    @PostMapping("/{toUserId}/{fromUserId}")
-    @ApiOperation(value = "팔로우")
-    public void followUser(@PathVariable Long toUserId, @PathVariable Long fromUserId){
-        followService.follow(fromUserId, toUserId);
-    }
+//    @PostMapping("/{toUserId}/{fromUserId}")
+//    @ApiOperation(value = "팔로우")
+//    public void followUser(@PathVariable Long toUserId, @PathVariable Long fromUserId){
+//        followService.follow(fromUserId, toUserId);
+//    }
 
+    @PostMapping("/{toUserId}")
+    @ApiOperation(value = "팔로우")
+    public void followUser(@PathVariable Long toUserId, @RequestHeader String ftoken){
+        followService.follow(ftoken, toUserId);
+    }
     // 팔로우 수락
     @PostMapping("/Accept/{toUserId}/{fromUserId}")
     @ApiOperation(value = "팔로우 수락")
