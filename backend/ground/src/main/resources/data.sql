@@ -16,7 +16,7 @@ insert into t_category(id, event) values (14,"볼링");
 insert into t_category(id, event) values (15,"자전거/사이클");
 insert into t_category(id, event) values (16,"기타");
 
---지역
+-- 지역
 insert into t_location(id, location) values (1, "서울");
 insert into t_location(id, location) values (2, "경기");
 insert into t_location(id, location) values (3, "인천");
@@ -38,17 +38,18 @@ insert into t_location(id, location) values (16, "제주");
 insert into t_user (id, age, username, pass, nickname, gender, introduce) values (1, 'twenty', '배시현', '1234', '배시현닉네임', 'FEMALE', "배시현소개입니다");
 insert into t_user (id, age, username, pass, nickname, gender, introduce) values (2, 'thirty', '박주현', '1234', '박주현닉네임', 'MALE', "박주현 소개입니다");
 insert into t_user (id, age, username, pass, nickname, gender, introduce) values (3, 'forty', '박종욱', '1234', '박종욱닉네임', 'MALE', "박종욱 소개 입니다");
-insert into t_user (id, age, username, pass, nickname, gender, introduce) values (3, 'forty', '한유빈', '1234', '한유빈닉네임', 'MALE', "한유빈 소개 입니다");
-insert into t_user (id, age, username, pass, nickname, gender, introduce) values (3, 'forty', '김주영', '1234', '김주영닉네임', 'FEMALE', "김주영 소개 입니다");
-insert into t_user (id, age, username, pass, nickname, gender, introduce) values (3, 'forty', '조인후', '1234', '조인후닉네임', 'FEMALE', "조인후 소개 입니다");
+
+insert into t_user (id, age, username, pass, nickname, gender, introduce) values (4, 'forty', '한유빈', '1234', '한유빈닉네임', 'MALE', "한유빈 소개 입니다");
+insert into t_user (id, age, username, pass, nickname, gender, introduce) values (5, 'forty', '김주영', '1234', '김주영닉네임', 'FEMALE', "김주영 소개 입니다");
+insert into t_user (id, age, username, pass, nickname, gender, introduce) values (6, 'forty', '조인후', '1234', '조인후닉네임', 'FEMALE', "조인후 소개 입니다");
 
 -- 유저 카테고리 설정
 insert into t_user_category(id, user_id, category_id) values (1, 1, 1);
 insert into t_user_category(id, user_id, category_id) values (2, 1, 3);
-insert into t_user_category(id, user_id, category_id) values (2, 1, 3);
-insert into t_user_category(id, user_id, category_id) values (2, 1, 3);
-insert into t_user_category(id, user_id, category_id) values (2, 1, 3);
-insert into t_user_category(id, user_id, category_id) values (2, 1, 3);
+insert into t_user_category(id, user_id, category_id) values (3, 1, 3);
+insert into t_user_category(id, user_id, category_id) values (4, 1, 3);
+insert into t_user_category(id, user_id, category_id) values (5, 1, 3);
+insert into t_user_category(id, user_id, category_id) values (6, 1, 3);
 
 -- 게시글
 insert into t_board values (1, 0, "test 글 내용111", 0, null, false, timestamp(now()), 0,1,1,null,1 );
