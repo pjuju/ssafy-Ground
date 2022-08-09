@@ -94,16 +94,16 @@ function Search() {
       }
       console.log(searchData);
       // 검색 요청
-      search(
-        standard,
-        data,
-        (response) => {
-          console.log(response.data);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      // search(
+      //   standard,
+      //   data,
+      //   (response) => {
+      //     console.log(response.data);
+      //   },
+      //   (error) => {
+      //     console.log(error);
+      //   }
+      // );
     }
   };
 
