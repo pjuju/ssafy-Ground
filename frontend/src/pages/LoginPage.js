@@ -3,7 +3,6 @@ import logo from "assets/images/text_logo.png";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 
 import GoogleButton from "components/Login/OAuth/GoogleButton";
 import KakaoButton from "components/Login/OAuth/KakaoButton.js";
@@ -13,8 +12,13 @@ import { useState } from "react";
 import { Divider } from "@mui/material";
 import { login } from "api/login";
 import GrTextField from "components/common/GrTextField";
+import { useNavigate } from "react-router-dom";
+
+
 
 function LoginPage() {
+  const navigate = useNavigate();
+
   const [userId, setUserId] = useState("");
   const [userPW, setUserPW] = useState("");
   const [idProps, setIdProps] = useState({
@@ -66,8 +70,18 @@ function LoginPage() {
       login(
         info,
         (res) => {
-          window.localStorage.setItem("token", res.data.ftoken);
-          // console.log(res.data);
+          if(res.data.result === "success") {
+            window.localStorage.setItem("token", res.data.ftoken);
+            if(res.data.registerYN === false) {
+              navigate("/welcome");
+            }
+            else {
+              navigate("/feed/follow");
+            }
+          }
+          else {
+            alert("아이디 또는 비밀번호를 확인해주세요.");
+          }
         },
         (err) => {
           console.log(err);
