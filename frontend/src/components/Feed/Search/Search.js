@@ -7,7 +7,7 @@ import SearchBar from "./SearchBar";
 import { age, gender, interest, location } from "./initData";
 import moment from "moment";
 
-import { searchBoard } from "api/search";
+import { searchBoard, searchUser } from "api/search";
 import SearchSort from "./Filter/SearchSort";
 import SearchStandard from "./Filter/SearchStandard";
 import SearchDatePicker from "./Filter/Date/SearchDatePicker";
@@ -83,17 +83,29 @@ function Search() {
               .format("YYYY-MM-DD");
           }
         }
+        // 게시글 검색 요청
+        searchBoard(
+          searchData,
+          (response) => {
+            console.log(response.data);
+            setSearchResult(response.data);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        // 유저 검색 요청
+        searchUser(
+          searchData,
+          (res) => {
+            console.log(res.data);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       }
-      // 검색 요청
-      searchBoard(
-        searchData,
-        (response) => {
-          console.log(response.data);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
     }
   };
 
@@ -115,17 +127,17 @@ function Search() {
               />
             </Grid>
           </Grid>
+          {standard === "board" && (
+            <SearchDatePicker
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+            />
+          )}
         </Grid>
-        {standard === "board" && (
-          <SearchDatePicker
-            dateRange={dateRange}
-            setDateRange={setDateRange}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-          />
-        )}
         <FilterModal
           open={open}
           handleClose={handleClose}
@@ -139,10 +151,6 @@ function Search() {
         {searchResult.length !== 0 && standard === "board" && (
           <SearchSort sortType={sortType} setSortType={setSortType} />
         )}
-        {/* {standard === "user" &&
-          userSearch.map((user, index) => (
-            <UserSearchResult key={index} user={user} />
-          ))} */}
       </Grid>
     </Grid>
   );

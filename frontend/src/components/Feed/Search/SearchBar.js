@@ -7,10 +7,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import { Divider, Grid } from "@mui/material";
 import LatestSearchBox from "./Latest/LatestSearchBox";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setLatestSearchBoard, setLatestSearchUser } from "modules/search";
-import { getSearchBoard, getSearchUser } from "api/search";
+import { useState } from "react";
 
 export default function SearchBar({
   handleOpen,
@@ -20,24 +17,8 @@ export default function SearchBar({
   setWord,
 }) {
   const [openLatest, setOpenLatest] = useState(false);
-  const latestBoard = useSelector((state) => state.search.latestBoard);
-  const latestUser = useSelector((state) => state.search.latestUser);
-
-  const dispatch = useDispatch();
-
-  const onSetLatestSearchBoard = (latestBoard) =>
-    dispatch(setLatestSearchBoard(latestBoard));
-  const onSetLatestSearchUser = (latestUser) =>
-    dispatch(setLatestSearchUser(latestUser));
-
-  useEffect(() => {
-    getSearchBoard((res) => {
-      onSetLatestSearchBoard(res.data);
-    });
-    getSearchUser((res) => {
-      onSetLatestSearchUser(res.data);
-    });
-  }, []);
+  const [latestBoard, setLatestBoard] = useState([]);
+  const [latestUser, setLatestUser] = useState([]);
 
   return (
     <Grid className="search-bar" container>
@@ -67,7 +48,7 @@ export default function SearchBar({
           onFocus={() => setOpenLatest(true)}
           onBlur={(e) => {
             const tabIndex = e.relatedTarget?.tabIndex;
-            if(tabIndex !== -1) {
+            if (tabIndex !== -1) {
               setOpenLatest(false);
             }
           }}
@@ -76,18 +57,9 @@ export default function SearchBar({
           type="submit"
           sx={{ p: "10px" }}
           aria-label="search"
-          onClick={async (e) => {
+          onClick={(e) => {
             e.preventDefault();
-            await onSubmit();
-            if (standard === "board") {
-              getSearchBoard((res) => {
-                onSetLatestSearchBoard(res.data);
-              });
-            } else {
-              getSearchUser((res) => {
-                onSetLatestSearchUser(res.data);
-              });
-            }
+            onSubmit();
           }}
         >
           <SearchIcon />
@@ -99,8 +71,8 @@ export default function SearchBar({
           setOpenLatest={setOpenLatest}
           latestBoard={latestBoard}
           latestUser={latestUser}
-          setLatestSearchBoard={setLatestSearchBoard}
-          setLatestSearchUser={setLatestSearchUser}
+          setLatestBoard={setLatestBoard}
+          setLatestUser={setLatestUser}
         />
       )}
     </Grid>
