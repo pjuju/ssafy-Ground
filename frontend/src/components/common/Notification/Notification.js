@@ -1,52 +1,70 @@
 import theme from "components/common/theme.js";
-
-import { Badge, Grid, IconButton, Tab } from "@mui/material";
-import { useState } from "react";
-import { ThemeProvider } from "@emotion/react";
-import { Box } from "@mui/system";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import LikeNoti from "./LikeNoti";
 import CommentNoti from "./CommentNoti";
 import FollowRequestNoti from "./FollowRequestNoti";
 import FollowNoti from "./FollowNoti";
+import {
+  getAccountNoti,
+  getBoardNoti,
+  readAllAccountNoti,
+  readAllBoardNoti,
+} from "api/notification";
+
+import { Badge, Button, Grid, IconButton, Tab } from "@mui/material";
+import { useEffect, useState } from "react";
+import { ThemeProvider } from "@emotion/react";
+import { Box } from "@mui/system";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 function Notification() {
-  const [activityNotifCnt, setActivityNotifCnt] = useState(4);
-  const [accountNotifCnt, setAccountNotifCnt] = useState(3);
+  const [activityNotiList, setActivityNotiList] = useState([]);
+  const [accountNotiList, setAccountNotiList] = useState([]);
+  const [activityNotiCnt, setActivityNotiCnt] = useState(0);
+  const [accountNotiCnt, setAccountNotiCnt] = useState(0);
+  const [notiCnt, setNotiCnt] = useState(0);
   const [value, setValue] = useState("0");
   const [isClicked, setIsClicked] = useState(false);
-  const [notifCnt, setNotifCnt] = useState(5);
+  const userToken = localStorage.getItem("token");
 
-  const activityNotiList = [
-    // flag 0 : 회원님의 게시글을 좋아합니다.
-    // flag 1 : 회원님의 게시글에 댓글을 작성했습니다.
-    { id: 1, from: "username1", flag: 0 },
-    { id: 2, from: "username2", flag: 1 },
-    { id: 3, from: "username3", flag: 1 },
-    { id: 4, from: "username4", flag: 0 },
-    { id: 5, from: "username5", flag: 0 },
-    { id: 6, from: "username6", flag: 1 },
-    { id: 7, from: "username7", flag: 1 },
-    { id: 8, from: "username8", flag: 1 },
-    { id: 9, from: "username9", flag: 0 },
-    { id: 10, from: "username10", flag: 0 },
-    { id: 11, from: "username11", flag: 1 },
-    { id: 12, from: "username12", flag: 1 },
-  ];
+  useEffect(() => {
+    // 서버에서 활동 알림 목록 받아오기
+    getBoardNoti(userToken, (res) => {
+      console.log(res);
+      setActivityNotiList(res);
+      if (activityNotiList.length > 0) {
+        setActivityNotiCnt(res.data.length);
+      }
+    });
 
-  const accountNotiList = [
-    // flag 0 : 팔로우를 요청했습니다.
-    // flag 1 : 회원님을 팔로우하기 시작했습니다.
-    { id: 1, from: "username1", flag: 1 },
-    { id: 2, from: "username2", flag: 0 },
-    { id: 3, from: "username3", flag: 0 },
-    { id: 4, from: "username4", flag: 1 },
-  ];
+    // 서버에서 계정 알림 목록 받아오기
+    getAccountNoti(userToken, (res) => {
+      console.log(res.data);
+      setAccountNotiList(res.data);
+      if (accountNotiList.length > 0) {
+        setAccountNotiCnt(res.data.length);
+      }
+    });
+
+    setNotiCnt(activityNotiCnt + accountNotiCnt);
+
+    // 현재 탭에 따라 읽음 처리를 서버에 요청
+    if (value === 0) {
+      // 활동 탭을 보고 있다면 활동 탭의 알림들의 읽음 처리를 요청
+      readAllBoardNoti(userToken, (res) => {
+        console.log("활동 전체 읽음");
+      });
+    } else {
+      // 계정 탭을 보고 있다면 계정 탭의 알림들의 읽음 처리를 요청
+      readAllAccountNoti(userToken, (res) => {
+        console.log("계정 전체 읽음");
+      });
+    }
+  }, [accountNotiCnt, activityNotiCnt, value]);
 
   const handleClickClose = () => {
     setIsClicked(!isClicked);
-    setNotifCnt(() => 0);
   };
 
   const handleClickOpen = () => {
@@ -79,7 +97,7 @@ function Notification() {
               <NotificationsIcon />
             </IconButton>
           </ThemeProvider>
-        ) : notifCnt === 0 ? (
+        ) : notiCnt === 0 ? (
           <IconButton onClick={handleClickOpen}>
             <NotificationsIcon />
           </IconButton>
@@ -108,31 +126,62 @@ function Notification() {
                 </TabList>
               </Box>
               <TabPanel className="notification__tabpanel" value="0">
-                {activityNotiList.map((item) => {
-                  if (item.flag === 0) {
-                    return <LikeNoti key={item.id} from={item.from} />;
-                  } else {
-                    return <CommentNoti key={item.id} from={item.from} />;
-                  }
-                })}
+                {activityNotiList.length > 0 &&
+                  activityNotiList.map((item, index) => {
+                    if (item.type === 0) {
+                      return (
+                        <LikeNoti
+                          key={item.id}
+                          id={item.id}
+                          idx={index}
+                          nickname={item.nickname}
+                          isChecked={item.checkYN}
+                        />
+                      );
+                    } else {
+                      return (
+                        <CommentNoti
+                          key={item.id}
+                          id={item.id}
+                          idx={index}
+                          nickname={item.nickname}
+                          isChecked={item.checkYN}
+                        />
+                      );
+                    }
+                  })}
               </TabPanel>
               <TabPanel className="notification__tabpanel" value="1">
-                {accountNotiList.map((item) => {
-                  if (item.flag === 0) {
-                    return <FollowRequestNoti key={item.id} from={item.from} />;
-                  } else {
-                    return <FollowNoti key={item.id} from={item.from} />;
-                  }
-                })}
+                {accountNotiList.length > 0 &&
+                  accountNotiList.map((item, index) => {
+                    if (item.type) {
+                      return (
+                        <FollowNoti
+                          key={item.id}
+                          id={item.id}
+                          idx={index}
+                          nickname={item.nickname}
+                          isChecked={item.checkYN}
+                        />
+                      );
+                    } else {
+                      return (
+                        <FollowRequestNoti
+                          key={item.id}
+                          id={item.id}
+                          idx={index}
+                          nickname={item.nickname}
+                          isChecked={item.checkYN}
+                        />
+                      );
+                    }
+                  })}
               </TabPanel>
             </TabContext>
           </ThemeProvider>
           <Grid className="notification__bottom" container direction="row">
             <Grid className="notification__bottom__delete">
-              <p onClick={handleClickAllDelete}>전체 삭제</p>
-            </Grid>
-            <Grid className="notification__bottom__read">
-              <p onClick={handleClickAllRead}>전체 읽음</p>
+              <Button startIcon={<DeleteOutlineIcon />}>전체 삭제</Button>
             </Grid>
           </Grid>
         </Grid>

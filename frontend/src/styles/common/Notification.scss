@@ -80,21 +80,17 @@
     justify-content: center;
 
     &__delete {
-      left: 0;
-      padding: 1rem;
-      margin-right: 2rem;
-
-      & p {
-        cursor: pointer;
-      }
-    }
-
-    &__read {
-      right: 0;
       padding: 1rem;
 
-      & p {
-        cursor: pointer;
+      & button {
+        color: $light-gray;
+        height: 4.6vw;
+        font-size: 1rem;
+
+        &:hover {
+          color: red;
+          background-color: #fff;
+        }
       }
     }
   }

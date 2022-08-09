@@ -3,8 +3,10 @@ import { apiInstance } from "api";
 const api = apiInstance();
 
 /* 계정 알림 조회 */
-function getAccountNoti(userId, success) {
-  api.get(`/rest/notification/account/${userId}`).then(success);
+function getAccountNoti(userToken, success) {
+  api
+    .get(`/rest/notification/account}`, { params: { ftoken: userToken } })
+    .then(success);
 }
 
 /* 계정 알림 생성 */
@@ -30,8 +32,10 @@ function deleteAccountNoti(notiId, success) {
 }
 
 /* 게시글 알림 조회 */
-function getBoardNoti(userId, success) {
-  api.get(`/rest/notification/board/${userId}`).then(success);
+function getBoardNoti(userToken, success) {
+  api
+    .get(`/rest/notification/board`, { params: { ftoken: userToken } })
+    .then(success);
 }
 
 /* 게시글 알림 생성 */
