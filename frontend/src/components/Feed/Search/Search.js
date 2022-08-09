@@ -1,34 +1,17 @@
-import {
-  Grid,
-  Select,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Typography,
-  MenuItem,
-} from "@mui/material";
+import { Grid } from "@mui/material";
 import "styles/Search/Search.scss";
 
 import { useState } from "react";
 import FilterModal from "./Filter/FilterModal";
 import SearchBar from "./SearchBar";
-import { ThemeProvider } from "@emotion/react";
-import theme from "components/common/theme.js";
-import StartDatePicker from "./Filter/StartDatePicker";
-import EndDatePicker from "./Filter/EndDatePicker";
-import { age, date, gender, interest, location } from "./initData";
+import { age, gender, interest, location } from "./initData";
 import moment from "moment";
 
-const dateRadio = date.map((item, index) => (
-  <FormControlLabel
-    className="top__date-select"
-    key={index}
-    value={item.value}
-    label={<Typography sx={{ fontSize: "0.8rem" }}>{item.label}</Typography>}
-    control={<Radio size="small" />}
-  />
-));
+import { search } from "api/search";
+import SearchSort from "./Filter/SearchSort";
+import SearchStandard from "./Filter/SearchStandard";
+import SearchDatePicker from "./Filter/Date/SearchDatePicker";
+import UserSearchResult from "./UserSearchResult";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -67,64 +50,72 @@ function Search() {
   const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
+  const [searchResult, setSearchResult] = useState([]);
+  const [sortType, setSortType] = useState("id");
+
+  const [userSearch, setUserSearch] = useState([
+    { nickname: "김주영", username: "rlawndud" },
+    { nickname: "배시현", username: "qotlgus" },
+    { nickname: "박종욱", username: "qkrwhddnr" },
+    { nickname: "박주현", username: "qkrwngus" },
+    { nickname: "조인후", username: "whdlsgn" },
+    { nickname: "한유빈", username: "gksdbqls" },
+  ]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // 검색어가 있을 때만 검색
+    if (word.trim() !== "") {
+      let searchData = {};
+      searchData.word = word;
+      // 게시글 검색일때만 필터 적용
+      if (standard === "board") {
+        searchData.interest = getCheckedValues(radio[0], data.interest);
+        searchData.gender = getCheckedValues(radio[1], data.gender);
+        searchData.age = getCheckedValues(radio[2], data.age);
+        searchData.location = getCheckedValues(radio[3], data.location);
+        searchData.type = sortType;
 
-    let searchData = {};
-    searchData.word = word;
-
-    // 게시글 검색일때만 필터 적용
-    if (standard === "board") {
-      searchData.interest = getCheckedValues(radio[0], data.interest);
-      searchData.gender = getCheckedValues(radio[1], data.gender);
-      searchData.age = getCheckedValues(radio[2], data.age);
-      searchData.location = getCheckedValues(radio[3], data.location);
-
-      if (dateRange !== "all") {
-        if (dateRange === "custom") {
-          searchData.startDate = moment(startDate).format("YYYY-MM-DD");
-          searchData.endDate = moment(endDate).format("YYYY-MM-DD");
-        } else if (dateRange === "days") {
-          searchData.startDate = moment().format("YYYY-MM-DD");
-        } else {
-          searchData.startDate = moment()
-            .subtract(1, dateRange)
-            .format("YYYY-MM-DD");
+        if (dateRange !== "all") {
+          if (dateRange === "custom") {
+            searchData.startDate = moment(startDate).format("YYYY-MM-DD");
+            searchData.endDate = moment(endDate).format("YYYY-MM-DD");
+          } else if (dateRange === "days") {
+            searchData.startDate = moment().format("YYYY-MM-DD");
+          } else {
+            searchData.startDate = moment()
+              .subtract(1, dateRange)
+              .format("YYYY-MM-DD");
+          }
         }
       }
+      console.log(searchData);
+      // 검색 요청
+      search(
+        standard,
+        data,
+        (response) => {
+          console.log(response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     }
-
-    console.log(searchData);
   };
 
   return (
     <Grid className="search-inner" item>
       <form>
         <Grid className="search-inner__top" container direction="column">
-          <Grid container justifyContent="space-around">
+          <Grid container justifyContent="space-between">
             <Grid xs={2} item>
-              <FormControl sx={{ minWidth: "100%", height: "100%" }}>
-                <ThemeProvider theme={theme}>
-                  <Select
-                    inputProps={{ "aria-label": "Without label" }}
-                    size="small"
-                    value={standard}
-                    onChange={(e) => {
-                      setStandard(e.target.value);
-                    }}
-                    sx={{ height: "100%" }}
-                  >
-                    <MenuItem value="board">게시글</MenuItem>
-                    <MenuItem value="user">유저</MenuItem>
-                  </Select>
-                </ThemeProvider>
-              </FormControl>
+              <SearchStandard standard={standard} setStandard={setStandard} />
             </Grid>
-            <Grid xs={9} item>
+            <Grid xs={9.5} item>
               <SearchBar
                 handleOpen={handleOpen}
                 onSubmit={onSubmit}
@@ -134,52 +125,35 @@ function Search() {
               />
             </Grid>
           </Grid>
-          <FilterModal
-            open={open}
-            handleClose={handleClose}
-            data={data}
-            setData={setData}
-            radio={radio}
-            setRadio={setRadio}
-          />
-          {standard === "board" && (
-            <>
-              <Grid className="top__date-picker" container justifyContent="end">
-                <FormControl>
-                  <ThemeProvider theme={theme}>
-                    <RadioGroup
-                      row
-                      value={dateRange}
-                      onChange={(e) => {
-                        setDateRange(e.target.value);
-                      }}
-                    >
-                      {dateRadio}
-                    </RadioGroup>
-                  </ThemeProvider>
-                </FormControl>
-              </Grid>
-              {dateRange === "custom" && (
-                <Grid
-                  className="top__date-picker"
-                  container
-                  justifyContent="end"
-                >
-                  <StartDatePicker
-                    startDate={startDate}
-                    setStartDate={setStartDate}
-                  />
-                  <EndDatePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    setEndDate={setEndDate}
-                  />
-                </Grid>
-              )}
-            </>
-          )}
         </Grid>
+        {standard === "board" && (
+          <SearchDatePicker
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            startDate={startDate}
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+          />
+        )}
+        <FilterModal
+          open={open}
+          handleClose={handleClose}
+          data={data}
+          setData={setData}
+          radio={radio}
+          setRadio={setRadio}
+        />
       </form>
+      <Grid className="search-inner__result" container direction="column">
+        {searchResult.length !== 0 && standard === "board" && (
+          <SearchSort sortType={sortType} setSortType={setSortType} />
+        )}
+        {standard === "user" &&
+          userSearch.map((user, index) => (
+            <UserSearchResult key={index} user={user} />
+          ))}
+      </Grid>
     </Grid>
   );
 }
