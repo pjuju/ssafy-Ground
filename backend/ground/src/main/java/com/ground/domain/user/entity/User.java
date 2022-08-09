@@ -96,15 +96,16 @@ public class User {
     @Column(name = "mod_dttm")
     private LocalDateTime modDttm;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCategory> userCategories = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardLike> boardLikes = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardSave> boardSaves = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
     

@@ -45,7 +45,7 @@ public class FollowService {
 
     // 팔로우 수락
     @Transactional
-    public void followAccept(Long fromUserId, Long toUserId, Long notiId) {
+    public void followAccept(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
 
         User from = userRepository.findById(fromUserId).get();
@@ -54,17 +54,22 @@ public class FollowService {
         Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
         follow.FollowAccept(true);
 
-        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
+        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
         noti.NotificationAccountDelete(true);
+        
+        notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
     }
 
     // 팔로우 거절
     @Transactional
-    public void followDecline(Long fromUserId, Long toUserId, Long notiId) {
+    public void followDecline(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
 
+        User from = userRepository.findById(fromUserId).get();
+        User to = userRepository.findById(toUserId).get();
+
         followRepository.unFollow(fromUserId, toUserId);
-        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
+        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
         noti.NotificationAccountDelete(true);
     }
 

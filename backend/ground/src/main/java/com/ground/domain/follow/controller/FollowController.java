@@ -44,23 +44,23 @@ public class FollowController {
     }
 
     // 팔로우 수락
-    @PostMapping("/Accept/{toUserId}")
+    @PostMapping("/Accept/{fromUserId}")
     @ApiOperation(value = "팔로우 수락")
-    public void followAccept(@PathVariable Long toUserId, @RequestHeader String ftoken, @RequestBody Long notiId){
+    public void followAccept(@PathVariable Long fromUserId, @RequestHeader String ftoken){
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long fromUserId = user.getId();
+        Long toUserId = user.getId();
 
-        followService.followAccept(fromUserId, toUserId, notiId);
+        followService.followAccept(fromUserId, toUserId);
     }
 
     // 팔로우 거절
-    @PostMapping("/Decline/{toUserId}")
+    @PostMapping("/Decline/{fromUserId}")
     @ApiOperation(value = "팔로우 거절")
-    public void followDecline(@PathVariable Long toUserId, @RequestHeader String ftoken, @RequestBody Long notiId){
+    public void followDecline(@PathVariable Long fromUserId, @RequestHeader String ftoken){
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long fromUserId = user.getId();
+        Long toUserId = user.getId();
 
-        followService.followDecline(fromUserId, toUserId, notiId);
+        followService.followDecline(fromUserId, toUserId);
     }
 
     // 언팔로우
