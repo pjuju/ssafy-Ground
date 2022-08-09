@@ -9,6 +9,7 @@ function FollowRequestNoti({ id, idx, nickname, isChecked }) {
   useEffect(() => {
     if (isChecked) {
       const element = document.querySelector(`.noti-fr:nth-child(${idx + 1})`);
+      console.log(element);
       element.classList.add("checked");
     }
   });
@@ -30,8 +31,10 @@ function FollowRequestNoti({ id, idx, nickname, isChecked }) {
           <img src={userImage} />
         </Grid>
         <Grid className="noti-fr__top__text">
-          <span className="bold">{nickname}님</span>이 회원님이 팔로우를
-          요청했습니다.
+          <p>
+            <span className="bold">{nickname}님</span>이 회원님이 팔로우를
+            요청했습니다.
+          </p>
         </Grid>
       </Grid>
       <Grid className="noti-fr__button">

@@ -26,8 +26,6 @@ function MobileNotiPage() {
   const [accountNotiCnt, setAccountNotiCnt] = useState(0);
   const [activityNotiList, setActivityNotiList] = useState([]);
   const [accountNotiList, setAccountNotiList] = useState([]);
-  const userId = 1;
-
   const [value, setValue] = useState("0");
 
   const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);
@@ -43,17 +41,15 @@ function MobileNotiPage() {
     onSetBottomMenuIdx(1);
 
     // 서버에서 활동 알림 목록 받아오기
-    getBoardNoti(userId, (res) => {
-      console.log(res);
-      setActivityNotiList(res);
+    getBoardNoti((res) => {
+      setActivityNotiList(res.data);
       if (activityNotiList.length > 0) {
         setActivityNotiCnt(res.data.length);
       }
     });
 
     // 서버에서 계정 알림 목록 받아오기
-    getAccountNoti(userId, (res) => {
-      console.log(res.data);
+    getAccountNoti((res) => {
       setAccountNotiList(res.data);
       if (accountNotiList.length > 0) {
         setAccountNotiCnt(res.data.length);
@@ -61,14 +57,14 @@ function MobileNotiPage() {
     });
 
     // 현재 탭에 따라 읽음 처리를 서버에 요청
-    if (value === 0) {
+    if (value === "0") {
       // 활동 탭을 보고 있다면 활동 탭의 알림들의 읽음 처리를 요청
-      readAllBoardNoti(userId, (res) => {
+      readAllBoardNoti((res) => {
         console.log("활동 전체 읽음");
       });
     } else {
       // 계정 탭을 보고 있다면 계정 탭의 알림들의 읽음 처리를 요청
-      readAllAccountNoti(userId, (res) => {
+      readAllAccountNoti((res) => {
         console.log("계정 전체 읽음");
       });
     }

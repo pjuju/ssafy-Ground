@@ -37,10 +37,6 @@
                 width: 100%;
               }
             }
-
-            &.checked {
-              background: #fff;
-            }
           }
 
           &-fr {
@@ -49,6 +45,7 @@
             &__top {
               padding-left: 0;
               justify-content: center;
+              align-items: center;
 
               &__img {
                 margin-right: 0.6rem;
@@ -63,10 +60,6 @@
             &__button {
               margin-right: 1.5rem;
             }
-
-            &.checked {
-              background: #fff;
-            }
           }
         }
       }
@@ -76,4 +69,8 @@
       }
     }
   }
+}
+
+.checked {
+  background: #fff;
 }

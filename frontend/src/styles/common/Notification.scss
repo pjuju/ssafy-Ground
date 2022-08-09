@@ -138,10 +138,7 @@
 }
 
 .noti {
-  &-like {
-    @include noti-common();
-  }
-
+  &-like,
   &-comment {
     @include noti-common();
   }
@@ -162,8 +159,12 @@
       }
       &__text {
         width: 70%;
-        display: flex;
         align-items: center;
+
+        & p {
+          vertical-align: middle;
+          margin: 0;
+        }
       }
     }
 
@@ -196,4 +197,8 @@
 
 .bold {
   font-weight: 700;
+}
+
+.checked {
+  background: #fff;
 }

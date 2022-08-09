@@ -18,7 +18,7 @@ function FollowNoti({ id, idx, nickname, isChecked }) {
   const handleClickDelete = () => {
     // 서버에 알림 삭제를 요청하기
     deleteAccountNoti(id, (res) => {
-      console.log("알림 삭제");
+      console.log("계정" + id + " 삭제");
     });
   };
 

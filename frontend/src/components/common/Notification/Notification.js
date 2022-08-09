@@ -4,6 +4,8 @@ import CommentNoti from "./CommentNoti";
 import FollowRequestNoti from "./FollowRequestNoti";
 import FollowNoti from "./FollowNoti";
 import {
+  deleteAccountNoti,
+  deleteBoardNoti,
   getAccountNoti,
   getBoardNoti,
   readAllAccountNoti,
@@ -30,34 +32,43 @@ function Notification() {
 
   useEffect(() => {
     // 서버에서 활동 알림 목록 받아오기
-    getBoardNoti(userToken, (res) => {
-      console.log(res);
-      setActivityNotiList(res);
+    getBoardNoti((res) => {
+      console.log(res.data);
+      setActivityNotiList(res.data);
       if (activityNotiList.length > 0) {
-        setActivityNotiCnt(res.data.length);
+        activityNotiList.map((item) => {
+          if (!item.checkYN) {
+            setActivityNotiCnt(() => activityNotiCnt + 1);
+          }
+        });
       }
     });
 
     // 서버에서 계정 알림 목록 받아오기
-    getAccountNoti(userToken, (res) => {
+    getAccountNoti((res) => {
       console.log(res.data);
       setAccountNotiList(res.data);
       if (accountNotiList.length > 0) {
-        setAccountNotiCnt(res.data.length);
+        accountNotiList.map((item) => {
+          if (!item.checkYN) {
+            setAccountNotiCnt(() => accountNotiCnt + 1);
+          }
+        });
       }
     });
 
-    setNotiCnt(activityNotiCnt + accountNotiCnt);
+    setNotiCnt(() => activityNotiCnt + accountNotiCnt);
 
     // 현재 탭에 따라 읽음 처리를 서버에 요청
-    if (value === 0) {
+    console.log(value);
+    if (value === "0") {
       // 활동 탭을 보고 있다면 활동 탭의 알림들의 읽음 처리를 요청
-      readAllBoardNoti(userToken, (res) => {
+      readAllBoardNoti((res) => {
         console.log("활동 전체 읽음");
       });
     } else {
       // 계정 탭을 보고 있다면 계정 탭의 알림들의 읽음 처리를 요청
-      readAllAccountNoti(userToken, (res) => {
+      readAllAccountNoti((res) => {
         console.log("계정 전체 읽음");
       });
     }
@@ -73,19 +84,27 @@ function Notification() {
   };
 
   const handleTabChange = (event, newValue) => {
-    console.log(newValue);
-    // 해당 탭의 전체 알림에 대한 읽음 처리를 서버에 요청
     setValue(newValue);
   };
 
   const handleClickAllDelete = () => {
     console.log("전체 삭제");
     // 해당 탭의 전체 알림에 대한 삭제를 서버에 요청
-  };
-
-  const handleClickAllRead = () => {
-    console.log("전체 읽음");
-    // 해당 탭의 전체 알림에 대한 읽음 처리를 서버에 요청
+    if (value === 0) {
+      // 활동 탭 알림 전체 삭제 요청
+      activityNotiList.map((item) => {
+        deleteBoardNoti(item.id, (res) =>
+          console.log("활동" + item.id + " 삭제")
+        );
+      });
+    } else {
+      // 계정 탭 알림 전체 삭제 요청
+      accountNotiList.map((item) => {
+        deleteAccountNoti(item.id, (res) =>
+          console.log("계정" + item.id + " 삭제")
+        );
+      });
+    }
   };
 
   return (
@@ -104,7 +123,7 @@ function Notification() {
         ) : (
           <ThemeProvider theme={theme}>
             <IconButton onClick={handleClickOpen}>
-              <Badge badgeContent={4} color="notification">
+              <Badge badgeContent={notiCnt} color="notification">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -121,8 +140,8 @@ function Notification() {
                   variant="fullWidth"
                   aria-label="notification tablist"
                 >
-                  <Tab label={`활동(${activityNotiList.length})`} value="0" />
-                  <Tab label={`계정(${accountNotiList.length})`} value="1" />
+                  <Tab label={`활동(${activityNotiCnt})`} value="0" />
+                  <Tab label={`계정(${accountNotiCnt})`} value="1" />
                 </TabList>
               </Box>
               <TabPanel className="notification__tabpanel" value="0">
@@ -136,6 +155,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          activityNotiList={activityNotiList}
                         />
                       );
                     } else {
@@ -146,6 +166,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          activityNotiList={activityNotiList}
                         />
                       );
                     }
@@ -181,7 +202,12 @@ function Notification() {
           </ThemeProvider>
           <Grid className="notification__bottom" container direction="row">
             <Grid className="notification__bottom__delete">
-              <Button startIcon={<DeleteOutlineIcon />}>전체 삭제</Button>
+              <Button
+                startIcon={<DeleteOutlineIcon />}
+                onClick={handleClickAllDelete}
+              >
+                전체 삭제
+              </Button>
             </Grid>
           </Grid>
         </Grid>
