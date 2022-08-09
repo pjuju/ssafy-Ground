@@ -135,37 +135,6 @@ public class UserController {
         return "test!";
     }
     
-    @GetMapping("/practice/{username}")
-    @ApiOperation(value = "연습해보자get", response = User.class)
-    public List<User> hello1(@PathVariable("username") String username){
-    	
-    	List<User> user = userService.findFirstByUsernameLikeOrderByIdDesc(username);
-    	log.info(username);
-    	log.error("d");
-    	
-    	//log.warn("watch out!");
-   
-        return user;
-    }
-    
-    @PostMapping("/practice")
-    @ApiOperation(value = "연습해보자post", response = User.class)
-    public User hello2(@RequestBody User user){
-    	// 회원가입
-    	
-    	
-//    	if(true)
-//    	{
-//    		// 이미 중복된 아이디 확인하는작업
-//        	// ex) if(crudEntityRepository.findById(name).isPresent())
-//    	}
-//    	else {
-//    		
-//    	}
-    	
-    	
-        return userService.save(user);
-    }
 
     // -----------------BSH-----------------
     // 프로필 조회 이동
