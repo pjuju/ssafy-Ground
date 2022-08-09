@@ -53,6 +53,10 @@ a {
     @include desktop() {
       width: $oauth-desktop-button-size;
     }
+
+    @include wide-desktop() {
+      width: $oauth-wide-desktop-button-size;
+    }
   }
 }
 
@@ -75,6 +79,10 @@ a {
 
     @include desktop() {
       width: $oauth-desktop-button-size;
+    }
+
+    @include wide-desktop() {
+      width: $oauth-wide-desktop-button-size;
     }
   }
 }
