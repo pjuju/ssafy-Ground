@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
-import com.ground.domain.user.dto.UserUpdateDto;
+import com.ground.domain.user.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,13 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ground.domain.jwt.TokenResponse;
-import com.ground.domain.user.dto.UserFindPassDto;
-import com.ground.domain.user.dto.UserLoginDto;
-import com.ground.domain.user.dto.UserLoginResponseDto;
-import com.ground.domain.user.dto.UserModifyPassDto;
-import com.ground.domain.user.dto.UserProfileDto;
-import com.ground.domain.user.dto.UserRegisterDto;
-import com.ground.domain.user.dto.UserStateDto;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
@@ -183,11 +176,11 @@ public class UserController {
 
     // -----------------BSH-----------------
     // 프로필 조회 이동
-    @GetMapping("/profile/{id}")
+    @GetMapping("/profile/{userId}")
     @ApiOperation(value = "프로필 조회", response = String.class)
-    public UserProfileDto userProfile(@PathVariable Long id) {
+    public UserProfileDto userProfile(@PathVariable Long userId) {
 
-        return userService.getUserProfile(id);
+        return userService.getUserProfile(userId);
     }
 
     // 회원 정보 수정 페이지로 이동
@@ -198,11 +191,19 @@ public class UserController {
     }
 
     // 회원 정보 수정
-    @PutMapping("/modifyUser/{id}")
+    @PutMapping("/modifyUser/{userId}")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public Long modifyUser(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) {
+    public Long modifyUser(@PathVariable Long userId, @RequestBody UserUpdateDto userUpdateDto) {
 
-        return userService.profileUpdate(id, userUpdateDto);
+        return userService.profileUpdate(userId, userUpdateDto);
+    }
+
+    // 첫 로그인
+    @PostMapping("/firstLogin/{userId}")
+    @ApiOperation(value = "첫 로그인")
+    public void firstLogin(@PathVariable Long userId, @RequestBody UserFirstLoginDto userFirstLoginDto) {
+
+        userService.firstLogin(userId, userFirstLoginDto);
     }
 
 }

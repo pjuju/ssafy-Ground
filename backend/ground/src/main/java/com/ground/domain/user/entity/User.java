@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.ground.domain.user.dto.UserFirstLoginDto;
 import com.ground.domain.user.dto.UserUpdateDto;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -164,5 +165,10 @@ public class User {
         this.delYN = true;
     }
 
-//    public void firstLogin()
+    public void firstLogin(UserFirstLoginDto entity) {
+        this.userImage = entity.getUserImage();
+        this.introduce = entity.getIntroduce();
+        this.userCategories = entity.getUserCategories();
+        this.registerYN = true;
+    }
 }
