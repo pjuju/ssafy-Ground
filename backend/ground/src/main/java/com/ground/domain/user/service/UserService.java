@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.follow.repository.FollowRepository;
 import com.ground.domain.jwt.JwtTokenProvider;
 
@@ -185,11 +186,15 @@ public class UserService {
 	@Transactional
     public UserProfileDto getUserProfile(Long id, Long loginUserId) {
 		UserProfileDto userProfileDto = new UserProfileDto();
-		int follow = 1;
-		if (id == loginUserId) {
-			follow = 0;
-		} else {
-
+		int follow = 0;
+		if (id == loginUserId) { follow = 1; }
+		else {
+			User from = userRepository.findById(loginUserId).get();
+			User to = userRepository.findById(id).get();
+			Follow flag = followRepository.findByFromUserIdAndToUserId(from, to);
+			if (flag == null) { follow = 2; }
+			else if (flag.isFlag() == false) { follow = 3; }
+			else if (flag.isFlag() == true) { follow = 4;}
 		}
 
         User user = userRepository.findById(id).orElseThrow(()
