@@ -23,6 +23,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.dto.UserFirstLoginDto;
 import com.ground.domain.user.dto.UserUpdateDto;
 import org.springframework.data.annotation.CreatedDate;
@@ -94,15 +96,19 @@ public class User {
     @Column(name = "mod_dttm")
     private LocalDateTime modDttm;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCategory> userCategories = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardLike> boardLikes = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardSave> boardSaves = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
     

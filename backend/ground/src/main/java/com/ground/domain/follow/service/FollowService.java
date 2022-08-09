@@ -27,6 +27,7 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final NotificationAccountRepository notificationAccountRepository;
     private final NotificationBoardRepository notificationBoardRepository;
+
     private final UserRepository userRepository;
     private final EntityManager em;
 
@@ -34,6 +35,7 @@ public class FollowService {
     @Transactional
     public void follow(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+
         followRepository.follow(fromUserId, toUserId);
 
         User from = userRepository.findById(fromUserId).get();
@@ -45,18 +47,35 @@ public class FollowService {
     @Transactional
     public void followAccept(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+
         User from = userRepository.findById(fromUserId).get();
         User to = userRepository.findById(toUserId).get();
 
         Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
         follow.FollowAccept(true);
 
+        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
+        noti.NotificationAccountDelete(true);
+
         notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
+    }
+
+    // 팔로우 거절
+    @Transactional
+    public void followDecline(Long fromUserId, Long toUserId) {
+//        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+
+        User from = userRepository.findById(fromUserId).get();
+        User to = userRepository.findById(toUserId).get();
+
+        followRepository.unFollow(fromUserId, toUserId);
+        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
+        noti.NotificationAccountDelete(true);
     }
 
     // 언팔로우
     @Transactional
-    public void unFollow(long fromUserId, long toUserId) {
+    public void unFollow(Long fromUserId, Long toUserId) {
 
         followRepository.unFollow(fromUserId, toUserId);
     }

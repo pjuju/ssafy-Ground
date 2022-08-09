@@ -41,16 +41,8 @@ public class NotificationService {
 //        List<NotificationAccountDto> result = new ArrayList<>();
         User user = userRepository.findById(userId).get();
 
-        List<NotificationAccountDto> result = notificationAccountRepository.findAllByToOrderByCheckYN(user);
+        List<NotificationAccountDto> result = notificationAccountRepository.findAllByToAndDelYNOrderByCheckYN(user, false);
         return result;
-    }
-
-    // 계정 알림 1개 확인
-    @Transactional
-    public void checkNotifyAccount(Long notiId) {
-        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
-
-        noti.NotificationAccountUpdate(true);
     }
 
     // 계정 알림 전체 확인
@@ -77,7 +69,7 @@ public class NotificationService {
         Board board = boardRepository.findById(boardId).get();
         User to = board.getUser();
 
-        notificationBoardRepository.save(new NotificationBoard(from, to, board, params, LocalDateTime.now()));
+        notificationBoardRepository.save(new NotificationBoard(from, to, boardId, params, LocalDateTime.now()));
     }
 
     // 게시글 알림 조회
@@ -85,16 +77,8 @@ public class NotificationService {
     public List<NotificationBoardDto> getNotifyBoard(Long userId) {
         User user = userRepository.findById(userId).get();
 
-        List<NotificationBoardDto> result = notificationBoardRepository.findAllByToOrderByCheckYN(user);
+        List<NotificationBoardDto> result = notificationBoardRepository.findAllByToAndDelYNOrderByCheckYN(user, false);
         return result;
-    }
-
-    // 게시글 알림 1개 확인
-    @Transactional
-    public void checkNotifyBoard(Long notiId) {
-        NotificationBoard noti = notificationBoardRepository.findById(notiId).get();
-
-        noti.NotificationBoardUpdate(true);
     }
 
     // 게시글 알림 전체 확인
