@@ -12,7 +12,7 @@ import lombok.*;
 public class UserProfileDto {
 
 
-    private boolean follow;
+    private int follow;
     private User user;
 //    private Long id;
 //    private String username;

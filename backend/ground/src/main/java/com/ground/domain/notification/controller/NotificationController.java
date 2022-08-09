@@ -33,13 +33,6 @@ public class NotificationController {
         return notificationService.getNotifyAccount(userId);
     }
 
-    // 계정 알림 1개 확인
-    @PostMapping("/account/check/noti/{notiId}")
-    @ApiOperation(value = "계정 알림 1개 확인")
-    public void checkNotifyAccount(@PathVariable Long notiId){
-        notificationService.checkNotifyAccount(notiId);
-    }
-
     // 계정 알림 전체 확인
     @PostMapping("/account/check/{userId}")
     @ApiOperation(value = "계정 알림 전체 확인")
@@ -66,13 +59,6 @@ public class NotificationController {
     @ApiOperation(value = "게시글 알림 조회")
     public List<NotificationBoardDto> getNotifyBoard(@PathVariable Long userId){
         return notificationService.getNotifyBoard(userId);
-    }
-
-    // 게시글 알림 1개 확인
-    @PostMapping("/board/check/noti/{notiId}")
-    @ApiOperation(value = "게시글 알림 1개 확인")
-    public void checkNotifyBoard(@PathVariable Long notiId){
-        notificationService.checkNotifyBoard(notiId);
     }
 
     // 게시글 알림 전체 확인

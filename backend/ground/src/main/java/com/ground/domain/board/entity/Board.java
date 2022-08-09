@@ -1,5 +1,6 @@
 package com.ground.domain.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ground.domain.global.entity.Category;
 import com.ground.domain.global.entity.Location;
 import com.ground.domain.user.entity.User;
@@ -31,6 +32,7 @@ public class Board {
     @Column(name = "content")
     private String content;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mod_user_id")
     private User modUser;

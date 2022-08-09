@@ -19,5 +19,6 @@ public interface NotificationBoardRepository extends JpaRepository<NotificationB
 
     List<NotificationBoard> findAllByToAndCheckYN(User user, boolean c);
 
-    List<NotificationBoardDto> findAllByToOrderByCheckYN(User user);
+    List<NotificationBoardDto> findAllByToAndDelYNOrderByCheckYN(User user, boolean d);
+
 }
