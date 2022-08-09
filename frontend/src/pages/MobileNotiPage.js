@@ -1,66 +1,62 @@
 import theme from "components/common/theme.js";
-import LikeNoti from "./LikeNoti";
-import CommentNoti from "./CommentNoti";
-import FollowRequestNoti from "./FollowRequestNoti";
-import FollowNoti from "./FollowNoti";
+import "styles/MobileNoti/MobileNotiPage.scss";
+import LikeNoti from "components/common/Notification/LikeNoti";
+import CommentNoti from "components/common/Notification/CommentNoti";
+import FollowRequestNoti from "components/common/Notification/FollowRequestNoti";
+import FollowNoti from "components/common/Notification/FollowNoti";
+import TitleBar from "components/common/TitleBar";
+import BottomNavbar from "components/common/Navbar/BottomNavbar";
+import { setBottomMenuIdx, setSideMenuIdx } from "modules/menu";
 import {
-  deleteAccountNoti,
-  deleteBoardNoti,
   getAccountNoti,
   getBoardNoti,
   readAllAccountNoti,
   readAllBoardNoti,
 } from "api/notification";
 
-import { Badge, Button, Grid, IconButton, Tab } from "@mui/material";
-import { useEffect, useState } from "react";
-import { ThemeProvider } from "@emotion/react";
+import { Grid, Tab } from "@mui/material";
 import { Box } from "@mui/system";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { ThemeProvider } from "@emotion/react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-function Notification() {
-  const [activityNotiList, setActivityNotiList] = useState([]);
-  const [accountNotiList, setAccountNotiList] = useState([]);
+function MobileNotiPage() {
   const [activityNotiCnt, setActivityNotiCnt] = useState(0);
   const [accountNotiCnt, setAccountNotiCnt] = useState(0);
-  const [notiCnt, setNotiCnt] = useState(0);
+  const [activityNotiList, setActivityNotiList] = useState([]);
+  const [accountNotiList, setAccountNotiList] = useState([]);
   const [value, setValue] = useState("0");
-  const [isClicked, setIsClicked] = useState(false);
-  const userToken = localStorage.getItem("token");
+
+  const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);
+  const bottomMenuIdx = useSelector((state) => state.menu.bottomMenuIdx);
+
+  const dispatch = useDispatch();
+
+  const onSetSideMenuIdx = (menuIdx) => dispatch(setSideMenuIdx(menuIdx));
+  const onSetBottomMenuIdx = (menuIdx) => dispatch(setBottomMenuIdx(menuIdx));
 
   useEffect(() => {
+    // bottom navbar에서 선택된 메뉴값 저장
+    onSetBottomMenuIdx(1);
+
     // 서버에서 활동 알림 목록 받아오기
     getBoardNoti((res) => {
-      console.log(res.data);
       setActivityNotiList(res.data);
       if (activityNotiList.length > 0) {
-        activityNotiList.map((item) => {
-          if (!item.checkYN) {
-            setActivityNotiCnt(() => activityNotiCnt + 1);
-          }
-        });
+        setActivityNotiCnt(res.data.length);
       }
     });
 
     // 서버에서 계정 알림 목록 받아오기
     getAccountNoti((res) => {
-      console.log(res.data);
       setAccountNotiList(res.data);
       if (accountNotiList.length > 0) {
-        accountNotiList.map((item) => {
-          if (!item.checkYN) {
-            setAccountNotiCnt(() => accountNotiCnt + 1);
-          }
-        });
+        setAccountNotiCnt(res.data.length);
       }
     });
 
-    setNotiCnt(() => activityNotiCnt + accountNotiCnt);
-
     // 현재 탭에 따라 읽음 처리를 서버에 요청
-    console.log(value);
     if (value === "0") {
       // 활동 탭을 보고 있다면 활동 탭의 알림들의 읽음 처리를 요청
       readAllBoardNoti((res) => {
@@ -74,15 +70,6 @@ function Notification() {
     }
   }, [accountNotiCnt, activityNotiCnt, value]);
 
-  const handleClickClose = () => {
-    setIsClicked(!isClicked);
-  };
-
-  const handleClickOpen = () => {
-    setIsClicked(!isClicked);
-    // 서버에 알림 데이터 요청
-  };
-
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -90,48 +77,15 @@ function Notification() {
   const handleClickAllDelete = () => {
     console.log("전체 삭제");
     // 해당 탭의 전체 알림에 대한 삭제를 서버에 요청
-    if (value === 0) {
-      // 활동 탭 알림 전체 삭제 요청
-      activityNotiList.map((item) => {
-        deleteBoardNoti(item.id, (res) =>
-          console.log("활동" + item.id + " 삭제")
-        );
-      });
-    } else {
-      // 계정 탭 알림 전체 삭제 요청
-      accountNotiList.map((item) => {
-        deleteAccountNoti(item.id, (res) =>
-          console.log("계정" + item.id + " 삭제")
-        );
-      });
-    }
   };
 
   return (
-    <Grid className="notification">
-      <Grid className="notification__icon">
-        {isClicked ? (
-          <ThemeProvider theme={theme}>
-            <IconButton color="primary" onClick={handleClickClose}>
-              <NotificationsIcon />
-            </IconButton>
-          </ThemeProvider>
-        ) : notiCnt === 0 ? (
-          <IconButton onClick={handleClickOpen}>
-            <NotificationsIcon />
-          </IconButton>
-        ) : (
-          <ThemeProvider theme={theme}>
-            <IconButton onClick={handleClickOpen}>
-              <Badge badgeContent={notiCnt} color="notification">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </ThemeProvider>
-        )}
+    <Grid className="content">
+      <Grid className="content__title-mobile">
+        <TitleBar title="알림" />
       </Grid>
-      {isClicked && (
-        <Grid>
+      <Grid id="inner" className="content__inner">
+        <Grid className="content__inner__noti">
           <ThemeProvider theme={theme}>
             <TabContext value={value} centered>
               <Box sx={{ borderBottom: 0, borderColor: "divider" }}>
@@ -140,8 +94,8 @@ function Notification() {
                   variant="fullWidth"
                   aria-label="notification tablist"
                 >
-                  <Tab label={`활동(${activityNotiCnt})`} value="0" />
-                  <Tab label={`계정(${accountNotiCnt})`} value="1" />
+                  <Tab label={`활동(${activityNotiList.length})`} value="0" />
+                  <Tab label={`계정(${accountNotiList.length})`} value="1" />
                 </TabList>
               </Box>
               <TabPanel className="notification__tabpanel" value="0">
@@ -155,7 +109,6 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
-                          activityNotiList={activityNotiList}
                         />
                       );
                     } else {
@@ -166,7 +119,6 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
-                          activityNotiList={activityNotiList}
                         />
                       );
                     }
@@ -200,20 +152,16 @@ function Notification() {
               </TabPanel>
             </TabContext>
           </ThemeProvider>
-          <Grid className="notification__bottom" container direction="row">
-            <Grid className="notification__bottom__delete">
-              <Button
-                startIcon={<DeleteOutlineIcon />}
-                onClick={handleClickAllDelete}
-              >
-                전체 삭제
-              </Button>
-            </Grid>
-          </Grid>
         </Grid>
-      )}
+      </Grid>
+      <BottomNavbar
+        sideMenuIdx={sideMenuIdx}
+        bottomMenuIdx={bottomMenuIdx}
+        onSetSideMenuIdx={onSetSideMenuIdx}
+        onSetBottomMenuIdx={onSetBottomMenuIdx}
+      />
     </Grid>
   );
 }
 
-export default Notification;
+export default MobileNotiPage;

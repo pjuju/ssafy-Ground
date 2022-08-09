@@ -7,11 +7,11 @@ function getSavedBoard(userId, success) {
 }
 
 function getFollowBoard(pageNumber, success) {
-  api.get(`/board/follow?${pageNumber}`).then(success);
+  api.get(`/board/follow/${pageNumber}`).then(success);
 }
 
 function getLatestBoard(pageNumber, success) {
-  api.get(`/board/interest?${pageNumber}`).then(success);
+  api.get(`/board/interest/${pageNumber}`).then(success);
 }
 
 export { getSavedBoard, getFollowBoard, getLatestBoard };

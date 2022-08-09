@@ -2,6 +2,7 @@ import { getFollowBoard } from "api/board";
 import Article from "components/Feed/Article/Article";
 import TitleBar from "components/common/TitleBar";
 import theme from "components/common/theme.js";
+import "styles/Feed/FollowFeed.scss";
 
 import { Fab, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -46,7 +47,7 @@ function FollowFeed() {
   useEffect(() => {
     // 새로고침 시 Navbar가 알맞은 메뉴 인덱스를 가리키도록 함
     onSetSideMenuIdx(0);
-    onSetBottomMenuIdx(1);
+    onSetBottomMenuIdx(0);
   }, []);
 
   useEffect(() => {
@@ -71,7 +72,7 @@ function FollowFeed() {
         <h2 onClick={handleClickTitle}>팔로우 피드</h2>
       </Grid>
       <Grid className="content__title-mobile">
-        <TitleBar title="팔로우 피드" />
+        <TitleBar title="팔로우 피드" isBack={false} />
       </Grid>
       <Grid id="inner" className="content__inner">
         {articles.map((article, index) => (
