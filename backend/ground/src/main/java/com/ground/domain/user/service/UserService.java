@@ -186,7 +186,11 @@ public class UserService {
     public UserProfileDto getUserProfile(Long id, Long loginUserId) {
 		UserProfileDto userProfileDto = new UserProfileDto();
 		int follow = 1;
-		if (id == loginUserId) {follow = 0;}
+		if (id == loginUserId) {
+			follow = 0;
+		} else {
+
+		}
 
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
@@ -216,7 +220,7 @@ public class UserService {
         return id;
     }
 
-	// 첫 로그인
+	// 회원 상세정보 추가
 	@Transactional
 	public void firstLogin(Long userId, UserFirstLoginDto entity) {
 		User user = userRepository.findById(userId).get();
