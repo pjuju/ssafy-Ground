@@ -8,6 +8,7 @@ import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
+import com.ground.domain.jwt.JwtTokenProvider;
 
 import com.ground.domain.follow.repository.FollowRepository;
 import com.ground.domain.follow.dto.FollowDto;
@@ -27,16 +28,21 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final NotificationAccountRepository notificationAccountRepository;
     private final NotificationBoardRepository notificationBoardRepository;
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final EntityManager em;
 
     // 팔로우
     @Transactional
-    public void follow(Long fromUserId, Long toUserId) {
+    public void follow(String ftoken, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
-        followRepository.follow(fromUserId, toUserId);
 
-        User from = userRepository.findById(fromUserId).get();
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long fromUserId = user.getId();
+
+        followRepository.follow(user.getId(), toUserId);
+
+        User from = userRepository.findById(user.getId()).get();
         User to = userRepository.findById(toUserId).get();
         notificationAccountRepository.save(new NotificationAccount(from, to, false, LocalDateTime.now()));
     }

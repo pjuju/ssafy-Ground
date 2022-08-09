@@ -9,6 +9,7 @@ import com.ground.domain.board.entity.Comment;
 import com.ground.domain.board.service.BoardService;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
+import com.ground.domain.jwt.JwtTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -38,15 +39,15 @@ public class BoardController {
 
     @Autowired
     private final BoardService boardService;
-
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 
 
     // =================== 게시글 작성 ===================
     @ApiOperation(value = "게시물 작성")
     @PostMapping
-    public BoardResponseDto addBoard(@RequestBody final BoardRequestDto params){
-        User user = userRepository.findById(new Long(1)).get();
+    public BoardResponseDto addBoard(@RequestHeader String ftoken, @RequestBody final BoardRequestDto params){
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Board board = boardService.addBoard(params, user);
         return new BoardResponseDto(board, user);
         // 유저도 넣어야함
@@ -157,15 +158,17 @@ public class BoardController {
     // 유저가 쓴 피드 조회
     @ApiOperation(value = "유저가 쓴 피드 조회")
     @GetMapping("/list/me/{userId}/{fromId}")
-    public List<BoardResponseDto> getMyBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable, @PathVariable long fromId) {
-        return boardService.getMyBoard(userId, pageable, fromId);
+    public List<BoardResponseDto> getMyBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable, @RequestHeader String ftoken) {
+        User loginUser = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        return boardService.getMyBoard(userId, pageable, loginUser);
     }
 
     // 저장한 피드 조회
     @ApiOperation(value = "저장한 피드 조회")
     @GetMapping("/list/save/{userId}/{fromId}")
-    public List<BoardResponseDto> getSaveBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable, @PathVariable long fromId) {
-        return boardService.getSaveBoard(userId, pageable, fromId);
+    public List<BoardResponseDto> getSaveBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable, @RequestHeader String ftoken) {
+        User loginUser = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        return boardService.getSaveBoard(userId, pageable, loginUser);
     }
 
 }
