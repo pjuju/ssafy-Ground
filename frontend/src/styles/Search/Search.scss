@@ -1,4 +1,7 @@
+@import "../common/utils";
+
 .search-inner {
+  @include custom-scrollbar();
   width: 56%;
   padding: 4rem 4rem 0 4rem !important;
 

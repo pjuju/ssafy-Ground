@@ -86,12 +86,12 @@ function Search() {
         // 게시글 검색 요청
         searchBoard(
           searchData,
-          (response) => {
-            console.log(response.data);
-            setSearchResult(response.data);
+          (res) => {
+            console.log(res.data);
+            setSearchResult(res.data);
           },
-          (error) => {
-            console.log(error);
+          (err) => {
+            console.log(err);
           }
         );
       } else {
@@ -100,6 +100,7 @@ function Search() {
           searchData,
           (res) => {
             console.log(res.data);
+            setSearchResult(res.data);
           },
           (err) => {
             console.log(err);
@@ -151,6 +152,9 @@ function Search() {
         {searchResult.length !== 0 && standard === "board" && (
           <SearchSort sortType={sortType} setSortType={setSortType} />
         )}
+        {searchResult.length !== 0 &&
+          standard === "user" &&
+          searchResult.map((item, index) => <UserSearchResult key={index} user={item} />)}
       </Grid>
     </Grid>
   );
