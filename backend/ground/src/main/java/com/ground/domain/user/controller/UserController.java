@@ -7,7 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
+import com.ground.domain.jwt.JwtTokenProvider;
 import com.ground.domain.user.dto.*;
+import com.ground.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,7 +47,11 @@ import lombok.extern.log4j.Log4j2;
 //@CrossOrigin(allowCredentials = "*", originPatterns = { "*" })
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
-	
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    UserRepository userRepository;
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -178,9 +184,11 @@ public class UserController {
     // 프로필 조회 이동
     @GetMapping("/profile/{userId}")
     @ApiOperation(value = "프로필 조회", response = String.class)
-    public UserProfileDto userProfile(@PathVariable Long userId) {
+    public UserProfileDto userProfile(@PathVariable Long userId, @RequestHeader String ftoken) {
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long loginUserId = user.getId();
 
-        return userService.getUserProfile(userId);
+        return userService.getUserProfile(userId, loginUserId);
     }
 
     // 회원 정보 수정 페이지로 이동

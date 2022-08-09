@@ -23,6 +23,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.dto.UserFirstLoginDto;
 import com.ground.domain.user.dto.UserUpdateDto;
 import org.springframework.data.annotation.CreatedDate;

@@ -183,13 +183,16 @@ public class UserService {
 	// -----------------BSH-----------------
 	// 프로필 조회
 	@Transactional
-    public UserProfileDto getUserProfile(Long id) {
+    public UserProfileDto getUserProfile(Long id, Long loginUserId) {
 		UserProfileDto userProfileDto = new UserProfileDto();
+		int follow = 1;
+		if (id == loginUserId) {follow = 0;}
 
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 
 		userProfileDto.setUser(user);
+		userProfileDto.setFollow(follow);
 		userProfileDto.setUserFollowerCount(followRepository.findFollowerCountById(id));
 		userProfileDto.setUserFollowingCount(followRepository.findFollowingCountById(id));
 

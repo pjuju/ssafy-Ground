@@ -8,7 +8,6 @@ import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.qlrm.mapper.JpaResultMapper;
-import com.ground.domain.jwt.JwtTokenProvider;
 
 import com.ground.domain.follow.repository.FollowRepository;
 import com.ground.domain.follow.dto.FollowDto;
@@ -28,41 +27,50 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final NotificationAccountRepository notificationAccountRepository;
     private final NotificationBoardRepository notificationBoardRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+
     private final UserRepository userRepository;
     private final EntityManager em;
 
     // 팔로우
     @Transactional
-    public void follow(String ftoken, Long toUserId) {
+    public void follow(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
 
-        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long fromUserId = user.getId();
+        followRepository.follow(fromUserId, toUserId);
 
-        followRepository.follow(user.getId(), toUserId);
-
-        User from = userRepository.findById(user.getId()).get();
+        User from = userRepository.findById(fromUserId).get();
         User to = userRepository.findById(toUserId).get();
         notificationAccountRepository.save(new NotificationAccount(from, to, false, LocalDateTime.now()));
     }
 
     // 팔로우 수락
     @Transactional
-    public void followAccept(Long fromUserId, Long toUserId) {
+    public void followAccept(Long fromUserId, Long toUserId, Long notiId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+
         User from = userRepository.findById(fromUserId).get();
         User to = userRepository.findById(toUserId).get();
 
         Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
         follow.FollowAccept(true);
 
-        notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
+        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
+        noti.NotificationAccountDelete(true);
+    }
+
+    // 팔로우 거절
+    @Transactional
+    public void followDecline(Long fromUserId, Long toUserId, Long notiId) {
+//        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+
+        followRepository.unFollow(fromUserId, toUserId);
+        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
+        noti.NotificationAccountDelete(true);
     }
 
     // 언팔로우
     @Transactional
-    public void unFollow(long fromUserId, long toUserId) {
+    public void unFollow(Long fromUserId, Long toUserId) {
 
         followRepository.unFollow(fromUserId, toUserId);
     }

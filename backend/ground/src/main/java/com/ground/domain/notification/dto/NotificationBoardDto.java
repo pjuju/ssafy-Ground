@@ -15,7 +15,7 @@ public class NotificationBoardDto {
     private long id;
     private String username;
     private String nickname;
-    private Board boardId;
+    private long boardId;
     private String memberImageUrl;
     private boolean checkYN;
     private boolean type;
