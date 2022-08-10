@@ -64,7 +64,7 @@
       }
 
       &__logout {
-        display: inline-block;
+        width: fit-content;
         color: $light-gray;
         font-size: 0.8rem;
         font-weight: 500;
@@ -119,6 +119,8 @@
 
     &__name {
       font-weight: 700;
+      font-size: 0.95rem;
+      color: #000;
     }
 
     &__email {
