@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class NotificationAccountDto {
     private long id;
+    private long fromUserId;
     private String username;
     private String nickname;
     private String memberImageUrl;
@@ -21,6 +22,7 @@ public class NotificationAccountDto {
 
     public NotificationAccountDto(NotificationAccount entity) {
         this.id = entity.getId();
+        this.fromUserId = entity.getFrom().getId();
         this.username = entity.getFrom().getUsername();
         this.nickname = entity.getFrom().getNickname();
         this.memberImageUrl = entity.getFrom().getUserImage();
