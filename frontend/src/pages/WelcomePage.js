@@ -51,7 +51,7 @@ function WelcomePage() {
 
     const userDetail = {
       "introduce": desc,
-      "category": interestArray,
+      "userCategories": interestArray,
       "userImage": img,
     }
 

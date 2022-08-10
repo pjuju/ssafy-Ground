@@ -12,7 +12,6 @@ function InitComplete({ img, desc, interest, onSetInitFlag, submitUserDetail }) 
     getUserInfo(res => setUserName(res.data.nickname));
     console.log(userName);
   })
-
   /* 이전 버튼을 눌렀을 때 실행되는 핸들러 */
   const handleClickPrevious = () => {
     onSetInitFlag(2);

@@ -7,7 +7,7 @@ function getUserInfo(success) {
 }
 
 function initUserDetail(userDetail, success) {
-  api.post('/user/userDetail', { userFirstLoginDto: userDetail }).then(success);
+  api.post('/user/userDetail', userDetail).then(success);
 }
 
 export { getUserInfo, initUserDetail };
