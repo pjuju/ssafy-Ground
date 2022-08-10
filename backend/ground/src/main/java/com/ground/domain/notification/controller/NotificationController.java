@@ -55,7 +55,7 @@ public class NotificationController {
     }
 
     // 계정 알림 삭제
-    @PostMapping("/account/delete/{notiId}")
+    @DeleteMapping("/account/delete/{notiId}")
     @ApiOperation(value = "계정 알림 삭제")
     public void deleteNotifyAccount(@PathVariable Long notiId){
         notificationService.deleteNotifyAccount(notiId);
@@ -93,7 +93,7 @@ public class NotificationController {
 
 
     // 게시글 알림 삭제
-    @PostMapping("/board/delete/{notiId}")
+    @DeleteMapping("/board/delete/{notiId}")
     @ApiOperation(value = "게시글 알림 삭제")
     public void deleteNotifyBoard(@PathVariable Long notiId){
         notificationService.deleteNotifyBoard(notiId);

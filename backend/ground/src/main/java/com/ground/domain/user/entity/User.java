@@ -43,6 +43,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static javax.persistence.FetchType.LAZY;
+
 
 @Entity
 @Getter
@@ -175,7 +177,8 @@ public class User {
     public void firstLogin(UserFirstLoginDto entity) {
         this.userImage = entity.getUserImage();
         this.introduce = entity.getIntroduce();
-        this.userCategories = entity.getUserCategories();
         this.registerYN = true;
     }
+
+
 }
