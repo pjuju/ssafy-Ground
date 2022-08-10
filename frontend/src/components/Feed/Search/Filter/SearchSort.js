@@ -3,7 +3,7 @@ import { type } from "../initData";
 
 function SearchSort({ sortType, setSortType, onSubmit }) {
   return (
-    <Grid container>
+    <Grid className="search-inner__result__sort-wrapper" container>
       {type.map((item, index) => (
         <Grid
           className="search-inner__result__sort"

@@ -18,11 +18,19 @@
   &__result {
     padding: 2rem 0.5rem 0 1rem;
 
+    & .article__inner {
+      max-width: 100% !important;
+    }
+
     &__sort {
       color: gray;
       font-size: 0.8rem;
       cursor: pointer;
       padding-right: 1rem;
+    }
+
+    &__sort-wrapper {
+      margin-bottom: 1rem;
     }
   }
 
