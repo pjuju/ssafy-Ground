@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public interface NotificationAccountRepository extends JpaRepository<Notificatio
     Optional<NotificationAccount> findById(Long id);
     List<NotificationAccount> findAllByToAndCheckYN(User user, boolean c);
 
-    List<NotificationAccountDto> findAllByToAndDelYNOrderByCheckYN(User user, boolean d);
+    List<NotificationAccountDto> findAllByToAndDelYNOrderByCheckYNDescRegDttmDesc(User user, boolean d);
 
     NotificationAccount findByFromAndToAndType(User from, User to, boolean t);
 }
