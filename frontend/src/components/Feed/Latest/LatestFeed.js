@@ -2,6 +2,7 @@ import { getFollowBoard } from "api/board";
 import Article from "components/Feed/Article/Article";
 import TitleBar from "components/common/TitleBar";
 import theme from "components/common/theme.js";
+import "styles/Feed/LatestFeed.scss";
 
 import { Fab, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -72,7 +73,7 @@ function LatestFeed() {
         <h2 onClick={handleClickTitle}>최신 글 피드</h2>
       </Grid>
       <Grid className="content__title-mobile">
-        <TitleBar title="최신 글 피드" />
+        <TitleBar title="최신 글 피드" isBack={false} />
       </Grid>
       <Grid id="inner" className="content__inner">
         <Grid className="content__inner__filter" container direction="row">

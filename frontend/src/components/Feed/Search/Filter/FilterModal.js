@@ -160,7 +160,7 @@ function FilterModal({ open, handleClose, data, setData, radio, setRadio }) {
                     <Checkboxes
                       options={getValues("location")}
                       control={control}
-                      name="age"
+                      name="location"
                       radio={locationRadio}
                     />
                   )}

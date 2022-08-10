@@ -36,6 +36,7 @@ function SideNavbar({
         break;
       default:
         onSetBottomMenuIdx(menuIdx);
+        break;
     }
     onSetSideMenuIdx(menuIdx);
   };
@@ -54,7 +55,7 @@ function SideNavbar({
         <Link to="/feed/latest" onClick={() => handleMenuClick(1)}>
           <h3>최신 글 피드</h3>
         </Link>
-        <Link to="/search" onClick={() => handleMenuClick(2)}>
+        <Link to="/feed/search" onClick={() => handleMenuClick(2)}>
           <h3>검색</h3>
         </Link>
         <h5 className="navbar-side__menu__logout">로그아웃</h5>
