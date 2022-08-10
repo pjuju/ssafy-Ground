@@ -54,7 +54,7 @@ public class FollowService {
         Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
         follow.FollowAccept(true);
 
-        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
+        NotificationAccount noti = notificationAccountRepository.findFirstByFromAndToAndTypeAndDelYNOrderByRegDttmDesc(from, to, false, false);
         noti.NotificationAccountDelete(true);
 
         notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
@@ -69,7 +69,7 @@ public class FollowService {
         User to = userRepository.findById(toUserId).get();
 
         followRepository.unFollow(fromUserId, toUserId);
-        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
+        NotificationAccount noti = notificationAccountRepository.findFirstByFromAndToAndTypeAndDelYNOrderByRegDttmDesc(from, to, false, false);
         noti.NotificationAccountDelete(true);
     }
 
