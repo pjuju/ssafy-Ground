@@ -1,5 +1,11 @@
 @import "../common/utils";
 
+@mixin sm {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
 .search-inner {
   @include custom-scrollbar();
   width: 56%;
@@ -18,6 +24,21 @@
       cursor: pointer;
       padding-right: 1rem;
     }
+  }
+
+  &__search-bar {
+    @include sm {
+      margin-top: 1rem !important;
+    }
+  }
+
+  // 반응형
+  @include tablet() {
+    width: 100%;
+  }
+
+  @include mobile() {
+    width: 100%;
   }
 }
 
@@ -43,6 +64,28 @@
 
   &__date-picker {
     position: relative;
+    margin-top: 0.3rem;
+
+    &--calendar {
+      justify-content: end;
+      margin-top: 0.5rem;
+    }
+
+    @include sm {
+      display: none !important;
+    }
+  }
+}
+
+.date-picker {
+  width: 30%;
+
+  &__startDate {
+    margin-right: 1rem !important;
+  }
+
+  @include mobile() {
+    font-size: 0.5rem;
   }
 }
 

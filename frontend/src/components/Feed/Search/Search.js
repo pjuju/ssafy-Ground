@@ -124,7 +124,7 @@ function Search() {
             <Grid xs={2} item>
               <SearchStandard standard={standard} setStandard={setStandard} />
             </Grid>
-            <Grid xs={9.5} item>
+            <Grid className="search-inner__search-bar" xs={12} sm={9.5} item>
               <SearchBar
                 handleOpen={handleOpen}
                 onSubmit={onSubmit}
