@@ -2,7 +2,6 @@ import { getFollowBoard } from "api/board";
 import Article from "components/Feed/Article/Article";
 import TitleBar from "components/common/TitleBar";
 import theme from "components/common/theme.js";
-import "styles/Feed/FollowFeed.scss";
 
 import { Fab, Grid } from "@mui/material";
 import { useEffect, useState } from "react";

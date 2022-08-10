@@ -1,6 +1,6 @@
 @import "../common/utils";
 
-.content {
+.profile-content {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -35,6 +35,7 @@
               }
 
               &__follow {
+
                 & .follower,
                 .following {
                   margin-right: 2rem;
@@ -62,9 +63,11 @@
       & .user-ground {
         margin-top: 2rem;
         margin-bottom: 2rem;
+
         & .ground {
           &__content {
             text-align: end;
+
             &__more {
               color: $light-gray;
               cursor: pointer;
@@ -79,6 +82,7 @@
         & .MuiTabs-indicator {
           background-color: #fff;
         }
+
         &__tab {
           font-size: 1.1rem;
 
