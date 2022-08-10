@@ -1,11 +1,13 @@
 package com.ground.domain.user.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.ground.domain.jwt.JwtTokenProvider;
 import com.ground.domain.user.dto.*;
@@ -20,10 +22,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ground.domain.jwt.TokenResponse;
 import com.ground.domain.user.entity.User;
+import com.ground.domain.user.service.KakaoService;
 import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
 
@@ -135,9 +139,11 @@ public class UserController {
     	return userService.checkValidity(ftoken);
     }
     
-    @PostMapping("/oauth/kakao")
+    @RequestMapping("/oauth/kakao")
     @ApiOperation(value = "카카오 로그인", response = String.class)
-    public String kakaoLogin(@RequestBody String id) {
+    public String kakaoLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
+    	log.info(code);
+    	String access_Token = KakaoService.getAccessToken(code);
     	return "hikakao";
     }
 
