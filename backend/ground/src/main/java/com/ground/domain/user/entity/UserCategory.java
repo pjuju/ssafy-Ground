@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 public class UserCategory {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -30,9 +30,7 @@ public class UserCategory {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public User getUser() {
-        return user;
-    }
+
 
     // 생성 메서드?
 }

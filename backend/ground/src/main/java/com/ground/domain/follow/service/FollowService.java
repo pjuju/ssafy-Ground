@@ -43,18 +43,34 @@ public class FollowService {
         notificationAccountRepository.save(new NotificationAccount(from, to, false, LocalDateTime.now()));
     }
 
+//    // 팔로우 수락
+//    @Transactional
+//    public void followAccept(Long fromUserId, Long toUserId) {
+////        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+//
+//        User from = userRepository.findById(fromUserId).get();
+//        User to = userRepository.findById(toUserId).get();
+//
+//        Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
+//        follow.FollowAccept(true);
+//
+//        NotificationAccount noti = notificationAccountRepository.findFirstByFromAndToAndTypeAndDelYNOrderByRegDttmDesc(from, to, false, false);
+//        noti.NotificationAccountDelete(true);
+//
+//        notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
+//    }
+
     // 팔로우 수락
     @Transactional
-    public void followAccept(Long fromUserId, Long toUserId) {
+    public void followAccept(Long notiId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
-
-        User from = userRepository.findById(fromUserId).get();
+        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
+        User from = noti.getFrom();
         User to = userRepository.findById(toUserId).get();
 
         Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
         follow.FollowAccept(true);
 
-        NotificationAccount noti = notificationAccountRepository.findFirstByFromAndToAndTypeAndDelYNOrderByRegDttmDesc(from, to, false, false);
         noti.NotificationAccountDelete(true);
 
         notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
@@ -62,14 +78,13 @@ public class FollowService {
 
     // 팔로우 거절
     @Transactional
-    public void followDecline(Long fromUserId, Long toUserId) {
+    public void followDecline(Long notiId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
-
-        User from = userRepository.findById(fromUserId).get();
+        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
+        User from = noti.getFrom();
         User to = userRepository.findById(toUserId).get();
 
-        followRepository.unFollow(fromUserId, toUserId);
-        NotificationAccount noti = notificationAccountRepository.findFirstByFromAndToAndTypeAndDelYNOrderByRegDttmDesc(from, to, false, false);
+        followRepository.unFollow(from.getId(), toUserId);
         noti.NotificationAccountDelete(true);
     }
 
