@@ -4,7 +4,6 @@ import menu from "./menu";
 import find from "./find";
 import feed from "./feed";
 
-
 const rootReducer = combineReducers({
   init,
   menu,

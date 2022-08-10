@@ -4,7 +4,10 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { Divider } from "@mui/material";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import { Divider, Grid } from "@mui/material";
+import LatestSearchBox from "./Latest/LatestSearchBox";
+import { useState } from "react";
 
 export default function SearchBar({
   handleOpen,
@@ -13,45 +16,65 @@ export default function SearchBar({
   word,
   setWord,
 }) {
-  const style = {
-    p: "2px 4px",
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
-    border: "2px solid #54BAB9",
-    boxShadow: "none",
-  };
+  const [openLatest, setOpenLatest] = useState(false);
+  const [latestBoard, setLatestBoard] = useState([]);
+  const [latestUser, setLatestUser] = useState([]);
 
   return (
-    <Paper component="div" sx={style}>
-      {standard === "board" && (
-        <>
-          <IconButton sx={{ p: "10px" }} aria-label="menu" onClick={handleOpen}>
+    <Grid className="search-bar" container>
+      <Paper className="search-bar__wrapper" component="div">
+        {standard === "board" ? (
+          <IconButton sx={{ p: "10px" }} onClick={handleOpen}>
             <FilterAltIcon />
           </IconButton>
-          <Divider
-            sx={{ height: 28, m: 0.5, borderColor: "#54BAB9" }}
-            orientation="vertical"
-          />
-        </>
+        ) : (
+          <IconButton sx={{ p: "10px" }} disabled>
+            <FilterAltOffIcon />
+          </IconButton>
+        )}
+        <Divider
+          sx={{ height: 28, m: 0.5, borderColor: "#54BAB9" }}
+          orientation="vertical"
+        />
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="검색어 입력"
+          inputProps={{ "aria-label": "search google maps" }}
+          value={word}
+          tabIndex={-1}
+          onChange={(e) => {
+            setWord(e.target.value);
+          }}
+          onFocus={() => setOpenLatest(true)}
+          onBlur={(e) => {
+            const tabIndex = e.relatedTarget?.tabIndex;
+            if (tabIndex !== -1) {
+              setOpenLatest(false);
+            }
+          }}
+        />
+        <IconButton
+          type="submit"
+          sx={{ p: "10px" }}
+          aria-label="search"
+          onClick={(e) => {
+            e.preventDefault();
+            onSubmit();
+          }}
+        >
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+      {openLatest && (
+        <LatestSearchBox
+          standard={standard}
+          setOpenLatest={setOpenLatest}
+          latestBoard={latestBoard}
+          latestUser={latestUser}
+          setLatestBoard={setLatestBoard}
+          setLatestUser={setLatestUser}
+        />
       )}
-      <InputBase
-        sx={{ ml: 1, flex: 1 }}
-        placeholder="검색어 입력"
-        inputProps={{ "aria-label": "search google maps" }}
-        value={word}
-        onChange={(e) => {
-          setWord(e.target.value);
-        }}
-      />
-      <IconButton
-        type="submit"
-        sx={{ p: "10px" }}
-        aria-label="search"
-        onClick={onSubmit}
-      >
-        <SearchIcon />
-      </IconButton>
-    </Paper>
+    </Grid>
   );
 }

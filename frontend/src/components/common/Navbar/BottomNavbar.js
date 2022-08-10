@@ -41,6 +41,7 @@ function BottomNavbar({
                   break;
               }
               onSetBottomMenuIdx(newValue);
+              console.log(bottomMenuIdx);
             }}
           >
             <BottomNavigationAction
@@ -65,7 +66,7 @@ function BottomNavbar({
             />
             <BottomNavigationAction
               component={Link}
-              to="/profile"
+              to="/profile/1"
               icon={<PersonIcon />}
             />
           </BottomNavigation>

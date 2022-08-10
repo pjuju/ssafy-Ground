@@ -1,34 +1,18 @@
-import {
-  Grid,
-  Select,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Typography,
-  MenuItem,
-} from "@mui/material";
+import { Grid } from "@mui/material";
 import "styles/Search/Search.scss";
 
 import { useState } from "react";
 import FilterModal from "./Filter/FilterModal";
 import SearchBar from "./SearchBar";
-import { ThemeProvider } from "@emotion/react";
-import theme from "components/common/theme.js";
-import StartDatePicker from "./Filter/StartDatePicker";
-import EndDatePicker from "./Filter/EndDatePicker";
-import { age, date, gender, interest, location } from "./initData";
+import { age, gender, interest, location } from "./initData";
 import moment from "moment";
 
-const dateRadio = date.map((item, index) => (
-  <FormControlLabel
-    className="top__date-select"
-    key={index}
-    value={item.value}
-    label={<Typography sx={{ fontSize: "0.8rem" }}>{item.label}</Typography>}
-    control={<Radio size="small" />}
-  />
-));
+import { searchBoard, searchUser } from "api/search";
+import SearchSort from "./Filter/SearchSort";
+import SearchStandard from "./Filter/SearchStandard";
+import SearchDatePicker from "./Filter/Date/SearchDatePicker";
+import UserSearchResult from "./UserSearchResult";
+import Article from "../Article/Article";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -60,6 +44,7 @@ function Search() {
     age: age,
     location: location,
   });
+  // 검색 데이터 관련 state
   const [standard, setStandard] = useState("board");
   const [word, setWord] = useState("");
   const [dateRange, setDateRange] = useState("all");
@@ -67,64 +52,106 @@ function Search() {
   const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
-
+  const [sortType, setSortType] = useState("id");
+  // 검색 결과 state
+  const [boardSearchResult, setBoardSearchResult] = useState([]);
+  const [userSearchResult, setUserSearchResult] = useState([]);
+  // 검색 필터 모달창 state
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  // 게시글 검색 결과 페이징
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  // 검색 데이터 설정
+  const getSearchData = () => {
+    const searchData = {};
 
-    let searchData = {};
     searchData.word = word;
+    searchData.category = getCheckedValues(radio[0], data.interest);
+    searchData.gender = getCheckedValues(radio[1], data.gender);
+    searchData.age = getCheckedValues(radio[2], data.age);
+    searchData.location = getCheckedValues(radio[3], data.location);
+    searchData.type = sortType;
+    searchData.startDate = "1900-01-01";
+    searchData.endDate = moment().format("YYYY-MM-DD");
 
-    // 게시글 검색일때만 필터 적용
-    if (standard === "board") {
-      searchData.interest = getCheckedValues(radio[0], data.interest);
-      searchData.gender = getCheckedValues(radio[1], data.gender);
-      searchData.age = getCheckedValues(radio[2], data.age);
-      searchData.location = getCheckedValues(radio[3], data.location);
-
-      if (dateRange !== "all") {
-        if (dateRange === "custom") {
-          searchData.startDate = moment(startDate).format("YYYY-MM-DD");
-          searchData.endDate = moment(endDate).format("YYYY-MM-DD");
-        } else if (dateRange === "days") {
-          searchData.startDate = moment().format("YYYY-MM-DD");
-        } else {
-          searchData.startDate = moment()
-            .subtract(1, dateRange)
-            .format("YYYY-MM-DD");
-        }
+    if (dateRange !== "all") {
+      if (dateRange === "custom") {
+        searchData.startDate = moment(startDate).format("YYYY-MM-DD");
+        searchData.endDate = moment(endDate).format("YYYY-MM-DD");
+      } else if (dateRange === "days") {
+        searchData.startDate = moment().format("YYYY-MM-DD");
+      } else {
+        searchData.startDate = moment()
+          .subtract(1, dateRange)
+          .format("YYYY-MM-DD");
       }
     }
 
-    console.log(searchData);
+    return searchData;
+  };
+
+  // 게시글 검색 요청
+  const getBoardSearch = (searchData) => {
+    searchBoard(
+      searchData,
+      (res) => {
+        console.log(res.data);
+        setBoardSearchResult(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
+
+  // 유저 검색 요청
+  const getUserSearch = (searchData) => {
+    searchUser(
+      searchData,
+      (res) => {
+        console.log(res.data);
+        setUserSearchResult(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
+
+  // 게시글 정렬 기준 바꿈
+  const onSortSearch = (sortId) => {
+    const searchData = { ...getSearchData() };
+    searchData.type = sortId;
+    getBoardSearch(searchData);
+  };
+
+  // 검색 버튼 눌렀을 때
+  const onSubmit = () => {
+    // 검색어가 있을 때만 검색 가능
+    if (word.trim() !== "") {
+      let searchData = {};
+      // 게시글 검색일때만 필터 적용
+      if (standard === "board") {
+        searchData = { ...getSearchData() };
+        getBoardSearch(searchData);
+      // 유저 검색은 검색어만 있으면 됨
+      } else {
+        searchData.word = word;
+        getUserSearch(searchData);
+      }
+    }
   };
 
   return (
     <Grid className="search-inner" item>
       <form>
         <Grid className="search-inner__top" container direction="column">
-          <Grid container justifyContent="space-around">
+          <Grid container justifyContent="space-between">
             <Grid xs={2} item>
-              <FormControl sx={{ minWidth: "100%", height: "100%" }}>
-                <ThemeProvider theme={theme}>
-                  <Select
-                    inputProps={{ "aria-label": "Without label" }}
-                    size="small"
-                    value={standard}
-                    onChange={(e) => {
-                      setStandard(e.target.value);
-                    }}
-                    sx={{ height: "100%" }}
-                  >
-                    <MenuItem value="board">게시글</MenuItem>
-                    <MenuItem value="user">유저</MenuItem>
-                  </Select>
-                </ThemeProvider>
-              </FormControl>
+              <SearchStandard standard={standard} setStandard={setStandard} />
             </Grid>
-            <Grid xs={9} item>
+            <Grid className="search-inner__search-bar" xs={12} sm={9.5} item>
               <SearchBar
                 handleOpen={handleOpen}
                 onSubmit={onSubmit}
@@ -134,52 +161,45 @@ function Search() {
               />
             </Grid>
           </Grid>
-          <FilterModal
-            open={open}
-            handleClose={handleClose}
-            data={data}
-            setData={setData}
-            radio={radio}
-            setRadio={setRadio}
-          />
           {standard === "board" && (
-            <>
-              <Grid className="top__date-picker" container justifyContent="end">
-                <FormControl>
-                  <ThemeProvider theme={theme}>
-                    <RadioGroup
-                      row
-                      value={dateRange}
-                      onChange={(e) => {
-                        setDateRange(e.target.value);
-                      }}
-                    >
-                      {dateRadio}
-                    </RadioGroup>
-                  </ThemeProvider>
-                </FormControl>
-              </Grid>
-              {dateRange === "custom" && (
-                <Grid
-                  className="top__date-picker"
-                  container
-                  justifyContent="end"
-                >
-                  <StartDatePicker
-                    startDate={startDate}
-                    setStartDate={setStartDate}
-                  />
-                  <EndDatePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    setEndDate={setEndDate}
-                  />
-                </Grid>
-              )}
-            </>
+            <SearchDatePicker
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+            />
           )}
         </Grid>
+        <FilterModal
+          open={open}
+          handleClose={handleClose}
+          data={data}
+          setData={setData}
+          radio={radio}
+          setRadio={setRadio}
+        />
       </form>
+      <Grid className="search-inner__result" container direction="column">
+        {boardSearchResult.length !== 0 && standard === "board" && (
+          <>
+            <SearchSort
+              sortType={sortType}
+              setSortType={setSortType}
+              onSubmit={onSortSearch}
+            />
+            {boardSearchResult.map((item, index) => (
+              <Article key={index} articleData={item} />
+            ))}
+          </>
+        )}
+        {setUserSearchResult.length !== 0 &&
+          standard === "user" &&
+          userSearchResult.map((item, index) => (
+            <UserSearchResult key={index} user={item} />
+          ))}
+      </Grid>
     </Grid>
   );
 }

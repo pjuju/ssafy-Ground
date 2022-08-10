@@ -11,6 +11,7 @@
   text-align: left;
   margin-right: 1rem;
   border-bottom: 1px solid $super-light-gray;
+
   &__img {
     margin-right: 1rem;
     width: 13%;
@@ -55,19 +56,26 @@
   &__tabpanel {
     text-align: center;
     padding: 0 !important;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
-    height: 73vh;
+    height: 70vh;
 
     &::-webkit-scrollbar {
       width: 8px;
     }
+
     &::-webkit-scrollbar-thumb {
       background: $primary;
       border-radius: 10px;
     }
+
     &::-webkit-scrollbar-track {
       background: rgba(#54bab9, 0.1);
+    }
+
+    &--no-noti {
+      padding-top: 50%;
+      color: $light-gray;
     }
   }
 
@@ -80,21 +88,17 @@
     justify-content: center;
 
     &__delete {
-      left: 0;
-      padding: 1rem;
-      margin-right: 2rem;
-
-      & p {
-        cursor: pointer;
-      }
-    }
-
-    &__read {
-      right: 0;
       padding: 1rem;
 
-      & p {
-        cursor: pointer;
+      & button {
+        color: $light-gray;
+        height: 40px;
+        font-size: 1rem;
+
+        &:hover {
+          color: red;
+          background-color: #fff;
+        }
       }
     }
   }
@@ -142,10 +146,8 @@
 }
 
 .noti {
-  &-like {
-    @include noti-common();
-  }
 
+  &-like,
   &-comment {
     @include noti-common();
   }
@@ -164,8 +166,15 @@
           width: 100%;
         }
       }
+
       &__text {
         width: 70%;
+        align-items: center;
+
+        & p {
+          vertical-align: middle;
+          margin: 0;
+        }
       }
     }
 
@@ -180,6 +189,7 @@
         margin-right: 0.3rem !important;
         background: #fff !important;
       }
+
       &--accept {
         border-radius: 20px !important;
         box-shadow: none !important;
@@ -198,4 +208,8 @@
 
 .bold {
   font-weight: 700;
+}
+
+.checked {
+  background: #fff;
 }

@@ -2,12 +2,18 @@ import userImage from "assets/images/userImage.png";
 
 import ClearIcon from "@mui/icons-material/Clear";
 import { Grid, IconButton } from "@mui/material";
+import { useEffect } from "react";
+import { deleteBoardNoti } from "api/notification";
 
-function LikeNoti({ from }) {
-  const handleClickDelete = () => {
-    console.log("알림 삭제");
-    // 상위 컴포넌트에서 prop으로 id 값을 받아오고, 그 값을 서버에 삭제하도록 요청하기
-  };
+function LikeNoti({ id, idx, nickname, isChecked, handleClickDelete }) {
+  useEffect(() => {
+    if (isChecked) {
+      const element = document.querySelector(
+        `.noti-like:nth-child(${idx + 1})`
+      );
+      element.classList.add("checked");
+    }
+  });
 
   return (
     <Grid className="noti-like" container direction="row">
@@ -15,10 +21,11 @@ function LikeNoti({ from }) {
         <img src={userImage} />
       </Grid>
       <Grid className="noti-like__text">
-        <span className="bold">{from}님</span>이 회원님의 게시글을 좋아합니다.
+        <span className="bold">{nickname}님</span>이 회원님의 게시글을
+        좋아합니다.
       </Grid>
       <Grid className="noti-like__delete" container direction="row">
-        <IconButton onClick={handleClickDelete}>
+        <IconButton onClick={() => handleClickDelete(id)}>
           <ClearIcon />
         </IconButton>
       </Grid>

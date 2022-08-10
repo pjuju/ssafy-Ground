@@ -10,8 +10,10 @@ import Search from "components/Feed/Search/Search";
 import FollowFeed from "components/Feed/Follow/FollowFeed";
 import LatestFeed from "components/Feed/Latest/LatestFeed";
 import CreateFeedPage from "components/Feed/Create/CreateFeedPage";
+import MobileNotiPage from "pages/MobileNotiPage";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProfilePage from "pages/ProfilePage";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
           <Route path="latest" element={<LatestFeed />} />
           <Route path="search" element={<Search />} />
         </Route>
+        <Route path="/profile/:userId" element={<ProfilePage />} />
+        <Route path="/notification" element={<MobileNotiPage />} />
       </Routes>
     </BrowserRouter>
   );
