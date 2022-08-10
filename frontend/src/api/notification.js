@@ -9,7 +9,7 @@ function getAccountNoti(success) {
 
 /* 계정 알림 생성 */
 function createAccountNoti(toUserId, fromUserId, success) {
-  api
+  apiInstance
     .post(`/notification/account/${toUserId}/${fromUserId}`)
     .then(success);
 }
