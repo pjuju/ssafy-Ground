@@ -134,6 +134,12 @@ public class UserController {
     public boolean checkValidity(@PathVariable String ftoken) {
     	return userService.checkValidity(ftoken);
     }
+    
+    @PostMapping("/oauth/kakao")
+    @ApiOperation(value = "카카오 로그인", response = String.class)
+    public String kakaoLogin(@RequestBody String id) {
+    	return "hikakao";
+    }
 
     
 
