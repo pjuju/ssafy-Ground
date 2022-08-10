@@ -19,6 +19,7 @@ import { Box } from "@mui/system";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { acceptFollow, declineFollow } from "api/follow";
 
 function Notification() {
   const [activityNotiList, setActivityNotiList] = useState([]);
@@ -35,28 +36,26 @@ function Notification() {
     getBoardNoti((res) => {
       console.log(res.data);
       setActivityNotiList(res.data);
-      setActivityNotiCnt(activityNotiList.length);
-      // if (activityNotiList.length > 0) {
-      //   activityNotiList.map((item) => {
-      //     if (!item.checkYN) {
-      //       setActivityNotiCnt(activityNotiCnt + 1);
-      //     }
-      //   });
-      // }
+      if (activityNotiList.length > 0) {
+        activityNotiList.map((item) => {
+          if (!item.checkYN) {
+            setActivityNotiCnt(activityNotiCnt + 1);
+          }
+        });
+      }
     });
 
     // 서버에서 계정 알림 목록 받아오기
     getAccountNoti((res) => {
       console.log(res.data);
       setAccountNotiList(res.data);
-      setAccountNotiCnt(accountNotiList.length);
-      // if (accountNotiList.length > 0) {
-      //   accountNotiList.map((item) => {
-      //     if (!item.checkYN) {
-      //       setAccountNotiCnt(accountNotiCnt + 1);
-      //     }
-      //   });
-      // }
+      if (accountNotiList.length > 0) {
+        accountNotiList.map((item) => {
+          if (!item.checkYN) {
+            setAccountNotiCnt(accountNotiCnt + 1);
+          }
+        });
+      }
     });
 
     setNotiCnt(activityNotiCnt + accountNotiCnt);
@@ -129,6 +128,25 @@ function Notification() {
     setDeleteCheck(!deleteCheck);
   };
 
+  const handleClickReject = (id, nickname, fromUserId) => {
+    console.log("거절");
+
+    // 서버에 팔로우 거절 요청하기
+    declineFollow(fromUserId, (res) => console.log(nickname + "의 팔로우 거절"));
+    const deletedList = accountNotiList.filter((item) => (item.id !== id));
+    setAccountNotiList(deletedList);
+    setAccountNotiCnt(deletedList.length);
+  };
+
+  const handleClickAccept = (id, nickname, fromUserId) => {
+    console.log("수락");
+
+    // 서버에 팔로우 수락 요청하기
+    acceptFollow(fromUserId, (res) => console.log(nickname + "의 팔로우 수락"));
+    const deletedList = accountNotiList.filter((item) => (item.id !== id));
+    setAccountNotiList(deletedList);
+    setAccountNotiCnt(deletedList.length);
+  };
 
   return (
     <Grid className="notification">
@@ -168,7 +186,7 @@ function Notification() {
                 </TabList>
               </Box>
               <TabPanel className="notification__tabpanel" value="0">
-                {activityNotiList.length > 0 &&
+                {activityNotiList.length > 0 ?
                   activityNotiList.map((item, index) => {
                     if (item.type) {
                       return (
@@ -193,10 +211,13 @@ function Notification() {
                         />
                       );
                     }
-                  })}
+                  })
+                  :
+                  <p className="notification__tabpanel--no-noti">수신한 알림이 없습니다.</p>
+                }
               </TabPanel>
               <TabPanel className="notification__tabpanel" value="1">
-                {accountNotiList.length > 0 &&
+                {accountNotiList.length > 0 ?
                   accountNotiList.map((item, index) => {
                     if (item.type) {
                       return (
@@ -216,11 +237,17 @@ function Notification() {
                           id={item.id}
                           idx={index}
                           nickname={item.nickname}
+                          fromUserId={item.fromUserId}
                           isChecked={item.checkYN}
+                          handleClickReject={handleClickReject}
+                          handleClickAccept={handleClickAccept}
                         />
                       );
                     }
-                  })}
+                  })
+                  :
+                  <p className="notification__tabpanel--no-noti">수신한 알림이 없습니다.</p>
+                }
               </TabPanel>
             </TabContext>
           </ThemeProvider>
