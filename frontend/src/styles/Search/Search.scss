@@ -1,4 +1,13 @@
+@import "../common/utils";
+
+@mixin sm {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
 .search-inner {
+  @include custom-scrollbar();
   width: 56%;
   padding: 4rem 4rem 0 4rem !important;
 
@@ -9,12 +18,35 @@
   &__result {
     padding: 2rem 0.5rem 0 1rem;
 
+    & .article__inner {
+      max-width: 100% !important;
+    }
+
     &__sort {
       color: gray;
       font-size: 0.8rem;
       cursor: pointer;
       padding-right: 1rem;
     }
+
+    &__sort-wrapper {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__search-bar {
+    @include sm {
+      margin-top: 1rem !important;
+    }
+  }
+
+  // 반응형
+  @include tablet() {
+    width: 100%;
+  }
+
+  @include mobile() {
+    width: 100%;
   }
 }
 
@@ -40,6 +72,28 @@
 
   &__date-picker {
     position: relative;
+    margin-top: 0.3rem;
+
+    &--calendar {
+      justify-content: end;
+      margin-top: 0.5rem;
+    }
+
+    @include sm {
+      display: none !important;
+    }
+  }
+}
+
+.date-picker {
+  width: 30%;
+
+  &__startDate {
+    margin-right: 1rem !important;
+  }
+
+  @include mobile() {
+    font-size: 0.5rem;
   }
 }
 

@@ -5,7 +5,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { useEffect } from "react";
 import { deleteBoardNoti } from "api/notification";
 
-function CommentNoti({ id, idx, nickname, isChecked, activityNotiList }) {
+function CommentNoti({ id, idx, nickname, isChecked, handleClickDelete }) {
   useEffect(() => {
     if (isChecked) {
       const element = document.querySelector(
@@ -14,13 +14,6 @@ function CommentNoti({ id, idx, nickname, isChecked, activityNotiList }) {
       element.classList.add("checked");
     }
   });
-
-  const handleClickDelete = () => {
-    // 서버에 알림 삭제를 요청하기
-    deleteBoardNoti(id, (res) => {
-      console.log("활동" + id + " 삭제");
-    });
-  };
 
   return (
     <Grid className="noti-comment" container direction="row">
@@ -32,7 +25,7 @@ function CommentNoti({ id, idx, nickname, isChecked, activityNotiList }) {
         작성했습니다.
       </Grid>
       <Grid className="noti-comment__delete" container direction="row">
-        <IconButton onClick={handleClickDelete}>
+        <IconButton onClick={() => handleClickDelete(id)}>
           <ClearIcon />
         </IconButton>
       </Grid>
