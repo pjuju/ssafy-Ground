@@ -1,5 +1,6 @@
 package com.ground.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ground.domain.global.entity.Category;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class UserCategory {
     @Column(name = "id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;

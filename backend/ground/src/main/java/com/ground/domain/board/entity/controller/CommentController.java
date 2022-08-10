@@ -1,4 +1,4 @@
-package com.ground.domain.board.controller;
+package com.ground.domain.board.entity.controller;
 import com.ground.domain.board.dto.CommentRequestDto;
 import com.ground.domain.board.dto.CommentResponseDto;
 import com.ground.domain.board.entity.Comment;
