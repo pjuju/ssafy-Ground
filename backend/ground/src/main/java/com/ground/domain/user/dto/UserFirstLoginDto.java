@@ -15,7 +15,7 @@ import java.util.List;
 public class UserFirstLoginDto {
     private String userImage;
     private String introduce;
-    private List<UserCategory> userCategories;
+    private List<Long> userCategories;
 
     @Builder
     public UserFirstLoginDto(UserFirstLoginDto entity) {
