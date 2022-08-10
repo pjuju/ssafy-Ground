@@ -61,57 +61,84 @@ function Search() {
   const handleClose = () => setOpen(false);
   // 게시글 검색 결과 페이징
   const [pageNumber, setPageNumber] = useState(1);
-  
+
+  // 검색 데이터 설정
+  const getSearchData = () => {
+    const searchData = {};
+
+    searchData.word = word;
+    searchData.category = getCheckedValues(radio[0], data.interest);
+    searchData.gender = getCheckedValues(radio[1], data.gender);
+    searchData.age = getCheckedValues(radio[2], data.age);
+    searchData.location = getCheckedValues(radio[3], data.location);
+    searchData.type = sortType;
+    searchData.startDate = "1900-01-01";
+    searchData.endDate = moment().format("YYYY-MM-DD");
+
+    if (dateRange !== "all") {
+      if (dateRange === "custom") {
+        searchData.startDate = moment(startDate).format("YYYY-MM-DD");
+        searchData.endDate = moment(endDate).format("YYYY-MM-DD");
+      } else if (dateRange === "days") {
+        searchData.startDate = moment().format("YYYY-MM-DD");
+      } else {
+        searchData.startDate = moment()
+          .subtract(1, dateRange)
+          .format("YYYY-MM-DD");
+      }
+    }
+
+    return searchData;
+  };
+
+  // 게시글 검색 요청
+  const getBoardSearch = (searchData) => {
+    searchBoard(
+      searchData,
+      (res) => {
+        console.log(res.data);
+        setBoardSearchResult(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
+
+  // 유저 검색 요청
+  const getUserSearch = (searchData) => {
+    searchUser(
+      searchData,
+      (res) => {
+        console.log(res.data);
+        setUserSearchResult(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
+
+  // 게시글 정렬 기준 바꿈
+  const onSortSearch = (sortId) => {
+    const searchData = { ...getSearchData() };
+    searchData.type = sortId;
+    getBoardSearch(searchData);
+  };
+
+  // 검색 버튼 눌렀을 때
   const onSubmit = () => {
-    // 검색어가 있을 때만 검색
+    // 검색어가 있을 때만 검색 가능
     if (word.trim() !== "") {
       let searchData = {};
-      searchData.word = word;
       // 게시글 검색일때만 필터 적용
       if (standard === "board") {
-        searchData.category = getCheckedValues(radio[0], data.interest);
-        searchData.gender = getCheckedValues(radio[1], data.gender);
-        searchData.age = getCheckedValues(radio[2], data.age);
-        searchData.location = getCheckedValues(radio[3], data.location);
-        searchData.type = sortType;
-        searchData.startDate = "1900-01-01";
-        searchData.endDate = moment().format("YYYY-MM-DD");
-
-        if (dateRange !== "all") {
-          if (dateRange === "custom") {
-            searchData.startDate = moment(startDate).format("YYYY-MM-DD");
-            searchData.endDate = moment(endDate).format("YYYY-MM-DD");
-          } else if (dateRange === "days") {
-            searchData.startDate = moment().format("YYYY-MM-DD");
-          } else {
-            searchData.startDate = moment()
-              .subtract(1, dateRange)
-              .format("YYYY-MM-DD");
-          }
-        }
-        // 게시글 검색 요청
-        searchBoard(
-          searchData,
-          (res) => {
-            console.log(res.data);
-            setBoardSearchResult(res.data);
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
+        searchData = { ...getSearchData() };
+        getBoardSearch(searchData);
+      // 유저 검색은 검색어만 있으면 됨
       } else {
-        // 유저 검색 요청
-        searchUser(
-          searchData,
-          (res) => {
-            console.log(res.data);
-            setUserSearchResult(res.data);
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
+        searchData.word = word;
+        getUserSearch(searchData);
       }
     }
   };
@@ -157,7 +184,11 @@ function Search() {
       <Grid className="search-inner__result" container direction="column">
         {boardSearchResult.length !== 0 && standard === "board" && (
           <>
-            <SearchSort sortType={sortType} setSortType={setSortType} onSubmit={onSubmit}/>
+            <SearchSort
+              sortType={sortType}
+              setSortType={setSortType}
+              onSubmit={onSortSearch}
+            />
             {boardSearchResult.map((item, index) => (
               <Article key={index} articleData={item} />
             ))}

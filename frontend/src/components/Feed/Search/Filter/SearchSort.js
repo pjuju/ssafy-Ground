@@ -12,9 +12,9 @@ function SearchSort({ sortType, setSortType, onSubmit }) {
           sx={
             sortType === item.id ? { color: "black", fontWeight: "bold" } : {}
           }
-          onClick={(e) => {
+          onClick={() => {
             setSortType(item.id);
-            onSubmit();
+            onSubmit(item.id);
           }}
         >
           {item.value}
