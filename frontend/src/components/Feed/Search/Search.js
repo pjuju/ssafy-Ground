@@ -44,6 +44,7 @@ function Search() {
     age: age,
     location: location,
   });
+  // 검색 데이터 관련 state
   const [standard, setStandard] = useState("board");
   const [word, setWord] = useState("");
   const [dateRange, setDateRange] = useState("all");
@@ -52,13 +53,15 @@ function Search() {
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
   const [sortType, setSortType] = useState("id");
-
+  // 검색 결과 state
   const [boardSearchResult, setBoardSearchResult] = useState([]);
   const [userSearchResult, setUserSearchResult] = useState([]);
-
+  // 검색 필터 모달창 state
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  // 게시글 검색 결과 페이징
+  const [pageNumber, setPageNumber] = useState(1);
+  
   const onSubmit = () => {
     // 검색어가 있을 때만 검색
     if (word.trim() !== "") {
