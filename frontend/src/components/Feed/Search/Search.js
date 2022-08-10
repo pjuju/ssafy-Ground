@@ -12,6 +12,7 @@ import SearchSort from "./Filter/SearchSort";
 import SearchStandard from "./Filter/SearchStandard";
 import SearchDatePicker from "./Filter/Date/SearchDatePicker";
 import UserSearchResult from "./UserSearchResult";
+import Article from "../Article/Article";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -43,6 +44,7 @@ function Search() {
     age: age,
     location: location,
   });
+  // 검색 데이터 관련 state
   const [standard, setStandard] = useState("board");
   const [word, setWord] = useState("");
   const [dateRange, setDateRange] = useState("all");
@@ -50,61 +52,93 @@ function Search() {
   const [endDate, setEndDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
-  const [searchResult, setSearchResult] = useState([]);
   const [sortType, setSortType] = useState("id");
-
+  // 검색 결과 state
+  const [boardSearchResult, setBoardSearchResult] = useState([]);
+  const [userSearchResult, setUserSearchResult] = useState([]);
+  // 검색 필터 모달창 state
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  // 게시글 검색 결과 페이징
+  const [pageNumber, setPageNumber] = useState(1);
 
+  // 검색 데이터 설정
+  const getSearchData = () => {
+    const searchData = {};
+
+    searchData.word = word;
+    searchData.category = getCheckedValues(radio[0], data.interest);
+    searchData.gender = getCheckedValues(radio[1], data.gender);
+    searchData.age = getCheckedValues(radio[2], data.age);
+    searchData.location = getCheckedValues(radio[3], data.location);
+    searchData.type = sortType;
+    searchData.startDate = "1900-01-01";
+    searchData.endDate = moment().format("YYYY-MM-DD");
+
+    if (dateRange !== "all") {
+      if (dateRange === "custom") {
+        searchData.startDate = moment(startDate).format("YYYY-MM-DD");
+        searchData.endDate = moment(endDate).format("YYYY-MM-DD");
+      } else if (dateRange === "days") {
+        searchData.startDate = moment().format("YYYY-MM-DD");
+      } else {
+        searchData.startDate = moment()
+          .subtract(1, dateRange)
+          .format("YYYY-MM-DD");
+      }
+    }
+
+    return searchData;
+  };
+
+  // 게시글 검색 요청
+  const getBoardSearch = (searchData) => {
+    searchBoard(
+      searchData,
+      (res) => {
+        console.log(res.data);
+        setBoardSearchResult(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
+
+  // 유저 검색 요청
+  const getUserSearch = (searchData) => {
+    searchUser(
+      searchData,
+      (res) => {
+        console.log(res.data);
+        setUserSearchResult(res.data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
+
+  // 게시글 정렬 기준 바꿈
+  const onSortSearch = (sortId) => {
+    const searchData = { ...getSearchData() };
+    searchData.type = sortId;
+    getBoardSearch(searchData);
+  };
+
+  // 검색 버튼 눌렀을 때
   const onSubmit = () => {
-    // 검색어가 있을 때만 검색
+    // 검색어가 있을 때만 검색 가능
     if (word.trim() !== "") {
       let searchData = {};
-      searchData.word = word;
       // 게시글 검색일때만 필터 적용
       if (standard === "board") {
-        searchData.category = getCheckedValues(radio[0], data.interest);
-        searchData.gender = getCheckedValues(radio[1], data.gender);
-        searchData.age = getCheckedValues(radio[2], data.age);
-        searchData.location = getCheckedValues(radio[3], data.location);
-        searchData.type = sortType;
-        searchData.startDate = "1900-01-01";
-        searchData.endDate = moment().format("YYYY-MM-DD");
-
-        if (dateRange !== "all") {
-          if (dateRange === "custom") {
-            searchData.startDate = moment(startDate).format("YYYY-MM-DD");
-            searchData.endDate = moment(endDate).format("YYYY-MM-DD");
-          } else if (dateRange === "days") {
-            searchData.startDate = moment().format("YYYY-MM-DD");
-          } else {
-            searchData.startDate = moment()
-              .subtract(1, dateRange)
-              .format("YYYY-MM-DD");
-          }
-        }
-        // 게시글 검색 요청
-        searchBoard(
-          searchData,
-          (response) => {
-            console.log(response.data);
-            setSearchResult(response.data);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        searchData = { ...getSearchData() };
+        getBoardSearch(searchData);
+      // 유저 검색은 검색어만 있으면 됨
       } else {
-        // 유저 검색 요청
-        searchUser(
-          searchData,
-          (res) => {
-            console.log(res.data);
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
+        searchData.word = word;
+        getUserSearch(searchData);
       }
     }
   };
@@ -117,7 +151,7 @@ function Search() {
             <Grid xs={2} item>
               <SearchStandard standard={standard} setStandard={setStandard} />
             </Grid>
-            <Grid xs={9.5} item>
+            <Grid className="search-inner__search-bar" xs={12} sm={9.5} item>
               <SearchBar
                 handleOpen={handleOpen}
                 onSubmit={onSubmit}
@@ -148,9 +182,23 @@ function Search() {
         />
       </form>
       <Grid className="search-inner__result" container direction="column">
-        {searchResult.length !== 0 && standard === "board" && (
-          <SearchSort sortType={sortType} setSortType={setSortType} />
+        {boardSearchResult.length !== 0 && standard === "board" && (
+          <>
+            <SearchSort
+              sortType={sortType}
+              setSortType={setSortType}
+              onSubmit={onSortSearch}
+            />
+            {boardSearchResult.map((item, index) => (
+              <Article key={index} articleData={item} />
+            ))}
+          </>
         )}
+        {setUserSearchResult.length !== 0 &&
+          standard === "user" &&
+          userSearchResult.map((item, index) => (
+            <UserSearchResult key={index} user={item} />
+          ))}
       </Grid>
     </Grid>
   );
