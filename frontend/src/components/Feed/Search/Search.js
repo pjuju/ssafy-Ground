@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import "styles/Search/Search.scss";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FilterModal from "./Filter/FilterModal";
 import SearchBar from "./SearchBar";
 import { age, gender, interest, location } from "./initData";
@@ -13,6 +13,8 @@ import SearchStandard from "./Filter/SearchStandard";
 import SearchDatePicker from "./Filter/Date/SearchDatePicker";
 import UserSearchResult from "./UserSearchResult";
 import Article from "../Article/Article";
+import { useOutletContext } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -24,12 +26,7 @@ const getCheckedValues = (radio, list) => {
     return getAllValues(list);
   }
   // 직접 선택
-  let checkedValues = [];
-  for (let item of list) {
-    if (item.checked === true) {
-      checkedValues.push(item.id);
-    }
-  }
+  let checkedValues = list.filter((item) => item.checked === true);
   // 직접 선택한게 하나도 없을때
   if (checkedValues.length === 0) {
     checkedValues = getAllValues(list);
@@ -38,6 +35,9 @@ const getCheckedValues = (radio, list) => {
 };
 
 function Search() {
+  // Outlet에 생성한 context를 가져옴
+  const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
+
   const [data, setData] = useState({
     interest: interest,
     gender: gender,
@@ -48,19 +48,26 @@ function Search() {
   const [standard, setStandard] = useState("board");
   const [word, setWord] = useState("");
   const [dateRange, setDateRange] = useState("all");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(() => new Date());
+  const [endDate, setEndDate] = useState(() => new Date());
   const [open, setOpen] = useState(false);
   const [radio, setRadio] = useState(["all", "all", "all", "all"]);
   const [sortType, setSortType] = useState("id");
+
   // 검색 결과 state
   const [boardSearchResult, setBoardSearchResult] = useState([]);
   const [userSearchResult, setUserSearchResult] = useState([]);
+
+  // 게시글 검색 결과 페이징
+  const [pageNumber, setPageNumber] = useState(1);
+  // 로딩 성공 및 실패 정보를 담을 state
+  const [isLoading, setIsLoading] = useState(false);
+  // target
+  const [target, setTarget] = useState("");
+
   // 검색 필터 모달창 state
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // 게시글 검색 결과 페이징
-  const [pageNumber, setPageNumber] = useState(1);
 
   // 검색 데이터 설정
   const getSearchData = () => {
@@ -93,11 +100,13 @@ function Search() {
 
   // 게시글 검색 요청
   const getBoardSearch = (searchData) => {
+    setIsLoading(true);
     searchBoard(
       searchData,
       (res) => {
-        console.log(res.data);
         setBoardSearchResult(res.data);
+        setPageNumber((pageNumber) => pageNumber + 1);
+        setIsLoading(false);
       },
       (err) => {
         console.log(err);
@@ -107,11 +116,13 @@ function Search() {
 
   // 유저 검색 요청
   const getUserSearch = (searchData) => {
+    setIsLoading(true);
     searchUser(
       searchData,
       (res) => {
         console.log(res.data);
         setUserSearchResult(res.data);
+        setIsLoading(false);
       },
       (err) => {
         console.log(err);
@@ -135,7 +146,7 @@ function Search() {
       if (standard === "board") {
         searchData = { ...getSearchData() };
         getBoardSearch(searchData);
-      // 유저 검색은 검색어만 있으면 됨
+        // 유저 검색은 검색어만 있으면 됨
       } else {
         searchData.word = word;
         getUserSearch(searchData);
@@ -143,64 +154,106 @@ function Search() {
     }
   };
 
+  // target이 감지되었을 때 실행할 함수
+  const onIntersect = ([entry], observer) => {
+    if (entry.isIntersecting && !isLoading) {
+      // 관찰 요소 리셋
+      setIsLoading((isLoading) => !isLoading);
+      observer.unobserve(entry.target);
+      // 데이터 더 불러오기
+    }
+  };
+
+  // 새로고침 시 Navbar가 알맞은 메뉴 인덱스를 가리키도록 함
+  useEffect(() => {
+    onSetSideMenuIdx(2);
+    onSetBottomMenuIdx(2);
+  }, []);
+
+  // target을 감지할 observer 설정
+  // useEffect(() => {
+  //   let observer;
+  //   if (target) {
+  //     observer = new IntersectionObserver(onIntersect, {
+  //       // target이 40%만큼 보였을 때 onIntersect 실행
+  //       threshold: 0.4,
+
+  //     });
+  //     // target이 보이지 않으면 로딩 state를 변경하고 observe함
+  //     setIsLoading((isLoading) => !isLoading);
+  //     observer.observe(target);
+  //   }
+  //   return () => observer && observer.disconnect();
+  // }, [target, pageNumber]);
+
   return (
-    <Grid className="search-inner" item>
-      <form>
-        <Grid className="search-inner__top" container direction="column">
-          <Grid container justifyContent="space-between">
-            <Grid xs={2} item>
-              <SearchStandard standard={standard} setStandard={setStandard} />
-            </Grid>
-            <Grid className="search-inner__search-bar" xs={12} sm={9.5} item>
-              <SearchBar
-                handleOpen={handleOpen}
-                onSubmit={onSubmit}
-                standard={standard}
-                word={word}
-                setWord={setWord}
-              />
-            </Grid>
-          </Grid>
-          {standard === "board" && (
-            <SearchDatePicker
-              dateRange={dateRange}
-              setDateRange={setDateRange}
-              startDate={startDate}
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-            />
-          )}
-        </Grid>
-        <FilterModal
-          open={open}
-          handleClose={handleClose}
-          data={data}
-          setData={setData}
-          radio={radio}
-          setRadio={setRadio}
-        />
-      </form>
-      <Grid className="search-inner__result" container direction="column">
-        {boardSearchResult.length !== 0 && standard === "board" && (
-          <>
-            <SearchSort
-              sortType={sortType}
-              setSortType={setSortType}
-              onSubmit={onSortSearch}
-            />
-            {boardSearchResult.map((item, index) => (
-              <Article key={index} articleData={item} />
-            ))}
-          </>
-        )}
-        {setUserSearchResult.length !== 0 &&
-          standard === "user" &&
-          userSearchResult.map((item, index) => (
-            <UserSearchResult key={index} user={item} />
-          ))}
+    <>
+      <Grid className="content__title-desktop">
+        <h2>검색</h2>
       </Grid>
-    </Grid>
+      <Grid className="search-inner" item>
+        <form>
+          <Grid className="search-inner__top" container direction="column">
+            <Grid container justifyContent="space-between">
+              <Grid xs={2} item>
+                <SearchStandard standard={standard} setStandard={setStandard} />
+              </Grid>
+              <Grid className="search-inner__search-bar" xs={12} sm={9.5} item>
+                <SearchBar
+                  handleOpen={handleOpen}
+                  onSubmit={onSubmit}
+                  standard={standard}
+                  word={word}
+                  setWord={setWord}
+                />
+              </Grid>
+            </Grid>
+            {standard === "board" && (
+              <SearchDatePicker
+                dateRange={dateRange}
+                setDateRange={setDateRange}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+              />
+            )}
+          </Grid>
+          <FilterModal
+            open={open}
+            handleClose={handleClose}
+            data={data}
+            setData={setData}
+            radio={radio}
+            setRadio={setRadio}
+          />
+        </form>
+        <Grid className="search-inner__result" container direction="column">
+          {boardSearchResult.length !== 0 && standard === "board" && (
+            <>
+              <SearchSort
+                sortType={sortType}
+                setSortType={setSortType}
+                onSubmit={onSortSearch}
+              />
+              {boardSearchResult.map((item, index) => (
+                <Article key={index} articleData={item} />
+              ))}
+            </>
+          )}
+          {setUserSearchResult.length !== 0 &&
+            standard === "user" &&
+            userSearchResult.map((item, index) => (
+              <UserSearchResult key={index} user={item} />
+            ))}
+        </Grid>
+        {isLoading && (
+          <div className="loading">
+            <ReactLoading type="spin" color="#54BAB9" />
+          </div>
+        )}
+      </Grid>
+    </>
   );
 }
 

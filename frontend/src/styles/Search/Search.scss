@@ -9,7 +9,7 @@
 .search-inner {
   @include custom-scrollbar();
   width: 56%;
-  padding: 4rem 4rem 0 4rem !important;
+  padding: 95px 4rem 0 4rem !important;
 
   &__top {
     width: 100%;
@@ -47,6 +47,7 @@
 
   @include mobile() {
     width: 100%;
+    padding: 4rem 2rem 0 2rem !important;
   }
 }
 
