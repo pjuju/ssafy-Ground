@@ -1,6 +1,5 @@
 import UnderLineLogo from "assets/images/underline_logo.png";
 import ProfileButton from "components/common/Navbar/ProfileButton";
-import "styles/common/Navbar.scss";
 
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
@@ -13,13 +12,18 @@ function SideNavbar({
   onSetBottomMenuIdx,
 }) {
   useEffect(() => {
-    const element = document
-      .querySelector(`.navbar-side__menu a:nth-child(${sideMenuIdx + 1})`)
-      .querySelector("h3");
-    element.className = "bold";
+    let element;
+    if (sideMenuIdx !== -1) {
+      element = document
+        .querySelector(`.navbar-side__menu a:nth-child(${sideMenuIdx + 1})`)
+        .querySelector("h3");
+      element.className = "bold";
+    }
 
     return () => {
-      element.className = "";
+      if (sideMenuIdx !== -1) {
+        element.className = "";
+      }
     };
   });
 
@@ -56,7 +60,9 @@ function SideNavbar({
         <h5 className="navbar-side__menu__logout">로그아웃</h5>
       </Grid>
       <Grid className="navbar-side__profile" item>
-        <ProfileButton />
+        <Link to="/profile/1">
+          <ProfileButton />
+        </Link>
       </Grid>
     </Grid>
   );
