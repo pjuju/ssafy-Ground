@@ -22,7 +22,9 @@ public class BoardResponseDto {
     private LocalDateTime modDttm;
     private boolean privateYN;
     private String category;
+    private Long categoryId;
     private String location;
+    private Long locationId;
     private List<CommentResponseDto> comments = new ArrayList<>();
     private int commentCnt;
     private List<BoardLikeDto> boardLikes = new ArrayList<>();
