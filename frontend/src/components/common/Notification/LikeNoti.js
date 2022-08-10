@@ -5,7 +5,7 @@ import { Grid, IconButton } from "@mui/material";
 import { useEffect } from "react";
 import { deleteBoardNoti } from "api/notification";
 
-function LikeNoti({ id, idx, nickname, isChecked }) {
+function LikeNoti({ id, idx, nickname, isChecked, handleClickDelete }) {
   useEffect(() => {
     if (isChecked) {
       const element = document.querySelector(
@@ -14,13 +14,6 @@ function LikeNoti({ id, idx, nickname, isChecked }) {
       element.classList.add("checked");
     }
   });
-
-  const handleClickDelete = () => {
-    // 서버에 알림 삭제를 요청하기
-    deleteBoardNoti(id, (res) => {
-      console.log("활동" + id + " 삭제");
-    });
-  };
 
   return (
     <Grid className="noti-like" container direction="row">
@@ -32,7 +25,7 @@ function LikeNoti({ id, idx, nickname, isChecked }) {
         좋아합니다.
       </Grid>
       <Grid className="noti-like__delete" container direction="row">
-        <IconButton onClick={handleClickDelete}>
+        <IconButton onClick={() => handleClickDelete(id)}>
           <ClearIcon />
         </IconButton>
       </Grid>

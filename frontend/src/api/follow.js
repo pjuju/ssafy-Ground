@@ -2,8 +2,12 @@ import { apiInstance } from "api";
 
 const api = apiInstance();
 
-function acceptFollow(toUserId, fromUserId, success) {
-  api.post(`/follow/accept/${toUserId}/${fromUserId}`).then(success);
+function acceptFollow(fromUserId, success) {
+  api.post(`/follow/accept/${fromUserId}`).then(success);
 }
 
-export { acceptFollow };
+function declineFollow(fromUserId, success) {
+  api.post(`/follow/accept/${fromUserId}`).then(success);
+}
+
+export { acceptFollow, declineFollow };
