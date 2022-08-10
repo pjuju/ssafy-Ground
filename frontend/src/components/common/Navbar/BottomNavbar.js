@@ -65,7 +65,7 @@ function BottomNavbar({
             />
             <BottomNavigationAction
               component={Link}
-              to="/profile"
+              to="/profile/1"
               icon={<PersonIcon />}
             />
           </BottomNavigation>
