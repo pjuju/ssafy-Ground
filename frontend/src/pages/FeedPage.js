@@ -1,6 +1,7 @@
 import "styles/common/Navbar.scss";
 import "styles/common/Notification.scss";
 import "styles/Feed/FeedPage.scss";
+import "styles/Feed/CreateFeed.scss";
 import BottomNavbar from "components/common/Navbar/BottomNavbar";
 import SideNavbar from "components/common/Navbar/SideNavbar";
 import Notification from "components/common/Notification/Notification";
