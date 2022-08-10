@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry){
         System.out.println(">>> 인터셉터 등록");
         registry.addInterceptor(bearerAuthInterceptor).addPathPatterns("/rest/user/modifyPass").excludePathPatterns("/rest/user/login");
-        //registry.addInterceptor(bearerAuthInterceptor).excludePathPatterns("/rest/user/modifyPass");
+        registry.addInterceptor(bearerAuthInterceptor).addPathPatterns("/rest/user/userState");
         //.addPathPatterns("/rest/user/modifyPass")
     }
 }
