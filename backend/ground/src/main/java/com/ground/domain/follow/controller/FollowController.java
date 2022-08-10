@@ -54,7 +54,7 @@ public class FollowController {
     }
 
     // 팔로우 거절
-    @PostMapping("/Decline/{fromUserId}")
+    @DeleteMapping("/Decline/{fromUserId}")
     @ApiOperation(value = "팔로우 거절")
     public void followDecline(@PathVariable Long fromUserId, @RequestHeader String ftoken){
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
