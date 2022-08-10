@@ -177,7 +177,8 @@ public class User {
     public void firstLogin(UserFirstLoginDto entity) {
         this.userImage = entity.getUserImage();
         this.introduce = entity.getIntroduce();
-        this.userCategories = entity.getUserCategories();
         this.registerYN = true;
     }
+
+
 }

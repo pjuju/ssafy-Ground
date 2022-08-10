@@ -8,10 +8,13 @@ import javax.transaction.Transactional;
 
 import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.follow.repository.FollowRepository;
+import com.ground.domain.global.entity.Category;
+import com.ground.domain.global.repository.CategoryRepository;
 import com.ground.domain.jwt.JwtTokenProvider;
 
 import com.ground.domain.user.dto.*;
 import com.ground.domain.user.entity.UserCategory;
+import com.ground.domain.user.repository.UserCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,8 @@ public class UserService {
 	@Autowired 
 	private final UserRepository userRepository;
 
+	private final CategoryRepository categoryRepository;
+	private final UserCategoryRepository userCategoryRepository;
 	@Autowired
 	private final FollowRepository followRepository;
 	@Autowired
@@ -230,6 +235,13 @@ public class UserService {
 	@Transactional
 	public void firstLogin(Long userId, UserFirstLoginDto entity) {
 		User user = userRepository.findById(userId).get();
+
+		List<Long> userCategories = entity.getUserCategories();
+
+		for (Long userCategoryId : userCategories) {
+			Category category = categoryRepository.findById(userCategoryId).get();
+			userCategoryRepository.save(new UserCategory(user, category));
+		}
 
 		user.firstLogin(entity);
 	}
