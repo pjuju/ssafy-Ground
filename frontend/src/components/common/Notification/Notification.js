@@ -178,7 +178,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
-                          handleClickDelete={handleDeleteAccountNoti}
+                          handleClickDelete={handleDeleteActivityNoti}
                         />
                       );
                     } else {
@@ -189,7 +189,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
-                          handleClickDelete={handleDeleteAccountNoti}
+                          handleClickDelete={handleDeleteActivityNoti}
                         />
                       );
                     }
@@ -206,7 +206,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
-                          handleClickDelete={handleDeleteActivityNoti}
+                          handleClickDelete={handleDeleteAccountNoti}
                         />
                       );
                     } else {
