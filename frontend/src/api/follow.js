@@ -7,7 +7,7 @@ function acceptFollow(fromUserId, success) {
 }
 
 function declineFollow(fromUserId, success) {
-  api.post(`/follow/accept/${fromUserId}`).then(success);
+  api.delete(`/follow/decline/${fromUserId}`).then(success);
 }
 
 export { acceptFollow, declineFollow };
