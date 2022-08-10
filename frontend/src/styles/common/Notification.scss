@@ -55,7 +55,7 @@
   &__tabpanel {
     text-align: center;
     padding: 0 !important;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     height: 73vh;
 
@@ -80,21 +80,17 @@
     justify-content: center;
 
     &__delete {
-      left: 0;
-      padding: 1rem;
-      margin-right: 2rem;
-
-      & p {
-        cursor: pointer;
-      }
-    }
-
-    &__read {
-      right: 0;
       padding: 1rem;
 
-      & p {
-        cursor: pointer;
+      & button {
+        color: $light-gray;
+        height: 4.6vw;
+        font-size: 1rem;
+
+        &:hover {
+          color: red;
+          background-color: #fff;
+        }
       }
     }
   }
@@ -142,10 +138,7 @@
 }
 
 .noti {
-  &-like {
-    @include noti-common();
-  }
-
+  &-like,
   &-comment {
     @include noti-common();
   }
@@ -166,6 +159,12 @@
       }
       &__text {
         width: 70%;
+        align-items: center;
+
+        & p {
+          vertical-align: middle;
+          margin: 0;
+        }
       }
     }
 
@@ -198,4 +197,8 @@
 
 .bold {
   font-weight: 700;
+}
+
+.checked {
+  background: #fff;
 }

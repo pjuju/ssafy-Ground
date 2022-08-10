@@ -43,57 +43,20 @@ $wide-desktop: 1249px;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
+    position: fixed;
     width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
+    position: fixed;
     background: $primary;
     border-radius: 10px;
   }
 
   &::-webkit-scrollbar-track {
-    margin-top: 6rem;
+    position: fixed;
+    margin-top: 90px;
     background: #54bab824;
-  }
-}
-
-@mixin interest-filter {
-  width: 100%;
-  padding: 0rem 2rem 0.5rem 2rem;
-
-  &__chips {
-    width: 94%;
-    left: 0;
-    overflow-x: auto;
-    white-space: nowrap;
-
-    @include custom-scrollbar();
-
-    &::-webkit-scrollbar {
-      height: 8px;
-    }
-
-
-    & div {
-      margin-right: 0.5rem;
-      margin-bottom: 0.5rem;
-
-      &.MuiChip-root {
-        color: rgba(24, 151, 143, 1);
-        background-color: rgba(84, 186, 185, 0.12);
-        font-weight: 700;
-        font-size: 0.9rem;
-      }
-
-      & .MuiChip-deleteIcon {
-        color: rgba(24, 151, 143, 0.7);
-      }
-    }
-  }
-
-  &__icon {
-    width: 6%;
-    text-align: end;
   }
 }
 
@@ -126,7 +89,7 @@ $wide-desktop: 1249px;
         width: 56%;
         top: 0;
         z-index: 1;
-        font-size: 1vw;
+        font-size: 0.9rem;
         background: #fff;
 
         & h2 {
@@ -149,24 +112,16 @@ $wide-desktop: 1249px;
         }
       }
     }
-
-    &__inner {
-
-      /* 최신 글 피드의 운동 종목 칩들 */
-      &__filter {
-        @include interest-filter();
-      }
-    }
   }
 
   & #inner {
-    padding-top: 13%;
+    padding-top: 90px;
 
     /* 플로팅 버튼 */
     & .fab-write {
       position: fixed;
-      bottom: 5%;
-      right: 25%;
+      bottom: 5vh;
+      right: 25vw;
     }
   }
 }
@@ -203,36 +158,15 @@ $wide-desktop: 1249px;
         }
       }
     }
-
-    &__inner {
-      padding-top: 3rem;
-      padding-bottom: 2rem;
-
-      /* 최신 글 피드의 운동 종목 칩들 */
-      &__filter {
-        @include interest-filter();
-
-        padding: 0rem 2.6rem 0.5rem 2.6rem;
-
-        &__chips {
-          width: 94%;
-        }
-
-        &__icon {
-          width: 6%;
-          text-align: end;
-        }
-      }
-    }
   }
 
   & #inner {
-    padding-top: 10%;
+    padding-top: 80px;
 
     & .fab-write {
       position: fixed;
-      bottom: 10%;
-      right: 5%;
+      bottom: 10vh;
+      right: 5vw;
     }
   }
 }
@@ -265,7 +199,13 @@ $wide-desktop: 1249px;
     &__text {
       padding-top: 1rem;
       padding-bottom: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
     }
+  }
+
+  &__toolbar {
+    width: 100%;
   }
 }
 

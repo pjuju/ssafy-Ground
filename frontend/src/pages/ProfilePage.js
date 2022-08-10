@@ -1,16 +1,13 @@
-import "styles/common/Navbar.scss";
-import "styles/common/Notification.scss";
-import "styles/common/_utils.scss";
 import BottomNavbar from "components/common/Navbar/BottomNavbar";
 import SideNavbar from "components/common/Navbar/SideNavbar";
 import Notification from "components/common/Notification/Notification";
-import { setSideMenuIdx, setBottomMenuIdx } from "modules/menu";
+import Profile from "components/Profile/Profile";
+import { setBottomMenuIdx, setSideMenuIdx } from "modules/menu";
 
 import { Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
 
-function FeedPage() {
+function ProfilePage() {
   const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);
   const bottomMenuIdx = useSelector((state) => state.menu.bottomMenuIdx);
 
@@ -20,7 +17,7 @@ function FeedPage() {
   const onSetBottomMenuIdx = (menuIdx) => dispatch(setBottomMenuIdx(menuIdx));
 
   return (
-    <div className="outlet">
+    <Grid>
       <Grid id="desktop" container>
         <SideNavbar
           sideMenuIdx={sideMenuIdx}
@@ -28,11 +25,17 @@ function FeedPage() {
           onSetSideMenuIdx={onSetSideMenuIdx}
           onSetBottomMenuIdx={onSetBottomMenuIdx}
         />
-        <Outlet context={[onSetSideMenuIdx, onSetBottomMenuIdx]} />
+        <Profile
+          onSetSideMenuIdx={onSetSideMenuIdx}
+          onSetBottomMenuIdx={onSetBottomMenuIdx}
+        />
         <Notification />
       </Grid>
       <Grid id="mobile" container>
-        <Outlet context={[onSetSideMenuIdx, onSetBottomMenuIdx]} />
+        <Profile
+          onSetSideMenuIdx={onSetSideMenuIdx}
+          onSetBottomMenuIdx={onSetBottomMenuIdx}
+        />
         <BottomNavbar
           sideMenuIdx={sideMenuIdx}
           bottomMenuIdx={bottomMenuIdx}
@@ -40,8 +43,8 @@ function FeedPage() {
           onSetBottomMenuIdx={onSetBottomMenuIdx}
         />
       </Grid>
-    </div>
+    </Grid>
   );
 }
 
-export default FeedPage;
+export default ProfilePage;
