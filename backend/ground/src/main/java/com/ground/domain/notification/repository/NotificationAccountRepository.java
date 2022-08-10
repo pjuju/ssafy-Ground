@@ -10,9 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface NotificationAccountRepository extends JpaRepository<NotificationAccount, Long>{
 
-    List<NotificationAccountDto> findAllByTo(User user);
+    Optional<NotificationAccount> findById(Long id);
+    List<NotificationAccount> findAllByToAndCheckYN(User user, boolean c);
+
+    List<NotificationAccountDto> findAllByToAndDelYNOrderByCheckYNDescRegDttmDesc(User user, boolean d);
+
+    NotificationAccount findByFromAndToAndType(User from, User to, boolean t);
 }

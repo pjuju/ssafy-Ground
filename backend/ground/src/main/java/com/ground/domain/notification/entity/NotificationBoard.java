@@ -1,9 +1,11 @@
 package com.ground.domain.notification.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.entity.User;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -32,11 +34,12 @@ public class NotificationBoard {
 	private User to;
 	
 	@Column(name = "type")
-	private int type;
-	
-	@JoinColumn(name = "board_id")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Board boardId;
+	private boolean type;
+//	@JsonIgnore
+//	@JoinColumn(name = "board_id")
+//	@ManyToOne(fetch = FetchType.LAZY)
+	@Column(name = "board_id")
+	private Long boardId;
 
 	@Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
@@ -47,7 +50,20 @@ public class NotificationBoard {
     @CreatedDate
     @Column(name = "reg_dttm")
     private LocalDateTime regDttm;
-    
 
+	@Builder
+	public NotificationBoard(User from, User to, Long boardId, boolean type, LocalDateTime regDttm) {
+		this.from = from;
+		this.to = to;
+		this.boardId = boardId;
+		this.type = type;
+		this.regDttm = regDttm;
+	}
+
+	public void NotificationBoardUpdate(boolean checkYN) { this.checkYN = checkYN; }
+
+	public void NotificationBoardDelete(boolean delYN) {
+		this.delYN = delYN;
+	}
 }
 

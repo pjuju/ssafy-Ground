@@ -23,6 +23,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.ground.domain.board.entity.Board;
+import com.ground.domain.user.dto.UserFirstLoginDto;
+import com.ground.domain.user.dto.UserUpdateDto;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -67,8 +71,8 @@ public class User {
     @Column(name = "del_YN", columnDefinition="tinyint(1) default 0")
     private boolean delYN;
     
-    @Column(name = "first_YN", columnDefinition="tinyint(1) default 0")
-    private boolean firstYN;
+    @Column(name = "register_YN", columnDefinition="tinyint(1) default 0")
+    private boolean registerYN;
 
     @Column(name = "private_YN" ,columnDefinition="tinyint(1) default 0")
     private boolean privateYN;
@@ -92,15 +96,19 @@ public class User {
     @Column(name = "mod_dttm")
     private LocalDateTime modDttm;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
     private List<UserCategory> userCategories = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardLike> boardLikes = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BoardSave> boardSaves = new ArrayList<>();
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
     
@@ -108,25 +116,34 @@ public class User {
     private String modUser;
     
     @Lob
-    @Column(name = "member_image_url")
-    private String imageUrl;
+    @Column(name = "user_image")
+    private String userImage;
     
-    @Lob
-    @Column(name = "member_image_type")
-    private String imageType;
+//    @Lob
+//    @Column(name = "member_image_type")
+//    private String imageType;
 
     @Lob
     @Column(name = "ftoken")
     private String ftoken;
     
+    
+    
     public void modifyPass(String pass) {
     	this.pass = pass;
     }
 
-
+    public void saveFtoken(String ftoken) {
+    	this.ftoken = ftoken;
+    }
+    
+    public void saveModDttm(LocalDateTime modDttm) {
+    	this.modDttm = modDttm;
+    }
+    
     @Builder
 	public User(String username, String pass, String email, String nickname, Age age, Gender gender, String introduce, 
-			LocalDateTime regDttm, boolean delYN) {
+			LocalDateTime regDttm, boolean delYN, boolean registerYN, String userImage) {
 		this.username = username;
 		this.modUser = username;
 		this.pass = pass;
@@ -137,29 +154,28 @@ public class User {
 		this.introduce = introduce;
 		this.regDttm = regDttm;
 		this.delYN = delYN;
-		
+		this.registerYN = registerYN;
+		this.userImage = userImage;
 	}
-
     
-    
-    public void profileUpdate(String nickname, boolean privateYN, Age age, Gender gender, String introduce) {
-        this.nickname = nickname;
-        this.privateYN = privateYN;
-        this.age = age;
-        this.gender = gender;
-        this.introduce = introduce;
+    public void profileUpdate(UserUpdateDto entity, LocalDateTime modDttm) {
+        this.nickname = entity.getNickname();
+        this.privateYN = entity.isPrivateYN();
+        this.age = entity.getAge();
+        this.gender = entity.getGender();
+        this.introduce = entity.getIntroduce();
+        this.userCategories = entity.getUserCategories();
+        this.modDttm = modDttm;
     }
 
-    
-    public void deleteUser() {
-    	this.delYN = true;
+    public void deleteUser () {
+        this.delYN = true;
     }
 
-
-
-    
-
-
-
-
+    public void firstLogin(UserFirstLoginDto entity) {
+        this.userImage = entity.getUserImage();
+        this.introduce = entity.getIntroduce();
+        this.userCategories = entity.getUserCategories();
+        this.registerYN = true;
+    }
 }

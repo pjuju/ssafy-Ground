@@ -4,7 +4,10 @@ package com.ground.domain.board.dto;
 import com.ground.domain.board.entity.Board;
 import com.ground.domain.board.entity.BoardImage;
 import com.ground.domain.user.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 

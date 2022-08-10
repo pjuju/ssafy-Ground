@@ -5,21 +5,24 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
-import com.ground.domain.user.dto.UserUpdateDto;
+import com.ground.domain.jwt.JwtTokenProvider;
+import com.ground.domain.user.dto.*;
+import com.ground.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ground.domain.user.dto.UserModifyPassDto;
-import com.ground.domain.user.dto.UserProfileDto;
-import com.ground.domain.user.dto.UserRegisterDto;
+import com.ground.domain.jwt.TokenResponse;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
@@ -44,7 +47,11 @@ import lombok.extern.log4j.Log4j2;
 //@CrossOrigin(allowCredentials = "*", originPatterns = { "*" })
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
-	
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    UserRepository userRepository;
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -96,63 +103,55 @@ public class UserController {
     	return userService.findId(email);
     }
     
+    @PostMapping("/modifyPass")
+    @ApiOperation(value = "비밀번호 변경을 위한 아이디, 이메일 확인", response = boolean.class)
+    public boolean modifyPassCheck(@RequestBody UserFindPassDto params) {
+    	return userService.modifyPassCheck(params);
+    }
+    
     @PutMapping("/modifyPass")
     @ApiOperation(value = "비밀번호 변경", response = boolean.class)
+    //@RequestHeader String header, 
     public boolean modifyPass(@RequestBody UserModifyPassDto params) {
     	return userService.modifyPass(params);
     }
     
+    
     @PostMapping("/login")
-    @ApiOperation(value = "로그인", response = String.class)
-    public String login(){
-    	return "dd";
+    @ApiOperation(value = "로그인", response = UserStateDto.class)
+    public UserLoginResponseDto login(@RequestBody UserLoginDto params){
+    	return userService.login(params);
+    }
+    
+    @GetMapping("/state")
+    @ApiOperation(value = "유저상태정보 전송", response = UserStateDto.class)
+    public UserStateDto userState(@RequestHeader String ftoken) {
+    	return userService.userState(ftoken);
+    }
+    
+    @GetMapping("/token/{ftoken}")
+    @ApiOperation(value = "유효성검사", response = boolean.class)
+    public boolean checkValidity(@PathVariable String ftoken) {
+    	return userService.checkValidity(ftoken);
+    }
+    
+    @PostMapping("/oauth/kakao")
+    @ApiOperation(value = "카카오 로그인", response = String.class)
+    public String kakaoLogin(@RequestBody String id) {
+    	return "hikakao";
     }
 
-    @PutMapping("/userDetail")
-    @ApiOperation(value = "회원 상세정보 추가", response = String.class)
-    public String userDetail(){
-        return "test!";
-    }
     
-    @GetMapping("/practice/{username}")
-    @ApiOperation(value = "연습해보자get", response = User.class)
-    public List<User> hello1(@PathVariable("username") String username){
-    	
-    	List<User> user = userService.findFirstByUsernameLikeOrderByIdDesc(username);
-    	log.info(username);
-    	log.error("d");
-    	
-    	//log.warn("watch out!");
-   
-        return user;
-    }
-    
-    @PostMapping("/practice")
-    @ApiOperation(value = "연습해보자post", response = User.class)
-    public User hello2(@RequestBody User user){
-    	// 회원가입
-    	
-    	
-//    	if(true)
-//    	{
-//    		// 이미 중복된 아이디 확인하는작업
-//        	// ex) if(crudEntityRepository.findById(name).isPresent())
-//    	}
-//    	else {
-//    		
-//    	}
-    	
-    	
-        return userService.save(user);
-    }
 
     // -----------------BSH-----------------
     // 프로필 조회 이동
-    @GetMapping("/profile/{id}")
+    @GetMapping("/profile/{userId}")
     @ApiOperation(value = "프로필 조회", response = String.class)
-    public UserProfileDto userProfile(@PathVariable Long id) {
+    public UserProfileDto userProfile(@PathVariable Long userId, @RequestHeader String ftoken) {
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long loginUserId = user.getId();
 
-        return userService.getUserProfile(id);
+        return userService.getUserProfile(userId, loginUserId);
     }
 
     // 회원 정보 수정 페이지로 이동
@@ -163,11 +162,23 @@ public class UserController {
     }
 
     // 회원 정보 수정
-    @PutMapping("/modifyUser/{id}")
+    @PutMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public Long modifyUser(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) {
+    public Long modifyUser(@RequestHeader String ftoken, @RequestBody UserUpdateDto userUpdateDto) {
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long userId = user.getId();
 
-        return userService.profileUpdate(id, userUpdateDto);
+        return userService.profileUpdate(userId, userUpdateDto);
+    }
+
+    // 회원 상세정보 추가
+    @PostMapping("/userDetail")
+    @ApiOperation(value = "회원 상세정보 추가")
+    public void firstLogin(@RequestHeader String ftoken, @RequestBody UserFirstLoginDto userFirstLoginDto) {
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long userId = user.getId();
+
+        userService.firstLogin(userId, userFirstLoginDto);
     }
 
 }

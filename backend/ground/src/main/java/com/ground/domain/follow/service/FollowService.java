@@ -1,6 +1,9 @@
 package com.ground.domain.follow.service;
 
 import com.ground.domain.follow.entity.Follow;
+import com.ground.domain.notification.entity.NotificationAccount;
+import com.ground.domain.notification.repository.NotificationAccountRepository;
+import com.ground.domain.notification.repository.NotificationBoardRepository;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,6 +25,9 @@ import java.util.List;
 public class FollowService {
 
     private final FollowRepository followRepository;
+    private final NotificationAccountRepository notificationAccountRepository;
+    private final NotificationBoardRepository notificationBoardRepository;
+
     private final UserRepository userRepository;
     private final EntityManager em;
 
@@ -29,12 +35,47 @@ public class FollowService {
     @Transactional
     public void follow(Long fromUserId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+
         followRepository.follow(fromUserId, toUserId);
+
+        User from = userRepository.findById(fromUserId).get();
+        User to = userRepository.findById(toUserId).get();
+        notificationAccountRepository.save(new NotificationAccount(from, to, false, LocalDateTime.now()));
+    }
+
+    // 팔로우 수락
+    @Transactional
+    public void followAccept(Long fromUserId, Long toUserId) {
+//        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+
+        User from = userRepository.findById(fromUserId).get();
+        User to = userRepository.findById(toUserId).get();
+
+        Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
+        follow.FollowAccept(true);
+
+        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
+        noti.NotificationAccountDelete(true);
+
+        notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
+    }
+
+    // 팔로우 거절
+    @Transactional
+    public void followDecline(Long fromUserId, Long toUserId) {
+//        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
+
+        User from = userRepository.findById(fromUserId).get();
+        User to = userRepository.findById(toUserId).get();
+
+        followRepository.unFollow(fromUserId, toUserId);
+        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
+        noti.NotificationAccountDelete(true);
     }
 
     // 언팔로우
     @Transactional
-    public void unFollow(long fromUserId, long toUserId) {
+    public void unFollow(Long fromUserId, Long toUserId) {
 
         followRepository.unFollow(fromUserId, toUserId);
     }
@@ -44,16 +85,11 @@ public class FollowService {
     public List<FollowDto> getFollower(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
 
-        // 3. userId와 userNickname 을 가져옴
-        sb.append("SELECT u.id, u.nickname,");
-        // 4. 그중 fromUserId(팔로워)가 userId(로그인한 유저) 이면 followState 를 True로 해줌
+        sb.append("SELECT u.id, u.username, u.nickname, u.user_image,");
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
-        // 5.
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
-        // 1. follow 테이블에서 (user 테이블 정보도 들고옴)
         sb.append("FROM t_user u, t_user_follow f ");
-        // 2. fromUserId 가 userId 인것중 toUserId 가 profileId 인 <-> (profileId 를 팔로우 하고 있는 유저의)
-        sb.append("WHERE u.id = f.from_user_id AND f.to_user_id = ?");
+        sb.append("WHERE u.id = f.from_user_id AND f.to_user_id = ? AND f.flag = TRUE");
 
         Query query = em.createNativeQuery(sb.toString())
                 .setParameter(1, userId)
@@ -69,11 +105,11 @@ public class FollowService {
     @Transactional
     public List<FollowDto> getFollowing(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
-        sb.append("SELECT u.id, u.nickname,");
+        sb.append("SELECT u.id, u.username, u.nickname, u.user_image, ");
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");
-        sb.append("WHERE u.id = f.to_user_id AND f.from_user_id = ?");
+        sb.append("WHERE u.id = f.to_user_id AND f.from_user_id = ? AND f.flag = TRUE");
 
         Query query = em.createNativeQuery(sb.toString())
                 .setParameter(1, userId)

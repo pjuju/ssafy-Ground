@@ -2,12 +2,9 @@ package com.ground.domain.board.entity;
 
 import com.ground.domain.user.entity.User;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.w3c.dom.Text;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import static javax.persistence.FetchType.LAZY;
 

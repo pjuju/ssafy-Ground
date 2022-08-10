@@ -1,18 +1,16 @@
 package com.ground.domain.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ground.domain.global.entity.Category;
-
 import com.ground.domain.global.entity.Location;
 import com.ground.domain.user.entity.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static javax.persistence.CascadeType.ALL;
 
@@ -34,6 +32,7 @@ public class Board {
     @Column(name = "content")
     private String content;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mod_user_id")
     private User modUser;
@@ -68,6 +67,16 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    @Column(name = "likeCnt")
+    private int likeCnt = 0;
+
+    @Column(name = "saveCnt")
+    private int saveCnt = 0;
+
+    @Column(name = "commentCnt")
+    private int commentCnt = 0;
+
 
 
     @Builder

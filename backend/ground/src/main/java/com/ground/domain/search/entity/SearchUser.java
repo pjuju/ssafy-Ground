@@ -1,15 +1,15 @@
 package com.ground.domain.search.entity;
-import java.sql.Date;
-import javax.persistence.*;
+
 import com.ground.domain.user.entity.User;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "t_search_user")
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class SearchUser {
@@ -25,7 +25,13 @@ public class SearchUser {
     private String word;
 
     @Column(name = "reg_dttm")
-    private Date regDttm;
+    private LocalDateTime regDttm;
+
+    @Builder
+    public SearchUser(String word){
+        this.word = word;
+        this.regDttm = LocalDateTime.now();
+    }
 }
 
 

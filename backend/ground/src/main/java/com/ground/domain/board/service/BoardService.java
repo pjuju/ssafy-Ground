@@ -7,27 +7,27 @@ import com.ground.domain.board.entity.*;
 import com.ground.domain.board.repository.*;
 import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.global.entity.Category;
-import com.ground.domain.global.repository.CategoryRepository;
 import com.ground.domain.global.entity.Location;
+import com.ground.domain.global.repository.CategoryRepository;
 import com.ground.domain.global.repository.LocationRepository;
+import com.ground.domain.notification.entity.NotificationBoard;
+import com.ground.domain.notification.repository.NotificationBoardRepository;
+import com.ground.domain.search.repository.sUserRepository;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.entity.UserCategory;
-import com.ground.domain.user.repository.UserRepository;
+import com.ground.domain.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-// bsh
-import org.springframework.data.domain.Page;
 
 @Service
 @Transactional(readOnly = true)
@@ -40,11 +40,13 @@ public class BoardService {
     private final CategoryRepository categoryRepository;
     private final LocationRepository locationRepository;
     private final BoardImageRepository boardImageRepository;
-    private final UserRepository userRepository;
+    private final sUserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final BoardSaveRepository boardSaveRepository;
-    private final BoardComparator boardComparator;
+    private final NotificationBoardRepository notificationBoardRepository;
+
     private final BoardFollowRepository followRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private final CommentRepository commentReository;
 
@@ -91,9 +93,14 @@ public class BoardService {
 
     // 게시글 수정
     @Transactional
-    public Board updateBoard(Long boardId, BoardRequestDto params) {
+    public Board updateBoard(Long boardId, BoardRequestDto params, User user) {
         // 게시글 찾기
         Board board = boardRepository.findById(boardId).get();
+
+        if (user != board.getUser()) {
+            throw new RuntimeException("사용자가 해당 글의 작성자가 아닙니다.");
+        }
+
 
         // 카테고리, 지역
         Category category = categoryRepository.findById(params.getCategoryId()).get();
@@ -102,7 +109,6 @@ public class BoardService {
         board.setLocation(location);
 
         //수정한 유저, 시간, 공개유무
-        User user = userRepository.findById(new Long(1)).get();
         board.setModUser(user);
         board.setModDttm(LocalDateTime.now());
         board.setPrivateYN(params.isPrivateYN());
@@ -136,8 +142,13 @@ public class BoardService {
     // 게시글 삭제
     // 로그인 유저 확인 필요함 (수정도)
     @Transactional
-    public void deleteBoard(Long boardId) {
+    public void deleteBoard(Long boardId, User user) {
         Board board = boardRepository.findById(boardId).get();
+
+        if (user != board.getUser()) {
+            throw new RuntimeException("사용자가 해당 글의 작성자가 아닙니다.");
+        }
+
         boardRepository.delete(board);
 
     }
@@ -145,39 +156,54 @@ public class BoardService {
     // 게시글 좋아요
     // 로그인 유저 확인 필요함 (수정도)
     @Transactional
-    public void likeBoard(Long boardId) {
-        User user = userRepository.findById(new Long(1)).get();
+    public void likeBoard(Long boardId, User user) {
         Board board = boardRepository.findById(boardId).get();
+        for (BoardLike boardLike : board.getBoardLikes()) {
+            if (boardLike.getUser().equals(user)) {
+                throw new RuntimeException("이미 좋아하는 게시글입니다.");
+            }
+        }
+        board.setLikeCnt(board.getLikeCnt()+1);
         boardLikeRepository.save(new BoardLike(user, board));
 
+        User to = board.getUser();
+        notificationBoardRepository.save(new NotificationBoard(user, to, boardId, true, LocalDateTime.now()));
     }
 
     // 게시글 좋아요 취소
     // 로그인 유저 확인 필요함
     @Transactional
-    public void unLikeBoard(Long boardId) {
-        User user = userRepository.findById(new Long(1)).get();
+    public void unLikeBoard(Long boardId, User user) {
+
         Board board = boardRepository.findById(boardId).get();
         BoardLike boardLike = boardLikeRepository.findByUserAndBoard(user, board).get();
         boardLikeRepository.delete(boardLike);
+        board.setLikeCnt(board.getLikeCnt()-1);
+
     }
 
 
     // 게시글 저장
     @Transactional
-    public void saveBoard(Long boardId) {
-        User user = userRepository.findById(new Long(2)).get();
+    public void saveBoard(Long boardId, User user) {
         Board board = boardRepository.findById(boardId).get();
+        for (BoardSave boardSave : board.getBoardSaves()) {
+            if (boardSave.getUser().equals(user)) {
+                throw new RuntimeException("이미 저장한 게시글입니다.");
+            }
+        }
         boardSaveRepository.save(new BoardSave(user, board));
+        board.setSaveCnt(board.getSaveCnt()+1);
     }
 
     // 게시글 저장 취소
     // 로그인 유저 확인 필요함
     @Transactional
-    public void unSaveBoard(Long boardId) {
-        User user = userRepository.findById(new Long(1)).get();
+    public void unSaveBoard(Long boardId, User user) {
+
         Board board = boardRepository.findById(boardId).get();
         BoardSave boardSave = boardSaveRepository.findByUserAndBoard(user, board).get();
+        board.setSaveCnt(board.getSaveCnt()-1);
         boardSaveRepository.delete(boardSave);
     }
 
@@ -185,7 +211,7 @@ public class BoardService {
 
     // ================= 관심종목 피드 조회 ========================
     @Transactional
-    public List<BoardResponseDto> getInterestBoard(User user, Pageable pageable) {
+    public List<BoardResponseDto> getInterestBoard(User user, int pageNumber) {
 
         // 카테고리
         List<Long> categoryIdList = new ArrayList<>();
@@ -202,10 +228,12 @@ public class BoardService {
         // 작성자가 나
         userList.add(user);
 
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
+
         // 카테고리 포함 AND 게시글이 공개 글 AND 작성자가 공개유저 OR 작성자가 팔로우 유저 OR 작성자가 나
-        List<Board> boardList = boardRepository.findAllByCategoryIdInAndUserInAndPrivateYN(categoryIdList, userList, false, pageable);
-        for (Board board : boardList) { lst.add(new BoardResponseDto(board)); }
-        Collections.sort(lst, boardComparator);
+        Page<Board> boardList = boardRepository.findAllByCategoryIdInAndUserInAndPrivateYN(categoryIdList, userList, false, pageable);
+        for (Board board : boardList) { lst.add(new BoardResponseDto(board, user)); }
+//        Collections.sort(lst, boardComparator);
         return lst;
     }
 
@@ -213,19 +241,21 @@ public class BoardService {
 
     // ================= 팔로우 피드 조회 ====================
     @Transactional
-    public List<BoardResponseDto> getFollowBoard(User user, Pageable pageable) {
+    public List<BoardResponseDto> getFollowBoard(User user, int pageNumber) {
 
         List<Follow> followList = followRepository.findAllByfromUserId(user);
         List<User> userList = new ArrayList<>();
         for (Follow follow : followList) userList.add(follow.getToUserId());
-        List<Board> boardList = boardRepository.findAllByUserInAndPrivateYN(userList, false, pageable);
+
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
+        Page<Board> boardList = boardRepository.findAllByUserInAndPrivateYN(userList, false, pageable);
         List<BoardResponseDto> lst = new ArrayList<>();
 
         for (Board board : boardList) {
-            lst.add(new BoardResponseDto(board));
+            lst.add(new BoardResponseDto(board, user));
         }
 
-        Collections.sort(lst, boardComparator);
+//        Collections.sort(lst, boardComparator);
         return lst;
     }
 
@@ -238,6 +268,11 @@ public class BoardService {
         comment.setBoard(board);
         comment.setRegDttm(LocalDateTime.now());
         Comment entity = commentReository.save(comment);
+        board.setCommentCnt(board.getCommentCnt()+1);
+
+        User to = board.getUser();
+
+        notificationBoardRepository.save(new NotificationBoard(user, to, boardId, false, LocalDateTime.now()));
 
         return entity;
     }
@@ -247,6 +282,9 @@ public class BoardService {
     public Comment updateComment(CommentRequestDto params, Long commentId, User user) {
         // 유저 == 게시글 작성자 확인 필요
         Comment comment = commentReository.findById(commentId).get();
+        if (user != comment.getUser()) {
+            throw new RuntimeException("사용자가 해당 댓글의 작성자가 아닙니다.");
+        }
         comment.setModDttm(LocalDateTime.now());
         comment.setReply(params.getReply());
         Comment entity = commentReository.save(comment);
@@ -257,53 +295,49 @@ public class BoardService {
     @Transactional
     public void deleteComment(Long commentId, User user) {
         // 유저 == 게시글 작성자 확인 필요
-        commentReository.deleteById(commentId);
-    }
-
-    @Component
-    public static class BoardComparator implements Comparator<BoardResponseDto> {
-        @Override
-        public int compare(BoardResponseDto a, BoardResponseDto b) {
-            if (a.getRegDttm().isAfter(b.getRegDttm())) {
-                return 1;
-            }
-            return -1;
+        Comment comment = commentReository.findById(commentId).get();
+        if (user != comment.getUser()) {
+            throw new RuntimeException("사용자가 해당 댓의 작성자가 아닙니다.");
         }
+        commentReository.deleteById(commentId);
+        Board board = boardRepository.findById(comment.getBoard().getId()).get();
+        board.setCommentCnt(board.getCommentCnt()-1);
     }
 
     // -----------------BSH-----------------
     // 유저가 쓴 피드 조회
     @Transactional
-    public List<BoardResponseDto> getMyBoard(long userId, Pageable pageable) {
+    public List<BoardResponseDto> getMyBoard(long userId, Pageable pageable, User loginUser) {
 
-        List<BoardResponseDto> boardList = boardRepository.findAllByUserId(userId, pageable);
+        List<BoardResponseDto> result = new ArrayList<>();
+        List<Board> boardList = boardRepository.findAllByUserId(userId, pageable);
 
-        return boardList;
+        for (Board board : boardList) {
+            result.add(new BoardResponseDto(board, loginUser));
+        }
+        return result;
     }
 
     // 저장한 피드 조회
     @Transactional
-    public List<BoardResponseDto> getSaveBoard(long userId, Pageable pageable) {
+    public List<BoardResponseDto> getSaveBoard(long userId, Pageable pageable, User loginUser) {
         List<Long> boardIdList = new ArrayList<>();
         List<BoardSave> saveList = boardSaveRepository.findAllByUserId(userId);
         for (BoardSave boardSave : saveList) boardIdList.add(boardSave.getBoard().getId());
 
-        User user = userRepository.findById(new Long(1)).get();
         List<User> userList = new ArrayList<>();
         // 작성자가 공개유저
         List<User> openUserList = userRepository.findAllByPrivateYN(false);
         userList.addAll(openUserList);
         // 작성자가 팔로우 유저
-        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        List<Follow> followList = followRepository.findAllByfromUserId(loginUser);
         for (Follow follow : followList) userList.add(follow.getToUserId());
         // 작성자가 나
-        userList.add(user);
+        userList.add(loginUser);
 
         List<Board> boardList = boardRepository.findAllByIdInAndUserInAndPrivateYN(boardIdList, userList,false, pageable);
-//        List<Board> boardList = boardRepository.findAllByIdInAndPrivateYN(boardIdList, false, pageable);
         List<BoardResponseDto> result = new ArrayList<>();
-        for (Board board : boardList) result.add(new BoardResponseDto(board));
-
+        for (Board board : boardList) result.add(new BoardResponseDto(board, loginUser));
 
         return result;
     }

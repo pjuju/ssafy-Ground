@@ -25,8 +25,7 @@ public class UserDto {
 	private LocalDateTime regDttm;
 	private LocalDateTime modDttm;
 	private String modUser;
-	private String imageUrl;
-	private String imagetype;
+	private String userImage;
 	private String ftoken;
 	
 }

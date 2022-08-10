@@ -15,6 +15,9 @@ public class BoardUserDto {
     private String nickname;
     private Boolean privateYN;
     private String introduce;
+    // 이미지
+    private String userImage;
+
 
     public BoardUserDto(User entity) {
         this.id = entity.getId();
@@ -22,5 +25,8 @@ public class BoardUserDto {
         this.nickname = entity.getNickname();
         this.privateYN = entity.isPrivateYN();
         this.introduce = entity.getIntroduce();
+        if (entity.getUserImage() != null) {
+            this.userImage = entity.getUserImage();
+        }
     }
 }

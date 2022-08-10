@@ -1,18 +1,19 @@
 package com.ground.domain.user.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.follow.repository.FollowRepository;
+import com.ground.domain.jwt.JwtTokenProvider;
+
+import com.ground.domain.user.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ground.domain.user.dto.UserModifyPassDto;
-import com.ground.domain.user.dto.UserProfileDto;
-import com.ground.domain.user.dto.UserRegisterDto;
-import com.ground.domain.user.dto.UserUpdateDto;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.repository.UserRepository;
 
@@ -26,7 +27,10 @@ public class UserService {
 	
 	@Autowired 
 	private final UserRepository userRepository;
+	@Autowired
 	private final FollowRepository followRepository;
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	
 	@Transactional
 	//회원가입
@@ -97,18 +101,69 @@ public class UserService {
 		return user.getUsername();
 	}
 	
+	public boolean modifyPassCheck(UserFindPassDto params) {
+		Optional<User> result = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
+		if(result.isEmpty()) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
 	@Transactional
 	//비밀번호 변경
 	public boolean modifyPass(UserModifyPassDto params) {
-		User user = userRepository.findByEmail(params.getEmail()).orElseThrow(()
+		User user = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername()).orElseThrow(()
 				-> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 		try {
 			user.modifyPass(params.getPass());
+			user.saveModDttm(LocalDateTime.now());
 			return true;
 		}
 		catch(Exception e){
 			return false;
 		}
+	}
+	
+	//토큰 생성 후 저장 로그인
+	@Transactional
+	public UserLoginResponseDto login(UserLoginDto params) {
+		UserLoginResponseDto ulrd = new UserLoginResponseDto();
+		try {
+			Optional<User> user = userRepository.findByUsernameAndPass(params.getUsername(), params.getPass());
+			if(user.isEmpty()) {
+				ulrd.setResult("fail");
+				return ulrd;
+			}
+			else {
+				String ftoken = jwtTokenProvider.createToken(user.get().getUsername());
+				user.get().saveFtoken(ftoken);
+				ulrd.setResult("success");
+				ulrd.setFtoken(ftoken);
+				ulrd.setRegisterYN(user.get().isRegisterYN());
+				return ulrd;
+			}
+		}
+		catch(Exception e) {
+			ulrd.setResult("fail");
+			return ulrd;
+		}
+	}
+	
+	public UserStateDto userState(String ftoken) {
+		String username = jwtTokenProvider.getSubject(ftoken);
+		User user = userRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
+		UserStateDto userstate = new UserStateDto(user.getUsername(), user.getEmail(), user.getNickname(), 
+	    		user.getFtoken(), user.getIntroduce(), user.getUserImage(), user.getGender(), user.getAge(), 
+	    		user.isPrivateYN(), user.isRegisterYN());
+		return userstate;
+	}
+	
+	
+	public boolean checkValidity(String ftoken) {
+		boolean result = jwtTokenProvider.validateToken(ftoken);
+		return result;
 	}
 
 
@@ -129,13 +184,24 @@ public class UserService {
 	// -----------------BSH-----------------
 	// 프로필 조회
 	@Transactional
-    public UserProfileDto getUserProfile(Long id) {
+    public UserProfileDto getUserProfile(Long id, Long loginUserId) {
 		UserProfileDto userProfileDto = new UserProfileDto();
+		int follow = 0;
+		if (id == loginUserId) { follow = 1; }
+		else {
+			User from = userRepository.findById(loginUserId).get();
+			User to = userRepository.findById(id).get();
+			Follow flag = followRepository.findByFromUserIdAndToUserId(from, to);
+			if (flag == null) { follow = 2; }
+			else if (flag.isFlag() == false) { follow = 3; }
+			else if (flag.isFlag() == true) { follow = 4;}
+		}
 
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 
 		userProfileDto.setUser(user);
+		userProfileDto.setFollow(follow);
 		userProfileDto.setUserFollowerCount(followRepository.findFollowerCountById(id));
 		userProfileDto.setUserFollowingCount(followRepository.findFollowingCountById(id));
 
@@ -150,17 +216,20 @@ public class UserService {
 
 	// 프로필 업데이트
 	@Transactional
-    public Long profileUpdate(Long id, UserUpdateDto userUpdateDto) {
+    public Long profileUpdate(Long id, UserUpdateDto entity) {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
 
-        user.profileUpdate(userUpdateDto.getNickname(),
-                userUpdateDto.isPrivateYN(),
-                userUpdateDto.getAge(),
-                userUpdateDto.getGender(),
-                userUpdateDto.getIntroduce());
+        user.profileUpdate(entity, LocalDateTime.now());
 
         return id;
     }
 
+	// 회원 상세정보 추가
+	@Transactional
+	public void firstLogin(Long userId, UserFirstLoginDto entity) {
+		User user = userRepository.findById(userId).get();
+
+		user.firstLogin(entity);
+	}
 }
