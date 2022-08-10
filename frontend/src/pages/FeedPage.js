@@ -1,6 +1,5 @@
 import "styles/common/Navbar.scss";
 import "styles/common/Notification.scss";
-import "styles/Feed/FeedPage.scss";
 import "styles/Feed/CreateFeed.scss";
 import "styles/common/_utils.scss";
 import "styles/common/article.scss";

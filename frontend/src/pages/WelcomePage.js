@@ -15,11 +15,8 @@ import {
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@mui/material";
-import { initUserDetail } from "api/user";
-import { useNavigate } from "react-router-dom";
 
 function WelcomePage() {
-  const navigate = useNavigate();
   const state = useSelector((state) => state);
   const img = useSelector((state) => state.init.img);
   const desc = useSelector((state) => state.init.desc);
@@ -38,29 +35,6 @@ function WelcomePage() {
   useEffect(() => {
     console.log(state);
   });
-
-  const submitUserDetail = () => {
-    console.log("호출");
-    const interestArray = [];
-    interest.map((item) => {
-      if (item.isInterested) {
-        interestArray.push(item.id);
-      }
-    });
-    console.log(interestArray);
-
-    const userDetail = {
-      "introduce": desc,
-      "userCategories": interestArray,
-      "userImage": img,
-    }
-
-    console.log(userDetail);
-
-    initUserDetail(userDetail, (res) => {
-      navigate("/feed/follow");
-    })
-  }
 
   return (
     <Grid
@@ -98,7 +72,6 @@ function WelcomePage() {
             desc={desc}
             interest={interest}
             onSetInitFlag={onSetInitFlag}
-            submitUserDetail={submitUserDetail}
           />
         ) : (
           <div>잘못된 접근입니다.</div>

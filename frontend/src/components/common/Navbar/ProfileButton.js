@@ -2,10 +2,7 @@ import userImage from "assets/images/userImage.png";
 
 import { Grid } from "@mui/material";
 
-function ProfileButton() {
-  const userName = "가나다라마바사아";
-  const userEmail = "user@email.com";
-
+function ProfileButton({ nickname, image, email }) {
   return (
     <Grid className="profile-button" container>
       <Grid className="profile-button__img" item>
@@ -17,8 +14,8 @@ function ProfileButton() {
           container
           direction="column"
         >
-          <Grid className="profile-button__user-info__name">{userName}</Grid>
-          <Grid className="profile-button__user-info__email">{userEmail}</Grid>
+          <Grid className="profile-button__user-info__name">{nickname}</Grid>
+          <Grid className="profile-button__user-info__email">{email}</Grid>
         </Grid>
       </Grid>
     </Grid>
