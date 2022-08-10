@@ -47,6 +47,8 @@ public class BoardResponseDto {
         this.privateYN = entity.isPrivateYN();
         this.category = entity.getCategory().getEvent();
         this.location = entity.getLocation().getLocation();
+        this.categoryId = entity.getCategory().getId();
+        this.locationId = entity.getLocation().getId();
 
         for (Comment comment : entity.getComments()) {
             this.comments.add(new CommentResponseDto(comment));
