@@ -5,7 +5,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { useEffect } from "react";
 import { deleteAccountNoti } from "api/notification";
 
-function FollowNoti({ id, idx, nickname, isChecked }) {
+function FollowNoti({ id, idx, nickname, isChecked, handleClickDelete }) {
   useEffect(() => {
     if (isChecked) {
       const element = document.querySelector(
@@ -14,13 +14,6 @@ function FollowNoti({ id, idx, nickname, isChecked }) {
       element.classList.add("checked");
     }
   });
-
-  const handleClickDelete = () => {
-    // 서버에 알림 삭제를 요청하기
-    deleteAccountNoti(id, (res) => {
-      console.log("계정" + id + " 삭제");
-    });
-  };
 
   return (
     <Grid className="noti-follow" container direction="row">
@@ -32,7 +25,7 @@ function FollowNoti({ id, idx, nickname, isChecked }) {
         시작했습니다.
       </Grid>
       <Grid className="noti-follow__delete" container direction="row">
-        <IconButton onClick={handleClickDelete}>
+        <IconButton onClick={() => handleClickDelete(id)}>
           <ClearIcon />
         </IconButton>
       </Grid>

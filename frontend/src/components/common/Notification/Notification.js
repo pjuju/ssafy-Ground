@@ -28,40 +28,57 @@ function Notification() {
   const [notiCnt, setNotiCnt] = useState(0);
   const [value, setValue] = useState("0");
   const [isClicked, setIsClicked] = useState(false);
-  const userToken = localStorage.getItem("token");
+  const [deleteCheck, setDeleteCheck] = useState(false);
 
   useEffect(() => {
     // 서버에서 활동 알림 목록 받아오기
     getBoardNoti((res) => {
       console.log(res.data);
       setActivityNotiList(res.data);
-      if (activityNotiList.length > 0) {
-        activityNotiList.map((item) => {
-          if (!item.checkYN) {
-            setActivityNotiCnt(() => activityNotiCnt + 1);
-          }
-        });
-      }
+      setActivityNotiCnt(activityNotiList.length);
+      // if (activityNotiList.length > 0) {
+      //   activityNotiList.map((item) => {
+      //     if (!item.checkYN) {
+      //       setActivityNotiCnt(activityNotiCnt + 1);
+      //     }
+      //   });
+      // }
     });
 
     // 서버에서 계정 알림 목록 받아오기
     getAccountNoti((res) => {
       console.log(res.data);
       setAccountNotiList(res.data);
-      if (accountNotiList.length > 0) {
-        accountNotiList.map((item) => {
-          if (!item.checkYN) {
-            setAccountNotiCnt(() => accountNotiCnt + 1);
-          }
-        });
-      }
+      setAccountNotiCnt(accountNotiList.length);
+      // if (accountNotiList.length > 0) {
+      //   accountNotiList.map((item) => {
+      //     if (!item.checkYN) {
+      //       setAccountNotiCnt(accountNotiCnt + 1);
+      //     }
+      //   });
+      // }
     });
 
-    setNotiCnt(() => activityNotiCnt + accountNotiCnt);
+    setNotiCnt(activityNotiCnt + accountNotiCnt);
+  }, [isClicked, value]);
+
+  const handleClickClose = () => {
+    setIsClicked(!isClicked);
+  };
+
+  const handleClickOpen = () => {
+    setIsClicked(!isClicked);
+    // 활동 탭이 먼저 열리므로 서버에 활동 알림 데이터 요청
+    readAllBoardNoti((res) => {
+      console.log("활동 전체 읽음");
+    });
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
 
     // 현재 탭에 따라 읽음 처리를 서버에 요청
-    console.log(value);
-    if (value === "0") {
+    if (newValue === "0") {
       // 활동 탭을 보고 있다면 활동 탭의 알림들의 읽음 처리를 요청
       readAllBoardNoti((res) => {
         console.log("활동 전체 읽음");
@@ -72,23 +89,9 @@ function Notification() {
         console.log("계정 전체 읽음");
       });
     }
-  }, [accountNotiCnt, activityNotiCnt, value]);
-
-  const handleClickClose = () => {
-    setIsClicked(!isClicked);
-  };
-
-  const handleClickOpen = () => {
-    setIsClicked(!isClicked);
-    // 서버에 알림 데이터 요청
-  };
-
-  const handleTabChange = (event, newValue) => {
-    setValue(newValue);
   };
 
   const handleClickAllDelete = () => {
-    console.log("전체 삭제");
     // 해당 탭의 전체 알림에 대한 삭제를 서버에 요청
     if (value === 0) {
       // 활동 탭 알림 전체 삭제 요청
@@ -106,6 +109,26 @@ function Notification() {
       });
     }
   };
+
+  const handleDeleteAccountNoti = (id) => {
+    deleteAccountNoti(id, (res) => {
+      console.log("계정" + id + " 삭제");
+      const deletedList = accountNotiList.filter((item) => (item.id !== id));
+      setAccountNotiList(deletedList);
+      setAccountNotiCnt(deletedList.length);
+    });
+  };
+
+  const handleDeleteActivityNoti = (id) => {
+    deleteBoardNoti(id, (res) => {
+      console.log("활동" + id + " 삭제");
+      const deletedList = activityNotiList.filter((item) => (item.id !== id));
+      setActivityNotiList(deletedList);
+      setActivityNotiCnt(deletedList.length);
+    });
+    setDeleteCheck(!deleteCheck);
+  };
+
 
   return (
     <Grid className="notification">
@@ -147,7 +170,7 @@ function Notification() {
               <TabPanel className="notification__tabpanel" value="0">
                 {activityNotiList.length > 0 &&
                   activityNotiList.map((item, index) => {
-                    if (item.type === 0) {
+                    if (item.type) {
                       return (
                         <LikeNoti
                           key={item.id}
@@ -155,7 +178,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
-                          activityNotiList={activityNotiList}
+                          handleClickDelete={handleDeleteAccountNoti}
                         />
                       );
                     } else {
@@ -166,7 +189,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
-                          activityNotiList={activityNotiList}
+                          handleClickDelete={handleDeleteAccountNoti}
                         />
                       );
                     }
@@ -183,6 +206,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          handleClickDelete={handleDeleteActivityNoti}
                         />
                       );
                     } else {

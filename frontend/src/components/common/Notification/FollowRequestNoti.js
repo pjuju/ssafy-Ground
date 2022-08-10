@@ -22,6 +22,7 @@ function FollowRequestNoti({ id, idx, nickname, isChecked }) {
     console.log("수락");
 
     // 서버에 팔로우 수락 요청하기
+    acceptFollow();
   };
 
   return (
