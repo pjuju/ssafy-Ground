@@ -8,7 +8,7 @@ RUN npm run build
 
 FROM nginx:stable-alpine as production-stage
 RUN rm /etc/nginx/conf.d/default.conf
-COPY ./nginx/test.conf /etc/nginx/conf.d/test.conf
+COPY ./nginx/deploy.conf /etc/nginx/conf.d/deploy.conf
 
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=build-stage /app/dist /usr/share/nginx/html
