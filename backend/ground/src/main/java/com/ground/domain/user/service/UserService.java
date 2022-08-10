@@ -157,7 +157,7 @@ public class UserService {
 			return ulrd;
 		}
 	}
-	
+
 	public UserStateDto userState(String ftoken) {
 		String username = jwtTokenProvider.getSubject(ftoken);
 		User user = userRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
@@ -244,5 +244,11 @@ public class UserService {
 		}
 
 		user.firstLogin(entity);
+	}
+
+	// 로그아웃
+	@Transactional
+	public void logout(User loginUser) {
+		loginUser.logoutUser();
 	}
 }
