@@ -10,6 +10,8 @@ import com.ground.domain.global.entity.Category;
 import com.ground.domain.global.entity.Location;
 import com.ground.domain.global.repository.CategoryRepository;
 import com.ground.domain.global.repository.LocationRepository;
+import com.ground.domain.notification.entity.NotificationBoard;
+import com.ground.domain.notification.repository.NotificationBoardRepository;
 import com.ground.domain.search.repository.sUserRepository;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.entity.UserCategory;
@@ -41,6 +43,7 @@ public class BoardService {
     private final sUserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
     private final BoardSaveRepository boardSaveRepository;
+    private final NotificationBoardRepository notificationBoardRepository;
 
     private final BoardFollowRepository followRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -163,6 +166,8 @@ public class BoardService {
         board.setLikeCnt(board.getLikeCnt()+1);
         boardLikeRepository.save(new BoardLike(user, board));
 
+        User to = board.getUser();
+        notificationBoardRepository.save(new NotificationBoard(user, to, boardId, true, LocalDateTime.now()));
     }
 
     // 게시글 좋아요 취소
@@ -264,6 +269,11 @@ public class BoardService {
         comment.setRegDttm(LocalDateTime.now());
         Comment entity = commentReository.save(comment);
         board.setCommentCnt(board.getCommentCnt()+1);
+
+        User to = board.getUser();
+
+        notificationBoardRepository.save(new NotificationBoard(user, to, boardId, false, LocalDateTime.now()));
+
         return entity;
     }
 

@@ -35,7 +35,7 @@ spring:
       
 jwt:
   secret: 1234
-  token-validity-in-seconds: 180000
+  token-validity-in-seconds: 600000
   #60000 -> 1분
     
 

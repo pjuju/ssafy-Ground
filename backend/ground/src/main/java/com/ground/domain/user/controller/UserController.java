@@ -194,9 +194,11 @@ public class UserController {
     }
 
     // 회원 정보 수정
-    @PutMapping("/modifyUser/{userId}")
+    @PutMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public Long modifyUser(@PathVariable Long userId, @RequestBody UserUpdateDto userUpdateDto) {
+    public Long modifyUser(@RequestHeader String ftoken, @RequestBody UserUpdateDto userUpdateDto) {
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long userId = user.getId();
 
         return userService.profileUpdate(userId, userUpdateDto);
     }

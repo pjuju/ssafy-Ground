@@ -97,7 +97,7 @@ public class User {
     private LocalDateTime modDttm;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<UserCategory> userCategories = new ArrayList<>();
 
     @JsonIgnore

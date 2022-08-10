@@ -85,7 +85,7 @@ public class FollowService {
     public List<FollowDto> getFollower(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
 
-        sb.append("SELECT u.id, u.nickname, u.user_image,");
+        sb.append("SELECT u.id, u.username, u.nickname, u.user_image,");
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");
@@ -105,7 +105,7 @@ public class FollowService {
     @Transactional
     public List<FollowDto> getFollowing(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
-        sb.append("SELECT u.id, u.nickname, u.user_image, ");
+        sb.append("SELECT u.id, u.username, u.nickname, u.user_image, ");
         sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");
