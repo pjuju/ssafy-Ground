@@ -3,7 +3,6 @@ import { apiInstance } from "api";
 const api = apiInstance();
 
 function searchBoard(data, pageNumber, success, fail) {
-  console.log("페이지 넘버", pageNumber, "로 요청 보냄!");
   api.post(`/search/board/${pageNumber}`, data).then(success).catch(fail);
 }
 

@@ -42,14 +42,15 @@ const getCheckedValues = (radio, list) => {
 function Search() {
   // Outlet에 생성한 context를 가져옴
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
-
+  
+  // 검색 필터 state
   const [data, setData] = useState({
     interest: interest,
     gender: gender,
     age: age,
     location: location,
   });
-  // 검색 데이터 관련 state
+  // 그 밖의 검색 필터 관련 state
   const [standard, setStandard] = useState("board");
   const [word, setWord] = useState("");
   const [dateRange, setDateRange] = useState("all");
@@ -64,7 +65,7 @@ function Search() {
   const [userSearchResult, setUserSearchResult] = useState([]);
 
   // 게시글 검색 결과 페이징
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(0);
   // 로딩 성공 및 실패 정보를 담을 state
   const [isLoading, setIsLoading] = useState(false);
   // target
@@ -104,28 +105,30 @@ function Search() {
   };
 
   // 게시글 정렬 기준 바꿈
+  // pageNumber 무조건 0으로 해야 함
   const onSortSearch = (sortId) => {
     const searchData = { ...getSearchData() };
     searchData.type = sortId;
-    getBoardSearch(searchData);
+    getBoardSearch(searchData, 0);
+    setPageNumber(0);
   };
 
   // 게시글 검색 요청
   const getBoardSearch = (searchData, pageNumber) => {
     console.log("검색 요청 데이터: ", searchData);
-    console.log("게시글 결과 더 불러오는 중이니까 로딩중 표시하고...");
-    setIsLoading(true);
     searchBoard(
       searchData,
       pageNumber,
       (res) => {
         const newBoardSearch = res.data;
         if (newBoardSearch.length !== 0) {
-          setBoardSearchResult([...boardSearchResult, ...newBoardSearch]);
+          if (pageNumber !== 0) {
+            setBoardSearchResult([...boardSearchResult, ...newBoardSearch]);
+          } else {
+            setBoardSearchResult([...newBoardSearch]);
+          }
         } else {
-          console.log("받은거 없음!")
-          if (pageNumber === 1) {
-            console.log("검색 버튼 누른건데 받은거 없으니까 빈 배열로 설정!");
+          if (pageNumber === 0) {
             setBoardSearchResult([]);
           }
         }
@@ -134,7 +137,6 @@ function Search() {
         console.log(err);
       }
     );
-    console.log("데이터 로딩 끝!");
     setIsLoading(false);
   };
 
@@ -151,7 +153,8 @@ function Search() {
     );
   };
 
-  // 검색 버튼 눌렀을 때, pageNumber 무조건 1로 해야 함
+  // 검색 버튼 눌렀을 때
+  // pageNumber 무조건 0으로 해야 함
   const onSubmit = () => {
     // 검색어가 있을 때만 검색 가능
     if (word.trim() !== "") {
@@ -161,8 +164,8 @@ function Search() {
         searchData = { ...getSearchData() };
         searchData.type = "id";
         setSortType("id");
-        getBoardSearch(searchData, 1);
-        setPageNumber(1);
+        getBoardSearch(searchData, 0);
+        setPageNumber(0);
       } else {
         // 유저 검색은 검색어만 있으면 됨
         searchData.word = word;
@@ -171,21 +174,30 @@ function Search() {
     }
   };
 
+  // 무한 스크롤을 위한 옵저버
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        onIntersect(observer);
+      }
+    },
+    {
+      threshold: 0.4,
+    }
+  );
+
   // target이 뷰포트에 보이면 페이지 넘버를 증가시킴
   const onIntersect = (observer) => {
-    console.log("target이 보인다!");
     if (!isLoading) {
-      console.log("잠시 옵저버를 멈추고...");
+      setIsLoading(true);
       observer.unobserve(target.current);
-      console.log("페이지 넘버 증가시킴!");
       setPageNumber((pageNumber) => pageNumber + 1);
     }
   };
 
   // 페이지 넘버가 증가할 때마다 검색 결과를 불러옴
   useEffect(() => {
-    if (pageNumber !== 1) {
-      console.log("페이지 넘버", pageNumber, "로 해서 검색 결과 더 불러옴!");
+    if (pageNumber !== 0) {
       const searchData = getSearchData();
       getBoardSearch(searchData, pageNumber);
     }
@@ -194,22 +206,8 @@ function Search() {
   // 검색 결과가 있고 현재 로딩중이 아닐 때만 옵저버 설정
   // targetdl 40%만큼 보일 때 onIntersect가 실행됨
   useEffect(() => {
-    if (boardSearchResult.length !== 0 && !isLoading) {
-      console.log("게시글 결과 업데이트 됐으니까 옵저버 설정!");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            onIntersect(observer);
-          }
-        },
-        {
-          threshold: 0.4,
-        }
-      );
+    if (boardSearchResult.length >= 10 && !isLoading) {
       observer.observe(target.current);
-    } else {
-      console.log("받은거 없으니까 옵저버 설정 안함!");
-      // observer?.unobserve(target.current);
     }
   }, [boardSearchResult]);
 
@@ -274,13 +272,12 @@ function Search() {
               ))}
             </>
           )}
-          {setUserSearchResult.length !== 0 &&
+          {userSearchResult.length !== 0 &&
             standard === "user" &&
             userSearchResult.map((item, index) => (
               <UserSearchResult key={index} user={item} />
             ))}
         </Grid>
-        {/* {noResult && <NoSearchResult />} */}
         {isLoading && (
           <div className="loading">
             <ReactLoading type="spin" color="#54BAB9" />
