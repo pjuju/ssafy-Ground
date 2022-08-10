@@ -2,8 +2,9 @@ import UnderLineLogo from "assets/images/underline_logo.png";
 import ProfileButton from "components/common/Navbar/ProfileButton";
 
 import { Grid } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getUserInfo } from "api/user";
 
 function SideNavbar({
   sideMenuIdx,
@@ -11,6 +12,10 @@ function SideNavbar({
   onSetSideMenuIdx,
   onSetBottomMenuIdx,
 }) {
+  const [nickname, setNickname] = useState("");
+  const [userImage, setUserImage] = useState("");
+  const [email, setEmail] = useState("");
+
   useEffect(() => {
     let element;
     if (sideMenuIdx !== -1) {
@@ -19,6 +24,9 @@ function SideNavbar({
         .querySelector("h3");
       element.className = "bold";
     }
+
+    // 사용자 정보 가져오기
+    getUserInfo((res) => console.log(res.data));
 
     return () => {
       if (sideMenuIdx !== -1) {
