@@ -5,9 +5,9 @@ import ArticleOpen from "./ArticleOpen";
 import ArticleImg from "./ArticleImg";
 import { Grid } from "@mui/material";
 
-function ArticleBox() {
+function ArticleBox({feedData, setFeedData}) {
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" className="create-feed__box" alignItems="center">
       <ArticleText />
       <CategoryDropdown />
       <RegionDropdown />
