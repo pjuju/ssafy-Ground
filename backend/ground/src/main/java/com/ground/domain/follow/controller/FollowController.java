@@ -44,7 +44,7 @@ public class FollowController {
     }
 
     // 팔로우 수락
-    @PostMapping("/Accept/{fromUserId}")
+    @PostMapping("/accept/{fromUserId}")
     @ApiOperation(value = "팔로우 수락")
     public void followAccept(@PathVariable Long fromUserId, @RequestHeader String ftoken){
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
@@ -54,7 +54,7 @@ public class FollowController {
     }
 
     // 팔로우 거절
-    @DeleteMapping("/Decline/{fromUserId}")
+    @DeleteMapping("/decline/{fromUserId}")
     @ApiOperation(value = "팔로우 거절")
     public void followDecline(@PathVariable Long fromUserId, @RequestHeader String ftoken){
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
