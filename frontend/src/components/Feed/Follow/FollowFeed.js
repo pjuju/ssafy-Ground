@@ -49,17 +49,17 @@ function FollowFeed() {
     onSetBottomMenuIdx(0);
   }, []);
 
-  useEffect(() => {
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
-      });
-      setIsLoading((isLoading) => !isLoading);
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
-  }, [target, pageNumber]);
+  // useEffect(() => {
+  //   let observer;
+  //   if (target) {
+  //     observer = new IntersectionObserver(onIntersect, {
+  //       threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
+  //     });
+  //     setIsLoading((isLoading) => !isLoading);
+  //     observer.observe(target);
+  //   }
+  //   return () => observer && observer.disconnect();
+  // }, [target, pageNumber]);
 
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);
