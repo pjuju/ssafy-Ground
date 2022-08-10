@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 function ArticleInfo(props) {
   const formatDate = (date) => {
     // let converted = new Date();
-    let converted = new Date(Date.parse(date));
+    let converted = new Date(date[0], date[1] - 1, date[2], date[3], date[4], date[5]);
     let diff = new Date() - converted; // 차이(ms)
 
     // 차이가 1초 미만이라면
@@ -22,10 +22,11 @@ function ArticleInfo(props) {
       return min + "분 전";
     }
 
-    let hour = Math.floor(diff / 360000); // 차이를 분으로 변환
+    let hour = Math.floor(min / 60); // 분을 시간으로 변환
     if (hour < 24) {
-      return min + "시간 전";
+      return hour + "시간 전";
     }
+    console.log("시간 : " + hour);
 
     // 날짜의 포맷을 변경
     // 일, 월, 시, 분이 숫자 하나로 구성되어있는 경우, 앞에 0을 추가해줌

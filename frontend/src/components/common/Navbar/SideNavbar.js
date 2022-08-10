@@ -13,13 +13,18 @@ function SideNavbar({
   onSetBottomMenuIdx,
 }) {
   useEffect(() => {
-    const element = document
-      .querySelector(`.navbar-side__menu a:nth-child(${sideMenuIdx + 1})`)
-      .querySelector("h3");
-    element.className = "bold";
+    let element;
+    if (sideMenuIdx !== -1) {
+      element = document
+        .querySelector(`.navbar-side__menu a:nth-child(${sideMenuIdx + 1})`)
+        .querySelector("h3");
+      element.className = "bold";
+    }
 
     return () => {
-      element.className = "";
+      if (sideMenuIdx !== -1) {
+        element.className = "";
+      }
     };
   });
 
@@ -31,6 +36,7 @@ function SideNavbar({
         break;
       default:
         onSetBottomMenuIdx(menuIdx);
+        break;
     }
     onSetSideMenuIdx(menuIdx);
   };
@@ -49,13 +55,15 @@ function SideNavbar({
         <Link to="/feed/latest" onClick={() => handleMenuClick(1)}>
           <h3>최신 글 피드</h3>
         </Link>
-        <Link to="/search" onClick={() => handleMenuClick(2)}>
+        <Link to="/feed/search" onClick={() => handleMenuClick(2)}>
           <h3>검색</h3>
         </Link>
         <h5 className="navbar-side__menu__logout">로그아웃</h5>
       </Grid>
       <Grid className="navbar-side__profile" item>
-        <ProfileButton />
+        <Link to="/profile/1">
+          <ProfileButton />
+        </Link>
       </Grid>
     </Grid>
   );
