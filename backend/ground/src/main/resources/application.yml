@@ -14,7 +14,7 @@ spring:
             enable: true
             
   datasource:
-    url: jdbc:mysql://ground.cspd92r3jqje.ap-northeast-2.rds.amazonaws.com/ground?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://ground.cspd92r3jqje.ap-northeast-2.rds.amazonaws.com/ground?useSSL=false&serverTimezone=Asia/Seoul
     username: admin
     password: Abcd123!
     driver-class-name: com.mysql.cj.jdbc.Driver
