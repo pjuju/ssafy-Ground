@@ -21,7 +21,7 @@ function readAllAccountNoti(success) {
 
 /* 계정 알림 삭제 */
 function deleteAccountNoti(notiId, success) {
-  api.post(`/notification/account/delete/${notiId}`).then(success);
+  api.delete(`/notification/account/delete/${notiId}`).then(success);
 }
 
 /* 게시글 알림 조회 */
@@ -41,7 +41,7 @@ function readAllBoardNoti(success) {
 
 /* 게시글 알림 삭제 */
 function deleteBoardNoti(notiId, success) {
-  api.post(`/notification/board/delete/${notiId}`).then(success);
+  api.delete(`/notification/board/delete/${notiId}`).then(success);
 }
 
 export {
