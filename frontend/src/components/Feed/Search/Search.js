@@ -173,7 +173,9 @@ function Search() {
         pageNumber + 1,
         (res) => {
           const newlist = [...boardSearchResult, ...res.data];
-          setBoardSearchResult(newlist);
+          if(newlist.length !== boardSearchResult.length) {
+            setBoardSearchResult(newlist);
+          }
           // setBoardSearchResult([...boardSearchResult, ...res.data]);
         },
         (err) => {
@@ -212,6 +214,15 @@ function Search() {
       setNoResult(false);
     }
   }, [boardSearchResult]);
+
+  // userSearchResult가 업데이트 될 때
+  useEffect(() => {
+    if(userSearchResult.length === 0) {
+      setNoResult(true);
+    } else {
+      setNoResult(false);
+    }
+  }, [userSearchResult])
 
   return (
     <>
