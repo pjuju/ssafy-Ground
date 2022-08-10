@@ -2,9 +2,9 @@ import { apiInstance } from "api";
 
 const api = apiInstance();
 
-function searchBoard(data, success, fail) {
-  console.log(data)
-  api.post(`/search/board/1`, data).then(success).catch(fail);
+function searchBoard(data, pageNumber, success, fail) {
+  console.log(pageNumber)
+  api.post(`/search/board/${pageNumber}`, data).then(success).catch(fail);
 }
 
 function searchUser(word, success, fail) {

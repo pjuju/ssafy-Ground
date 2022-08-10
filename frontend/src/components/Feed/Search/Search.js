@@ -15,6 +15,7 @@ import UserSearchResult from "./UserSearchResult";
 import Article from "../Article/Article";
 import { useOutletContext } from "react-router-dom";
 import ReactLoading from "react-loading";
+import NoSearchResult from "./NoSearchResult";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -57,6 +58,7 @@ function Search() {
   // 검색 결과 state
   const [boardSearchResult, setBoardSearchResult] = useState([]);
   const [userSearchResult, setUserSearchResult] = useState([]);
+  const [noResult, setNoResult] = useState(false);
 
   // 게시글 검색 결과 페이징
   const [pageNumber, setPageNumber] = useState(1);
@@ -99,13 +101,14 @@ function Search() {
   };
 
   // 게시글 검색 요청
-  const getBoardSearch = (searchData) => {
+  const getBoardSearch = (searchData, pageNumber) => {
     setIsLoading(true);
     searchBoard(
       searchData,
+      pageNumber,
       (res) => {
+        console.log(res.data);
         setBoardSearchResult(res.data);
-        setPageNumber((pageNumber) => pageNumber + 1);
         setIsLoading(false);
       },
       (err) => {
@@ -120,7 +123,6 @@ function Search() {
     searchUser(
       searchData,
       (res) => {
-        console.log(res.data);
         setUserSearchResult(res.data);
         setIsLoading(false);
       },
@@ -132,20 +134,24 @@ function Search() {
 
   // 게시글 정렬 기준 바꿈
   const onSortSearch = (sortId) => {
+    setPageNumber(1);
     const searchData = { ...getSearchData() };
     searchData.type = sortId;
-    getBoardSearch(searchData);
+    getBoardSearch(searchData, 1);
   };
 
   // 검색 버튼 눌렀을 때
   const onSubmit = () => {
     // 검색어가 있을 때만 검색 가능
     if (word.trim() !== "") {
+      setNoResult(false);
+      setPageNumber(1);
       let searchData = {};
       // 게시글 검색일때만 필터 적용
       if (standard === "board") {
         searchData = { ...getSearchData() };
-        getBoardSearch(searchData);
+        getBoardSearch(searchData, pageNumber);
+        // setObserver();
         // 유저 검색은 검색어만 있으면 됨
       } else {
         searchData.word = word;
@@ -161,6 +167,33 @@ function Search() {
       setIsLoading((isLoading) => !isLoading);
       observer.unobserve(entry.target);
       // 데이터 더 불러오기
+      const searchData = getSearchData();
+      searchBoard(
+        searchData,
+        pageNumber + 1,
+        (res) => {
+          const newlist = [...boardSearchResult, ...res.data];
+          setBoardSearchResult(newlist);
+          // setBoardSearchResult([...boardSearchResult, ...res.data]);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+      setPageNumber((pageNumber) => pageNumber + 1);
+    }
+  };
+
+  const setObserver = () => {
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        // target이 40%만큼 보였을 때 onIntersect 실행
+        threshold: 0.4,
+      });
+      // target이 보이지 않으면 로딩 state를 변경하고 observe함
+      setIsLoading((isLoading) => !isLoading);
+      observer.observe(target);
     }
   };
 
@@ -170,21 +203,15 @@ function Search() {
     onSetBottomMenuIdx(2);
   }, []);
 
-  // target을 감지할 observer 설정
-  // useEffect(() => {
-  //   let observer;
-  //   if (target) {
-  //     observer = new IntersectionObserver(onIntersect, {
-  //       // target이 40%만큼 보였을 때 onIntersect 실행
-  //       threshold: 0.4,
-
-  //     });
-  //     // target이 보이지 않으면 로딩 state를 변경하고 observe함
-  //     setIsLoading((isLoading) => !isLoading);
-  //     observer.observe(target);
-  //   }
-  //   return () => observer && observer.disconnect();
-  // }, [target, pageNumber]);
+  // boardSearchResult가 업데이트 될 때
+  useEffect(() => {
+    if (boardSearchResult.length === 0) {
+      setNoResult(true);
+    } else {
+      setObserver();
+      setNoResult(false);
+    }
+  }, [boardSearchResult]);
 
   return (
     <>
@@ -247,11 +274,13 @@ function Search() {
               <UserSearchResult key={index} user={item} />
             ))}
         </Grid>
+        {noResult && <NoSearchResult />}
         {isLoading && (
           <div className="loading">
             <ReactLoading type="spin" color="#54BAB9" />
           </div>
         )}
+        <div ref={setTarget} style={{ height: "100px" }}></div>
       </Grid>
     </>
   );
