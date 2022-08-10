@@ -1,12 +1,17 @@
 import GrButton from "components/common/GrButton";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid, Divider } from "@mui/material";
 import axios from "axios";
+import { getUserInfo } from "api/user";
 
-function InitComplete({ img, desc, interest, onSetInitFlag }) {
+function InitComplete({ img, desc, interest, onSetInitFlag, submitUserDetail }) {
   const [userName, setUserName] = useState("username");
 
+  useEffect(() => {
+    getUserInfo(res => setUserName(res.data.nickname));
+    console.log(userName);
+  })
   /* 이전 버튼을 눌렀을 때 실행되는 핸들러 */
   const handleClickPrevious = () => {
     onSetInitFlag(2);
@@ -26,15 +31,7 @@ function InitComplete({ img, desc, interest, onSetInitFlag }) {
     //   }
     // }
 
-    // 객체를 만들고 그 안에 이미지 데이터, 한줄 소개 데이터, 관심 종목 데이터 넣어서 보내기
-
-    // axios.post('/', formData)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   })
+    submitUserDetail();
   };
 
   return (
