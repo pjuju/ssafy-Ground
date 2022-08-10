@@ -11,6 +11,7 @@ import com.ground.domain.follow.repository.FollowRepository;
 import com.ground.domain.jwt.JwtTokenProvider;
 
 import com.ground.domain.user.dto.*;
+import com.ground.domain.user.entity.UserCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class UserService {
 	
 	@Autowired 
 	private final UserRepository userRepository;
+
 	@Autowired
 	private final FollowRepository followRepository;
 	@Autowired
@@ -199,7 +201,6 @@ public class UserService {
 
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
-
 		userProfileDto.setUser(user);
 		userProfileDto.setFollow(follow);
 		userProfileDto.setUserFollowerCount(followRepository.findFollowerCountById(id));
