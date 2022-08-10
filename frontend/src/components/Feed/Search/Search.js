@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import "styles/Search/Search.scss";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import FilterModal from "./Filter/FilterModal";
 import SearchBar from "./SearchBar";
 import { age, gender, interest, location } from "./initData";
@@ -26,8 +26,12 @@ const getCheckedValues = (radio, list) => {
   if (radio === "all") {
     return getAllValues(list);
   }
-  // 직접 선택
-  let checkedValues = list.filter((item) => item.checked === true);
+  let checkedValues = [];
+  for (let item of list) {
+    if (item.checked === true) {
+      checkedValues.push(item.id);
+    }
+  }
   // 직접 선택한게 하나도 없을때
   if (checkedValues.length === 0) {
     checkedValues = getAllValues(list);
@@ -58,14 +62,13 @@ function Search() {
   // 검색 결과 state
   const [boardSearchResult, setBoardSearchResult] = useState([]);
   const [userSearchResult, setUserSearchResult] = useState([]);
-  const [noResult, setNoResult] = useState(false);
 
   // 게시글 검색 결과 페이징
   const [pageNumber, setPageNumber] = useState(1);
   // 로딩 성공 및 실패 정보를 담을 state
   const [isLoading, setIsLoading] = useState(false);
   // target
-  const [target, setTarget] = useState("");
+  const target = useRef();
 
   // 검색 필터 모달창 state
   const handleOpen = () => setOpen(true);
@@ -100,31 +103,47 @@ function Search() {
     return searchData;
   };
 
+  // 게시글 정렬 기준 바꿈
+  const onSortSearch = (sortId) => {
+    const searchData = { ...getSearchData() };
+    searchData.type = sortId;
+    getBoardSearch(searchData);
+  };
+
   // 게시글 검색 요청
   const getBoardSearch = (searchData, pageNumber) => {
+    console.log("검색 요청 데이터: ", searchData);
+    console.log("게시글 결과 더 불러오는 중이니까 로딩중 표시하고...");
     setIsLoading(true);
     searchBoard(
       searchData,
       pageNumber,
       (res) => {
-        console.log(res.data);
-        setBoardSearchResult(res.data);
-        setIsLoading(false);
+        const newBoardSearch = res.data;
+        if (newBoardSearch.length !== 0) {
+          setBoardSearchResult([...boardSearchResult, ...newBoardSearch]);
+        } else {
+          console.log("받은거 없음!")
+          if (pageNumber === 1) {
+            console.log("검색 버튼 누른건데 받은거 없으니까 빈 배열로 설정!");
+            setBoardSearchResult([]);
+          }
+        }
       },
       (err) => {
         console.log(err);
       }
     );
+    console.log("데이터 로딩 끝!");
+    setIsLoading(false);
   };
 
   // 유저 검색 요청
   const getUserSearch = (searchData) => {
-    setIsLoading(true);
     searchUser(
       searchData,
       (res) => {
         setUserSearchResult(res.data);
-        setIsLoading(false);
       },
       (err) => {
         console.log(err);
@@ -132,97 +151,73 @@ function Search() {
     );
   };
 
-  // 게시글 정렬 기준 바꿈
-  const onSortSearch = (sortId) => {
-    setPageNumber(1);
-    const searchData = { ...getSearchData() };
-    searchData.type = sortId;
-    getBoardSearch(searchData, 1);
-  };
-
-  // 검색 버튼 눌렀을 때
+  // 검색 버튼 눌렀을 때, pageNumber 무조건 1로 해야 함
   const onSubmit = () => {
     // 검색어가 있을 때만 검색 가능
     if (word.trim() !== "") {
-      setNoResult(false);
-      setPageNumber(1);
       let searchData = {};
       // 게시글 검색일때만 필터 적용
       if (standard === "board") {
         searchData = { ...getSearchData() };
-        getBoardSearch(searchData, pageNumber);
-        // setObserver();
-        // 유저 검색은 검색어만 있으면 됨
+        searchData.type = "id";
+        setSortType("id");
+        getBoardSearch(searchData, 1);
+        setPageNumber(1);
       } else {
+        // 유저 검색은 검색어만 있으면 됨
         searchData.word = word;
         getUserSearch(searchData);
       }
     }
   };
 
-  // target이 감지되었을 때 실행할 함수
-  const onIntersect = ([entry], observer) => {
-    if (entry.isIntersecting && !isLoading) {
-      // 관찰 요소 리셋
-      setIsLoading((isLoading) => !isLoading);
-      observer.unobserve(entry.target);
-      // 데이터 더 불러오기
-      const searchData = getSearchData();
-      searchBoard(
-        searchData,
-        pageNumber + 1,
-        (res) => {
-          const newlist = [...boardSearchResult, ...res.data];
-          if(newlist.length !== boardSearchResult.length) {
-            setBoardSearchResult(newlist);
-          }
-          // setBoardSearchResult([...boardSearchResult, ...res.data]);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+  // target이 뷰포트에 보이면 페이지 넘버를 증가시킴
+  const onIntersect = (observer) => {
+    console.log("target이 보인다!");
+    if (!isLoading) {
+      console.log("잠시 옵저버를 멈추고...");
+      observer.unobserve(target.current);
+      console.log("페이지 넘버 증가시킴!");
       setPageNumber((pageNumber) => pageNumber + 1);
     }
   };
 
-  const setObserver = () => {
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        // target이 40%만큼 보였을 때 onIntersect 실행
-        threshold: 0.4,
-      });
-      // target이 보이지 않으면 로딩 state를 변경하고 observe함
-      setIsLoading((isLoading) => !isLoading);
-      observer.observe(target);
+  // 페이지 넘버가 증가할 때마다 검색 결과를 불러옴
+  useEffect(() => {
+    if (pageNumber !== 1) {
+      console.log("페이지 넘버", pageNumber, "로 해서 검색 결과 더 불러옴!");
+      const searchData = getSearchData();
+      getBoardSearch(searchData, pageNumber);
     }
-  };
+  }, [pageNumber]);
+
+  // 검색 결과가 있고 현재 로딩중이 아닐 때만 옵저버 설정
+  // targetdl 40%만큼 보일 때 onIntersect가 실행됨
+  useEffect(() => {
+    if (boardSearchResult.length !== 0 && !isLoading) {
+      console.log("게시글 결과 업데이트 됐으니까 옵저버 설정!");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            onIntersect(observer);
+          }
+        },
+        {
+          threshold: 0.4,
+        }
+      );
+      observer.observe(target.current);
+    } else {
+      console.log("받은거 없으니까 옵저버 설정 안함!");
+      // observer?.unobserve(target.current);
+    }
+  }, [boardSearchResult]);
 
   // 새로고침 시 Navbar가 알맞은 메뉴 인덱스를 가리키도록 함
   useEffect(() => {
     onSetSideMenuIdx(2);
     onSetBottomMenuIdx(2);
   }, []);
-
-  // boardSearchResult가 업데이트 될 때
-  useEffect(() => {
-    if (boardSearchResult.length === 0) {
-      setNoResult(true);
-    } else {
-      setObserver();
-      setNoResult(false);
-    }
-  }, [boardSearchResult]);
-
-  // userSearchResult가 업데이트 될 때
-  useEffect(() => {
-    if(userSearchResult.length === 0) {
-      setNoResult(true);
-    } else {
-      setNoResult(false);
-    }
-  }, [userSearchResult])
 
   return (
     <>
@@ -285,13 +280,13 @@ function Search() {
               <UserSearchResult key={index} user={item} />
             ))}
         </Grid>
-        {noResult && <NoSearchResult />}
+        {/* {noResult && <NoSearchResult />} */}
         {isLoading && (
           <div className="loading">
             <ReactLoading type="spin" color="#54BAB9" />
           </div>
         )}
-        <div ref={setTarget} style={{ height: "100px" }}></div>
+        <div ref={target} style={{ height: "100px" }}></div>
       </Grid>
     </>
   );
