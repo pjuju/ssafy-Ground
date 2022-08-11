@@ -43,23 +43,6 @@ public class FollowService {
         notificationAccountRepository.save(new NotificationAccount(from, to, false, LocalDateTime.now()));
     }
 
-//    // 팔로우 수락
-//    @Transactional
-//    public void followAccept(Long fromUserId, Long toUserId) {
-////        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
-//
-//        User from = userRepository.findById(fromUserId).get();
-//        User to = userRepository.findById(toUserId).get();
-//
-//        Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
-//        follow.FollowAccept(true);
-//
-//        NotificationAccount noti = notificationAccountRepository.findFirstByFromAndToAndTypeAndDelYNOrderByRegDttmDesc(from, to, false, false);
-//        noti.NotificationAccountDelete(true);
-//
-//        notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
-//    }
-
     // 팔로우 수락
     @Transactional
     public void followAccept(Long notiId, Long toUserId) {
@@ -88,7 +71,7 @@ public class FollowService {
         noti.NotificationAccountDelete(true);
     }
 
-    // 언팔로우
+    // 팔로우 삭제
     @Transactional
     public void unFollow(Long fromUserId, Long toUserId) {
 

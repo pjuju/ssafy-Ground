@@ -3,7 +3,6 @@ package com.ground.domain.user.dto;
 import com.ground.domain.user.entity.User;
 import com.ground.domain.user.entity.Age;
 import com.ground.domain.user.entity.Gender;
-import com.ground.domain.user.entity.UserCategory;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,7 +19,7 @@ public class UserUpdateDto {
     private Age age;
     private Gender gender;
     private String introduce;
-    private List<UserCategory> userCategories;
+    private List<Long> userCategories;
 
     @Builder
     public UserUpdateDto(UserUpdateDto entity) {

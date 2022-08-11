@@ -1,6 +1,7 @@
 package com.ground.domain.user.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -196,50 +197,68 @@ public class UserService {
 		}
 
         User user = userRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+				-> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+		List<UserCategory> userCategories = userCategoryRepository.findAllByUser(user);
+		List<UserCategoryDto> userCategoryDtos = new ArrayList<>();
+		for (UserCategory userCategory : userCategories) {
+			userCategoryDtos.add(new UserCategoryDto(userCategory));
+		}
 		userProfileDto.setUser(user);
 		userProfileDto.setFollow(follow);
 		userProfileDto.setUserFollowerCount(followRepository.findFollowerCountById(id));
 		userProfileDto.setUserFollowingCount(followRepository.findFollowingCountById(id));
+		userProfileDto.setUserCategories(userCategoryDtos);
 
         return userProfileDto;
     }
 
 	// 프로필 업데이트 페이지
     @Transactional
-    public void getModifyUser(UserUpdateDto userUpdateDto) {
+    public UserUpdateDto getModifyUser(User loginUser) {
+		UserUpdateDto userUpdateDto = new UserUpdateDto();
+		List<UserCategory> userCategories = userCategoryRepository.findAllByUser(loginUser);
+		List<Long> userCategoryDtos = new ArrayList<>();
+		for (UserCategory userCategory : userCategories) {
+			userCategoryDtos.add(userCategory.getCategory().getId());
+		}
 
+		userUpdateDto.setNickname(loginUser.getNickname());
+		userUpdateDto.setPrivateYN(loginUser.isPrivateYN());
+		userUpdateDto.setAge(loginUser.getAge());
+		userUpdateDto.setGender(loginUser.getGender());
+		userUpdateDto.setIntroduce(loginUser.getIntroduce());
+		userUpdateDto.setUserCategories(userCategoryDtos);
+
+		return userUpdateDto;
     }
 
 	// 프로필 업데이트
 	@Transactional
-    public Long profileUpdate(Long id, UserUpdateDto entity) {
-        User user = userRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+    public void profileUpdate(User loginUser, UserUpdateDto entity) {
 
-        user.profileUpdate(entity, LocalDateTime.now());
+		userCategoryRepository.deleteAllByUser(loginUser);
+		List<Long> userCategories = entity.getUserCategories();
+		for (Long userCategoryId : userCategories) {
+			Category category = categoryRepository.findById(userCategoryId).get();
+			userCategoryRepository.save(new UserCategory(loginUser, category));
+		}
 
-        return id;
+		loginUser.profileUpdate(entity, LocalDateTime.now());
+
     }
 
 	// 회원 상세정보 추가
 	@Transactional
-	public void firstLogin(Long userId, UserFirstLoginDto entity) {
-		User user = userRepository.findById(userId).get();
+	public void firstLogin(User loginUser, UserFirstLoginDto entity) {
 
 		List<Long> userCategories = entity.getUserCategories();
 
 		for (Long userCategoryId : userCategories) {
 			Category category = categoryRepository.findById(userCategoryId).get();
-			userCategoryRepository.save(new UserCategory(user, category));
+			userCategoryRepository.save(new UserCategory(loginUser, category));
 		}
 
-		user.firstLogin(entity);
+		loginUser.firstLogin(entity);
 	}
 
-	// 로그아웃
-	@Transactional
-	public void logout(User loginUser) {
-		loginUser.logoutUser();
-	}
 }
