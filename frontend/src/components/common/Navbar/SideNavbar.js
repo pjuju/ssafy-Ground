@@ -4,7 +4,7 @@ import ProfileButton from "components/common/Navbar/ProfileButton";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserInfo } from "api/user";
+import { getUserState } from "api/user";
 
 function SideNavbar({
   sideMenuIdx,
@@ -27,10 +27,13 @@ function SideNavbar({
     }
 
     // 사용자 정보 가져오기
-    getUserInfo((res) => {
+    getUserState((res) => {
       setNickname(res.data.nickname);
-      setImage(res.data.setImage);
+      setImage(res.data.image);
       setEmail(res.data.email);
+      console.log(nickname);
+      console.log(image);
+      console.log(email);
     });
 
     return () => {
