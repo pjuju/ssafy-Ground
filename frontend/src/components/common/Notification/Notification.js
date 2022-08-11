@@ -34,32 +34,41 @@ function Notification() {
   useEffect(() => {
     // 서버에서 활동 알림 목록 받아오기
     getBoardNoti((res) => {
-      console.log(res.data);
       setActivityNotiList(res.data);
-      if (activityNotiList.length > 0) {
-        activityNotiList.map((item) => {
-          if (!item.checkYN) {
-            setActivityNotiCnt(activityNotiCnt + 1);
-          }
-        });
-      }
     });
 
-    // 서버에서 계정 알림 목록 받아오기
     getAccountNoti((res) => {
-      console.log(res.data);
       setAccountNotiList(res.data);
-      if (accountNotiList.length > 0) {
-        accountNotiList.map((item) => {
-          if (!item.checkYN) {
-            setAccountNotiCnt(accountNotiCnt + 1);
-          }
-        });
+    });
+  }, [isClicked, value]);
+
+  useEffect(() => {
+    // 값 초기화 후 다시 측정
+    setActivityNotiCnt((activityNotiCnt) => 0);
+    console.log(activityNotiList);
+    activityNotiList.map((item) => {
+      if (!item.checkYN) {
+        setActivityNotiCnt((activityNotiCnt) => activityNotiCnt + 1);
       }
     });
+  }, [activityNotiList]);
 
+  useEffect(() => {
+    // 값 초기화 후 다시 측정
+    setAccountNotiCnt((accountNotiCnt) => 0);
+    console.log(accountNotiList);
+    accountNotiList.map((item) => {
+      if (!item.checkYN) {
+        setAccountNotiCnt((accountNotiCnt) => accountNotiCnt + 1);
+      }
+    });
+  }, [accountNotiList]);
+
+  useEffect(() => {
     setNotiCnt(activityNotiCnt + accountNotiCnt);
-  }, [isClicked, value]);
+    console.log("activity : " + activityNotiCnt);
+    console.log("account : " + accountNotiCnt);
+  }, [activityNotiCnt, accountNotiCnt]);
 
   const handleClickClose = () => {
     setIsClicked(!isClicked);
@@ -92,12 +101,13 @@ function Notification() {
 
   const handleClickAllDelete = () => {
     // 해당 탭의 전체 알림에 대한 삭제를 서버에 요청
-    if (value === 0) {
+    if (value === "0") {
       // 활동 탭 알림 전체 삭제 요청
       activityNotiList.map((item) => {
         deleteBoardNoti(item.id, (res) =>
           console.log("활동" + item.id + " 삭제")
         );
+        setActivityNotiList([]);
       });
     } else {
       // 계정 탭 알림 전체 삭제 요청
@@ -105,6 +115,7 @@ function Notification() {
         deleteAccountNoti(item.id, (res) =>
           console.log("계정" + item.id + " 삭제")
         );
+        setAccountNotiList([]);
       });
     }
   };
@@ -112,7 +123,7 @@ function Notification() {
   const handleDeleteAccountNoti = (id) => {
     deleteAccountNoti(id, (res) => {
       console.log("계정" + id + " 삭제");
-      const deletedList = accountNotiList.filter((item) => (item.id !== id));
+      const deletedList = accountNotiList.filter((item) => item.id !== id);
       setAccountNotiList(deletedList);
       setAccountNotiCnt(deletedList.length);
     });
@@ -121,29 +132,29 @@ function Notification() {
   const handleDeleteActivityNoti = (id) => {
     deleteBoardNoti(id, (res) => {
       console.log("활동" + id + " 삭제");
-      const deletedList = activityNotiList.filter((item) => (item.id !== id));
+      const deletedList = activityNotiList.filter((item) => item.id !== id);
       setActivityNotiList(deletedList);
       setActivityNotiCnt(deletedList.length);
     });
     setDeleteCheck(!deleteCheck);
   };
 
-  const handleClickReject = (id, nickname, fromUserId) => {
+  const handleClickReject = (id, nickname) => {
     console.log("거절");
 
     // 서버에 팔로우 거절 요청하기
-    declineFollow(fromUserId, (res) => console.log(nickname + "의 팔로우 거절"));
-    const deletedList = accountNotiList.filter((item) => (item.id !== id));
+    declineFollow(id, (res) => console.log(nickname + "의 팔로우 거절"));
+    const deletedList = accountNotiList.filter((item) => item.id !== id);
     setAccountNotiList(deletedList);
     setAccountNotiCnt(deletedList.length);
   };
 
-  const handleClickAccept = (id, nickname, fromUserId) => {
+  const handleClickAccept = (id, nickname) => {
     console.log("수락");
 
     // 서버에 팔로우 수락 요청하기
-    acceptFollow(fromUserId, (res) => console.log(nickname + "의 팔로우 수락"));
-    const deletedList = accountNotiList.filter((item) => (item.id !== id));
+    acceptFollow(id, (res) => console.log(nickname + "의 팔로우 수락"));
+    const deletedList = accountNotiList.filter((item) => item.id !== id);
     setAccountNotiList(deletedList);
     setAccountNotiCnt(deletedList.length);
   };
@@ -186,7 +197,7 @@ function Notification() {
                 </TabList>
               </Box>
               <TabPanel className="notification__tabpanel" value="0">
-                {activityNotiList.length > 0 ?
+                {activityNotiList.length > 0 ? (
                   activityNotiList.map((item, index) => {
                     if (item.type) {
                       return (
@@ -212,12 +223,14 @@ function Notification() {
                       );
                     }
                   })
-                  :
-                  <p className="notification__tabpanel--no-noti">수신한 알림이 없습니다.</p>
-                }
+                ) : (
+                  <p className="notification__tabpanel--no-noti">
+                    수신한 알림이 없습니다.
+                  </p>
+                )}
               </TabPanel>
               <TabPanel className="notification__tabpanel" value="1">
-                {accountNotiList.length > 0 ?
+                {accountNotiList.length > 0 ? (
                   accountNotiList.map((item, index) => {
                     if (item.type) {
                       return (
@@ -245,9 +258,11 @@ function Notification() {
                       );
                     }
                   })
-                  :
-                  <p className="notification__tabpanel--no-noti">수신한 알림이 없습니다.</p>
-                }
+                ) : (
+                  <p className="notification__tabpanel--no-noti">
+                    수신한 알림이 없습니다.
+                  </p>
+                )}
               </TabPanel>
             </TabContext>
           </ThemeProvider>

@@ -4,7 +4,15 @@ import userImage from "assets/images/userImage.png";
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
 
-function FollowRequestNoti({ id, idx, nickname, fromUserId, isChecked, handleClickReject, handleClickAccept }) {
+function FollowRequestNoti({
+  id,
+  idx,
+  nickname,
+  fromUserId,
+  isChecked,
+  handleClickReject,
+  handleClickAccept,
+}) {
   useEffect(() => {
     if (isChecked) {
       const element = document.querySelector(`.noti-fr:nth-child(${idx + 1})`);
@@ -30,13 +38,13 @@ function FollowRequestNoti({ id, idx, nickname, fromUserId, isChecked, handleCli
           className="noti-fr__button--reject"
           variant="outlined"
           children="거절"
-          onClick={() => handleClickReject(id, nickname, fromUserId)}
+          onClick={() => handleClickReject(id, nickname)}
         />
         <GrButton
           className="noti-fr__button--accept"
           variant="contained"
           children="수락"
-          onClick={() => handleClickAccept(id, nickname, fromUserId)}
+          onClick={() => handleClickAccept(id, nickname)}
         />
       </Grid>
     </Grid>
