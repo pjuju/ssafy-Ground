@@ -38,7 +38,7 @@ function SideNavbar({
         element.className = "";
       }
     };
-  }, []);
+  }, [sideMenuIdx]);
 
   const handleMenuClick = (menuIdx) => {
     switch (menuIdx) {
