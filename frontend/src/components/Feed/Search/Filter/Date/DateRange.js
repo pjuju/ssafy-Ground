@@ -1,4 +1,11 @@
-import { FormControl, FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
+import {
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
 import { date } from "../../initData";
@@ -13,7 +20,7 @@ const dateRadio = date.map((item, index) => (
   />
 ));
 
-function DateRange({dateRange, setDateRange}) {
+function DateRange({ dateRange, setDateRange }) {
   return (
     <FormControl>
       <ThemeProvider theme={theme}>

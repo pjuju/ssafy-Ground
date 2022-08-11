@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-function LatestSearch({ latest, handleDeleteItem, setOpenLatest }) {
+function LatestSearch({ latest, handleDeleteItem, setOpenLatest, setWord }) {
   return (
     <>
       {latest?.map((item, index) => (
@@ -21,6 +21,9 @@ function LatestSearch({ latest, handleDeleteItem, setOpenLatest }) {
               if (tabIndex !== -1) {
                 setOpenLatest(false);
               }
+            }}
+            onClick={() => {
+              setWord(item.word);
             }}
           >
             {item.word}

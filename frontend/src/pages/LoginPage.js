@@ -71,7 +71,7 @@ function LoginPage() {
         info,
         (res) => {
           if(res.data.result === "success") {
-            window.localStorage.setItem("token", res.data.ftoken);
+            localStorage.setItem("token", res.data.ftoken);
             if(res.data.registerYN === false) {
               navigate("/welcome");
             }

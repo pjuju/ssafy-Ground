@@ -1,15 +1,14 @@
 import { combineReducers } from "redux";
-
 import init from "./init";
 import menu from "./menu";
 import find from "./find";
-import search from "modules/search";
+import feed from "./feed";
 
 const rootReducer = combineReducers({
   init,
   menu,
   find,
-  search
+  feed,
 });
 
 export default rootReducer;
