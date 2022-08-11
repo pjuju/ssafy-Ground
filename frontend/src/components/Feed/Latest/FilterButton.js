@@ -15,7 +15,7 @@ import { ThemeProvider } from "@emotion/react";
 function FilterButton({
   interestList,
   onToggleInterestList,
-  submitUserDetail,
+  changeInterestList,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
@@ -34,8 +34,7 @@ function FilterButton({
   };
 
   const handleClickSave = () => {
-    console.log("서버에 관심 운동 종목 설정 변경 요청");
-    submitUserDetail();
+    changeInterestList();
   };
 
   return (

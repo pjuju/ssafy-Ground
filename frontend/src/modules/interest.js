@@ -2,9 +2,11 @@ import { interestList } from "components/common/interestList";
 
 const TOGGLE_INTEREST_LIST = "interest/TOGGLE_INTEREST_LIST";
 const SET_INTEREST = "interest/SET_INTEREST";
+const DELETE_INTEREST = "interest/DELETE_INTEREST";
 
 export const toggleInterestList = (id) => ({ type: TOGGLE_INTEREST_LIST, id });
 export const setInterest = (id) => ({ type: SET_INTEREST, id });
+export const deleteInterest = (id) => ({ type: DELETE_INTEREST, id });
 
 const initialState = {
   interestList: interestList,
@@ -28,6 +30,13 @@ export default function interest(state = initialState, action) {
         ...state,
         interestList: state.interestList.map((item) =>
           item.id === action.id ? { ...item, isInterested: true } : item
+        ),
+      };
+    case DELETE_INTEREST:
+      return {
+        ...state,
+        interestList: state.interestList.map((item) =>
+          item.id === action.id ? { ...item, isInterested: false } : item
         ),
       };
     default:

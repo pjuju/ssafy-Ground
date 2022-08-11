@@ -13,8 +13,12 @@ import FilterButton from "./FilterButton";
 import FilterChips from "./FilterChips";
 import { useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setInterest, toggleInterestList } from "modules/interest";
-import { getUserProfile, getUserState } from "api/user";
+import {
+  deleteInterest,
+  setInterest,
+  toggleInterestList,
+} from "modules/interest";
+import { getUserProfile, getUserState, modifyUserInfo } from "api/user";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
@@ -34,7 +38,7 @@ function LatestFeed() {
   const [introduce, setIntroduce] = useState("");
   const [nickname, setNickname] = useState("");
   const [privateYN, setPrivateYN] = useState("");
-  const [image, setImage] = useState("");
+  const [userImage, setUserImage] = useState("");
 
   // 관심 운동 종목과 관련한 Redux 상태값, 액션함수
   const interestList = useSelector((state) => state.interest.interestList);
@@ -42,6 +46,7 @@ function LatestFeed() {
   const dispatch = useDispatch();
   const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
   const onSetInterest = (id) => dispatch(setInterest(id));
+  const onDeleteInterest = (id) => dispatch(deleteInterest(id));
 
   const fetchArticles = () => {
     getLatestBoard(pageNumber, (res) => {
@@ -72,21 +77,20 @@ function LatestFeed() {
 
   useEffect(() => {
     getUserState((res) => {
+      // 관심 운동 종목 설정 변경을 요청할 때 필요한 데이터를 미리 setState
       setAge(res.data.age);
       setGender(res.data.gender);
       setId(res.data.id);
       setIntroduce(res.data.introduce);
       setNickname(res.data.nickname);
       setPrivateYN(res.data.privateYN);
-      setImage(res.data.userImage);
+      setUserImage(res.data.userImage);
 
+      // 사용자의 관심 운동 종목을 redux state인 interestList에서 true로 변경
       getUserProfile(res.data.id, (res) => {
-        // const interestArray = [...interestList];
-        console.log(res.data);
         res.data.userCategories.map((item) => {
           onSetInterest(item.categoryId);
         });
-        // console.log(interestArray);
       });
     });
   }, []);
@@ -107,6 +111,35 @@ function LatestFeed() {
     document.querySelector(".content").scrollTo(0, 0);
   };
 
+  const changeInterestList = () => {
+    const interestArray = [];
+    // interestList에서 isInterested가 true인 것들의 id만 뽑아서 새로운 배열 생성
+    interestList.map((item) => {
+      if (item.isInterested) {
+        console.log(interestList);
+        interestArray.push(item.id);
+      }
+    });
+    console.log(interestArray);
+
+    const userDetail = {
+      age: age,
+      gender: gender,
+      id: id,
+      introduce: introduce,
+      nickname: nickname,
+      privateYN: privateYN,
+      userCategories: interestArray,
+      useruserImage: userImage,
+    };
+
+    console.log(userDetail);
+
+    modifyUserInfo(userDetail, (res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <Grid className="content">
       <Grid className="content__title-desktop">
@@ -121,12 +154,22 @@ function LatestFeed() {
             <FilterChips
               interestList={interestList}
               onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
+              onDeleteInterest={onDeleteInterest}
+              age={age}
+              gender={gender}
+              id={id}
+              introduce={introduce}
+              nickname={nickname}
+              privateYN={privateYN}
+              userImage={userImage}
             />
           </Grid>
           <Grid className="content__inner__filter__icon">
             <FilterButton
               interestList={interestList}
               onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
             />
           </Grid>
         </Grid>
