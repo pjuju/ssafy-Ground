@@ -20,6 +20,7 @@ function CommentBox({ handleCommentRegister }) {
           className="comment-box__field"
           multiline
           rows={2}
+          value={comment}
           placeholder="타인을 비방하는 댓글이나 욕설은 삭제될 수 있습니다."
           onChange={(e) => setComment(e.target.value)}
         />
@@ -27,7 +28,10 @@ function CommentBox({ handleCommentRegister }) {
       <GrButton
         variant="contained"
         color="secondary"
-        onClick={() => handleCommentRegister(comment)}
+        onClick={() => {
+          handleCommentRegister(comment);
+          setComment("");
+        }}
       >
         작성
       </GrButton>
