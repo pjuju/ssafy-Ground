@@ -3,19 +3,23 @@ package com.ground.domain.jwt;
 import java.util.Base64;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+
+import com.ground.domain.user.repository.UserRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.log4j.Log4j2;
 
 
 
-
+@Log4j2
 @Repository
 public class JwtTokenProvider {
 	
@@ -53,6 +57,8 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            log.info("------" + claims.getBody());
+            log.info("expire" + claims.getBody().getExpiration());
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
             }
