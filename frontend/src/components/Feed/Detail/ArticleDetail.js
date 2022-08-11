@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import ArticleDetailContent from "./ArticleDetailContent";
 import ArticleDetailComment from "./ArticleDetailComment";
 import ArticleDetailLike from "./ArticleDetailLike";
+import { deleteComment } from "api/comment";
 
 function ArticleDetail() {
   const { boardId } = useParams();
@@ -41,10 +42,7 @@ function ArticleDetail() {
                 isLiked={boardInfo.isLiked}
                 likeCnt={boardInfo.likeCnt}
               />
-              <ArticleDetailComment
-                commentCnt={boardInfo.commentCnt}
-                commentList={boardInfo.comments}
-              />
+              <ArticleDetailComment comments={boardInfo.comments} />
             </Stack>
           </>
         )}

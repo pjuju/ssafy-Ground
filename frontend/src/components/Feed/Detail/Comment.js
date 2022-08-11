@@ -1,19 +1,10 @@
 import { Grid, Stack } from "@mui/material";
 import userImage from "assets/images/userImage.png";
-import { useState } from "react";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-function Comment({ comment }) {
+function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
   const { id, user, regDttm, reply } = comment;
-
-  const handleClickEdit = () => {
-    console.log("edit");
-  };
-
-  const handleClickDelete = () => {
-    console.log("delete");
-  };
 
   return (
     <div className="comment">
@@ -43,17 +34,21 @@ function Comment({ comment }) {
                   </Grid>
                 </Stack>
                 <Grid item>
-                  <ModeEditOutlinedIcon
-                    className="comment__edit comment__button"
-                    fontSize="small"
-                    onClick={() => handleClickEdit()}
-                  />
-                  <DeleteOutlinedIcon
-                    className="comment__delete comment__button"
-                    color="warning"
-                    fontSize="small"
-                    onClick={() => handleClickDelete()}
-                  />
+                  {userId === user.id && (
+                    <>
+                      <ModeEditOutlinedIcon
+                        className="comment__edit comment__button"
+                        fontSize="small"
+                        onClick={() => handleCommentEdit(id)}
+                      />
+                      <DeleteOutlinedIcon
+                        className="comment__delete comment__button"
+                        color="warning"
+                        fontSize="small"
+                        onClick={() => handleCommentDelete(id)}
+                      />
+                    </>
+                  )}
                 </Grid>
               </Grid>
               <Grid className="comment__content">{reply}</Grid>

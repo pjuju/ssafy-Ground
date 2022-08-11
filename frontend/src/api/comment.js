@@ -11,7 +11,7 @@ function updateComment(commentId, success, fail) {
 }
 
 function deleteComment(commentId, success, fail) {
-  api.delete(`/comment/${commentId}, success, fail`);
+  api.delete(`/comment/${commentId}`, success, fail);
 }
 
 export { registerComment, updateComment, deleteComment };
