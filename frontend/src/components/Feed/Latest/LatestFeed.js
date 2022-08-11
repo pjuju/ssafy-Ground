@@ -1,4 +1,4 @@
-import { getFollowBoard } from "api/board";
+import { getLatestBoard } from "api/board";
 import Article from "components/Feed/Article/Article";
 import TitleBar from "components/common/TitleBar";
 import theme from "components/common/theme.js";
@@ -12,6 +12,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import FilterButton from "./FilterButton";
 import FilterChips from "./FilterChips";
 import { useOutletContext } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleInterestList } from "modules/interest";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
@@ -24,8 +26,14 @@ function LatestFeed() {
   // Outlet에 생성한 context를 가져온다.
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
 
+  // 관심 운동 종목과 관련한 Redux 상태값, 액션함수
+  const interestList = useSelector((state) => state.interest.interestList);
+
+  const dispatch = useDispatch();
+  const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
+
   const fetchArticles = () => {
-    getFollowBoard(pageNumber, (res) => {
+    getLatestBoard(pageNumber, (res) => {
       setArticles(articles.concat(res.data));
       setPageNumber((pageNumber) => pageNumber + 1);
       console.log(res.data);
@@ -78,10 +86,16 @@ function LatestFeed() {
       <Grid id="inner" className="content__inner">
         <Grid className="content__inner__filter" container direction="row">
           <Grid className="content__inner__filter__chips">
-            <FilterChips />
+            <FilterChips
+              interestList={interestList}
+              onToggleInterestList={onToggleInterestList}
+            />
           </Grid>
           <Grid className="content__inner__filter__icon">
-            <FilterButton />
+            <FilterButton
+              interestList={interestList}
+              onToggleInterestList={onToggleInterestList}
+            />
           </Grid>
         </Grid>
         {articles.map((article, index) => (

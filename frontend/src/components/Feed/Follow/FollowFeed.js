@@ -17,15 +17,16 @@ function FollowFeed() {
   const [target, setTarget] = useState("");
   // 게시글 데이터를 담을 배열
   const [articles, setArticles] = useState([]);
+  const [newArticles, setNewArticles] = useState([]);
   // 스크롤이 하단에 닿았을 때 pageNumber를 1만큼 증가시켜서 새로운 데이터를 요청한다.
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(0);
   // 로딩 성공 및 실패 정보를 담을 state
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchArticles = () => {
     getFollowBoard(pageNumber, (res) => {
-      setArticles(articles.concat(res.data));
-      setPageNumber((pageNumber) => pageNumber + 1);
+      setArticles(() => articles.concat(res.data));
+      setPageNumber(() => pageNumber + 1);
       console.log(res.data);
       console.log("페이지 넘버: " + pageNumber);
     });
@@ -49,17 +50,17 @@ function FollowFeed() {
     onSetBottomMenuIdx(0);
   }, []);
 
-  // useEffect(() => {
-  //   let observer;
-  //   if (target) {
-  //     observer = new IntersectionObserver(onIntersect, {
-  //       threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
-  //     });
-  //     setIsLoading((isLoading) => !isLoading);
-  //     observer.observe(target);
-  //   }
-  //   return () => observer && observer.disconnect();
-  // }, [target, pageNumber]);
+  useEffect(() => {
+    // let observer;
+    // if (target) {
+    //   observer = new IntersectionObserver(onIntersect, {
+    //     threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
+    //   });
+    //   setIsLoading((isLoading) => !isLoading);
+    //   observer.observe(target);
+    // }
+    // return () => observer && observer.disconnect();
+  }, [target, pageNumber]);
 
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);

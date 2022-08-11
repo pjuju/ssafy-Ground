@@ -2,6 +2,7 @@ import { Button, Container, Grid, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ArrowBack from "@mui/icons-material/ArrowBack";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Box } from "@mui/system";
 import { storage } from "api/firebase";
 import { ref, uploadBytes } from "firebase/storage";
@@ -119,7 +120,8 @@ function CreateFeedPage() {
         className="create-feed__back"
         alignItems="center"
       >
-        <ArrowBack fontSize="large" />
+        {/* <ArrowBack fontSize="large" /> */}
+        <ArrowBackIosIcon fontSize="large" />
         <div className="create-feed__title"> 글 작성 </div>
       </Grid>
       <Grid
