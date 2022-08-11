@@ -1,21 +1,25 @@
 package com.ground.domain.user.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.ground.domain.jwt.JwtTokenProvider;
 import com.ground.domain.user.dto.*;
 import com.ground.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.ground.domain.jwt.TokenResponse;
 import com.ground.domain.user.entity.User;
+import com.ground.domain.user.service.KakaoService;
 import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
 
@@ -117,20 +121,22 @@ public class UserController {
 
     @GetMapping("/state")
     @ApiOperation(value = "유저상태정보 전송", response = UserStateDto.class)
-    public UserStateDto userState(@RequestHeader String ftoken) {
-    	return userService.userState(ftoken);
+    public UserStateDto userState(@RequestHeader String Authorization) {
+    	return userService.userState(Authorization);
     }
     
-    @GetMapping("/token/{ftoken}")
-    @ApiOperation(value = "유효성검사", response = boolean.class)
-    public boolean checkValidity(@PathVariable String ftoken) {
-    	return userService.checkValidity(ftoken);
-    }
-    
-    @PostMapping("/oauth/kakao")
+    @RequestMapping("/oauth/kakao")
     @ApiOperation(value = "카카오 로그인", response = String.class)
-    public String kakaoLogin(@RequestBody String id) {
+    public String kakaoLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
+    	log.info(code);
+    	String access_Token = KakaoService.getAccessToken(code);
     	return "hikakao";
+    }
+    
+    @DeleteMapping("/logout")
+    @ApiOperation(value = "로그아웃", response = boolean.class)
+    public boolean logoutUser(@RequestHeader String ftoken) {
+    	return userService.logoutUser(ftoken);
     }
 
     
@@ -173,13 +179,4 @@ public class UserController {
         userService.firstLogin(userId, userFirstLoginDto);
     }
 
-    // 로그 아웃
-    @DeleteMapping("/logout")
-    @ApiOperation(value = "로그아웃", response = UserStateDto.class)
-    public void logout(@RequestHeader String ftoken){
-        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long loginUserId = user.getId();
-
-        userService.logout(user);
-    }
 }

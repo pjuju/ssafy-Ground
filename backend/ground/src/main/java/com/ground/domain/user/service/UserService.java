@@ -157,9 +157,11 @@ public class UserService {
 			return ulrd;
 		}
 	}
-
-	public UserStateDto userState(String ftoken) {
+	
+	public UserStateDto userState(String Authorization) {
+		String ftoken = Authorization.substring(7);
 		String username = jwtTokenProvider.getSubject(ftoken);
+		
 		User user = userRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
 		UserStateDto userstate = new UserStateDto(user.getUsername(), user.getEmail(), user.getNickname(), 
 	    		user.getFtoken(), user.getIntroduce(), user.getUserImage(), user.getGender(), user.getAge(), 
@@ -168,25 +170,14 @@ public class UserService {
 	}
 	
 	
-	public boolean checkValidity(String ftoken) {
-		boolean result = jwtTokenProvider.validateToken(ftoken);
-		return result;
+	@Transactional
+	public boolean logoutUser(String ftoken) {
+		String username = jwtTokenProvider.getSubject(ftoken);
+		Optional<User> user = userRepository.findByUsername(username);
+		user.get().saveFtoken(null);
+		return true;
 	}
 
-
-	@Transactional
-	public List<User> findFirstByUsernameLikeOrderByIdDesc(String username){
-//		return userRepository.findFirstByUsernameLikeOrderByIdDesc(username);
-		return userRepository.findAll();
-	}
-	
-	
-	@Transactional
-	public User save(User user) {
-		userRepository.save(user);
-		
-		return user;
-	}
 
 	// -----------------BSH-----------------
 	// 프로필 조회
