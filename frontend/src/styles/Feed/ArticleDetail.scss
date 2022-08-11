@@ -14,6 +14,12 @@ $tablet: 1023px;
 $desktop: 1024px;
 $wide-desktop: 1249px;
 
+@mixin sm {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
 @mixin mobile {
   @media (max-width: $mobile) {
     @content;
@@ -119,5 +125,14 @@ $wide-desktop: 1249px;
 
   &__button {
     cursor: pointer;
+  }
+}
+
+.comment-box {
+  width: 100%;
+  margin: 1rem 0;
+
+  &__field {
+    width: 100%;
   }
 }
