@@ -5,7 +5,7 @@ pipeline {
                         agent any
                         steps { 
                                 // sh 'chmod 755 gradlew -f ./backend/ground'                                
-                                sh './gradlew clean bootJar -f ./backend/ground'
+                                sh 'gradlew clean bootJar -f ./backend/ground'
                                 sh 'echo hello1'
                         }
                 }
