@@ -14,4 +14,8 @@ function getLatestBoard(pageNumber, success) {
   api.get(`/board/interest/${pageNumber}`).then(success);
 }
 
-export { getSavedBoard, getFollowBoard, getLatestBoard };
+function getBoardDetail(id, success, fail) {
+  api.get(`/board/${id}`).then(success).catch(fail);
+}
+
+export { getSavedBoard, getFollowBoard, getLatestBoard, getBoardDetail };
