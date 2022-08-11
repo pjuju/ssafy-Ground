@@ -67,12 +67,8 @@ function Notification() {
   useEffect(() => {
     setNotiCnt(activityNotiCnt + accountNotiCnt);
     console.log("activity : " + activityNotiCnt);
-  }, [activityNotiCnt]);
-
-  useEffect(() => {
-    setNotiCnt(activityNotiCnt + accountNotiCnt);
     console.log("account : " + accountNotiCnt);
-  }, [accountNotiCnt]);
+  }, [activityNotiCnt, accountNotiCnt]);
 
   const handleClickClose = () => {
     setIsClicked(!isClicked);
