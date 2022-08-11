@@ -43,7 +43,7 @@ function ArticleDetail() {
               />
               <ArticleDetailComment
                 commentCnt={boardInfo.commentCnt}
-                comments={boardInfo.comments}
+                commentList={boardInfo.comments}
               />
             </Stack>
           </>

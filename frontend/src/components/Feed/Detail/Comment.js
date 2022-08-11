@@ -1,31 +1,11 @@
-import {
-  Grid,
-  IconButton,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Stack,
-} from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import userImage from "assets/images/userImage.png";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
-import { ThemeProvider } from "@emotion/react";
-import theme from "components/common/theme";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-function Comment() {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const menuOpen = Boolean(anchorEl);
-
-  const handleClickMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+function Comment({ comment }) {
+  const { id, user, regDttm, reply } = comment;
 
   const handleClickEdit = () => {
     console.log("edit");
@@ -56,7 +36,7 @@ function Comment() {
               <Grid container justifyContent="space-between">
                 <Stack direction="row">
                   <Grid className="comment__nickname" item textAlign="center">
-                    nickname
+                    {user.nickname}
                   </Grid>
                   <Grid className="comment__regDate" item textAlign="center">
                     5분전
@@ -76,10 +56,7 @@ function Comment() {
                   />
                 </Grid>
               </Grid>
-              <Grid className="comment__content">
-                댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용댓글
-                내용댓글 내용댓글 내용댓글 내용댓글 내용댓글 내용
-              </Grid>
+              <Grid className="comment__content">{reply}</Grid>
             </Grid>
           </Grid>
         </Grid>
