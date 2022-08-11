@@ -14,17 +14,8 @@ import com.ground.domain.user.dto.*;
 import com.ground.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 import com.ground.domain.jwt.TokenResponse;
 import com.ground.domain.user.entity.User;
@@ -127,7 +118,7 @@ public class UserController {
     public UserLoginResponseDto login(@RequestBody UserLoginDto params){
     	return userService.login(params);
     }
-    
+
     @GetMapping("/state")
     @ApiOperation(value = "유저상태정보 전송", response = UserStateDto.class)
     public UserStateDto userState(@RequestHeader String Authorization) {
@@ -144,7 +135,7 @@ public class UserController {
     
     @DeleteMapping("/logout")
     @ApiOperation(value = "로그아웃", response = boolean.class)
-    public boolean logout(@RequestHeader String ftoken) {
+    public boolean logoutUser(@RequestHeader String ftoken) {
     	return userService.logoutUser(ftoken);
     }
 
@@ -188,4 +179,13 @@ public class UserController {
         userService.firstLogin(userId, userFirstLoginDto);
     }
 
+    // 로그 아웃
+    @DeleteMapping("/logout")
+    @ApiOperation(value = "로그아웃", response = UserStateDto.class)
+    public void logout(@RequestHeader String ftoken){
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long loginUserId = user.getId();
+
+        userService.logout(user);
+    }
 }

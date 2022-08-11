@@ -180,5 +180,6 @@ public class User {
         this.registerYN = true;
     }
 
+    public void logoutUser() { this.ftoken = null; }
 
 }

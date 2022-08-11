@@ -236,4 +236,10 @@ public class UserService {
 
 		user.firstLogin(entity);
 	}
+
+	// 로그아웃
+	@Transactional
+	public void logout(User loginUser) {
+		loginUser.logoutUser();
+	}
 }
