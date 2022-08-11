@@ -155,28 +155,28 @@ public class UserController {
     // 회원 정보 수정 페이지로 이동
     @GetMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정 페이지로 이동", response = String.class)
-    public String getModifyUser(){
-        return "test!";
+    public UserUpdateDto getModifyUser(@RequestHeader String ftoken){
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+
+        return userService.getModifyUser(user);
     }
 
     // 회원 정보 수정
     @PutMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public Long modifyUser(@RequestHeader String ftoken, @RequestBody UserUpdateDto userUpdateDto) {
+    public void modifyUser(@RequestHeader String ftoken, @RequestBody UserUpdateDto userUpdateDto) {
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long userId = user.getId();
 
-        return userService.profileUpdate(userId, userUpdateDto);
+        userService.profileUpdate(user, userUpdateDto);
     }
 
     // 회원 상세정보 추가
     @PostMapping("/userDetail")
     @ApiOperation(value = "회원 상세정보 추가")
     public void firstLogin(@RequestHeader String ftoken, @RequestBody UserFirstLoginDto userFirstLoginDto) {
-        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long userId = user.getId();
+        User loginUser = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 
-        userService.firstLogin(userId, userFirstLoginDto);
+        userService.firstLogin(loginUser, userFirstLoginDto);
     }
 
 }

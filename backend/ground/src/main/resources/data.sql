@@ -46,10 +46,6 @@ insert into t_user (id, age, username, pass, nickname, gender, introduce) values
 -- 유저 카테고리 설정
 insert into t_user_category(id, user_id, category_id) values (1, 1, 1);
 insert into t_user_category(id, user_id, category_id) values (2, 1, 3);
-insert into t_user_category(id, user_id, category_id) values (3, 1, 3);
-insert into t_user_category(id, user_id, category_id) values (4, 1, 3);
-insert into t_user_category(id, user_id, category_id) values (5, 1, 3);
-insert into t_user_category(id, user_id, category_id) values (6, 1, 3);
 
 -- 게시글
 insert into t_board values (1, 0, "test 글 내용111", 0, null, false, timestamp(now()), 0,1,1,null,1 );
@@ -103,4 +99,4 @@ insert into t_board_save(id, board_id, user_id) values (13, 30, 1);
 
 -- 팔로우
 insert into t_user_follow(id, from_user_id, to_user_id) values (1, 3, 1);
-insert into t_user_follow(id, from_user_id, to_user_id) values (1, 1, 3);
+insert into t_user_follow(id, from_user_id, to_user_id) values (2, 1, 3);
