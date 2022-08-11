@@ -35,7 +35,7 @@ function CategoryDropdown({feedCategoryId, onSetFeedCategoryId}) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={feedCategoryId}
+              value={feedCategoryId|| ''}
               label="category"
               onChange={handleChange}
             >

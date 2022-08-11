@@ -35,7 +35,7 @@ function RegionDropdown({ feedLocationId, onSetFeedLocationId }) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={feedLocationId}
+              value={feedLocationId|| ''}
               label="region"
               onChange={handleChange}
             >
