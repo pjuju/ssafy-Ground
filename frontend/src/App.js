@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import LoginPage from "pages/LoginPage";
+import KakaoRedirectHandler from "components/Login/OAuth/KakaoRedirectHandler";
+import GoogleRedirectHandler from "components/Login/OAuth/GoogleRedirectHandler";
+import FindIdPage from "pages/FindIdPage";
+import WelcomePage from "pages/WelcomePage";
+import RegisterPage from "pages/RegisterPage";
+import FeedPage from "pages/FeedPage";
+import Search from "components/Feed/Search/Search";
+import FollowFeed from "components/Feed/Follow/FollowFeed";
+import LatestFeed from "components/Feed/Latest/LatestFeed";
+import CreateFeedPage from "components/Feed/Create/CreateFeedPage";
+import UpdateFeed from "components/Feed/Update/UpdateFeed";
+import MobileNotiPage from "pages/MobileNotiPage";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProfilePage from "pages/ProfilePage";
+import ArticleDetail from "components/Feed/Detail/ArticleDetail";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route
+          path="/oauth/callback/google"
+          element={<GoogleRedirectHandler />}
+        />
+        <Route
+          path="/oauth/callback/kakao"
+          element={<KakaoRedirectHandler />}
+        />
+        <Route path="/findid" element={<FindIdPage />} />
+        <Route path="/welcome" element={<WelcomePage />} />
+        <Route path="/feed" element={<FeedPage />}>
+          <Route path="follow" element={<FollowFeed />} />
+          <Route path="create" element={<CreateFeedPage />} />
+          <Route path="update" element={<UpdateFeed />} />
+          <Route path="latest" element={<LatestFeed />} />
+          <Route path="search" element={<Search />} />
+          <Route path="detail/:boardId" element={<ArticleDetail />} />
+        </Route>
+        <Route path="/profile/:userId" element={<ProfilePage />} />
+        <Route path="/notification" element={<MobileNotiPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default App;
+ export default App;
