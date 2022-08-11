@@ -3,27 +3,14 @@ import userImage from "assets/images/userImage.png";
 
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
-import { acceptFollow } from "api/follow";
 
-function FollowRequestNoti({ id, idx, nickname, isChecked }) {
+function FollowRequestNoti({ id, idx, nickname, fromUserId, isChecked, handleClickReject, handleClickAccept }) {
   useEffect(() => {
     if (isChecked) {
       const element = document.querySelector(`.noti-fr:nth-child(${idx + 1})`);
-      console.log(element);
       element.classList.add("checked");
     }
   });
-
-  const handleClickReject = () => {
-    console.log("거절");
-  };
-
-  const handleClickAccept = () => {
-    console.log("수락");
-
-    // 서버에 팔로우 수락 요청하기
-    acceptFollow();
-  };
 
   return (
     <Grid className="noti-fr" container direction="row">
@@ -43,13 +30,13 @@ function FollowRequestNoti({ id, idx, nickname, isChecked }) {
           className="noti-fr__button--reject"
           variant="outlined"
           children="거절"
-          onClick={handleClickReject}
+          onClick={() => handleClickReject(id, nickname, fromUserId)}
         />
         <GrButton
           className="noti-fr__button--accept"
           variant="contained"
           children="수락"
-          onClick={handleClickAccept}
+          onClick={() => handleClickAccept(id, nickname, fromUserId)}
         />
       </Grid>
     </Grid>

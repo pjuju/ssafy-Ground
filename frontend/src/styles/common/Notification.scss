@@ -58,7 +58,7 @@
     padding: 0 !important;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 469px;
+    height: 70vh;
 
     &::-webkit-scrollbar {
       width: 8px;
@@ -71,6 +71,11 @@
 
     &::-webkit-scrollbar-track {
       background: rgba(#54bab9, 0.1);
+    }
+
+    &--no-noti {
+      padding-top: 50%;
+      color: $light-gray;
     }
   }
 
