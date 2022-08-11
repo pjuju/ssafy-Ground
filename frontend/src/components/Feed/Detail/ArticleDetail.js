@@ -42,7 +42,7 @@ function ArticleDetail() {
                 isLiked={boardInfo.isLiked}
                 likeCnt={boardInfo.likeCnt}
               />
-              <ArticleDetailComment comments={boardInfo.comments} />
+              <ArticleDetailComment commentList={boardInfo.comments} />
             </Stack>
           </>
         )}
