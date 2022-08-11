@@ -31,7 +31,7 @@ function ArticleDetail() {
 
   return (
     <Container className="content article-detail">
-      <Grid container direction="column">
+      <Grid className="article-detail__inner" container direction="column">
         {!isLoading && (
           <>
             <ArticleDetailContent articleData={boardInfo} />
@@ -41,7 +41,10 @@ function ArticleDetail() {
                 isLiked={boardInfo.isLiked}
                 likeCnt={boardInfo.likeCnt}
               />
-              <ArticleDetailComment />
+              <ArticleDetailComment
+                commentCnt={boardInfo.commentCnt}
+                comments={boardInfo.comments}
+              />
             </Stack>
           </>
         )}
