@@ -14,6 +14,8 @@ import java.util.List;
 @Data
 public class UserUpdateDto {
 
+    private Long id;
+    private String username;
     private String nickname;
     private boolean privateYN;
     private Age age;
