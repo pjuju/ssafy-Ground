@@ -18,4 +18,8 @@ function modifyUserInfo(userDetail, success) {
   api.put("/user/modifyUser", userDetail).then(success);
 }
 
-export { getUserState, initUserDetail, getUserProfile, modifyUserInfo };
+function logout(success) {
+  api.delete("/user/logout").then(success);
+}
+
+export { getUserState, initUserDetail, getUserProfile, modifyUserInfo, logout };

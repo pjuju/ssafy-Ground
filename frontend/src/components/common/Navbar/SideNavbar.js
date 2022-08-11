@@ -4,7 +4,7 @@ import ProfileButton from "components/common/Navbar/ProfileButton";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserState } from "api/user";
+import { getUserState, logout } from "api/user";
 
 function SideNavbar({
   sideMenuIdx,
@@ -58,8 +58,10 @@ function SideNavbar({
 
   /* 로그아웃 */
   const handleClickLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+    logout(() => {
+      localStorage.removeItem("token");
+      navigate("/");
+    });
   };
 
   return (
