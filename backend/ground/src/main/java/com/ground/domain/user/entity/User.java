@@ -24,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.dto.UserFirstLoginDto;
 import com.ground.domain.user.dto.UserUpdateDto;
@@ -166,7 +167,6 @@ public class User {
         this.age = entity.getAge();
         this.gender = entity.getGender();
         this.introduce = entity.getIntroduce();
-        this.userCategories = entity.getUserCategories();
         this.modDttm = modDttm;
     }
 
@@ -180,6 +180,5 @@ public class User {
         this.registerYN = true;
     }
 
-    public void logoutUser() { this.ftoken = null; }
 
 }

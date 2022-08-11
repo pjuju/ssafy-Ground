@@ -1,5 +1,6 @@
 package com.ground.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ground.domain.global.entity.Category;
 import lombok.AccessLevel;
@@ -14,6 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name="t_user_category")
 public class UserCategory {
 

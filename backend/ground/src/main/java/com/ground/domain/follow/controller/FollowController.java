@@ -82,6 +82,16 @@ public class FollowController {
         followService.unFollow(fromUserId, toUserId);
     }
 
+    // 팔로워 삭제
+    @DeleteMapping("/follower/{fromUserId}")
+    @ApiOperation(value = "팔로워 삭제")
+    public void unFollowerUser(@PathVariable Long fromUserId, @RequestHeader String ftoken){
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        Long toUserId = user.getId();
+
+        followService.unFollow(fromUserId, toUserId);
+    }
+
     // 팔로워 목록 조회
     @GetMapping("/{profileId}/follower/{userId}")
     @ApiOperation(value = "팔로워 목록 조회")

@@ -19,6 +19,7 @@ public class UserProfileDto {
     private User user;
     private int userFollowerCount;
     private int userFollowingCount;
+    private List<UserCategoryDto> userCategories;
 
 //    public UserProfileDto(User entity) {
 //        this.id = entity.getId();
