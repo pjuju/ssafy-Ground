@@ -36,7 +36,8 @@ public class FollowController {
 
     @PostMapping("/{toUserId}")
     @ApiOperation(value = "팔로우")
-    public void followUser(@PathVariable Long toUserId, @RequestHeader String ftoken){
+    public void followUser(@PathVariable Long toUserId, @RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long fromUserId = user.getId();
 
@@ -55,7 +56,8 @@ public class FollowController {
 
     @PostMapping("/accept/{notiId}")
     @ApiOperation(value = "팔로우 수락")
-    public void followAccept(@PathVariable Long notiId, @RequestHeader String ftoken){
+    public void followAccept(@PathVariable Long notiId, @RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long toUserId = user.getId();
 
@@ -65,7 +67,8 @@ public class FollowController {
     // 팔로우 거절
     @DeleteMapping("/decline/{notiId}")
     @ApiOperation(value = "팔로우 거절")
-    public void followDecline(@PathVariable Long notiId, @RequestHeader String ftoken){
+    public void followDecline(@PathVariable Long notiId, @RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long toUserId = user.getId();
 
@@ -75,7 +78,8 @@ public class FollowController {
     // 언팔로우
     @DeleteMapping("/{toUserId}")
     @ApiOperation(value = "언팔로우")
-    public void unFollowUser(@PathVariable Long toUserId, @RequestHeader String ftoken){
+    public void unFollowUser(@PathVariable Long toUserId, @RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long fromUserId = user.getId();
 
@@ -85,7 +89,8 @@ public class FollowController {
     // 팔로워 삭제
     @DeleteMapping("/follower/{fromUserId}")
     @ApiOperation(value = "팔로워 삭제")
-    public void unFollowerUser(@PathVariable Long fromUserId, @RequestHeader String ftoken){
+    public void unFollowerUser(@PathVariable Long fromUserId, @RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long toUserId = user.getId();
 
@@ -95,7 +100,8 @@ public class FollowController {
     // 팔로워 목록 조회
     @GetMapping("/{profileId}/follower/{userId}")
     @ApiOperation(value = "팔로워 목록 조회")
-    public List<FollowDto> followerList(@PathVariable Long profileId, @RequestHeader String ftoken){
+    public List<FollowDto> followerList(@PathVariable Long profileId, @RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long userId = user.getId();
 
@@ -105,7 +111,8 @@ public class FollowController {
     // 팔로잉 목록 조회
     @GetMapping("/{profileId}/following/{userId}")
     @ApiOperation(value = "팔로잉 목록 조회")
-    public List<FollowDto> followingList(@PathVariable Long profileId, @RequestHeader String ftoken){
+    public List<FollowDto> followingList(@PathVariable Long profileId, @RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long userId = user.getId();
 

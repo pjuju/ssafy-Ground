@@ -164,7 +164,7 @@ public class UserService {
 		String username = jwtTokenProvider.getSubject(ftoken);
 		
 		User user = userRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
-		UserStateDto userstate = new UserStateDto(user.getUsername(), user.getEmail(), user.getNickname(), 
+		UserStateDto userstate = new UserStateDto(user.getId(), user.getUsername(), user.getEmail(), user.getNickname(), 
 	    		user.getFtoken(), user.getIntroduce(), user.getUserImage(), user.getGender(), user.getAge(), 
 	    		user.isPrivateYN(), user.isRegisterYN());
 		return userstate;
