@@ -220,14 +220,13 @@ public class UserService {
 		for (UserCategory userCategory : userCategories) {
 			userCategoryDtos.add(userCategory.getCategory().getId());
 		}
-		userUpdateDto.setId(loginUser.getId());
-		userUpdateDto.setUsername(loginUser.getUsername());
 		userUpdateDto.setNickname(loginUser.getNickname());
 		userUpdateDto.setPrivateYN(loginUser.isPrivateYN());
 		userUpdateDto.setAge(loginUser.getAge());
 		userUpdateDto.setGender(loginUser.getGender());
 		userUpdateDto.setIntroduce(loginUser.getIntroduce());
 		userUpdateDto.setUserCategories(userCategoryDtos);
+		userUpdateDto.setUserImage(loginUser.getUserImage());
 
 		return userUpdateDto;
     }

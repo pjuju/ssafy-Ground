@@ -13,15 +13,13 @@ import java.util.List;
 @Getter
 @Data
 public class UserUpdateDto {
-
-    private Long id;
-    private String username;
     private String nickname;
     private boolean privateYN;
     private Age age;
     private Gender gender;
     private String introduce;
     private List<Long> userCategories;
+    private String userImage;
 
     @Builder
     public UserUpdateDto(UserUpdateDto entity) {
@@ -31,6 +29,7 @@ public class UserUpdateDto {
         this.gender = entity.getGender();
         this.introduce = entity.getIntroduce();
         this.userCategories = entity.getUserCategories();
+        this.userImage = entity.getUserImage();
     }
 }
 
