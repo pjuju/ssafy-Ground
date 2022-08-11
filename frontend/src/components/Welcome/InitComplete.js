@@ -2,16 +2,21 @@ import GrButton from "components/common/GrButton";
 
 import { useEffect, useState } from "react";
 import { Grid, Divider } from "@mui/material";
-import axios from "axios";
-import { getUserInfo } from "api/user";
+import { getUserState } from "api/user";
 
-function InitComplete({ img, desc, interest, onSetInitFlag, submitUserDetail }) {
+function InitComplete({
+  img,
+  desc,
+  interest,
+  onSetInitFlag,
+  submitUserDetail,
+}) {
   const [userName, setUserName] = useState("username");
 
   useEffect(() => {
-    getUserInfo(res => setUserName(res.data.nickname));
+    getUserState((res) => setUserName(res.data.nickname));
     console.log(userName);
-  })
+  });
   /* 이전 버튼을 눌렀을 때 실행되는 핸들러 */
   const handleClickPrevious = () => {
     onSetInitFlag(2);
