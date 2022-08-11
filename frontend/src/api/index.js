@@ -11,7 +11,7 @@ function apiInstance() {
   instance.interceptors.request.use(function (config) {
     // 요청을 보내기 전에 토큰 값 갱신
     const token = localStorage.getItem("token");
-    config.headers.ftoken = token;
+    config.headers.Authorization = "Bearer " + token;
     return config;
   });
   return instance;
