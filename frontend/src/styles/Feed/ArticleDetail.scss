@@ -1,0 +1,35 @@
+$primary: #54bab9;
+
+@mixin custom-scrollbar {
+  height: 100%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    position: fixed;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    position: fixed;
+    background: $primary;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    position: fixed;
+    background: #54bab824;
+    margin-top: 0 !important;
+  }
+}
+
+.article-detail {
+  @include custom-scrollbar();
+
+  & .article__inner {
+    box-shadow: none;
+  }
+
+  &__activity {
+    padding: 1.5rem 1.5rem 0 1.5rem;
+  }
+}

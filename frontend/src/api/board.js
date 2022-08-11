@@ -15,7 +15,7 @@ function getLatestBoard(pageNumber, success) {
 }
 
 function getBoardDetail(id, success, fail) {
-  api.get(`/board/id`).then(success).catch(fail);
+  api.get(`/board/${IdleDeadline}`).then(success).catch(fail);
 }
 
-export { getSavedBoard, getFollowBoard, getLatestBoard };
+export { getSavedBoard, getFollowBoard, getLatestBoard, getBoardDetail };
