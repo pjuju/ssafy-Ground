@@ -112,7 +112,7 @@ function Notification() {
   const handleDeleteAccountNoti = (id) => {
     deleteAccountNoti(id, (res) => {
       console.log("계정" + id + " 삭제");
-      const deletedList = accountNotiList.filter((item) => (item.id !== id));
+      const deletedList = accountNotiList.filter((item) => item.id !== id);
       setAccountNotiList(deletedList);
       setAccountNotiCnt(deletedList.length);
     });
@@ -121,29 +121,29 @@ function Notification() {
   const handleDeleteActivityNoti = (id) => {
     deleteBoardNoti(id, (res) => {
       console.log("활동" + id + " 삭제");
-      const deletedList = activityNotiList.filter((item) => (item.id !== id));
+      const deletedList = activityNotiList.filter((item) => item.id !== id);
       setActivityNotiList(deletedList);
       setActivityNotiCnt(deletedList.length);
     });
     setDeleteCheck(!deleteCheck);
   };
 
-  const handleClickReject = (id, nickname, fromUserId) => {
+  const handleClickReject = (id, nickname) => {
     console.log("거절");
 
     // 서버에 팔로우 거절 요청하기
-    declineFollow(fromUserId, (res) => console.log(nickname + "의 팔로우 거절"));
-    const deletedList = accountNotiList.filter((item) => (item.id !== id));
+    declineFollow(id, (res) => console.log(nickname + "의 팔로우 거절"));
+    const deletedList = accountNotiList.filter((item) => item.id !== id);
     setAccountNotiList(deletedList);
     setAccountNotiCnt(deletedList.length);
   };
 
-  const handleClickAccept = (id, nickname, fromUserId) => {
+  const handleClickAccept = (id, nickname) => {
     console.log("수락");
 
     // 서버에 팔로우 수락 요청하기
-    acceptFollow(fromUserId, (res) => console.log(nickname + "의 팔로우 수락"));
-    const deletedList = accountNotiList.filter((item) => (item.id !== id));
+    acceptFollow(id, (res) => console.log(nickname + "의 팔로우 수락"));
+    const deletedList = accountNotiList.filter((item) => item.id !== id);
     setAccountNotiList(deletedList);
     setAccountNotiCnt(deletedList.length);
   };
@@ -186,7 +186,7 @@ function Notification() {
                 </TabList>
               </Box>
               <TabPanel className="notification__tabpanel" value="0">
-                {activityNotiList.length > 0 ?
+                {activityNotiList.length > 0 ? (
                   activityNotiList.map((item, index) => {
                     if (item.type) {
                       return (
@@ -212,12 +212,14 @@ function Notification() {
                       );
                     }
                   })
-                  :
-                  <p className="notification__tabpanel--no-noti">수신한 알림이 없습니다.</p>
-                }
+                ) : (
+                  <p className="notification__tabpanel--no-noti">
+                    수신한 알림이 없습니다.
+                  </p>
+                )}
               </TabPanel>
               <TabPanel className="notification__tabpanel" value="1">
-                {accountNotiList.length > 0 ?
+                {accountNotiList.length > 0 ? (
                   accountNotiList.map((item, index) => {
                     if (item.type) {
                       return (
@@ -245,9 +247,11 @@ function Notification() {
                       );
                     }
                   })
-                  :
-                  <p className="notification__tabpanel--no-noti">수신한 알림이 없습니다.</p>
-                }
+                ) : (
+                  <p className="notification__tabpanel--no-noti">
+                    수신한 알림이 없습니다.
+                  </p>
+                )}
               </TabPanel>
             </TabContext>
           </ThemeProvider>
