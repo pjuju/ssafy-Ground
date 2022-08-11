@@ -6,7 +6,7 @@ pipeline {
                         agent any
                         steps {
                                 sh 'docker build -t backimg ./backend/ground'
-                                sh 'docker build -t frontimg ./frontent'
+                                sh 'docker build -t frontimg ./frontend'
                                 sh 'echo hello2'
                         }
                 }
