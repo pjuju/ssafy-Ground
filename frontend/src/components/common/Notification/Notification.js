@@ -34,21 +34,50 @@ function Notification() {
   useEffect(() => {
     // 서버에서 활동 알림 목록 받아오기
     getBoardNoti((res) => {
-      console.log(res.data);
       setActivityNotiList(res.data);
-      if (activityNotiList.length > 0) {
-        activityNotiList.map((item) => {
-          if (!item.checkYN) {
-            setActivityNotiCnt(activityNotiCnt + 1);
-          }
-        });
-      }
     });
 
+    getAccountNoti((res) => {
+      setAccountNotiList(res.data);
+    });
+  }, [isClicked, value]);
+
+  useEffect(() => {
+    // 값 초기화 후 다시 측정
+    setActivityNotiCnt((activityNotiCnt) => 0);
+    console.log(activityNotiList);
+    activityNotiList.map((item) => {
+      if (!item.checkYN) {
+        setActivityNotiCnt((activityNotiCnt) => activityNotiCnt + 1);
+      }
+    });
+  }, [activityNotiList]);
+
+  useEffect(() => {
+    // 값 초기화 후 다시 측정
+    setAccountNotiCnt((accountNotiCnt) => 0);
+    console.log(accountNotiList);
+    accountNotiList.map((item) => {
+      if (!item.checkYN) {
+        setAccountNotiCnt((accountNotiCnt) => accountNotiCnt + 1);
+      }
+    });
+  }, [accountNotiList]);
+
+  useEffect(() => {
+    setNotiCnt(activityNotiCnt + accountNotiCnt);
+    console.log("activity : " + activityNotiCnt);
+  }, [activityNotiCnt]);
+
+  useEffect(() => {
+    setNotiCnt(activityNotiCnt + accountNotiCnt);
+    console.log("account : " + accountNotiCnt);
+  }, [accountNotiCnt]);
+
+  useEffect(() => {
     // 서버에서 계정 알림 목록 받아오기
     getAccountNoti((res) => {
-      console.log(res.data);
-      setAccountNotiList(res.data);
+      setAccountNotiList(() => res.data);
       if (accountNotiList.length > 0) {
         accountNotiList.map((item) => {
           if (!item.checkYN) {
@@ -57,8 +86,6 @@ function Notification() {
         });
       }
     });
-
-    setNotiCnt(activityNotiCnt + accountNotiCnt);
   }, [isClicked, value]);
 
   const handleClickClose = () => {
@@ -91,13 +118,15 @@ function Notification() {
   };
 
   const handleClickAllDelete = () => {
+    console.log("현재 value: " + value);
     // 해당 탭의 전체 알림에 대한 삭제를 서버에 요청
-    if (value === 0) {
+    if (value === "0") {
       // 활동 탭 알림 전체 삭제 요청
       activityNotiList.map((item) => {
         deleteBoardNoti(item.id, (res) =>
           console.log("활동" + item.id + " 삭제")
         );
+        setActivityNotiList([]);
       });
     } else {
       // 계정 탭 알림 전체 삭제 요청
@@ -105,6 +134,7 @@ function Notification() {
         deleteAccountNoti(item.id, (res) =>
           console.log("계정" + item.id + " 삭제")
         );
+        setAccountNotiList([]);
       });
     }
   };
