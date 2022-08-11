@@ -179,13 +179,4 @@ public class UserController {
         userService.firstLogin(userId, userFirstLoginDto);
     }
 
-    // 로그 아웃
-    @DeleteMapping("/logout")
-    @ApiOperation(value = "로그아웃", response = UserStateDto.class)
-    public void logout(@RequestHeader String ftoken){
-        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long loginUserId = user.getId();
-
-        userService.logout(user);
-    }
 }
