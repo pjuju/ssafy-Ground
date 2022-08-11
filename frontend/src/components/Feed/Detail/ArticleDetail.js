@@ -1,5 +1,16 @@
+import { Grid } from "@mui/material";
+import { useEffect } from "react";
+import { useOutletContext, useParams } from "react-router-dom";
+
 function ArticleDetail() {
-  return(<div>게시글 상세입니다.</div>)
+  const {id} = useParams();
+
+  useEffect(() => {
+    console.log(id);
+  }, [])
+  
+
+  return <Grid className="content"></Grid>;
 }
 
 export default ArticleDetail;
