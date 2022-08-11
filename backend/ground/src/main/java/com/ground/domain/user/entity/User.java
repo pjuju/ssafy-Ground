@@ -145,13 +145,14 @@ public class User {
     }
     
     @Builder
-	public User(String username, String pass, String email, String nickname, Age age, Gender gender, String introduce, 
+	public User(String username, String pass, String email, String nickname, String ftoken, Age age, Gender gender, String introduce, 
 			LocalDateTime regDttm, boolean delYN, boolean registerYN, String userImage) {
 		this.username = username;
 		this.modUser = username;
 		this.pass = pass;
 		this.email = email;
 		this.nickname = nickname;
+		this.ftoken = ftoken;
 		this.age = age;
 		this.gender = gender;
 		this.introduce = introduce;
