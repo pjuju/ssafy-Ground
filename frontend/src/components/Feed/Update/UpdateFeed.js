@@ -1,7 +1,6 @@
 import { Button, Container, Grid, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ArrowBack } from "@material-ui/icons";
 import { Box } from "@mui/system";
 import { storage } from "api/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -156,7 +155,7 @@ function UpdateFeed () {
         className="update-feed__back"
         alignItems="center"
       >
-        <ArrowBack fontSize="large" />
+        {/* <ArrowBack fontSize="large" /> */}
         <div className="update-feed__title"> 글 수정 </div>
       </Grid>
       <Grid
