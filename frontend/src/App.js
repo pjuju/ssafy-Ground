@@ -14,6 +14,7 @@ import MobileNotiPage from "pages/MobileNotiPage";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProfilePage from "pages/ProfilePage";
+import ArticleDetail from "components/Feed/Detail/ArticleDetail";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="create" element={<CreateFeedPage />} />
           <Route path="latest" element={<LatestFeed />} />
           <Route path="search" element={<Search />} />
+          <Route path="detail/:boardId" element={<ArticleDetail />} />
         </Route>
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/notification" element={<MobileNotiPage />} />
