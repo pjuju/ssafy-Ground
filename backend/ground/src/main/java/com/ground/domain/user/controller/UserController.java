@@ -149,7 +149,8 @@ public class UserController {
     
     @DeleteMapping("/logout")
     @ApiOperation(value = "로그아웃", response = boolean.class)
-    public boolean logoutUser(@RequestHeader String ftoken) {
+    public boolean logoutUser(@RequestHeader String Authorization) {
+    	String ftoken = Authorization.substring(7);
     	return userService.logoutUser(ftoken);
     }
 
