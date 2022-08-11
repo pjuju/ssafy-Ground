@@ -74,20 +74,6 @@ function Notification() {
     console.log("account : " + accountNotiCnt);
   }, [accountNotiCnt]);
 
-  useEffect(() => {
-    // 서버에서 계정 알림 목록 받아오기
-    getAccountNoti((res) => {
-      setAccountNotiList(() => res.data);
-      if (accountNotiList.length > 0) {
-        accountNotiList.map((item) => {
-          if (!item.checkYN) {
-            setAccountNotiCnt(accountNotiCnt + 1);
-          }
-        });
-      }
-    });
-  }, [isClicked, value]);
-
   const handleClickClose = () => {
     setIsClicked(!isClicked);
   };
@@ -118,7 +104,6 @@ function Notification() {
   };
 
   const handleClickAllDelete = () => {
-    console.log("현재 value: " + value);
     // 해당 탭의 전체 알림에 대한 삭제를 서버에 요청
     if (value === "0") {
       // 활동 탭 알림 전체 삭제 요청
