@@ -20,6 +20,7 @@ function LatestSearchBox({
   latestUser,
   setLatestBoard,
   setLatestUser,
+  setWord
 }) {
   useEffect(() => {
     getSearchBoard((res) => {
@@ -82,6 +83,7 @@ function LatestSearchBox({
                 latest={latestBoard}
                 handleDeleteItem={handleDeleteItem}
                 setOpenLatest={setOpenLatest}
+                setWord={setWord}
               />
             )}
             {standard === "user" && (
@@ -89,6 +91,7 @@ function LatestSearchBox({
                 latest={latestUser}
                 handleDeleteItem={handleDeleteItem}
                 setOpenLatest={setOpenLatest}
+                setWord={setWord}
               />
             )}
           </Grid>
