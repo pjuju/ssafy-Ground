@@ -7,7 +7,7 @@ COPY src src
 RUN chmod +x ./gradlew
 RUN ./gradlew bootjar
 
-ARG JAR_FILE=build/libs/ground-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} app.jar
+FROM openjdk:11-jdk
+COPY --from=builder build/libs/*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
