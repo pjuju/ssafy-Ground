@@ -41,7 +41,7 @@ public class NotificationService {
 //        List<NotificationAccountDto> result = new ArrayList<>();
         User user = userRepository.findById(userId).get();
 
-        List<NotificationAccountDto> result = notificationAccountRepository.findAllByToAndDelYNOrderByCheckYNAscRegDttmAsc(user, false);
+        List<NotificationAccountDto> result = notificationAccountRepository.findAllByToAndDelYNOrderByCheckYNAscRegDttmDesc(user, false);
         return result;
     }
 
@@ -77,7 +77,7 @@ public class NotificationService {
     public List<NotificationBoardDto> getNotifyBoard(Long userId) {
         User user = userRepository.findById(userId).get();
 
-        List<NotificationBoardDto> result = notificationBoardRepository.findAllByToAndDelYNOrderByCheckYNAscRegDttmAsc(user, false);
+        List<NotificationBoardDto> result = notificationBoardRepository.findAllByToAndDelYNOrderByCheckYNAscRegDttmDesc(user, false);
         return result;
     }
 
