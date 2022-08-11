@@ -13,7 +13,8 @@ import FilterButton from "./FilterButton";
 import FilterChips from "./FilterChips";
 import { useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleInterestList } from "modules/interest";
+import { setInterest, toggleInterestList } from "modules/interest";
+import { getUserProfile, getUserState } from "api/user";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
@@ -26,11 +27,21 @@ function LatestFeed() {
   // Outlet에 생성한 context를 가져온다.
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
 
+  // 유저 관련 정보
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [id, setId] = useState("");
+  const [introduce, setIntroduce] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [privateYN, setPrivateYN] = useState("");
+  const [image, setImage] = useState("");
+
   // 관심 운동 종목과 관련한 Redux 상태값, 액션함수
   const interestList = useSelector((state) => state.interest.interestList);
 
   const dispatch = useDispatch();
   const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
+  const onSetInterest = (id) => dispatch(setInterest(id));
 
   const fetchArticles = () => {
     getLatestBoard(pageNumber, (res) => {
@@ -60,16 +71,37 @@ function LatestFeed() {
   }, []);
 
   useEffect(() => {
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
+    getUserState((res) => {
+      setAge(res.data.age);
+      setGender(res.data.gender);
+      setId(res.data.id);
+      setIntroduce(res.data.introduce);
+      setNickname(res.data.nickname);
+      setPrivateYN(res.data.privateYN);
+      setImage(res.data.userImage);
+
+      getUserProfile(res.data.id, (res) => {
+        // const interestArray = [...interestList];
+        console.log(res.data);
+        res.data.userCategories.map((item) => {
+          onSetInterest(item.categoryId);
+        });
+        // console.log(interestArray);
       });
-      setIsLoading((isLoading) => !isLoading);
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
-  }, [target, pageNumber]);
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   let observer;
+  //   if (target) {
+  //     observer = new IntersectionObserver(onIntersect, {
+  //       threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
+  //     });
+  //     setIsLoading((isLoading) => !isLoading);
+  //     observer.observe(target);
+  //   }
+  //   return () => observer && observer.disconnect();
+  // }, [target, pageNumber]);
 
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);

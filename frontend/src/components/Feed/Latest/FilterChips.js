@@ -6,9 +6,7 @@ import { useEffect } from "react";
 import { initUserDetail } from "api/user";
 
 function FilterChips({ interestList, onToggleInterestList }) {
-  useEffect(() => {
-    console.log(interestList);
-  });
+  useEffect(() => {});
 
   const handleDeleteChip = (id) => {
     onToggleInterestList(id);
