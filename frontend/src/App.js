@@ -10,6 +10,7 @@ import Search from "components/Feed/Search/Search";
 import FollowFeed from "components/Feed/Follow/FollowFeed";
 import LatestFeed from "components/Feed/Latest/LatestFeed";
 import CreateFeedPage from "components/Feed/Create/CreateFeedPage";
+import UpdateFeed from "components/Feed/Update/UpdateFeed";
 import MobileNotiPage from "pages/MobileNotiPage";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -35,6 +36,7 @@ function App() {
         <Route path="/feed" element={<FeedPage />}>
           <Route path="follow" element={<FollowFeed />} />
           <Route path="create" element={<CreateFeedPage />} />
+          <Route path="update" element={<UpdateFeed />} />
           <Route path="latest" element={<LatestFeed />} />
           <Route path="search" element={<Search />} />
           <Route path="detail/:boardId" element={<ArticleDetail />} />

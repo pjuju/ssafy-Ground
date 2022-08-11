@@ -2,7 +2,7 @@ import { Grid, IconButton } from "@mui/material";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Comment from "./Comment";
 import { useEffect, useState } from "react";
-import { getUserInfo } from "api/user";
+import { getUserState } from "api/user";
 import { deleteComment } from "api/comment";
 import { useParams } from "react-router-dom";
 
@@ -23,7 +23,7 @@ function ArticleDetailComment({ comments }) {
   };
 
   useEffect(() => {
-    getUserInfo((res) => {
+    getUserState((res) => {
       setUserId(res.data.id);
     });
   }, []);
