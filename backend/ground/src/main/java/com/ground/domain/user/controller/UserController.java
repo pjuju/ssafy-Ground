@@ -124,7 +124,8 @@ public class UserController {
     @GetMapping("/state")
     @ApiOperation(value = "유저상태정보 전송", response = UserStateDto.class)
     public UserStateDto userState(@RequestHeader String Authorization) {
-    	return userService.userState(Authorization);
+    	String ftoken = Authorization.substring(7);
+    	return userService.userState(ftoken);
     }
     
     @RequestMapping("/oauth/kakao")
@@ -158,7 +159,8 @@ public class UserController {
     // 프로필 조회 이동
     @GetMapping("/profile/{userId}")
     @ApiOperation(value = "프로필 조회", response = String.class)
-    public UserProfileDto userProfile(@PathVariable Long userId, @RequestHeader String ftoken) {
+    public UserProfileDto userProfile(@PathVariable Long userId, @RequestHeader String Authorization) {
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long loginUserId = user.getId();
 
@@ -168,7 +170,8 @@ public class UserController {
     // 회원 정보 수정 페이지로 이동
     @GetMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정 페이지로 이동", response = String.class)
-    public UserUpdateDto getModifyUser(@RequestHeader String ftoken){
+    public UserUpdateDto getModifyUser(@RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 
         return userService.getModifyUser(user);
@@ -177,7 +180,8 @@ public class UserController {
     // 회원 정보 수정
     @PutMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public void modifyUser(@RequestHeader String ftoken, @RequestBody UserUpdateDto userUpdateDto) {
+    public void modifyUser(@RequestHeader String Authorization, @RequestBody UserUpdateDto userUpdateDto) {
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 
         userService.profileUpdate(user, userUpdateDto);
@@ -186,7 +190,8 @@ public class UserController {
     // 회원 상세정보 추가
     @PostMapping("/userDetail")
     @ApiOperation(value = "회원 상세정보 추가")
-    public void firstLogin(@RequestHeader String ftoken, @RequestBody UserFirstLoginDto userFirstLoginDto) {
+    public void firstLogin(@RequestHeader String Authorization, @RequestBody UserFirstLoginDto userFirstLoginDto) {
+    	String ftoken = Authorization.substring(7);
         User loginUser = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 
         userService.firstLogin(loginUser, userFirstLoginDto);
