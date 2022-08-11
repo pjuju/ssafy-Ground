@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import UpdateImg from "./UpdateImg";
 
 function UpdateFeed () {
+  const { articleId } = useParams();
   const state = useSelector((state) => state);
   const feedData = useSelector((state) => state.feed.feedData);
   const feedContent = useSelector((state) => state.feed.feedContent);
@@ -36,7 +37,6 @@ function UpdateFeed () {
   const onSetFeedPrivate = (feedPrivate) => dispatch(setFeedPrivate(feedPrivate));
   const practiceData = {content: "업로드 테스트 13", images: [{id: 17, imageUrl: '166015994929442', imageType: 'mp4'}, {id: 18, imageUrl: '166015994929457', imageType: 'png'}], locationId: 14, categoryId: 12, privateYN: false}
 
-  const articleId = 50
   
   useEffect(() => {
     handleRender();
@@ -46,10 +46,10 @@ function UpdateFeed () {
     //   const fetch = await fetchImage(); 
     // }
     // setState().catch(console.error);
-  }, []);
+  }, [articleId]);
 
   useEffect(() => {
-    console.log(state)
+    console.log(articleId)
   })
   const onClickAuth = () => {
     setAuthOpen(false);

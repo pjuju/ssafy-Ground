@@ -14,4 +14,7 @@ function feedRead(boardId, success){
   api.get(`/board/${boardId}`).then(success)
 }
 
-export { feedCreate, feedUpdate, feedRead }
+function feedDelete(boardId, success){
+  api.delete(`/board/${boardId}`).then(success)
+}
+export { feedCreate, feedUpdate, feedRead, feedDelete }

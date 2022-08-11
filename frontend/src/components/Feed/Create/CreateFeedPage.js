@@ -21,6 +21,7 @@ import CategoryDropdown from "./CategoryDropdown";
 import RegionDropdown from "./RegionDropdown";
 import ArticleOpen from "./ArticleOpen";
 import ArticleImg from "./ArticleImg";
+import { Link } from "react-router-dom";
 
 function CreateFeedPage() {
   const state = useSelector((state) => state);
@@ -68,6 +69,7 @@ function CreateFeedPage() {
     );
     setAuthOpen(false);
   };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -130,6 +132,9 @@ function CreateFeedPage() {
         className="create-feed__button-wrapper"
         justifyContent="right"
       >
+        <Link to="/feed/update/1">
+          <GrButton className="create-feed__button" variant="contained"> 수정 </GrButton>
+        </Link>
         <GrButton className="create-feed__cancel-button" variant="outlined">
           취소
         </GrButton>
