@@ -15,7 +15,6 @@ import UserSearchResult from "./UserSearchResult";
 import Article from "../Article/Article";
 import { useOutletContext } from "react-router-dom";
 import ReactLoading from "react-loading";
-import NoSearchResult from "./NoSearchResult";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -40,9 +39,10 @@ const getCheckedValues = (radio, list) => {
 };
 
 function Search() {
+  /* 변수 정의 */
   // Outlet에 생성한 context를 가져옴
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
-  
+
   // 검색 필터 state
   const [data, setData] = useState({
     interest: interest,
@@ -71,7 +71,13 @@ function Search() {
   // target
   const target = useRef();
 
-  // 검색 필터 모달창 state
+  /* 함수 정의 */
+  // 타이틀 클릭 핸들러
+  const handleClickTitle = () => {
+    document.querySelector(".search-inner").scrollTo(0, 0);
+  };
+
+  // 검색 필터 모달창 핸들러
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -177,7 +183,7 @@ function Search() {
   // 무한 스크롤을 위한 옵저버
   const observer = new IntersectionObserver(
     (entries) => {
-      if (entries[0].isIntersecting) {
+      if (entries[0].isIntersecting && standard === "board") {
         onIntersect(observer);
       }
     },
@@ -219,7 +225,7 @@ function Search() {
 
   return (
     <>
-      <Grid className="content__title-desktop">
+      <Grid className="content__title-desktop" onClick={handleClickTitle}>
         <h2>검색</h2>
       </Grid>
       <Grid className="search-inner" item>
