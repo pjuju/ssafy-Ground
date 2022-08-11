@@ -51,6 +51,7 @@ function TitleBar(props) {
                 edge="end"
                 color="inherit"
                 aria-label="filter"
+                onClick={props.handleClickAllDelete}
               >
                 <DeleteOutlineIcon />
               </IconButton>
