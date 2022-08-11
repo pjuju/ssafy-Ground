@@ -37,7 +37,7 @@ function App() {
           <Route path="create" element={<CreateFeedPage />} />
           <Route path="latest" element={<LatestFeed />} />
           <Route path="search" element={<Search />} />
-          <Route path="detail/:id" element={<ArticleDetail />} />
+          <Route path="detail/:boardId" element={<ArticleDetail />} />
         </Route>
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/notification" element={<MobileNotiPage />} />

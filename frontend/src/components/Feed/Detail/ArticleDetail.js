@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 
 function ArticleDetail() {
-  const {id} = useParams();
+  const { boardId } = useParams();
 
   useEffect(() => {
-    console.log(id);
+    console.log(boardId);
   }, [])
   
 
