@@ -7,17 +7,38 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ground.domain.jwt.JwtTokenProvider;
+import com.ground.domain.user.dto.UserKakaoLoginDto;
+import com.ground.domain.user.dto.UserLoginResponseDto;
+import com.ground.domain.user.entity.User;
+import com.ground.domain.user.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class KakaoService {
 	//컨트롤러에서 사용할 메서드 만들기 
 		//화면에서 파라미터로 넘겨준 code값을 받아오고 POST로 요청을 보내서 토큰을 발급받기 
-		 public static String getAccessToken (String authorize_code) {
+	
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+	
+	public static String getAccessToken (String authorize_code) {
 		     System.out.println("----------------------------토큰발급---------------------------");
 			 String access_Token = "";
 		     String refresh_Token = "";
@@ -40,8 +61,8 @@ public class KakaoService {
 		            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 		            StringBuilder sb = new StringBuilder();
 		            sb.append("grant_type=authorization_code");
-		            sb.append("&client_id=본인의 REST_API_KEY");
-		            sb.append("&redirect_uri=본인이 설정한 리다이렉트 경로");
+		            sb.append("&client_id=" + "10dbd6c17a3c833039d30c7fd89064c5");
+		            sb.append("&redirect_uri="+ "http://localhost:8080/rest/user/oauth/kakao");
 		            sb.append("&code=" + authorize_code);
 		            bw.write(sb.toString());
 		            bw.flush();
@@ -80,8 +101,85 @@ public class KakaoService {
 		        } 
 		        
 		        return access_Token;
+		 }
+		 
+	public UserKakaoLoginDto getUserInfo(String access_token){
+			 
+			 System.out.println("------Kakao - getUserinfo --------");
 
-
-
+		     String reqURL = "https://kapi.kakao.com/v2/user/me";
+		        
+		        try {
+	                //URL객체 생성
+		            URL url = new URL(reqURL);
+		            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		            
+		            conn.setRequestMethod("POST");
+		            conn.setDoOutput(true);
+		            
+		            conn.setRequestProperty("Authorization", "Bearer " + access_token);
+		            
+		            //응답확인 200이면 정상
+		            int responseCode = conn.getResponseCode();
+		            System.out.println("responseCode : " + responseCode);
+		 
+		            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+		            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		            String line = "";
+		            String result = "";
+		            
+		            while ((line = br.readLine()) != null) {
+		                result += line;
+		            }
+		            System.out.println("response body : " + result);
+		            
+		            // Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
+		            JsonParser parser = new JsonParser();
+		            JsonElement element = parser.parse(result);
+		            
+//		            access_Token = element.getAsJsonObject().get("access_token").getAsString();
+//		            String user_email ="";
+//		            element.getAsJsonObject().
+		            String id = ((JsonObject) element).get("id").toString();
+		            String email = ((JsonObject) ((JsonObject) element).get("kakao_account")).get("email").toString();
+		            System.out.println("id: " + id);
+		            System.out.println("email: " + email);
+		            String ftoken = jwtTokenProvider.createToken(id);
+		            System.out.println("ftoken: " + ftoken);
+		            UserKakaoLoginDto ukld = new UserKakaoLoginDto();
+		            ukld.setUsername(id);
+		            ukld.setEmail(email);
+		            ukld.setFtoken(ftoken);
+		           
+		            
+		            br.close();
+		            return ukld;
+		        } catch (IOException e) {
+		            // TODO Auto-generated catch block
+		            e.printStackTrace();
+		        } 
+		        
+		        return null;
+		 }
+		 
+		 @Transactional
+		 public UserLoginResponseDto kakaoLogin(UserKakaoLoginDto params) {
+			 Optional<User> user = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
+			 UserLoginResponseDto ulrd = new UserLoginResponseDto();
+			 System.out.println("ks user: " + user);
+			 if(user.isEmpty()) {
+				 userRepository.save(params.toEntity());
+				 Optional<User> kakaoUser = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
+				 ulrd.setResult("success signup");
+				 ulrd.setFtoken(params.getFtoken());
+				 ulrd.setRegisterYN(kakaoUser.get().isRegisterYN());
+				 return ulrd;
+			 }
+			 else {
+				 ulrd.setResult("success login");
+				 ulrd.setFtoken(params.getFtoken());
+				 ulrd.setRegisterYN(user.get().isRegisterYN());
+				 return ulrd;
+			 }
 		 }
 }

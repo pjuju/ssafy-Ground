@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Data
 public class UserStateDto {
+	private Long id;
 	private String username;
 	private String email;
 	private String nickname;
