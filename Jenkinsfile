@@ -4,8 +4,8 @@ pipeline {
                 stage('Gradle build') {
                         agent any
                         steps { 
-                                sh 'sudo chmod 755 gradlew'
-                                sh '.gradlew/bootJar -f ./back/ground'
+                                // sh 'sudo chmod 755 gradlew'
+                                sh '.gradlew/bootJar -f ./backend/ground'
                                 sh 'echo hello1'
                         }
                 }
