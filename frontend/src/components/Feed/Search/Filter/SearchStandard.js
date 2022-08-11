@@ -2,7 +2,7 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
 
-function SearchStandard({standard, setStandard}) {
+function SearchStandard({standard, setStandard }) {
   return (
     <FormControl sx={{ minWidth: "100%", height: "100%" }}>
       <ThemeProvider theme={theme}>

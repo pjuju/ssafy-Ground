@@ -73,6 +73,7 @@ export default function SearchBar({
           latestUser={latestUser}
           setLatestBoard={setLatestBoard}
           setLatestUser={setLatestUser}
+          setWord={setWord}
         />
       )}
     </Grid>
