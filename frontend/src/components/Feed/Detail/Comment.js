@@ -2,10 +2,19 @@ import { Grid, Stack } from "@mui/material";
 import userImage from "assets/images/userImage.png";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import { useState } from "react";
+import CommentEdit from "./CommentEdit";
 
 const formatDate = (date) => {
   // let converted = new Date();
-  let converted = new Date(date[0], date[1] - 1, date[2], date[3], date[4], date[5]);
+  let converted = new Date(
+    date[0],
+    date[1] - 1,
+    date[2],
+    date[3],
+    date[4],
+    date[5]
+  );
   let diff = new Date() - converted; // 차이(ms)
 
   // 차이가 1초 미만이라면
@@ -47,6 +56,7 @@ const formatDate = (date) => {
 
 function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
   const { id, user, regDttm, reply } = comment;
+  const [isEdit, setIsEdit] = useState(false);
 
   return (
     <div className="comment">
@@ -81,7 +91,7 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
                       <ModeEditOutlinedIcon
                         className="comment__edit comment__button"
                         fontSize="small"
-                        onClick={() => handleCommentEdit(id)}
+                        onClick={() => setIsEdit(true)}
                       />
                       <DeleteOutlinedIcon
                         className="comment__delete comment__button"
@@ -98,6 +108,15 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
           </Grid>
         </Grid>
       </Stack>
+      {isEdit && (
+        <CommentEdit
+          id={id}
+          comment={reply}
+          open={isEdit}
+          setOpen={setIsEdit}
+          handleCommentEdit={handleCommentEdit}
+        />
+      )}
     </div>
   );
 }

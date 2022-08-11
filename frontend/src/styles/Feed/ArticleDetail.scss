@@ -136,3 +136,10 @@ $wide-desktop: 1249px;
     width: 100%;
   }
 }
+
+.comment-update {
+  min-width: 280px;
+  &__field {
+    width: 100%;
+  }
+}
