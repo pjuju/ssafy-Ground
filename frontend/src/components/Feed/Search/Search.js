@@ -15,6 +15,7 @@ import UserSearchResult from "./UserSearchResult";
 import Article from "../Article/Article";
 import { useOutletContext } from "react-router-dom";
 import ReactLoading from "react-loading";
+import TitleBar from "components/common/TitleBar";
 
 const getAllValues = (list) => {
   return list.map((item) => item.id);
@@ -227,6 +228,9 @@ function Search() {
     <Grid className="content">
       <Grid className="content__title-desktop" onClick={handleClickTitle}>
         <h2>검색</h2>
+      </Grid>
+      <Grid className="content__title-mobile">
+        <TitleBar title="검색" isBack={false} />
       </Grid>
       <Grid className="search-inner" item>
         <form>
