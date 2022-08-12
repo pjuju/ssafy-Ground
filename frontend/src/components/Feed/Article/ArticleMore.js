@@ -47,10 +47,9 @@ function ArticleMore(props) {
   };
 
   const handleClickDelete = () => {
-    feedDelete(props.id, (res)=> {
-      console.log(res.data)
+    feedDelete(props.id, (res) => {
+      console.log("delete");
     })
-    console.log("delete");
   };
   const handleClickSave = () => {
     setIsSaveClicked(!isSaveClicked);
