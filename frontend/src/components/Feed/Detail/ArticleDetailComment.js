@@ -34,7 +34,15 @@ function ArticleDetailComment({ commentList }) {
 
   // 댓글 수정 핸들러
   const handleCommentEdit = (commentId, comment) => {
-    updateComment(commentId, comment);
+    updateComment(commentId, comment, (res) => {
+      const updatedComments = comments.map((comment) => {
+        if (comment.id === commentId) {
+          return res.data;
+        }
+        return comment;
+      });
+      setComments(updatedComments);
+    });
   };
 
   useEffect(() => {
