@@ -1,12 +1,16 @@
 package com.ground.domain.user.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.ground.domain.board.entity.Board;
+import com.ground.domain.board.repository.BoardRepository;
 import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.follow.repository.FollowRepository;
 import com.ground.domain.global.entity.Category;
@@ -35,6 +39,7 @@ public class UserService {
 
 	private final CategoryRepository categoryRepository;
 	private final UserCategoryRepository userCategoryRepository;
+	private final BoardRepository boardRepository;
 	@Autowired
 	private final FollowRepository followRepository;
 	@Autowired
@@ -202,11 +207,40 @@ public class UserService {
 		for (UserCategory userCategory : userCategories) {
 			userCategoryDtos.add(new UserCategoryDto(userCategory));
 		}
+
+		List<UserBoardDto> userBoardDtos = new ArrayList<>();
+		List<Board> boards = boardRepository.findAllByUserId(id);
+		HashMap<LocalDate, Long> dates = new HashMap<LocalDate, Long>();
+		HashMap<String, Long> categories = new HashMap<String, Long>();
+
+		for (Board board : boards) {
+			userBoardDtos.add(new UserBoardDto(board));
+			LocalDate date = board.getRegDttm().toLocalDate();
+			String categoryName = board.getCategory().getEvent();
+
+			if (dates.containsKey(date)){
+				dates.put(date, dates.get(date) + new Long(1));
+			}
+			else {
+				dates.put(date, new Long(1));
+			}
+
+			if (categories.containsKey(categoryName)) {
+				categories.put(categoryName, categories.get(categoryName) + new Long(1));
+			}
+			else {
+				categories.put(categoryName, new Long(1));
+			}
+		}
+
 		userProfileDto.setUser(user);
 		userProfileDto.setFollow(follow);
 		userProfileDto.setUserFollowerCount(followRepository.findFollowerCountById(id));
 		userProfileDto.setUserFollowingCount(followRepository.findFollowingCountById(id));
 		userProfileDto.setUserCategories(userCategoryDtos);
+		userProfileDto.setUserBoardDtos(userBoardDtos);
+		userProfileDto.setGroundDates(dates);
+		userProfileDto.setGroundCategory(categories);
 
         return userProfileDto;
     }
@@ -237,7 +271,7 @@ public class UserService {
 	// 관심종목 설정
 	@Transactional
 	public void setUserCategory(User loginUser, List<Long> userCategories) {
-		
+
 		userCategoryRepository.deleteAllByUser(loginUser);
 		for (Long userCategoryId : userCategories) {
 			Category category = categoryRepository.findById(userCategoryId).get();
