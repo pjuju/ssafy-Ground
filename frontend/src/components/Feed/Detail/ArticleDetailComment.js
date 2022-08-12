@@ -3,7 +3,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { getUserState } from "api/user";
-import { deleteComment, registerComment } from "api/comment";
+import { deleteComment, registerComment, updateComment } from "api/comment";
 import { useParams } from "react-router-dom";
 import CommentBox from "./CommentBox";
 
@@ -24,15 +24,25 @@ function ArticleDetailComment({ commentList }) {
   const handleCommentDelete = (commentId) => {
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
       deleteComment(commentId, (res) => {
-        const deletedComments = comments.filter((comment) => comment.id !== commentId);
+        const deletedComments = comments.filter(
+          (comment) => comment.id !== commentId
+        );
         setComments(deletedComments);
       });
     }
   };
 
   // 댓글 수정 핸들러
-  const handleCommentEdit = (commentId) => {
-    console.log("edit");
+  const handleCommentEdit = (commentId, comment) => {
+    updateComment(commentId, comment, (res) => {
+      const updatedComments = comments.map((comment) => {
+        if (comment.id === commentId) {
+          return res.data;
+        }
+        return comment;
+      });
+      setComments(updatedComments);
+    });
   };
 
   useEffect(() => {
