@@ -18,7 +18,12 @@ import {
   setInterest,
   toggleInterestList,
 } from "modules/interest";
-import { getUserProfile, getUserState, modifyUserInfo } from "api/user";
+import {
+  getUserProfile,
+  getUserState,
+  modifyUserInfo,
+  updateInterest,
+} from "api/user";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
@@ -88,6 +93,7 @@ function LatestFeed() {
 
       // 사용자의 관심 운동 종목을 redux state인 interestList에서 true로 변경
       getUserProfile(res.data.id, (res) => {
+        console.log(res.data);
         res.data.userCategories.map((item) => {
           onSetInterest(item.categoryId);
         });
@@ -122,20 +128,7 @@ function LatestFeed() {
     });
     console.log(interestArray);
 
-    const userDetail = {
-      age: age,
-      gender: gender,
-      id: id,
-      introduce: introduce,
-      nickname: nickname,
-      privateYN: privateYN,
-      userCategories: interestArray,
-      useruserImage: userImage,
-    };
-
-    console.log(userDetail);
-
-    modifyUserInfo(userDetail, (res) => {
+    updateInterest(interestArray, (res) => {
       console.log(res);
     });
   };
@@ -155,14 +148,6 @@ function LatestFeed() {
               interestList={interestList}
               onToggleInterestList={onToggleInterestList}
               changeInterestList={changeInterestList}
-              onDeleteInterest={onDeleteInterest}
-              age={age}
-              gender={gender}
-              id={id}
-              introduce={introduce}
-              nickname={nickname}
-              privateYN={privateYN}
-              userImage={userImage}
             />
           </Grid>
           <Grid className="content__inner__filter__icon">

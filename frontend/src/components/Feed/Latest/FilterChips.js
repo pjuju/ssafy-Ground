@@ -4,14 +4,18 @@ import { ThemeProvider } from "@emotion/react";
 import { Chip } from "@mui/material";
 import { useEffect } from "react";
 
-function FilterChips({ interestList, onDeleteInterest, changeInterestList }) {
+function FilterChips({
+  interestList,
+  onToggleInterestList,
+  changeInterestList,
+}) {
   useEffect(() => {
-    changeInterestList();
+    // changeInterestList();
   }, [interestList]);
 
   const handleDeleteChip = (id) => {
     // 토글 후 서버에 관심 운동 종목 업데이트를 요청하기
-    onDeleteInterest(id);
+    onToggleInterestList(id);
   };
 
   return (
