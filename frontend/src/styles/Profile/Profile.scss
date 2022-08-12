@@ -3,12 +3,14 @@
 .content {
   &__inner {
     width: 100%;
-    padding: 1rem;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
 
     & .profile {
+      padding: 1rem;
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
       & .user-info {
+        width: 100%;
+
         & .info {
           &-top {
             &__img {
@@ -52,12 +54,17 @@
             }
 
             &__more {
-              text-align: end;
+              width: 23%;
+              text-align: right;
 
               &__button {
+                padding-top: 1rem;
                 &--accept {
                   border-radius: 20px !important;
                 }
+              }
+
+              &__icon {
               }
             }
           }
@@ -98,6 +105,15 @@
           &.Mui-selected {
             color: #000;
             font-weight: 800;
+          }
+        }
+
+        &__tabpanel {
+          padding: 0;
+          padding-top: 1rem;
+
+          & .article__inner {
+            max-width: 100% !important;
           }
         }
       }

@@ -16,7 +16,7 @@ function Profile({ onSetSideMenuIdx, onSetBottomMenuIdx }) {
   }, []);
 
   return (
-    <Grid className="content">
+    <Grid className="content profile">
       <Grid className="content__title-desktop">
         <h2>프로필</h2>
       </Grid>
