@@ -3,9 +3,10 @@ import { FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
 import theme from "components/common/theme";
 import { ThemeProvider } from "@emotion/react";
 
-function RegionDropdown({ feedLocationId, onSetFeedLocationId }) {
+function RegionDropdown({ boardInfo, setBoardInfo }) {
+  const locationId = boardInfo.locationId
   const handleChange = (event) => {
-    onSetFeedLocationId(event.target.value);
+    setBoardInfo({...boardInfo, locationId: event.target.value})
   };
   const regionList = [
     "서울",
@@ -35,7 +36,7 @@ function RegionDropdown({ feedLocationId, onSetFeedLocationId }) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={feedLocationId|| ''}
+              value={locationId|| ''}
               label="region"
               onChange={handleChange}
             >

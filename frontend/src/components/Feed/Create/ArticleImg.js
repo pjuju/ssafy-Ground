@@ -3,33 +3,24 @@ import { useEffect, useRef, useState } from "react";
 import plus from "assets/images/plus.png"
 
 
-function ArticleImg({ feedImages , onSetFeedImages }) {
+function ArticleImg({ boardInfo, newImages, setNewImages, uploadImages, setUploadImages }) {
   const selectUserImg = useRef("");
   const [imgList, setImgList] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [isDisplay, setIsDisplay] = useState(true);
-  const imgIdx = ["img1", "img2", "img3", "img4", "img5"];
+
 
   useEffect(() => {
-    preview();
+    console.log("download complete")
     console.log(imgList)
     if (isDisplay === true) {
       selectUserImg.current.value="";
     }
-  });
+  }, [imgList]);
+  
 
-  const preview = () => {
-    if (imgList === []) return false;
+  
 
-    imgIdx.map((id, index) => {
-      let imgElement = document.querySelector(`.${id} > img`);
-      console.log(imgList[index])
-      if (imgElement !== null) {
-        console.log(URL.createObjectURL(imgList[index][1]));
-        imgElement.src = URL.createObjectURL(imgList[index][1]);
-      }
-    });
-  };
 
   const handleClickInput = (event) => {
     event.preventDefault();
@@ -39,8 +30,11 @@ function ArticleImg({ feedImages , onSetFeedImages }) {
     const fileLength = fileName.length;
     const lastDot = fileName.lastIndexOf('.');
     const fileSpec = fileName.substring(lastDot+1, fileLength).toLowerCase();
+    const randNum = parseInt((new Date().getTime() + Math.random())*100);
     let imgUrlList = [...imgList];
     let fileUrlList = [...fileList];
+    let imgNumList = [...newImages];
+    let uploadList = [...uploadImages];
     const imgType = ['jpg', 'png', 'gif']
     console.log(fileSpec)
     if (imgUrlList.length >= 4) {
@@ -54,19 +48,29 @@ function ArticleImg({ feedImages , onSetFeedImages }) {
       if (fileSpec === "mp4") {
         imgUrlList.push(["video",URL.createObjectURL(file)]);
       }
-      
+      imgNumList.push({
+        imageType: fileSpec,
+        imageUrl: randNum.toString(),
+      });
+      uploadList.push({
+        imageType: fileSpec,
+        imageUrl: randNum.toString(),
+        file: file
+      });
       fileUrlList.push(file);
     }
     setImgList(imgUrlList);
     setFileList(fileUrlList);
-    onSetFeedImages(fileUrlList);
+    setNewImages(imgNumList);
+    setUploadImages(uploadList);
     console.log(imgList);
   };
 
   const handleDeleteImage = (id) => {
     setImgList(imgList.filter((_, index) => index !== id));
     setFileList(fileList.filter((_, index) => index !== id));
-    onSetFeedImages(fileList.filter((_, index) => index !== id));
+    setNewImages(newImages.filter((_, index) => index !== id));
+    setUploadImages(uploadImages.filter((_, index) => index !== id))
     setIsDisplay(true);
 
   };
