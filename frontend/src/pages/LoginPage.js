@@ -3,15 +3,22 @@ import logo from "assets/images/text_logo.png";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 
 import GoogleButton from "components/Login/OAuth/GoogleButton";
 import KakaoButton from "components/Login/OAuth/KakaoButton.js";
+import GrButton from "components/common/GrButton";
 
 import { useState } from "react";
+import { Divider } from "@mui/material";
+import { login } from "api/login";
+import GrTextField from "components/common/GrTextField";
+import { useNavigate } from "react-router-dom";
+
+
 
 function LoginPage() {
+  const navigate = useNavigate();
+
   const [userId, setUserId] = useState("");
   const [userPW, setUserPW] = useState("");
   const [idProps, setIdProps] = useState({
@@ -56,7 +63,30 @@ function LoginPage() {
     setPwProps(newPwProps);
 
     if (isLoginOk) {
-      // 로그인 요청
+      const info = {
+        username: userId,
+        pass: userPW,
+      };
+      login(
+        info,
+        (res) => {
+          if(res.data.result === "success") {
+            localStorage.setItem("token", res.data.ftoken);
+            if(res.data.registerYN === false) {
+              navigate("/welcome");
+            }
+            else {
+              navigate("/feed/follow");
+            }
+          }
+          else {
+            alert("아이디 또는 비밀번호를 확인해주세요.");
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
   }
 
@@ -72,65 +102,48 @@ function LoginPage() {
         <Grid className="login-form__logo" item>
           <img className="logo" src={logo} alt="text_logo" width="300px" />
         </Grid>
-        {/* <TextField
-          className="login-form__field"
-          label="아이디"
-          variant="outlined"
-          size="small"
-          value={userId}
-          helperText="아이디를 입력해주세요"
-          onChange={(e) => {
-            setUserId(e.target.value);
-          }}
-        /> */}
-        <TextField
+        <GrTextField 
           {...idProps}
           value={userId}
           onChange={(e) => {
             setUserId(e.target.value);
           }}
         />
-        {/* <TextField
-          className="login-form__field"
-          label="비밀번호"
-          variant="outlined"
-          size="small"
-          value={userPW}
-          helperText="비밀번호를 입력해주세요"
-          onChange={(e) => {
-            setUserPW(e.target.value);
-          }}
-        /> */}
-        <TextField
+        <GrTextField
           {...pwProps}
           value={userPW}
+          type="password"
           onChange={(e) => {
             setUserPW(e.target.value);
           }}
         />
-        <Button
+        <GrButton
           className="login-form__button"
           variant="contained"
           onClick={submitLogin}
         >
           로그인
-        </Button>
+        </GrButton>
+        <Divider className="login-form__devider" flexItem>
+          소셜 계정으로 로그인
+        </Divider>
         <Grid container className="social-login">
           <Grid item className="social-login__button">
             <KakaoButton />
             <GoogleButton />
           </Grid>
         </Grid>
+        <Divider className="login-form__devider" flexItem />
         <Grid
           className="login-form__bottom"
           container
           justifyContent="space-between"
         >
           <Grid item>
-            <a href="/">회원가입</a>
+            <a href="/register">회원가입</a>
           </Grid>
           <Grid item>
-            <a href="/">아이디 찾기 / 비밀번호 찾기</a>
+            <a href="/findid">아이디 찾기 / 비밀번호 찾기</a>
           </Grid>
         </Grid>
       </Grid>

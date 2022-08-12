@@ -1,0 +1,155 @@
+/* 변수 */
+$oauth-mobile-button-size: 200px;
+$oauth-tablet-button-size: 200px;
+$oauth-desktop-button-size: 200px;
+$oauth-wide-desktop-button-size: 200px;
+
+$primary: #54bab9;
+$light-gray: #757575;
+$super-light-gray: rgba(0, 0, 0, 0.1);
+
+/* 반응형 화면 크기*/
+$mobile: 767px;
+$tablet: 1023px;
+$desktop: 1024px;
+$wide-desktop: 1249px;
+
+@mixin sm {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$mobile+1}) and (max-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $desktop) and (max-width: #{$wide-desktop}) {
+    @content;
+  }
+}
+
+@mixin wide-desktop {
+  @media (min-width: #{$wide-desktop + 1}) {
+    @content;
+  }
+}
+
+@mixin custom-scrollbar {
+  height: 100%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    position: fixed;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    position: fixed;
+    background: $primary;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    position: fixed;
+    background: #54bab824;
+    margin-top: 0 !important;
+  }
+}
+
+.article-detail {
+  @include custom-scrollbar();
+
+  & .article__inner {
+    box-shadow: none;
+  }
+
+  &__inner {
+    margin: 2rem 0;
+    padding: 2rem 0;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 10px;
+  }
+
+  &__activity {
+    padding: 1.5rem 1.5rem 0 1.5rem;
+  }
+}
+
+.comment {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+
+  &__inner {
+    padding: 1.2rem;
+  }
+
+  &__info {
+    &__image {
+      width: 100%;
+      max-width: 50px;
+    }
+
+    &--right {
+      height: 100%;
+      padding-left: 8px;
+    }
+  }
+
+  &__nickname {
+    font-weight: bold;
+    @include sm() {
+      padding-top: 0.2rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  &__regDate {
+    padding-top: 0.3rem;
+    margin-left: 1rem !important;
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.493);
+    @include sm() {
+      margin-left: 0.5rem !important;
+    }
+  }
+
+  &__content {
+    padding-top: 5px;
+  }
+
+  &__edit {
+    padding-right: 5px;
+  }
+
+  &__button {
+    cursor: pointer;
+  }
+}
+
+.comment-box {
+  width: 100%;
+  margin: 1rem 0;
+
+  &__field {
+    width: 100%;
+  }
+}
+
+.comment-update {
+  min-width: 280px;
+  &__field {
+    width: 100%;
+  }
+}
