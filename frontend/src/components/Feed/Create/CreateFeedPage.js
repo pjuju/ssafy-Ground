@@ -22,6 +22,7 @@ import RegionDropdown from "./RegionDropdown";
 import ArticleOpen from "./ArticleOpen";
 import ArticleImg from "./ArticleImg";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function CreateFeedPage() {
   const [authOpen, setAuthOpen] = useState(false);
@@ -29,6 +30,7 @@ function CreateFeedPage() {
   const [boardInfo, setBoardInfo] = useState({});
   const [newImages, setNewImages] = useState([]);
   const [uploadImages, setUploadImages] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const data = {
@@ -134,6 +136,7 @@ function CreateFeedPage() {
       
     })
     setAuthOpen(false);
+    navigate(-1);
   }
 
   return (
