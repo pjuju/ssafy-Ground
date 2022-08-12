@@ -15,6 +15,7 @@ import ArticleImg from "../Create/ArticleImg";
 import { useParams } from "react-router-dom";
 import UpdateImg from "./UpdateImg";
 import { set } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 function UpdateFeed () {
   const { boardId } = useParams();
@@ -23,7 +24,7 @@ function UpdateFeed () {
   const [boardInfo, setBoardInfo] = useState({});
   const [newImages, setNewImages] = useState([]);
   const [uploadImages, setUploadImages] = useState([]);
-
+  const navigate = useNavigate();
  
   useEffect(() => {
     console.log(boardId);
@@ -57,6 +58,7 @@ function UpdateFeed () {
       
     })
     setAuthOpen(false);
+    navigate(-1);
   }
 
   // const handleSubmit = () => {

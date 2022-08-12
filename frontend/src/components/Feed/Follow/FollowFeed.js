@@ -79,7 +79,7 @@ function FollowFeed() {
           <Article key={index} articleData={article} />
         ))}
         <ThemeProvider theme={theme}>
-          <Fab className="fab-write" color="primary" aria-label="edit">
+          <Fab className="fab-write" color="primary" aria-label="edit" href="/feed/create">
             <EditIcon />
           </Fab>
         </ThemeProvider>
