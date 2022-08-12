@@ -1,0 +1,141 @@
+@import "../common/utils";
+
+@mixin set-layout {
+  margin-bottom: 2rem;
+}
+
+.findid-form {
+  @include set-layout();
+  &__wrapper{
+    min-height: 100vh;
+  }
+
+  &__inner {
+    width: 100%;
+
+    @media (max-width: 599px) {
+      width: 100%
+    }
+  }
+}
+
+.id-check {
+  &__inner-wrapper{
+    @include set-layout();
+  }
+  &__field {
+    width: 60%;
+  }
+  
+  &__button {
+    width: 30%;
+    height: 40px;
+  }
+
+  &__box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 200px;
+      background-color: white;
+      border: 2px solid #000;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+   };
+  
+   &__modal {
+    margin-bottom: 1rem;
+   }
+
+   &__modal-wrapper {
+    height: 100%;
+   }
+}
+
+.id-result {
+  &__box {
+    @include set-layout();
+    width: 100%;
+    height: 200px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    text-align: center;
+    line-height: 200px;
+  }
+
+  &__highlight {
+    color: #18978F;
+    font-size: 1.5em;
+    font-weight: 700;
+  }
+}
+
+.pw-check {
+  &__inner-wrapper{
+    @include set-layout();
+  }
+  &__field {
+    width: 65%;
+  }
+  
+  &__button {
+    width: 30%;
+    height: 40px;
+  }
+
+  &__box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 200px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+ }
+
+ &__modal {
+  margin-bottom: 1rem;
+ }
+
+ &__modal-wrapper {
+  height: 100%;
+ }
+}
+
+.pw-result {
+  &__inner-wrapper{
+    @include set-layout();
+  }
+  &__field {
+    width: 65%;
+  }
+  
+  &__button {
+    width: 30%;
+  }
+
+  &__box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 200px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+ }
+
+ &__modal {
+  margin-bottom: 1rem;
+ }
+
+ &__modal-wrapper {
+  height: 100%;
+ }
+}

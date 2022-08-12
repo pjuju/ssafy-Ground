@@ -1,0 +1,88 @@
+@import "../common/utils";
+
+@mixin set-layout {
+  margin-top: 1rem !important;
+  width: 100% !important;
+}
+
+.login-form {
+  &__wrapper {
+    min-height: 100vh;
+  }
+
+  &__field,
+  &__button {
+    @include set-layout;
+  }
+
+  &__bottom {
+    @include set-layout;
+    font-size: 0.8rem;
+  }
+
+  &__devider {
+    font-size: 0.8rem;
+    color: rgb(120, 120, 120);
+    margin-top: 1rem !important;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: rgb(120, 120, 120);
+}
+
+.social-login {
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.kakao-login {
+  &__button {
+    height: auto;
+
+    @include mobile() {
+      width: $oauth-mobile-button-size;
+    }
+
+    @include tablet() {
+      width: $oauth-tablet-button-size;
+    }
+
+    @include desktop() {
+      width: $oauth-desktop-button-size;
+    }
+
+    @include wide-desktop() {
+      width: $oauth-wide-desktop-button-size;
+    }
+  }
+}
+
+.google-login {
+  &__button {
+    display: flex;
+    height: auto;
+    background: #ffffff;
+    border-radius: 5px;
+    align-items: center;
+    text-decoration: none;
+
+    @include mobile() {
+      width: $oauth-mobile-button-size;
+    }
+
+    @include tablet() {
+      width: $oauth-tablet-button-size;
+    }
+
+    @include desktop() {
+      width: $oauth-desktop-button-size;
+    }
+
+    @include wide-desktop() {
+      width: $oauth-wide-desktop-button-size;
+    }
+  }
+}
