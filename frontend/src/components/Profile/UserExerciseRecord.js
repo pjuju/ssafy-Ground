@@ -1,3 +1,4 @@
+import UserGroundCalendar from "./static/UserGroundCalendar";
 import UserGround from "./UserGround";
 
 const { Grid } = require("@mui/material");
@@ -7,6 +8,7 @@ function UserExerciseRecord() {
     <Grid className="user-ground">
       <Grid className="ground__title">
         <h2>나의 운동장</h2>
+        <UserGroundCalendar />
       </Grid>
       <Grid className="ground__content">
         <UserGround />
