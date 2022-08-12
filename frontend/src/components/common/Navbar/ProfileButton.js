@@ -1,8 +1,9 @@
 import userImage from "assets/images/userImage.png";
 
 import { Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-function ProfileButton({ nickname, image, email }) {
+function ProfileButton({ id, nickname, image, email, username }) {
   return (
     <Grid className="profile-button" container>
       <Grid className="profile-button__img" item>

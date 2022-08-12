@@ -1,12 +1,11 @@
 @import "../common/utils";
 
-.profile-content {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-
+.content {
   &__inner {
-    width: 90%;
+    width: 100%;
+    padding: 1rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
 
     & .profile {
       & .user-info {
@@ -21,6 +20,7 @@
             }
 
             &__right {
+              width: 55%;
               margin-left: 1.1rem;
               padding-bottom: 0.5rem;
               display: flex;
@@ -35,7 +35,6 @@
               }
 
               &__follow {
-
                 & .follower,
                 .following {
                   margin-right: 2rem;
@@ -48,6 +47,16 @@
                   &__cnt {
                     font-weight: 700;
                   }
+                }
+              }
+            }
+
+            &__more {
+              text-align: end;
+
+              &__button {
+                &--accept {
+                  border-radius: 20px !important;
                 }
               }
             }

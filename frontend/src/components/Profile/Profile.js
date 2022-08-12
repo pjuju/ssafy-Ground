@@ -3,7 +3,7 @@ import "styles/common/_utils.scss";
 import "styles/Profile/Profile.scss";
 
 import { Divider, Grid } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UserInfo from "./UserInfo";
 import UserArticles from "./UserArticles";
 import UserExerciseRecord from "./UserExerciseRecord";
@@ -16,14 +16,14 @@ function Profile({ onSetSideMenuIdx, onSetBottomMenuIdx }) {
   }, []);
 
   return (
-    <Grid className="profile-content">
-      <Grid className="profile-content__title-desktop">
+    <Grid className="content">
+      <Grid className="content__title-desktop">
         <h2>프로필</h2>
       </Grid>
-      <Grid className="profile-content__title-mobile">
+      <Grid className="content__title-mobile">
         <TitleBar title="프로필" />
       </Grid>
-      <Grid id="inner" className="profile-content__inner">
+      <Grid id="inner" className="content__inner">
         <Grid className="profile">
           <UserInfo />
           <Divider style={{ width: "100%" }} />

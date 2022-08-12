@@ -5,6 +5,7 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserState, logout } from "api/user";
+import { setIdFlag } from "modules/find";
 
 function SideNavbar({
   sideMenuIdx,
@@ -12,9 +13,11 @@ function SideNavbar({
   onSetSideMenuIdx,
   onSetBottomMenuIdx,
 }) {
+  const [id, setId] = useState(0);
   const [nickname, setNickname] = useState("");
   const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,12 +31,11 @@ function SideNavbar({
 
     // 사용자 정보 가져오기
     getUserState((res) => {
+      setId(res.data.id);
       setNickname(res.data.nickname);
       setImage(res.data.image);
       setEmail(res.data.email);
-      console.log(nickname);
-      console.log(image);
-      console.log(email);
+      setUsername(res.data.username);
     });
 
     return () => {
@@ -86,8 +88,14 @@ function SideNavbar({
         </p>
       </Grid>
       <Grid className="navbar-side__profile" item>
-        <Link to="/profile/1">
-          <ProfileButton nickname={nickname} image={image} email={email} />
+        <Link to={`/profile/${id}`}>
+          <ProfileButton
+            id={id}
+            nickname={nickname}
+            image={image}
+            email={email}
+            username={username}
+          />
         </Link>
       </Grid>
     </Grid>
