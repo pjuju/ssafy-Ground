@@ -4,8 +4,6 @@ import com.ground.domain.user.entity.User;
 import com.ground.domain.user.entity.UserCategory;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -22,7 +20,7 @@ public class UserProfileDto {
     private int userFollowingCount;
     private List<UserCategoryDto> userCategories;
     private List<UserBoardDto> userBoardDtos;
-    private HashMap<LocalDate, Long> groundDates;
-    private HashMap<String, Long> groundCategory;
+    private List<GroundBoardDto> groundDates;
+    private List<GroundCategoryDto> groundCategory;
 }
 

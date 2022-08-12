@@ -2,10 +2,7 @@ package com.ground.domain.user.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
@@ -28,6 +25,7 @@ import com.ground.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import springfox.documentation.schema.Entry;
 
 @Log4j2
 @Service
@@ -211,12 +209,12 @@ public class UserService {
 		List<UserBoardDto> userBoardDtos = new ArrayList<>();
 		List<Board> boards = boardRepository.findAllByUserId(id);
 		HashMap<LocalDate, Long> dates = new HashMap<LocalDate, Long>();
-		HashMap<String, Long> categories = new HashMap<String, Long>();
+		HashMap<Long, Long> categories = new HashMap<Long, Long>();
 
 		for (Board board : boards) {
 			userBoardDtos.add(new UserBoardDto(board));
 			LocalDate date = board.getRegDttm().toLocalDate();
-			String categoryName = board.getCategory().getEvent();
+			Long categoryId = board.getCategory().getId();
 
 			if (dates.containsKey(date)){
 				dates.put(date, dates.get(date) + new Long(1));
@@ -225,13 +223,29 @@ public class UserService {
 				dates.put(date, new Long(1));
 			}
 
-			if (categories.containsKey(categoryName)) {
-				categories.put(categoryName, categories.get(categoryName) + new Long(1));
+			if (categories.containsKey(categoryId)) {
+				categories.put(categoryId, categories.get(categoryId) + new Long(1));
 			}
 			else {
-				categories.put(categoryName, new Long(1));
+				categories.put(categoryId, new Long(1));
 			}
 		}
+
+		List<GroundBoardDto> groundDates = new ArrayList<>();
+		Iterator<LocalDate> Dkeys = dates.keySet().iterator();
+		while (Dkeys.hasNext()) {
+			LocalDate Dkey = Dkeys.next();
+			groundDates.add(new GroundBoardDto(Dkey, dates.get(Dkey)));
+		}
+
+		List<GroundCategoryDto> groundCategories = new ArrayList<>();
+		Iterator<Long> Ckeys = categories.keySet().iterator();
+		while (Ckeys.hasNext()) {
+			Long Ckey = Ckeys.next();
+			groundCategories.add(new GroundCategoryDto(Ckey, categories.get(Ckey)));
+		}
+
+
 
 		userProfileDto.setUser(user);
 		userProfileDto.setFollow(follow);
@@ -239,8 +253,8 @@ public class UserService {
 		userProfileDto.setUserFollowingCount(followRepository.findFollowingCountById(id));
 		userProfileDto.setUserCategories(userCategoryDtos);
 		userProfileDto.setUserBoardDtos(userBoardDtos);
-		userProfileDto.setGroundDates(dates);
-		userProfileDto.setGroundCategory(categories);
+		userProfileDto.setGroundDates(groundDates);
+		userProfileDto.setGroundCategory(groundCategories);
 
         return userProfileDto;
     }
