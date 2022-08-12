@@ -42,6 +42,9 @@ jwt:
   token-validity-in-seconds: 600000
   #60000 -> 1분
     
+kakao:
+  client_id: "87b8da584f22cf18e58e764a34d23c9e"
+  redirect_uri: "http://localhost:3000/oauth/callback/kakao"
 
 logging.level:
   org.hibernate.SQL: debug
