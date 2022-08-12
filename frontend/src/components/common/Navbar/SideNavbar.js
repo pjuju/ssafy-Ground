@@ -58,10 +58,19 @@ function SideNavbar({
 
   /* 로그아웃 */
   const handleClickLogout = () => {
-    logout(() => {
-      localStorage.removeItem("token");
-      navigate("/");
-    });
+    logout(
+      () => {
+        localStorage.removeItem("token");
+        navigate("/");
+      },
+      (err) => {
+        // JWT 토근이 만료되어 500 에러가 반환됐다면
+        if (err.response.status === 500) {
+          localStorage.removeItem("token");
+          navigate("/");
+        }
+      }
+    );
   };
 
   return (
