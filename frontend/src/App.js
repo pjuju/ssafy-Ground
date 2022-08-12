@@ -36,7 +36,7 @@ function App() {
         <Route path="/feed" element={<FeedPage />}>
           <Route path="follow" element={<FollowFeed />} />
           <Route path="create" element={<CreateFeedPage />} />
-          <Route path="update" element={<UpdateFeed />} />
+          <Route path="update/:boardId" element={<UpdateFeed />} />
           <Route path="latest" element={<LatestFeed />} />
           <Route path="search" element={<Search />} />
           <Route path="detail/:boardId" element={<ArticleDetail />} />
