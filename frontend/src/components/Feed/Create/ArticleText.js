@@ -15,7 +15,7 @@ function ArticleText({feedContent, onSetFeedContent}) {
           className="create-feed__textarea"
           rows="10"
           cols="40"
-          value={feedContent}
+          value={feedContent|| ''}
           onChange={handleTextLength}
         />
       </Grid>

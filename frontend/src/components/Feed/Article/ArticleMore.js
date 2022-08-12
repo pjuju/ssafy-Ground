@@ -1,5 +1,5 @@
 import theme from "components/common/theme.js";
-
+import { setFeedData } from "modules/feed";
 import {
   Grid,
   IconButton,
@@ -12,14 +12,24 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 function ArticleMore(props) {
+  const state = useSelector((state) => state);
+  const feedData = useSelector((state) => state.feed.feedData);
+
+  const dispatch = useDispatch();
+  const onSetFeedData = (feedData) => dispatch(setFeedData(feedData));
+
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
   const [isSaveClicked, setIsSaveClicked] = useState(props.isSaved);
+  let navigate = useNavigate();
+  let path = `feed/update`;
 
   const handleClickMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -30,6 +40,8 @@ function ArticleMore(props) {
   };
 
   const handleClickEdit = () => {
+    onSetFeedData(props.content)
+    navigate(path)
     console.log("edit");
   };
 
