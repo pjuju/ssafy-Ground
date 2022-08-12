@@ -8,7 +8,7 @@ import GrButton from "components/common/GrButton";
 
 function UserInfo() {
   // 조회하고자 하는 사용자의 정보
-  const [id, setId] = useState(0);
+  const [id, setId] = useState("");
   const [introduce, setIntroduce] = useState("");
   const [nickname, setNickname] = useState("");
   // const [userImage, setUserImage] = useState("");
@@ -16,13 +16,13 @@ function UserInfo() {
   const [followingCnt, setFollowingCnt] = useState(0);
 
   // 내 정보
-  const [myId, setMyId] = useState(0);
+  const [myId, setMyId] = useState("");
 
   useEffect(() => {
     // 조회하고자 하는 사용자의 프로필 정보를 받아옴
     const parseURL = window.location.href.split("/");
     const userId = parseURL[parseURL.length - 1];
-    setId(parseInt(userId));
+    setId(userId);
 
     getUserProfile(userId, (res) => {
       setIntroduce(res.data.user.introduce);
@@ -59,7 +59,7 @@ function UserInfo() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid className="info-top__more__icon">
+        <Grid className="info-top__more">
           {id === myId ? (
             <GrButton
               className="info-top__more__button--accept"
@@ -67,7 +67,7 @@ function UserInfo() {
               children="팔로우"
             />
           ) : (
-            <IconButton>
+            <IconButton className="info-top__more__icon">
               <SettingsIcon />
             </IconButton>
           )}
