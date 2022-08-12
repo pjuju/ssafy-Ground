@@ -9,6 +9,7 @@ import ReactLoading from "react-loading";
 import { ThemeProvider } from "@emotion/react";
 import EditIcon from "@mui/icons-material/Edit";
 import { useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function FollowFeed() {
   // Outlet에 생성한 context를 가져온다.
@@ -22,6 +23,8 @@ function FollowFeed() {
   const [pageNumber, setPageNumber] = useState(0);
   // 로딩 성공 및 실패 정보를 담을 state
   const [isLoading, setIsLoading] = useState(false);
+  
+  const navigate = useNavigate();
 
   const fetchArticles = () => {
     getFollowBoard(pageNumber, (res) => {
@@ -31,6 +34,10 @@ function FollowFeed() {
       console.log("페이지 넘버: " + pageNumber);
     });
   };
+
+  const handleClickCreate = () => {
+    navigate('/feed/create')
+  }
 
   const onIntersect = ([entry], observer) => {
     if (entry.isIntersecting && !isLoading) {
@@ -79,8 +86,8 @@ function FollowFeed() {
           <Article key={index} articleData={article} />
         ))}
         <ThemeProvider theme={theme}>
-          <Fab className="fab-write" color="primary" aria-label="edit" href="/feed/create">
-            <EditIcon />
+          <Fab className="fab-write" color="primary" aria-label="edit" >
+            <EditIcon onClick={handleClickCreate}/>
           </Fab>
         </ThemeProvider>
         <div className="loading">
