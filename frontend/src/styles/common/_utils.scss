@@ -86,7 +86,7 @@ $wide-desktop: 1249px;
         padding-top: 1rem;
         padding-bottom: 0.5rem;
         position: sticky;
-        width: 56%;
+        width: 100%;
         top: 0;
         z-index: 1;
         font-size: 0.9rem;
@@ -116,6 +116,8 @@ $wide-desktop: 1249px;
 
   & #inner {
     /* 플로팅 버튼 */
+    padding-top: 1rem;
+
     & .fab-write {
       position: fixed;
       bottom: 5vh;
