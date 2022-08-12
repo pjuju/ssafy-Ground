@@ -245,8 +245,6 @@ public class UserService {
 			groundCategories.add(new GroundCategoryDto(Ckey, categories.get(Ckey)));
 		}
 
-
-
 		userProfileDto.setUser(user);
 		userProfileDto.setFollow(follow);
 		userProfileDto.setUserFollowerCount(followRepository.findFollowerCountById(id));

@@ -310,7 +310,7 @@ public class BoardService {
     public List<BoardResponseDto> getMyBoard(long userId, Pageable pageable, User loginUser) {
 
         List<BoardResponseDto> result = new ArrayList<>();
-        List<Board> boardList = boardRepository.findAllByUserId(userId, pageable);
+        List<Board> boardList = boardRepository.findAllByUserIdOrderByRegDttmDesc(userId, pageable);
 
         for (Board board : boardList) {
             result.add(new BoardResponseDto(board, loginUser));
@@ -335,7 +335,7 @@ public class BoardService {
         // 작성자가 나
         userList.add(loginUser);
 
-        List<Board> boardList = boardRepository.findAllByIdInAndUserInAndPrivateYN(boardIdList, userList,false, pageable);
+        List<Board> boardList = boardRepository.findAllByIdInAndUserInAndPrivateYNOrderByRegDttmDesc(boardIdList, userList,false, pageable);
         List<BoardResponseDto> result = new ArrayList<>();
         for (Board board : boardList) result.add(new BoardResponseDto(board, loginUser));
 
