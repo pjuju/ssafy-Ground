@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid, Modal }  from "@mui/material";
 import GrTextField from 'components/common/GrTextField';
 import GrButton from 'components/common/GrButton';
 import { Box } from "@mui/system";
-import { confirmPass } from "api/find";
+import { confirmPass, modifyPass } from "api/find";
 
 
 
@@ -21,7 +21,7 @@ function PasswordResult({userId, userEmail}) {
   const onClickPasswordConfirm = () => {
 		const info = {
 			email: userEmail,
-			password: password,
+			pass: password,
 			username: userId,
 		}
     if (passwordCheck === password) {
@@ -33,6 +33,14 @@ function PasswordResult({userId, userEmail}) {
 		setCheckOpen(true);
   }
 	const onClickCheck = () => {
+		const info = {
+			email: userEmail,
+			pass: password,
+			username: userId,
+		}
+		modifyPass(info, (res) => {
+			console.log(res.data)
+		})
 		setCheckOpen(false);
 	}
 	return (
