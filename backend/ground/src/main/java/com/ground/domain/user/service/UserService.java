@@ -215,17 +215,12 @@ public class UserService {
     @Transactional
     public UserUpdateDto getModifyUser(User loginUser) {
 		UserUpdateDto userUpdateDto = new UserUpdateDto();
-		List<UserCategory> userCategories = userCategoryRepository.findAllByUser(loginUser);
-		List<Long> userCategoryDtos = new ArrayList<>();
-		for (UserCategory userCategory : userCategories) {
-			userCategoryDtos.add(userCategory.getCategory().getId());
-		}
+
 		userUpdateDto.setNickname(loginUser.getNickname());
 		userUpdateDto.setPrivateYN(loginUser.isPrivateYN());
 		userUpdateDto.setAge(loginUser.getAge());
 		userUpdateDto.setGender(loginUser.getGender());
 		userUpdateDto.setIntroduce(loginUser.getIntroduce());
-		userUpdateDto.setUserCategories(userCategoryDtos);
 		userUpdateDto.setUserImage(loginUser.getUserImage());
 
 		return userUpdateDto;
@@ -235,16 +230,21 @@ public class UserService {
 	@Transactional
     public void profileUpdate(User loginUser, UserUpdateDto entity) {
 
+		loginUser.profileUpdate(entity, LocalDateTime.now());
+
+    }
+
+	// 관심종목 설정
+	@Transactional
+	public void setUserCategory(User loginUser, List<Long> userCategories) {
+		
 		userCategoryRepository.deleteAllByUser(loginUser);
-		List<Long> userCategories = entity.getUserCategories();
 		for (Long userCategoryId : userCategories) {
 			Category category = categoryRepository.findById(userCategoryId).get();
 			userCategoryRepository.save(new UserCategory(loginUser, category));
 		}
+	}
 
-		loginUser.profileUpdate(entity, LocalDateTime.now());
-
-    }
 
 	// 회원 상세정보 추가
 	@Transactional
