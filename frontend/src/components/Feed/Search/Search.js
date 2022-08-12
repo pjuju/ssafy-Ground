@@ -224,7 +224,7 @@ function Search() {
   }, []);
 
   return (
-    <>
+    <Grid className="content">
       <Grid className="content__title-desktop" onClick={handleClickTitle}>
         <h2>검색</h2>
       </Grid>
@@ -291,7 +291,7 @@ function Search() {
         )}
         <div ref={target} style={{ height: "100px" }}></div>
       </Grid>
-    </>
+    </Grid>
   );
 }
 
