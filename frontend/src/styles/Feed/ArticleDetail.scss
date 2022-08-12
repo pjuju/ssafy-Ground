@@ -109,10 +109,20 @@ $wide-desktop: 1249px;
 
   &__nickname {
     font-weight: bold;
+    @include sm() {
+      padding-top: 0.2rem;
+      font-size: 0.8rem;
+    }
   }
 
   &__regDate {
+    padding-top: 0.3rem;
     margin-left: 1rem !important;
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.493);
+    @include sm() {
+      margin-left: 0.5rem !important;
+    }
   }
 
   &__content {
@@ -132,6 +142,13 @@ $wide-desktop: 1249px;
   width: 100%;
   margin: 1rem 0;
 
+  &__field {
+    width: 100%;
+  }
+}
+
+.comment-update {
+  min-width: 280px;
   &__field {
     width: 100%;
   }
