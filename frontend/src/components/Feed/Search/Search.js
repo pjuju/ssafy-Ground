@@ -80,8 +80,6 @@ function Search() {
   // 검색 필터 모달창 핸들러
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // 게시글 검색 결과 페이징
-  const [pageNumber, setPageNumber] = useState(1);
 
   // 검색 데이터 설정
   const getSearchData = () => {
