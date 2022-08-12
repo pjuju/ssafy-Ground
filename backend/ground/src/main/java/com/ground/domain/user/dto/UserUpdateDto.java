@@ -18,7 +18,6 @@ public class UserUpdateDto {
     private Age age;
     private Gender gender;
     private String introduce;
-    private List<Long> userCategories;
     private String userImage;
 
     @Builder
@@ -28,7 +27,6 @@ public class UserUpdateDto {
         this.age = entity.getAge();
         this.gender = entity.getGender();
         this.introduce = entity.getIntroduce();
-        this.userCategories = entity.getUserCategories();
         this.userImage = entity.getUserImage();
     }
 }

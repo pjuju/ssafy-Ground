@@ -188,6 +188,16 @@ public class UserController {
         userService.profileUpdate(user, userUpdateDto);
     }
 
+    // 관심종목 설정
+    @PutMapping("/category")
+    @ApiOperation(value = "관심종목 설정")
+    public void setUserCategory(@RequestHeader String Authorization, @RequestBody List<Long> userCategories) {
+        String ftoken = Authorization.substring(7);
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+
+        userService.setUserCategory(user, userCategories);
+    }
+
     // 회원 상세정보 추가
     @PostMapping("/userDetail")
     @ApiOperation(value = "회원 상세정보 추가")
