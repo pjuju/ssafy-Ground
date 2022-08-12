@@ -36,15 +36,6 @@ function LatestFeed() {
   // Outlet에 생성한 context를 가져온다.
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
 
-  // 유저 관련 정보
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
-  const [id, setId] = useState("");
-  const [introduce, setIntroduce] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [privateYN, setPrivateYN] = useState("");
-  const [userImage, setUserImage] = useState("");
-
   // 관심 운동 종목과 관련한 Redux 상태값, 액션함수
   const interestList = useSelector((state) => state.interest.interestList);
 
@@ -82,15 +73,6 @@ function LatestFeed() {
 
   useEffect(() => {
     getUserState((res) => {
-      // 관심 운동 종목 설정 변경을 요청할 때 필요한 데이터를 미리 setState
-      setAge(res.data.age);
-      setGender(res.data.gender);
-      setId(res.data.id);
-      setIntroduce(res.data.introduce);
-      setNickname(res.data.nickname);
-      setPrivateYN(res.data.privateYN);
-      setUserImage(res.data.userImage);
-
       // 사용자의 관심 운동 종목을 redux state인 interestList에서 true로 변경
       getUserProfile(res.data.id, (res) => {
         console.log(res.data);
@@ -101,17 +83,17 @@ function LatestFeed() {
     });
   }, []);
 
-  // useEffect(() => {
-  //   let observer;
-  //   if (target) {
-  //     observer = new IntersectionObserver(onIntersect, {
-  //       threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
-  //     });
-  //     setIsLoading((isLoading) => !isLoading);
-  //     observer.observe(target);
-  //   }
-  //   return () => observer && observer.disconnect();
-  // }, [target, pageNumber]);
+  useEffect(() => {
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4, // target과 40%만큼 겹쳤을 때 onIntersect 실행
+      });
+      setIsLoading((isLoading) => !isLoading);
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target, pageNumber]);
 
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);
