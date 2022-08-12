@@ -61,8 +61,8 @@ public class KakaoService {
 		            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 		            StringBuilder sb = new StringBuilder();
 		            sb.append("grant_type=authorization_code");
-		            sb.append("&client_id=" + "10dbd6c17a3c833039d30c7fd89064c5");
-		            sb.append("&redirect_uri="+ "http://localhost:8080/rest/user/oauth/kakao");
+		            sb.append("&client_id=" +"${kakao.client_id}");
+		            sb.append("&redirect_uri="+ "${kakao.redirect_uri}");
 		            sb.append("&code=" + authorize_code);
 		            bw.write(sb.toString());
 		            bw.flush();
@@ -87,11 +87,11 @@ public class KakaoService {
 		            
 		            access_Token = element.getAsJsonObject().get("access_token").getAsString();
 		            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-		            id_token = element.getAsJsonObject().get("id_token").getAsString();
+//		            id_token = element.getAsJsonObject().get("id_token").getAsString();
 		            
 		            System.out.println("access_token : " + access_Token);
 		            System.out.println("refresh_token : " + refresh_Token);
-		            System.out.println("id_token: "+ id_token);
+//		            System.out.println("id_token: "+ id_token);
 		            
 		            br.close();
 		            bw.close();

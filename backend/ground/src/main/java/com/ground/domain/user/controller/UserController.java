@@ -129,23 +129,22 @@ public class UserController {
     }
     
     @RequestMapping("/oauth/kakao")
-    @ApiOperation(value = "카카오 로그인", response = String.class)
+    @ApiOperation(value = "카카오 로그인", response = UserLoginResponseDto.class)
     public UserLoginResponseDto kakaoLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
     	log.info(code);
     	String access_Token = KakaoService.getAccessToken(code);
     	
-    	// 카카오 user 정보 받아오기
-    	// 객체로 받기
     	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
     	ukld = kakaoService.getUserInfo(access_Token);
     	System.out.println("uc ukld: " + ukld);
     	return kakaoService.kakaoLogin(ukld);
-    	
-    	// 아래 로직 수행
-    	// 현재 DB에 해당 이메일이 없으면 회원가입을 시키고, 아니면 로그인시킨다.
-    	// username(id) -> id(long), email -> 이메일
-    	
     }
+    
+//    @RequestMapping("/oauth/google")
+//    @ApiOperation(value = "구글 로그인", response = UserLoginResponseDto.class)
+//    public UserLoginResponseDto googleLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
+//    	
+//    }
     
     @DeleteMapping("/logout")
     @ApiOperation(value = "로그아웃", response = boolean.class)
