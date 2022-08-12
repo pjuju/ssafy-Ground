@@ -107,32 +107,6 @@ function Search() {
       }
     }
 
-  // 검색 데이터 설정
-  const getSearchData = () => {
-    const searchData = {};
-
-    searchData.word = word;
-    searchData.category = getCheckedValues(radio[0], data.interest);
-    searchData.gender = getCheckedValues(radio[1], data.gender);
-    searchData.age = getCheckedValues(radio[2], data.age);
-    searchData.location = getCheckedValues(radio[3], data.location);
-    searchData.type = sortType;
-    searchData.startDate = "1900-01-01";
-    searchData.endDate = moment().format("YYYY-MM-DD");
-
-    if (dateRange !== "all") {
-      if (dateRange === "custom") {
-        searchData.startDate = moment(startDate).format("YYYY-MM-DD");
-        searchData.endDate = moment(endDate).format("YYYY-MM-DD");
-      } else if (dateRange === "days") {
-        searchData.startDate = moment().format("YYYY-MM-DD");
-      } else {
-        searchData.startDate = moment()
-          .subtract(1, dateRange)
-          .format("YYYY-MM-DD");
-      }
-    }
-
     return searchData;
   };
 
