@@ -22,6 +22,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findAllByCategoryIdInAndLocationIdInAndContentContainingIgnoreCaseAndRegDttmBetweenAndPrivateYNAndUserIn(List<Long> category, List<Long> location, String word, LocalDateTime startDate, LocalDateTime endDate, boolean b, List<User> userList, Pageable pageable);
 
     // -----------------BSH-----------------
-    List<Board> findAllByUserId(long userId, Pageable pageable);
-    List<Board> findAllByIdInAndUserInAndPrivateYN(List<Long> Id, List<User> userList, boolean tf, Pageable pageable);
+    List<Board> findAllByUserIdOrderByRegDttmDesc(long userId, Pageable pageable);
+    List<Board> findAllByUserId(long userId);
+    List<Board> findAllByIdInAndUserInAndPrivateYNOrderByRegDttmDesc(List<Long> Id, List<User> userList, boolean tf, Pageable pageable);
 }

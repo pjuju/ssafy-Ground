@@ -14,19 +14,13 @@ import java.util.List;
 @Data
 public class UserProfileDto {
 
-
     private int follow;
     private User user;
     private int userFollowerCount;
     private int userFollowingCount;
     private List<UserCategoryDto> userCategories;
-
-//    public UserProfileDto(User entity) {
-//        this.id = entity.getId();
-//        this.username = entity.getUsername();
-//        this.nickname = entity.getNickname();
-//        this.privateYN = entity.isPrivateYN();
-//        this.introduce = entity.getIntroduce();
-//    }
+    private List<UserBoardDto> userBoardDtos;
+    private List<GroundBoardDto> groundDates;
+    private List<GroundCategoryDto> groundCategory;
 }
 
