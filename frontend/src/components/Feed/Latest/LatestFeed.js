@@ -13,7 +13,17 @@ import FilterButton from "./FilterButton";
 import FilterChips from "./FilterChips";
 import { useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleInterestList } from "modules/interest";
+import {
+  deleteInterest,
+  setInterest,
+  toggleInterestList,
+} from "modules/interest";
+import {
+  getUserProfile,
+  getUserState,
+  modifyUserInfo,
+  updateInterest,
+} from "api/user";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
@@ -31,6 +41,8 @@ function LatestFeed() {
 
   const dispatch = useDispatch();
   const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
+  const onSetInterest = (id) => dispatch(setInterest(id));
+  const onDeleteInterest = (id) => dispatch(deleteInterest(id));
 
   const fetchArticles = () => {
     getLatestBoard(pageNumber, (res) => {
@@ -60,6 +72,18 @@ function LatestFeed() {
   }, []);
 
   useEffect(() => {
+    getUserState((res) => {
+      // 사용자의 관심 운동 종목을 redux state인 interestList에서 true로 변경
+      getUserProfile(res.data.id, (res) => {
+        console.log(res.data);
+        res.data.userCategories.map((item) => {
+          onSetInterest(item.categoryId);
+        });
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     let observer;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
@@ -73,6 +97,22 @@ function LatestFeed() {
 
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);
+  };
+
+  const changeInterestList = () => {
+    const interestArray = [];
+    // interestList에서 isInterested가 true인 것들의 id만 뽑아서 새로운 배열 생성
+    interestList.map((item) => {
+      if (item.isInterested) {
+        console.log(interestList);
+        interestArray.push(item.id);
+      }
+    });
+    console.log(interestArray);
+
+    updateInterest(interestArray, (res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -89,12 +129,14 @@ function LatestFeed() {
             <FilterChips
               interestList={interestList}
               onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
             />
           </Grid>
           <Grid className="content__inner__filter__icon">
             <FilterButton
               interestList={interestList}
               onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
             />
           </Grid>
         </Grid>

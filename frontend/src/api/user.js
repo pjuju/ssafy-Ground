@@ -18,8 +18,19 @@ function modifyUserInfo(userDetail, success) {
   api.put("/user/modifyUser", userDetail).then(success);
 }
 
+function updateInterest(interest, success) {
+  api.put("/user/category", interest).then(success);
+}
+
 function logout(success) {
   api.delete("/user/logout").then(success);
 }
 
-export { getUserState, initUserDetail, getUserProfile, modifyUserInfo, logout };
+export {
+  getUserState,
+  initUserDetail,
+  getUserProfile,
+  modifyUserInfo,
+  updateInterest,
+  logout,
+};
