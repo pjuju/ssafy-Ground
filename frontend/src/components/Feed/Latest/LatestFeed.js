@@ -1,4 +1,4 @@
-import { getFollowBoard } from "api/board";
+import { getLatestBoard } from "api/board";
 import Article from "components/Feed/Article/Article";
 import TitleBar from "components/common/TitleBar";
 import theme from "components/common/theme.js";
@@ -12,6 +12,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import FilterButton from "./FilterButton";
 import FilterChips from "./FilterChips";
 import { useOutletContext } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteInterest,
+  setInterest,
+  toggleInterestList,
+} from "modules/interest";
+import {
+  getUserProfile,
+  getUserState,
+  modifyUserInfo,
+  updateInterest,
+} from "api/user";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
@@ -24,8 +36,16 @@ function LatestFeed() {
   // Outlet에 생성한 context를 가져온다.
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
 
+  // 관심 운동 종목과 관련한 Redux 상태값, 액션함수
+  const interestList = useSelector((state) => state.interest.interestList);
+
+  const dispatch = useDispatch();
+  const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
+  const onSetInterest = (id) => dispatch(setInterest(id));
+  const onDeleteInterest = (id) => dispatch(deleteInterest(id));
+
   const fetchArticles = () => {
-    getFollowBoard(pageNumber, (res) => {
+    getLatestBoard(pageNumber, (res) => {
       setArticles(articles.concat(res.data));
       setPageNumber((pageNumber) => pageNumber + 1);
       console.log(res.data);
@@ -52,6 +72,18 @@ function LatestFeed() {
   }, []);
 
   useEffect(() => {
+    getUserState((res) => {
+      // 사용자의 관심 운동 종목을 redux state인 interestList에서 true로 변경
+      getUserProfile(res.data.id, (res) => {
+        console.log(res.data);
+        res.data.userCategories.map((item) => {
+          onSetInterest(item.categoryId);
+        });
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     let observer;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
@@ -67,6 +99,22 @@ function LatestFeed() {
     document.querySelector(".content").scrollTo(0, 0);
   };
 
+  const changeInterestList = () => {
+    const interestArray = [];
+    // interestList에서 isInterested가 true인 것들의 id만 뽑아서 새로운 배열 생성
+    interestList.map((item) => {
+      if (item.isInterested) {
+        console.log(interestList);
+        interestArray.push(item.id);
+      }
+    });
+    console.log(interestArray);
+
+    updateInterest(interestArray, (res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <Grid className="content">
       <Grid className="content__title-desktop">
@@ -78,10 +126,18 @@ function LatestFeed() {
       <Grid id="inner" className="content__inner">
         <Grid className="content__inner__filter" container direction="row">
           <Grid className="content__inner__filter__chips">
-            <FilterChips />
+            <FilterChips
+              interestList={interestList}
+              onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
+            />
           </Grid>
           <Grid className="content__inner__filter__icon">
-            <FilterButton />
+            <FilterButton
+              interestList={interestList}
+              onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
+            />
           </Grid>
         </Grid>
         {articles.map((article, index) => (

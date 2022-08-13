@@ -13,6 +13,8 @@ import FiberNewOutlinedIcon from "@mui/icons-material/FiberNewOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getAccountNoti, getBoardNoti } from "api/notification";
 
 function BottomNavbar({
   sideMenuIdx,
@@ -20,6 +22,55 @@ function BottomNavbar({
   onSetSideMenuIdx,
   onSetBottomMenuIdx,
 }) {
+  const [activityNotiCnt, setActivityNotiCnt] = useState(0);
+  const [accountNotiCnt, setAccountNotiCnt] = useState(0);
+  const [activityNotiList, setActivityNotiList] = useState([]);
+  const [accountNotiList, setAccountNotiList] = useState([]);
+  const [notiCnt, setNotiCnt] = useState(0);
+
+  useEffect(() => {
+    // 서버에서 활동 알림 목록 받아오기
+    getBoardNoti((res) => {
+      setActivityNotiList(res.data);
+    });
+
+    getAccountNoti((res) => {
+      setAccountNotiList(res.data);
+    });
+  }, [bottomMenuIdx]);
+
+  useEffect(() => {
+    // 값 초기화 후 다시 측정
+    setActivityNotiCnt((activityNotiCnt) => 0);
+    console.log(activityNotiList);
+    activityNotiList.map((item) => {
+      if (!item.checkYN) {
+        setActivityNotiCnt((activityNotiCnt) => activityNotiCnt + 1);
+      }
+    });
+  }, [activityNotiList]);
+
+  useEffect(() => {
+    // 값 초기화 후 다시 측정
+    setAccountNotiCnt((accountNotiCnt) => 0);
+    console.log(accountNotiList);
+    accountNotiList.map((item) => {
+      if (!item.checkYN) {
+        setAccountNotiCnt((accountNotiCnt) => accountNotiCnt + 1);
+      }
+    });
+  }, [accountNotiList]);
+
+  useEffect(() => {
+    setNotiCnt(activityNotiCnt + accountNotiCnt);
+    console.log("activity : " + activityNotiCnt);
+  }, [activityNotiCnt]);
+
+  useEffect(() => {
+    setNotiCnt(activityNotiCnt + accountNotiCnt);
+    console.log("account : " + accountNotiCnt);
+  }, [accountNotiCnt]);
+
   return (
     <Grid className="navbar-bottom">
       <ThemeProvider theme={theme}>
@@ -52,7 +103,7 @@ function BottomNavbar({
             <BottomNavigationAction
               component={Link}
               to="/notification"
-              icon={<BadgeButton />}
+              icon={<BadgeButton notiCnt={notiCnt} />}
             />
             <BottomNavigationAction
               component={Link}

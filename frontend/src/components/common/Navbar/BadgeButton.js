@@ -1,9 +1,9 @@
 import { Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
-function BadgeButton() {
+function BadgeButton({ notiCnt }) {
   return (
-    <Badge badgeContent={5} color="notification" max={99}>
+    <Badge badgeContent={notiCnt} color="notification" max={99}>
       <NotificationsIcon />
     </Badge>
   );
