@@ -26,7 +26,9 @@ function SideNavbar({
       element = document
         .querySelector(`.navbar-side__menu a:nth-child(${sideMenuIdx + 1})`)
         .querySelector("h3");
-      element.className = "bold";
+      if (element) {
+        element.className = "bold";
+      }
     }
 
     // 사용자 정보 가져오기
@@ -39,11 +41,11 @@ function SideNavbar({
     });
 
     return () => {
-      if (sideMenuIdx !== -1) {
+      if (element) {
         element.className = "";
       }
     };
-  }, [sideMenuIdx]);
+  }, [sideMenuIdx, bottomMenuIdx]);
 
   const handleMenuClick = (menuIdx) => {
     switch (menuIdx) {

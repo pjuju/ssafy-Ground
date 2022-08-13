@@ -96,6 +96,9 @@ function BottomNavbar({
                 case 3:
                   onSetSideMenuIdx(newValue - 1);
                   break;
+                case 4:
+                  onSetSideMenuIdx(-1);
+                  break;
                 default:
                   onSetSideMenuIdx(newValue);
                   break;
