@@ -40,11 +40,9 @@
   }
 }
 
-
 #desktop {
   & .content {
     &__inner {
-
       /* 최신 글 피드의 운동 종목 칩들 */
       &__filter {
         @include interest-filter();
@@ -53,11 +51,10 @@
   }
 }
 
-
 #mobile {
   & .content {
     &__inner {
-      padding-top: 3rem;
+      padding-top: 1.5rem;
       padding-bottom: 2rem;
 
       /* 최신 글 피드의 운동 종목 칩들 */
