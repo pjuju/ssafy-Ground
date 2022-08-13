@@ -29,11 +29,29 @@
               flex-direction: column;
               justify-content: center;
 
+              @include tablet() {
+                width: 52%;
+              }
+
+              @include mobile() {
+                width: 52%;
+              }
+
               & p {
                 font-size: 1.6rem;
                 font-weight: 700;
                 margin-bottom: 1rem;
                 margin-top: 0;
+
+                @include tablet() {
+                  margin-bottom: 0.5rem;
+                  font-size: 1.4rem;
+                }
+
+                @include mobile() {
+                  margin-bottom: 0.5rem;
+                  font-size: 1.4rem;
+                }
               }
 
               &__follow {
@@ -49,6 +67,20 @@
                   &__cnt {
                     font-weight: 700;
                   }
+
+                  @include tablet() {
+                    margin-right: 1.5rem;
+                    font-size: 1rem;
+                  }
+
+                  @include mobile() {
+                    margin-right: 1.5rem;
+                    font-size: 1rem;
+                  }
+                }
+
+                & .following {
+                  margin-right: 0;
                 }
               }
             }
@@ -57,14 +89,29 @@
               width: 23%;
               text-align: right;
 
-              &__button {
-                padding-top: 1rem;
-                &--accept {
-                  border-radius: 20px !important;
-                }
+              @include tablet() {
+                width: 25%;
               }
 
-              &__icon {
+              @include mobile() {
+                width: 25%;
+              }
+
+              &__button {
+                padding-top: 1rem;
+                &--follow,
+                &--ing,
+                &--unfollow {
+                  border-radius: 20px !important;
+
+                  @include tablet() {
+                    font-size: 0.7rem;
+                  }
+
+                  @include mobile() {
+                    font-size: 0.7rem;
+                  }
+                }
               }
             }
           }
@@ -109,10 +156,10 @@
         }
 
         &__tabpanel {
-          padding: 0;
-          padding-top: 1rem;
+          text-align: center;
+          color: $light-gray;
 
-          & .article__inner {
+          padding-le & .article__inner {
             max-width: 100% !important;
           }
         }

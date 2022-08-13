@@ -67,7 +67,7 @@ function UserArticles() {
             ))
           )}
         </TabPanel>
-        <TabPanel value="1">
+        <TabPanel value="1" className="user-articles__tabpanel">
           {savedArticles.length === 0 ? (
             <p>저장한 글이 없습니다.</p>
           ) : (
