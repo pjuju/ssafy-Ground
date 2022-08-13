@@ -26,6 +26,10 @@ function getFollowingList(profileId, userId, success) {
   api.get(`/follow/${profileId}/following/${userId}`).then(success);
 }
 
+function deleteFollower(fromUserId, success) {
+  api.delete(`/follow/follower/${fromUserId}`).then(success);
+}
+
 export {
   requestFollow,
   requestUnfollow,
@@ -33,4 +37,5 @@ export {
   declineFollow,
   getFollowerList,
   getFollowingList,
+  deleteFollower,
 };

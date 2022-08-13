@@ -5,8 +5,11 @@ import { getFollowerList } from "api/follow";
 import { useEffect, useState } from "react";
 
 function FollowerDialog(props) {
-  const { onClose, open, profileId, userId } = props;
+  const { onClose, open, profileId, userId, setRerender, rerender } = props;
   const [followerList, setFollowerList] = useState([]);
+
+  // 팔로워 다이얼로그에서 삭제 버튼 클릭 시 다이얼로그를 다시 렌더링하기 위함
+  const [deleteRerender, setDeleteRerender] = useState(false);
 
   useEffect(() => {
     // 팝업 창이 열릴 때
@@ -16,7 +19,7 @@ function FollowerDialog(props) {
         console.log(res.data);
       });
     }
-  }, [open]);
+  }, [open, deleteRerender]);
 
   return (
     <Dialog className="dialog-follower" onClose={onClose} open={open}>
@@ -27,9 +30,15 @@ function FollowerDialog(props) {
             return (
               <FollowerUserProfile
                 key={index}
+                userId={follower.id}
                 userImage={follower.userImage}
                 nickname={follower.nickname}
                 username={follower.username}
+                followState={follower.followState}
+                setRerender={setRerender}
+                rerender={rerender}
+                setDeleteRerender={setDeleteRerender}
+                deleteRerender={deleteRerender}
               />
             );
           })

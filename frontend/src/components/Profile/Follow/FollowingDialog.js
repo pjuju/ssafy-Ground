@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getFollowingList } from "api/follow";
 
 function FollowingDialog(props) {
-  const { onClose, open, profileId, userId } = props;
+  const { onClose, open, profileId, userId, setRerender, rerender } = props;
   const [followingList, setFollowingList] = useState([]);
 
   useEffect(() => {
@@ -28,9 +28,13 @@ function FollowingDialog(props) {
             return (
               <FollowingUserProfile
                 key={index}
+                userId={following.id}
                 userImage={following.userImage}
                 nickname={following.nickname}
                 username={following.username}
+                followState={following.followState}
+                setRerender={setRerender}
+                rerender={rerender}
               />
             );
           })

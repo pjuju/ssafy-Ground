@@ -3,17 +3,15 @@ import "styles/common/_utils.scss";
 import "styles/Profile/Profile.scss";
 
 import { Divider, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import UserInfo from "./UserInfo";
 import UserArticles from "./UserArticles";
 import UserExerciseRecord from "./UserExerciseRecord";
+import { useOutletContext } from "react-router-dom";
 
-function Profile({ onSetSideMenuIdx, onSetBottomMenuIdx }) {
-  useEffect(() => {
-    // 새로고침 시 Navbar가 알맞은 메뉴 인덱스를 가리키도록 함
-    onSetSideMenuIdx(-1);
-    onSetBottomMenuIdx(4);
-  }, []);
+function Profile() {
+  // Outlet에 생성한 context를 가져온다.
+  const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
 
   return (
     <Grid className="content profile">

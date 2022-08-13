@@ -122,12 +122,16 @@ function UserInfo() {
             open={followerOpen}
             profileId={userId}
             userId={myId}
+            setRerender={setRerender}
+            rerender={rerender}
           />
           <FollowingDialog
             onClose={handleCloseFollowingList}
             open={followingOpen}
             profileId={userId}
             userId={myId}
+            setRerender={setRerender}
+            rerender={rerender}
           />
         </Grid>
         <Grid className="info-top__more">
