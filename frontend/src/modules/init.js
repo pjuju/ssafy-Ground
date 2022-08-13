@@ -2,6 +2,7 @@ import { interestList } from "components/common/interestList";
 
 /* 액션 타입 */
 const SET_IMG = "init/SET_IMG";
+const SET_IMG_FILE = "init/SET_IMG_FILE";
 const SET_DESC = "init/SEC_DESC";
 const TOGGLE_INTEREST = "init/TOGGLE_INTEREST";
 const SET_INTEREST_CNT = "init/ADD_INTEREST_CNT";
@@ -9,6 +10,7 @@ const SET_INIT_FLAG = "init/SET_INIT_FLAG";
 
 /* 액션 생성 함수 */
 export const setImg = (img) => ({ type: SET_IMG, img });
+export const setImgFile = (imgFile) => ({ type: SET_IMG_FILE, imgFile});
 export const setDesc = (desc) => ({ type: SET_DESC, desc });
 export const toggleInterest = (id) => ({ type: TOGGLE_INTEREST, id });
 export const setInterestCnt = (cnt) => ({ type: SET_INTEREST_CNT, cnt });
@@ -17,6 +19,7 @@ export const setInitFlag = (flag) => ({ type: SET_INIT_FLAG, flag });
 /* 초기 상태 */
 const initialState = {
   img: "",
+  imgFile: "",
   desc: "",
   interest: interestList,
   interestCnt: 0,
@@ -31,6 +34,11 @@ export default function init(state = initialState, action) {
         ...state,
         img: action.img,
       };
+    case SET_IMG_FILE:
+      return {
+        ...state,
+        imgFile: action.imgFile
+      }
     case SET_DESC:
       return {
         ...state,

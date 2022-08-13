@@ -29,8 +29,9 @@ function SideNavbar({
     // 사용자 정보 가져오기
     getUserState((res) => {
       setNickname(res.data.nickname);
-      setImage(res.data.image);
+      setImage(res.data.userImage);
       setEmail(res.data.email);
+      console.log(res.data)
       console.log(nickname);
       console.log(image);
       console.log(email);
