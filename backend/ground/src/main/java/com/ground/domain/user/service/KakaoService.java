@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ground.domain.jwt.JwtTokenProvider;
+import com.ground.domain.user.dto.SocialOauth;
 import com.ground.domain.user.dto.UserKakaoLoginDto;
 import com.ground.domain.user.dto.UserLoginResponseDto;
 import com.ground.domain.user.entity.User;
@@ -38,12 +39,15 @@ public class KakaoService {
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
-	public static String getAccessToken (String authorize_code) {
+	private final SocialOauth socialOauth;
+	
+	
+	public static String getAccessToken (String authorize_code, String kakao_client_id, String kakao_redirect_uri) {
 		     System.out.println("----------------------------토큰발급---------------------------");
 			 String access_Token = "";
 		     String refresh_Token = "";
 		     String id_token ="";
-		     
+	
 		     //토큰발급 요청을 보낼 주소
 		     String reqURL = "https://kauth.kakao.com/oauth/token";
 		        
@@ -61,8 +65,8 @@ public class KakaoService {
 		            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 		            StringBuilder sb = new StringBuilder();
 		            sb.append("grant_type=authorization_code");
-		            sb.append("&client_id=" +"${kakao.client_id}");
-		            sb.append("&redirect_uri="+ "${kakao.redirect_uri}");
+		            sb.append("&client_id=" + kakao_client_id);
+		            sb.append("&redirect_uri="+ kakao_redirect_uri);
 		            sb.append("&code=" + authorize_code);
 		            bw.write(sb.toString());
 		            bw.flush();

@@ -13,12 +13,14 @@ import com.ground.domain.jwt.JwtTokenProvider;
 import com.ground.domain.user.dto.*;
 import com.ground.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
 import com.ground.domain.jwt.TokenResponse;
 import com.ground.domain.user.entity.User;
+import com.ground.domain.user.service.GoogleService;
 import com.ground.domain.user.service.KakaoService;
 import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
@@ -54,6 +56,11 @@ public class UserController {
 	MailSendService mailService;
 	@Autowired
 	KakaoService kakaoService;
+	@Autowired
+	GoogleService googleService;
+	@Autowired
+	SocialOauth socialOauth;
+	
 
 	
 	@PersistenceContext
@@ -132,7 +139,10 @@ public class UserController {
     @ApiOperation(value = "카카오 로그인", response = UserLoginResponseDto.class)
     public UserLoginResponseDto kakaoLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
     	log.info(code);
-    	String access_Token = KakaoService.getAccessToken(code);
+    	String kakao_client_id = socialOauth.getKakao_client_id();
+    	String kakao_redirect_uri = socialOauth.getKakao_redirect_uri();
+    	
+    	String access_Token = KakaoService.getAccessToken(code, kakao_client_id, kakao_redirect_uri);
     	
     	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
     	ukld = kakaoService.getUserInfo(access_Token);
@@ -140,11 +150,20 @@ public class UserController {
     	return kakaoService.kakaoLogin(ukld);
     }
     
-//    @RequestMapping("/oauth/google")
-//    @ApiOperation(value = "구글 로그인", response = UserLoginResponseDto.class)
-//    public UserLoginResponseDto googleLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
-//    	
-//    }
+    @RequestMapping("/oauth/google")
+    @ApiOperation(value = "구글 로그인", response = UserLoginResponseDto.class)
+    public UserLoginResponseDto googleLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
+    	String google_client_id = socialOauth.getGoogle_client_id();
+    	String google_client_secret = socialOauth.getGoogle_client_secret();
+    	String google_redirect_uri = socialOauth.getGoogle_redirect_uri();
+    	String google_token_url = socialOauth.getGoogle_token_url();
+    	String access_Token = GoogleService.getAccessToken(code, google_client_id, google_client_secret, google_redirect_uri, google_token_url);
+    	System.out.println(access_Token); 
+    	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
+    	ukld = googleService.getUserInfo(access_Token);
+    	System.out.println("uc ukld: " + ukld);
+    	return googleService.googleLogin(ukld);
+    }
     
     @DeleteMapping("/logout")
     @ApiOperation(value = "로그아웃", response = boolean.class)
