@@ -156,10 +156,13 @@
         }
 
         &__tabpanel {
-          text-align: center;
           color: $light-gray;
 
-          padding-le & .article__inner {
+          & p {
+            text-align: center;
+          }
+
+          & .article__inner {
             max-width: 100% !important;
           }
         }
