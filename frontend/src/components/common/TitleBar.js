@@ -10,6 +10,10 @@ function TitleBar(props) {
     document.querySelector(".content").scrollTo(0, 0);
   };
 
+  const handleClickBack = () => {
+    window.history.back();
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }} display="flex" justifyContent="center">
       <AppBar id="titlebar" position="static">
@@ -20,6 +24,7 @@ function TitleBar(props) {
               edge="start"
               color="inherit"
               aria-label="menu"
+              onClick={handleClickBack}
             >
               <ArrowBackIcon />
             </IconButton>
