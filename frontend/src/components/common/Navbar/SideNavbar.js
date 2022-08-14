@@ -3,8 +3,8 @@ import ProfileButton from "components/common/Navbar/ProfileButton";
 
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { getUserInfo } from "api/user";
+import { Link, useNavigate } from "react-router-dom";
+import { getUserState, logout } from "api/user";
 
 function SideNavbar({
   sideMenuIdx,
@@ -13,8 +13,9 @@ function SideNavbar({
   onSetBottomMenuIdx,
 }) {
   const [nickname, setNickname] = useState("");
-  const [userImage, setUserImage] = useState("");
+  const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     let element;
@@ -26,14 +27,22 @@ function SideNavbar({
     }
 
     // 사용자 정보 가져오기
-    getUserInfo((res) => console.log(res.data));
+    getUserState((res) => {
+      setNickname(res.data.nickname);
+      setImage(res.data.userImage);
+      setEmail(res.data.email);
+      console.log(res.data)
+      console.log(nickname);
+      console.log(image);
+      console.log(email);
+    });
 
     return () => {
       if (sideMenuIdx !== -1) {
         element.className = "";
       }
     };
-  });
+  }, [sideMenuIdx]);
 
   const handleMenuClick = (menuIdx) => {
     switch (menuIdx) {
@@ -46,6 +55,23 @@ function SideNavbar({
         break;
     }
     onSetSideMenuIdx(menuIdx);
+  };
+
+  /* 로그아웃 */
+  const handleClickLogout = () => {
+    logout(
+      () => {
+        localStorage.removeItem("token");
+        navigate("/");
+      },
+      (err) => {
+        // JWT 토근이 만료되어 500 에러가 반환됐다면
+        if (err.response.status === 500) {
+          localStorage.removeItem("token");
+          navigate("/");
+        }
+      }
+    );
   };
 
   return (
@@ -65,11 +91,13 @@ function SideNavbar({
         <Link to="/feed/search" onClick={() => handleMenuClick(2)}>
           <h3>검색</h3>
         </Link>
-        <h5 className="navbar-side__menu__logout">로그아웃</h5>
+        <p className="navbar-side__menu__logout" onClick={handleClickLogout}>
+          로그아웃
+        </p>
       </Grid>
       <Grid className="navbar-side__profile" item>
         <Link to="/profile/1">
-          <ProfileButton />
+          <ProfileButton nickname={nickname} image={image} email={email} />
         </Link>
       </Grid>
     </Grid>

@@ -17,7 +17,7 @@ function SearchDatePicker({
         <DateRange dateRange={dateRange} setDateRange={setDateRange} />
       </Grid>
       {dateRange === "custom" && (
-        <Grid className="top__date-picker" container justifyContent="end">
+        <Grid className="top__date-picker--calendar" container>
           <StartDatePicker startDate={startDate} setStartDate={setStartDate} />
           <EndDatePicker
             startDate={startDate}
