@@ -5,7 +5,6 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserState, logout } from "api/user";
-import { setIdFlag } from "modules/find";
 
 function SideNavbar({
   sideMenuIdx,
@@ -90,15 +89,13 @@ function SideNavbar({
         </p>
       </Grid>
       <Grid className="navbar-side__profile" item>
-        <Link to={`/profile/${id}`}>
-          <ProfileButton
-            id={id}
-            nickname={nickname}
-            image={image}
-            email={email}
-            username={username}
-          />
-        </Link>
+        <ProfileButton
+          id={id}
+          nickname={nickname}
+          image={image}
+          email={email}
+          username={username}
+        />
       </Grid>
     </Grid>
   );
