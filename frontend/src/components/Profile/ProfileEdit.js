@@ -54,6 +54,8 @@ function ProfileEdit() {
   const [changedUserImage, setChangedUserImage] = useState("");
   const [changedPrivateYN, setChangedPrivateYN] = useState(false);
 
+  const [imageChange, setImageChange] = useState(false);
+
   // 모달창 컨트롤
   const [open, setOpen] = useState(false);
   const [modifyPassOpen, setModifyPassOpen] = useState(false);
@@ -127,12 +129,14 @@ function ProfileEdit() {
 
   useEffect(() => {
     // 이미지 프리뷰 보여주기
-    preview();
+    if (userImage !== changedUserImage) {
+      preview();
+    }
   }, [changedUserImage]);
 
   /* 이미지를 첨부했을 때 프리뷰로 해당 이미지 미리보기 */
   const preview = () => {
-    if (changedUserImage === "") return false;
+    if (changedUserImage.length === 0) return false;
 
     const imgElement = document.querySelector(
       ".profile-edit__img > button > img"
@@ -144,10 +148,10 @@ function ProfileEdit() {
 
   /* 이미지 첨부 버튼을 눌렀을 때 호출되는 핸들러 */
   const handleClickInput = (event) => {
-    event.preventDefault();
-
     const file = event.target.files[0];
     setChangedUserImage(URL.createObjectURL(file));
+    console.log("handleClickInput");
+    console.log(event.target.files[0]);
   };
 
   const handleClickBack = () => {
@@ -215,8 +219,6 @@ function ProfileEdit() {
     };
 
     modifyUserInfo(userDetail, (res) => {
-      console.log(userDetail);
-      console.log(userId);
       navigate(`/profile/${userId}`);
     });
   };
@@ -230,7 +232,7 @@ function ProfileEdit() {
         <h2 className="back">프로필 수정</h2>
       </Grid>
       <Grid className="content__title-mobile">
-        <TitleBar title="프로필 수정" />
+        <TitleBar title="프로필 수정" isBack={true} />
       </Grid>
       <Grid id="inner" className="content__inner">
         <Grid className="profile-edit">
@@ -247,10 +249,10 @@ function ProfileEdit() {
                 className="profile-edit__img__input-button"
                 onClick={() => selectUserImg.current.click()}
               >
-                {userImage.length === 0 ? (
+                {userImage.length === 0 && userImage === changedUserImage ? (
                   <img src={userImg} alt="img-input" />
                 ) : (
-                  <img src={userImage} alt="img-input" />
+                  <img src={changedUserImage} alt="img-input" />
                 )}
               </button>
             </Grid>

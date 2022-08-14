@@ -128,9 +128,13 @@
 
 #mobile {
   .profile-edit {
+    margin-bottom: 3rem;
+    padding-top: 1rem;
+
     &__img {
       & img {
-        width: 40%;
+        width: 180px;
+        height: 180px;
       }
     }
 
@@ -151,11 +155,26 @@
         padding: 1rem;
       }
 
+      &__nickname {
+        & .MuiTextField-root {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+
+        & button {
+          min-width: 110.95px;
+        }
+      }
+
       &__introduce {
         & input {
           width: 100%;
         }
       }
     }
+
+    // &__button {
+    //   display: none;
+    // }
   }
 }

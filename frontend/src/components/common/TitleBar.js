@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DoneIcon from "@mui/icons-material/Done";
 
 function TitleBar(props) {
   const handleClickTitle = () => {
@@ -44,18 +45,18 @@ function TitleBar(props) {
             >
               <AutoAwesomeOutlinedIcon />
             </IconButton>
+          ) : props.title === "알림" ? (
+            <IconButton
+              size="large"
+              edge="end"
+              color="inherit"
+              aria-label="filter"
+              onClick={props.handleClickAllDelete}
+            >
+              <DeleteOutlineIcon />
+            </IconButton>
           ) : (
-            props.title === "알림" && (
-              <IconButton
-                size="large"
-                edge="end"
-                color="inherit"
-                aria-label="filter"
-                onClick={props.handleClickAllDelete}
-              >
-                <DeleteOutlineIcon />
-              </IconButton>
-            )
+            <div style={{ width: "50.25px" }}></div>
           )}
         </Toolbar>
       </AppBar>

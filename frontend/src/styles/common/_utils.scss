@@ -200,6 +200,12 @@ $wide-desktop: 1249px;
       font-size: 1rem;
       cursor: pointer;
     }
+
+    &__button {
+      &--edit {
+        border-radius: 20px;
+      }
+    }
   }
 
   &__toolbar {
