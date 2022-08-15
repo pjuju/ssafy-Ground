@@ -77,6 +77,13 @@
         &__icon {
           display: none;
         }
+
+        &--none {
+          padding: 30%;
+          display: flex;
+          justify-content: center;
+          color: $light-gray;
+        }
       }
     }
   }
