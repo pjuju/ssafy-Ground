@@ -5,6 +5,7 @@ pipeline {
                 stage('Docker build') {
                         agent any
                         steps {
+                                sh "sudo cp ../.env .env ./frontend/src/"
                                 sh 'docker build -t backimg ./backend/ground'
                                 sh 'docker build -t frontimg ./frontend'
                                 sh 'echo hello2'
