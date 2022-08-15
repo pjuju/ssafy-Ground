@@ -29,7 +29,7 @@ function FilterChips({
     );
 
     updateInterest(deletedArray, (res) => {
-      console.log(res);
+      window.location.reload();
     });
   };
 

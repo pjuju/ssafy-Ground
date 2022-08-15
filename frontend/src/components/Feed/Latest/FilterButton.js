@@ -34,10 +34,8 @@ function FilterButton({
   };
 
   const handleClickSave = () => {
-    console.log("save");
     changeInterestList();
     handleCloseFilter();
-    window.location.reload();
   };
 
   return (

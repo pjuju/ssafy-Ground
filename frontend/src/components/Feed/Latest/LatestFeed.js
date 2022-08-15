@@ -122,6 +122,7 @@ function LatestFeed() {
     console.log(interestArray);
 
     updateInterest(interestArray, (res) => {
+      window.location.reload();
       console.log(res);
     });
   };
@@ -163,7 +164,7 @@ function LatestFeed() {
         </Grid>
         {articles.length === 0 ? (
           <div>
-            <p className="content__inner--none">
+            <p className="content__inner__filter--none">
               최신 글 피드에 등록된 글이 없습니다.
             </p>
             <ThemeProvider theme={theme}>

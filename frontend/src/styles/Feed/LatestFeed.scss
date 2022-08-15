@@ -46,6 +46,13 @@
       /* 최신 글 피드의 운동 종목 칩들 */
       &__filter {
         @include interest-filter();
+
+        &--none {
+          padding: 30%;
+          display: flex;
+          justify-content: center;
+          color: $light-gray;
+        }
       }
     }
   }
