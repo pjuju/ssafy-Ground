@@ -30,6 +30,8 @@ function CreateFeedPage() {
   const [boardInfo, setBoardInfo] = useState({});
   const [newImages, setNewImages] = useState([]);
   const [uploadImages, setUploadImages] = useState([]);
+  const [isCategoryError, setIsCategoryError] = useState(false);
+  const [isLocationError, setIsLocationError] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -116,13 +118,22 @@ function CreateFeedPage() {
   //   setAuthOpen(true);
   // };
   const handleSubmit = () => {
+    if (boardInfo.categoryId === undefined) {
+      setIsCategoryError(true)
+    }
+    if (boardInfo.locationId === undefined) {
+      setIsLocationError(true)
+    }
     const newBoardInfo = {
       ...boardInfo, images: newImages
     }
-    feedCreate(newBoardInfo, (res)=> {
-      console.log(res.data)
-    })
-    setAuthOpen(true)
+
+    if ((boardInfo.categoryId !== undefined) && (boardInfo.locationId !== undefined)) {
+      feedCreate(newBoardInfo, (res)=> {
+        console.log(res.data)
+      })
+      setAuthOpen(true)
+    }
   }
 
   const onClickAuth = () => {
@@ -176,8 +187,8 @@ function CreateFeedPage() {
         alignItems="center"
       >
         <ArticleText boardInfo={boardInfo} setBoardInfo={setBoardInfo}/>
-        <CategoryDropdown boardInfo={boardInfo} setBoardInfo={setBoardInfo}/>
-        <RegionDropdown boardInfo={boardInfo} setBoardInfo={setBoardInfo}/>
+        <CategoryDropdown boardInfo={boardInfo} setBoardInfo={setBoardInfo} isCategoryError={isCategoryError}/>
+        <RegionDropdown boardInfo={boardInfo} setBoardInfo={setBoardInfo} isLocationError={isLocationError}/>
         <ArticleOpen boardInfo={boardInfo} setBoardInfo={setBoardInfo}/>
         <ArticleImg boardInfo={boardInfo} newImages={newImages} uploadImages={uploadImages} setBoardInfo={setBoardInfo} setNewImages={setNewImages} setUploadImages={setUploadImages}/>
       </Grid>

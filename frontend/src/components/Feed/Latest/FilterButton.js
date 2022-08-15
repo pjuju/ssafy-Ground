@@ -34,7 +34,6 @@ function FilterButton({
   };
 
   const handleClickSave = () => {
-    console.log("save");
     changeInterestList();
     handleCloseFilter();
   };
