@@ -46,6 +46,13 @@
       /* 최신 글 피드의 운동 종목 칩들 */
       &__filter {
         @include interest-filter();
+
+        &--none {
+          padding: 30%;
+          display: flex;
+          justify-content: center;
+          color: $light-gray;
+        }
       }
     }
   }
@@ -117,5 +124,39 @@
     & button {
       border-radius: 20px !important;
     }
+  }
+}
+
+/* 필터 모달창 */
+
+.latest-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  background-color: #fff;
+
+  @include mobile() {
+    width: 100%;
+    top: 100%;
+    transform: translate(-50%, -100%);
+    padding-left: 8px;
+
+    &__desc {
+      font-size: 13px;
+    }
+
+    & .MuiFormControlLabel-label {
+      font-size: 13px;
+    }
+  }
+
+  &__inner {
+    padding: 10px 0 15px 30px;
+  }
+
+  &__button {
+    padding-right: 15px;
   }
 }
