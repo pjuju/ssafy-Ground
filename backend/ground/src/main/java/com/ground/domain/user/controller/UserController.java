@@ -1,29 +1,27 @@
 package com.ground.domain.user.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.ground.domain.jwt.JwtTokenProvider;
 import com.ground.domain.user.dto.*;
 import com.ground.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 import com.ground.domain.jwt.TokenResponse;
 import com.ground.domain.user.entity.User;
+import com.ground.domain.user.service.GoogleService;
+import com.ground.domain.user.service.KakaoService;
 import com.ground.domain.user.service.MailSendService;
 import com.ground.domain.user.service.UserService;
 
@@ -56,6 +54,13 @@ public class UserController {
 	UserService userService;
 	@Autowired
 	MailSendService mailService;
+	@Autowired
+	KakaoService kakaoService;
+	@Autowired
+	GoogleService googleService;
+	@Autowired
+	SocialOauth socialOauth;
+	
 
 	
 	@PersistenceContext
@@ -122,23 +127,49 @@ public class UserController {
     public UserLoginResponseDto login(@RequestBody UserLoginDto params){
     	return userService.login(params);
     }
-    
+
     @GetMapping("/state")
     @ApiOperation(value = "유저상태정보 전송", response = UserStateDto.class)
-    public UserStateDto userState(@RequestHeader String ftoken) {
+    public UserStateDto userState(@RequestHeader String Authorization) {
+    	String ftoken = Authorization.substring(7);
     	return userService.userState(ftoken);
     }
     
-    @GetMapping("/token/{ftoken}")
-    @ApiOperation(value = "유효성검사", response = boolean.class)
-    public boolean checkValidity(@PathVariable String ftoken) {
-    	return userService.checkValidity(ftoken);
+    @RequestMapping("/oauth/kakao")
+    @ApiOperation(value = "카카오 로그인", response = UserLoginResponseDto.class)
+    public UserLoginResponseDto kakaoLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
+    	log.info(code);
+    	String kakao_client_id = socialOauth.getKakao_client_id();
+    	String kakao_redirect_uri = socialOauth.getKakao_redirect_uri();
+    	
+    	String access_Token = KakaoService.getAccessToken(code, kakao_client_id, kakao_redirect_uri);
+    	
+    	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
+    	ukld = kakaoService.getUserInfo(access_Token);
+    	System.out.println("uc ukld: " + ukld);
+    	return kakaoService.kakaoLogin(ukld);
     }
     
-    @PostMapping("/oauth/kakao")
-    @ApiOperation(value = "카카오 로그인", response = String.class)
-    public String kakaoLogin(@RequestBody String id) {
-    	return "hikakao";
+    @RequestMapping("/oauth/google")
+    @ApiOperation(value = "구글 로그인", response = UserLoginResponseDto.class)
+    public UserLoginResponseDto googleLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
+    	String google_client_id = socialOauth.getGoogle_client_id();
+    	String google_client_secret = socialOauth.getGoogle_client_secret();
+    	String google_redirect_uri = socialOauth.getGoogle_redirect_uri();
+    	String google_token_url = socialOauth.getGoogle_token_url();
+    	String access_Token = GoogleService.getAccessToken(code, google_client_id, google_client_secret, google_redirect_uri, google_token_url);
+    	System.out.println(access_Token); 
+    	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
+    	ukld = googleService.getUserInfo(access_Token);
+    	System.out.println("uc ukld: " + ukld);
+    	return googleService.googleLogin(ukld);
+    }
+    
+    @DeleteMapping("/logout")
+    @ApiOperation(value = "로그아웃", response = boolean.class)
+    public boolean logoutUser(@RequestHeader String Authorization) {
+    	String ftoken = Authorization.substring(7);
+    	return userService.logoutUser(ftoken);
     }
 
     
@@ -147,7 +178,8 @@ public class UserController {
     // 프로필 조회 이동
     @GetMapping("/profile/{userId}")
     @ApiOperation(value = "프로필 조회", response = String.class)
-    public UserProfileDto userProfile(@PathVariable Long userId, @RequestHeader String ftoken) {
+    public UserProfileDto userProfile(@PathVariable Long userId, @RequestHeader String Authorization) {
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         Long loginUserId = user.getId();
 
@@ -157,28 +189,41 @@ public class UserController {
     // 회원 정보 수정 페이지로 이동
     @GetMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정 페이지로 이동", response = String.class)
-    public String getModifyUser(){
-        return "test!";
+    public UserUpdateDto getModifyUser(@RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+
+        return userService.getModifyUser(user);
     }
 
     // 회원 정보 수정
     @PutMapping("/modifyUser")
     @ApiOperation(value = "회원정보 수정", response = String.class)
-    public Long modifyUser(@RequestHeader String ftoken, @RequestBody UserUpdateDto userUpdateDto) {
+    public void modifyUser(@RequestHeader String Authorization, @RequestBody UserUpdateDto userUpdateDto) {
+    	String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long userId = user.getId();
 
-        return userService.profileUpdate(userId, userUpdateDto);
+        userService.profileUpdate(user, userUpdateDto);
+    }
+
+    // 관심종목 설정
+    @PutMapping("/category")
+    @ApiOperation(value = "관심종목 설정")
+    public void setUserCategory(@RequestHeader String Authorization, @RequestBody List<Long> userCategories) {
+        String ftoken = Authorization.substring(7);
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+
+        userService.setUserCategory(user, userCategories);
     }
 
     // 회원 상세정보 추가
     @PostMapping("/userDetail")
     @ApiOperation(value = "회원 상세정보 추가")
-    public void firstLogin(@RequestHeader String ftoken, @RequestBody UserFirstLoginDto userFirstLoginDto) {
-        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        Long userId = user.getId();
+    public void firstLogin(@RequestHeader String Authorization, @RequestBody UserFirstLoginDto userFirstLoginDto) {
+    	String ftoken = Authorization.substring(7);
+        User loginUser = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 
-        userService.firstLogin(userId, userFirstLoginDto);
+        userService.firstLogin(loginUser, userFirstLoginDto);
     }
 
 }

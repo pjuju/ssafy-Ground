@@ -1,7 +1,10 @@
 package com.ground.domain.user.dto;
 
 import com.ground.domain.user.entity.User;
+import com.ground.domain.user.entity.UserCategory;
 import lombok.*;
+
+import java.util.List;
 
 
 @Builder
@@ -11,23 +14,13 @@ import lombok.*;
 @Data
 public class UserProfileDto {
 
-
     private int follow;
     private User user;
-//    private Long id;
-//    private String username;
-//    private String nickname;
-//    private Boolean privateYN;
-//    private String introduce;
     private int userFollowerCount;
     private int userFollowingCount;
-
-//    public UserProfileDto(User entity) {
-//        this.id = entity.getId();
-//        this.username = entity.getUsername();
-//        this.nickname = entity.getNickname();
-//        this.privateYN = entity.isPrivateYN();
-//        this.introduce = entity.getIntroduce();
-//    }
+    private List<UserCategoryDto> userCategories;
+    private List<UserBoardDto> userBoardDtos;
+    private List<GroundBoardDto> groundDates;
+    private List<GroundCategoryDto> groundCategory;
 }
 

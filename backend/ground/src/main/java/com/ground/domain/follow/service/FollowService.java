@@ -45,16 +45,15 @@ public class FollowService {
 
     // 팔로우 수락
     @Transactional
-    public void followAccept(Long fromUserId, Long toUserId) {
+    public void followAccept(Long notiId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
-
-        User from = userRepository.findById(fromUserId).get();
+        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
+        User from = noti.getFrom();
         User to = userRepository.findById(toUserId).get();
 
         Follow follow = followRepository.findByFromUserIdAndToUserId(from, to);
         follow.FollowAccept(true);
 
-        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
         noti.NotificationAccountDelete(true);
 
         notificationAccountRepository.save(new NotificationAccount(to, from, true, LocalDateTime.now()));
@@ -62,18 +61,17 @@ public class FollowService {
 
     // 팔로우 거절
     @Transactional
-    public void followDecline(Long fromUserId, Long toUserId) {
+    public void followDecline(Long notiId, Long toUserId) {
 //        if(followRepository.findFollowByFromUserIdAndToUserId(fromUserId, toUserId) != null) throw new CustomApiException("이미 팔로우 하였습니다.");
-
-        User from = userRepository.findById(fromUserId).get();
+        NotificationAccount noti = notificationAccountRepository.findById(notiId).get();
+        User from = noti.getFrom();
         User to = userRepository.findById(toUserId).get();
 
-        followRepository.unFollow(fromUserId, toUserId);
-        NotificationAccount noti = notificationAccountRepository.findByFromAndToAndType(from, to, false);
+        followRepository.unFollow(from.getId(), toUserId);
         noti.NotificationAccountDelete(true);
     }
 
-    // 언팔로우
+    // 팔로우 삭제
     @Transactional
     public void unFollow(Long fromUserId, Long toUserId) {
 
@@ -86,7 +84,7 @@ public class FollowService {
         StringBuffer sb = new StringBuffer();
 
         sb.append("SELECT u.id, u.username, u.nickname, u.user_image,");
-        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
+        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id AND flag = TRUE), 1, 2), 0) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");
         sb.append("WHERE u.id = f.from_user_id AND f.to_user_id = ? AND f.flag = TRUE");
@@ -94,7 +92,8 @@ public class FollowService {
         Query query = em.createNativeQuery(sb.toString())
                 .setParameter(1, userId)
                 .setParameter(2, userId)
-                .setParameter(3, profileId);
+                .setParameter(3, userId)
+                .setParameter(4, profileId);
 
         JpaResultMapper result = new JpaResultMapper();
         List<FollowDto> followDtoList = result.list(query, FollowDto.class);
@@ -106,7 +105,7 @@ public class FollowService {
     public List<FollowDto> getFollowing(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT u.id, u.username, u.nickname, u.user_image, ");
-        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
+        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id AND flag = TRUE), 1, 2), 0) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");
         sb.append("WHERE u.id = f.to_user_id AND f.from_user_id = ? AND f.flag = TRUE");
@@ -114,7 +113,8 @@ public class FollowService {
         Query query = em.createNativeQuery(sb.toString())
                 .setParameter(1, userId)
                 .setParameter(2, userId)
-                .setParameter(3, profileId);
+                .setParameter(3, userId)
+                .setParameter(4, profileId);
 
         JpaResultMapper result = new JpaResultMapper();
         List<FollowDto> followDtoList = result.list(query, FollowDto.class);

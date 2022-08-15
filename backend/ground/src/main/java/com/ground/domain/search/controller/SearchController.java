@@ -38,7 +38,8 @@ public class SearchController {
 	// ============================ 유저 검색 ========================
 	@ApiOperation(value = "유저 검색")
 	@PostMapping("/user")
-	public List<sUserDto> searchUser(@RequestHeader String ftoken, @RequestBody final SearchUserDto params){
+	public List<sUserDto> searchUser(@RequestHeader String Authorization, @RequestBody final SearchUserDto params){
+		String ftoken = Authorization.substring(7);
 		User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 		return searchService.searchUser(params, user);
 	}
@@ -47,7 +48,8 @@ public class SearchController {
 	// ============================ 유저 최근 검색어 조회========================
 	@ApiOperation(value = "유저 최근 검색어 조회")
 	@GetMapping("/user")
-	public List<SearchUserDto> getSearchUser(@RequestHeader String ftoken){
+	public List<SearchUserDto> getSearchUser(@RequestHeader String Authorization){
+		String ftoken = Authorization.substring(7);
 		User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 		return searchService.getSearchUser(user);
 	}
@@ -57,7 +59,8 @@ public class SearchController {
 	@ApiOperation(value = "유저 검색어 삭제")
 	@ApiImplicitParam(name = "searchUserId", value = "유저 검색 PK", example = "1", required = true)
 	@DeleteMapping("/user/{searchUserId}")
-	public void deleteSearchUser(@RequestHeader String ftoken, @PathVariable Long searchUserId){
+	public void deleteSearchUser(@RequestHeader String Authorization, @PathVariable Long searchUserId){
+		String ftoken = Authorization.substring(7);
 		User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 		searchService.deleteSearchUser(user, searchUserId);
 	}
@@ -66,7 +69,8 @@ public class SearchController {
 	// ============================ 유저 검색어 전체 삭제 ========================
 	@ApiOperation(value = "유저 검색어 전체 삭제")
 	@DeleteMapping("/user")
-	public void deleteAllSearchUser(@RequestHeader String ftoken){
+	public void deleteAllSearchUser(@RequestHeader String Authorization){
+		String ftoken = Authorization.substring(7);
 		User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 		searchService.deleteAllSearchUser(user);
 
@@ -77,7 +81,8 @@ public class SearchController {
 //	 ============================ 게시글 검색! ========================
 	@ApiOperation(value = "게시글 검색")
 	@PostMapping("/board/{pageNumber}")
-	public List<BoardResponseDto> searchBoard(@RequestHeader String ftoken, @PathVariable int pageNumber, @RequestBody final SearchBoardDto params) {
+	public List<BoardResponseDto> searchBoard(@RequestHeader String Authorization, @PathVariable int pageNumber, @RequestBody final SearchBoardDto params) {
+		String ftoken = Authorization.substring(7);
 		User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 		return searchService.searchBoard(params, user, pageNumber);
 	}
@@ -86,7 +91,8 @@ public class SearchController {
 	// ============================ 게시글 최근 검색어 조회 ========================
 	@ApiOperation(value = "게시글 최근 검색어 조회")
 	@GetMapping("/board")
-	public List<SearchBoardResponseDto> getSearchBoard(@RequestHeader String ftoken){
+	public List<SearchBoardResponseDto> getSearchBoard(@RequestHeader String Authorization){
+		String ftoken = Authorization.substring(7);
 		User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 		return searchService.getSearchBoard(user);
 	}
@@ -96,7 +102,8 @@ public class SearchController {
 	@ApiOperation(value = "게시글 검색어 삭제")
 	@ApiImplicitParam(name = "searchBoardId", value = "게시글 검색 PK", example = "1", required = true)
 	@DeleteMapping("/board/{searchBoardId}")
-	public void deleteSearchBoard(@RequestHeader String ftoken, @PathVariable Long searchBoardId){
+	public void deleteSearchBoard(@RequestHeader String Authorization, @PathVariable Long searchBoardId){
+		String ftoken = Authorization.substring(7);
 		User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 		searchService.deleteSearchBoard(user, searchBoardId);
 	}
@@ -105,7 +112,8 @@ public class SearchController {
 	// ============================ 게시글 검색어 전체 삭제 ========================
 	@ApiOperation(value = "게시글 검색어 전체 삭제")
 	@DeleteMapping("/board")
-	public void deleteAllSearchBoard(@RequestHeader String ftoken){
+	public void deleteAllSearchBoard(@RequestHeader String Authorization){
+		String ftoken = Authorization.substring(7);
 		User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
 		searchService.deleteAllSearchBoard(user);
 	}

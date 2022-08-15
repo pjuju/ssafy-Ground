@@ -24,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ground.domain.board.entity.Board;
 import com.ground.domain.user.dto.UserFirstLoginDto;
 import com.ground.domain.user.dto.UserUpdateDto;
@@ -42,6 +43,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import static javax.persistence.FetchType.LAZY;
 
 
 @Entity
@@ -142,13 +145,14 @@ public class User {
     }
     
     @Builder
-	public User(String username, String pass, String email, String nickname, Age age, Gender gender, String introduce, 
+	public User(String username, String pass, String email, String nickname, String ftoken, Age age, Gender gender, String introduce, 
 			LocalDateTime regDttm, boolean delYN, boolean registerYN, String userImage) {
 		this.username = username;
 		this.modUser = username;
 		this.pass = pass;
 		this.email = email;
 		this.nickname = nickname;
+		this.ftoken = ftoken;
 		this.age = age;
 		this.gender = gender;
 		this.introduce = introduce;
@@ -164,7 +168,6 @@ public class User {
         this.age = entity.getAge();
         this.gender = entity.getGender();
         this.introduce = entity.getIntroduce();
-        this.userCategories = entity.getUserCategories();
         this.modDttm = modDttm;
     }
 
@@ -175,7 +178,8 @@ public class User {
     public void firstLogin(UserFirstLoginDto entity) {
         this.userImage = entity.getUserImage();
         this.introduce = entity.getIntroduce();
-        this.userCategories = entity.getUserCategories();
         this.registerYN = true;
     }
+
+
 }

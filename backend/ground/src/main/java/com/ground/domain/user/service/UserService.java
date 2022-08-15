@@ -1,16 +1,22 @@
 package com.ground.domain.user.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
+import com.ground.domain.board.entity.Board;
+import com.ground.domain.board.repository.BoardRepository;
 import com.ground.domain.follow.entity.Follow;
 import com.ground.domain.follow.repository.FollowRepository;
+import com.ground.domain.global.entity.Category;
+import com.ground.domain.global.repository.CategoryRepository;
 import com.ground.domain.jwt.JwtTokenProvider;
 
 import com.ground.domain.user.dto.*;
+import com.ground.domain.user.entity.UserCategory;
+import com.ground.domain.user.repository.UserCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +25,7 @@ import com.ground.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import springfox.documentation.schema.Entry;
 
 @Log4j2
 @Service
@@ -27,6 +34,10 @@ public class UserService {
 	
 	@Autowired 
 	private final UserRepository userRepository;
+
+	private final CategoryRepository categoryRepository;
+	private final UserCategoryRepository userCategoryRepository;
+	private final BoardRepository boardRepository;
 	@Autowired
 	private final FollowRepository followRepository;
 	@Autowired
@@ -153,33 +164,23 @@ public class UserService {
 	
 	public UserStateDto userState(String ftoken) {
 		String username = jwtTokenProvider.getSubject(ftoken);
+		
 		User user = userRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
-		UserStateDto userstate = new UserStateDto(user.getUsername(), user.getEmail(), user.getNickname(), 
+		UserStateDto userstate = new UserStateDto(user.getId(), user.getUsername(), user.getEmail(), user.getNickname(), 
 	    		user.getFtoken(), user.getIntroduce(), user.getUserImage(), user.getGender(), user.getAge(), 
 	    		user.isPrivateYN(), user.isRegisterYN());
 		return userstate;
 	}
 	
 	
-	public boolean checkValidity(String ftoken) {
-		boolean result = jwtTokenProvider.validateToken(ftoken);
-		return result;
+	@Transactional
+	public boolean logoutUser(String ftoken) {
+		String username = jwtTokenProvider.getSubject(ftoken);
+		Optional<User> user = userRepository.findByUsername(username);
+		user.get().saveFtoken(null);
+		return true;
 	}
 
-
-	@Transactional
-	public List<User> findFirstByUsernameLikeOrderByIdDesc(String username){
-//		return userRepository.findFirstByUsernameLikeOrderByIdDesc(username);
-		return userRepository.findAll();
-	}
-	
-	
-	@Transactional
-	public User save(User user) {
-		userRepository.save(user);
-		
-		return user;
-	}
 
 	// -----------------BSH-----------------
 	// 프로필 조회
@@ -198,38 +199,111 @@ public class UserService {
 		}
 
         User user = userRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+				-> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+		List<UserCategory> userCategories = userCategoryRepository.findAllByUser(user);
+		List<UserCategoryDto> userCategoryDtos = new ArrayList<>();
+		for (UserCategory userCategory : userCategories) {
+			userCategoryDtos.add(new UserCategoryDto(userCategory));
+		}
+
+		List<UserBoardDto> userBoardDtos = new ArrayList<>();
+		List<Board> boards = boardRepository.findAllByUserId(id);
+		HashMap<LocalDate, Long> dates = new HashMap<LocalDate, Long>();
+		HashMap<Long, Long> categories = new HashMap<Long, Long>();
+
+		for (Board board : boards) {
+			userBoardDtos.add(new UserBoardDto(board));
+			LocalDate date = board.getRegDttm().toLocalDate();
+			Long categoryId = board.getCategory().getId();
+
+			if (dates.containsKey(date)){
+				dates.put(date, dates.get(date) + new Long(1));
+			}
+			else {
+				dates.put(date, new Long(1));
+			}
+
+			if (categories.containsKey(categoryId)) {
+				categories.put(categoryId, categories.get(categoryId) + new Long(1));
+			}
+			else {
+				categories.put(categoryId, new Long(1));
+			}
+		}
+
+		List<GroundBoardDto> groundDates = new ArrayList<>();
+		Iterator<LocalDate> Dkeys = dates.keySet().iterator();
+		while (Dkeys.hasNext()) {
+			LocalDate Dkey = Dkeys.next();
+			groundDates.add(new GroundBoardDto(Dkey, dates.get(Dkey)));
+		}
+
+		List<GroundCategoryDto> groundCategories = new ArrayList<>();
+		Iterator<Long> Ckeys = categories.keySet().iterator();
+		while (Ckeys.hasNext()) {
+			Long Ckey = Ckeys.next();
+			groundCategories.add(new GroundCategoryDto(Ckey, categories.get(Ckey)));
+		}
 
 		userProfileDto.setUser(user);
 		userProfileDto.setFollow(follow);
 		userProfileDto.setUserFollowerCount(followRepository.findFollowerCountById(id));
 		userProfileDto.setUserFollowingCount(followRepository.findFollowingCountById(id));
+		userProfileDto.setUserCategories(userCategoryDtos);
+		userProfileDto.setUserBoardDtos(userBoardDtos);
+		userProfileDto.setGroundDates(groundDates);
+		userProfileDto.setGroundCategory(groundCategories);
 
         return userProfileDto;
     }
 
 	// 프로필 업데이트 페이지
     @Transactional
-    public void getModifyUser(UserUpdateDto userUpdateDto) {
+    public UserUpdateDto getModifyUser(User loginUser) {
+		UserUpdateDto userUpdateDto = new UserUpdateDto();
 
+		userUpdateDto.setNickname(loginUser.getNickname());
+		userUpdateDto.setPrivateYN(loginUser.isPrivateYN());
+		userUpdateDto.setAge(loginUser.getAge());
+		userUpdateDto.setGender(loginUser.getGender());
+		userUpdateDto.setIntroduce(loginUser.getIntroduce());
+		userUpdateDto.setUserImage(loginUser.getUserImage());
+
+		return userUpdateDto;
     }
 
 	// 프로필 업데이트
 	@Transactional
-    public Long profileUpdate(Long id, UserUpdateDto entity) {
-        User user = userRepository.findById(id).orElseThrow(()
-                -> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+    public void profileUpdate(User loginUser, UserUpdateDto entity) {
 
-        user.profileUpdate(entity, LocalDateTime.now());
+		loginUser.profileUpdate(entity, LocalDateTime.now());
 
-        return id;
     }
+
+	// 관심종목 설정
+	@Transactional
+	public void setUserCategory(User loginUser, List<Long> userCategories) {
+
+		userCategoryRepository.deleteAllByUser(loginUser);
+		for (Long userCategoryId : userCategories) {
+			Category category = categoryRepository.findById(userCategoryId).get();
+			userCategoryRepository.save(new UserCategory(loginUser, category));
+		}
+	}
+
 
 	// 회원 상세정보 추가
 	@Transactional
-	public void firstLogin(Long userId, UserFirstLoginDto entity) {
-		User user = userRepository.findById(userId).get();
+	public void firstLogin(User loginUser, UserFirstLoginDto entity) {
 
-		user.firstLogin(entity);
+		List<Long> userCategories = entity.getUserCategories();
+
+		for (Long userCategoryId : userCategories) {
+			Category category = categoryRepository.findById(userCategoryId).get();
+			userCategoryRepository.save(new UserCategory(loginUser, category));
+		}
+
+		loginUser.firstLogin(entity);
 	}
+
 }
