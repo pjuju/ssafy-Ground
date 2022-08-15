@@ -48,7 +48,7 @@
         @include interest-filter();
 
         &--none {
-          padding: 30%;
+          padding-top: 30%;
           display: flex;
           justify-content: center;
           color: $light-gray;
@@ -79,7 +79,7 @@
         }
 
         &--none {
-          padding: 30%;
+          padding-top: 50%;
           display: flex;
           justify-content: center;
           color: $light-gray;
