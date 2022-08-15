@@ -8,13 +8,17 @@
   @include set-layout();
   &__top {
     width: 50% !important;
-    
-    @include mobile(){
+
+    @include mobile() {
       width: 100% !important;
     }
 
-    @include tablet(){
+    @include tablet() {
       width: 100% !important;
+    }
+
+    &__title {
+      padding-left: 0 !important;
     }
   }
 
@@ -22,11 +26,11 @@
     height: 50px;
     margin-top: 4rem;
 
-    @include mobile(){
+    @include mobile() {
       margin: 1rem 0 0 1rem;
     }
 
-    @include tablet(){
+    @include tablet() {
       margin: 1rem 0 0 1rem;
     }
   }
@@ -35,11 +39,11 @@
     font-size: 2rem;
     font-weight: 700;
     margin-left: 1rem;
-    @include mobile(){
+    @include mobile() {
       font-size: 1.5rem;
     }
 
-    @include tablet(){
+    @include tablet() {
       font-size: 1.5rem;
     }
   }
@@ -56,11 +60,11 @@
     font-size: 1rem !important;
     font-weight: 500 !important;
 
-    @include mobile(){
+    @include mobile() {
       width: 20%;
       margin-right: 1rem !important;
     }
-    @include tablet(){
+    @include tablet() {
       width: 20%;
       margin-right: 1rem !important;
     }
@@ -73,12 +77,12 @@
     font-size: 1rem !important;
     font-weight: 500 !important;
 
-    @include mobile(){
+    @include mobile() {
       display: none !important;
       width: 20%;
       margin-right: 1rem !important;
     }
-    @include tablet(){
+    @include tablet() {
       display: none !important;
       width: 20%;
       margin-right: 1rem !important;
@@ -86,24 +90,24 @@
   }
 
   &__box {
-    border: 2px solid lightgrey ;
+    border: 2px solid lightgrey;
     border-radius: 10px;
     padding: 2rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
 
-    @include mobile(){
+    @include mobile() {
       border: none;
       margin-top: 0;
     }
-    @include tablet(){
+    @include tablet() {
       border: none;
       margin-top: 0;
     }
   }
 
   &__textarea {
-    border: 2px solid lightgrey ;
+    border: 2px solid lightgrey;
     border-radius: 10px;
     width: 100%;
     resize: none;
@@ -113,7 +117,7 @@
 
   &__dropdown {
     width: 30%;
-    @include tablet(){
+    @include tablet() {
       width: 40%;
     }
   }
@@ -132,11 +136,11 @@
     font-size: 1rem;
     font-weight: 700;
 
-    @include mobile(){
+    @include mobile() {
       width: 15%;
     }
 
-    @include tablet(){
+    @include tablet() {
       width: 15%;
     }
   }
@@ -153,17 +157,17 @@
     border: none;
     cursor: pointer;
 
-    @include mobile(){
+    @include mobile() {
       width: 150px;
       height: 150px;
     }
-    @include tablet(){
+    @include tablet() {
       width: 150px;
       height: 150px;
     }
   }
 
-  &__media-wrapper{
+  &__media-wrapper {
     position: relative;
   }
 
@@ -171,11 +175,11 @@
     width: 200px;
     height: 200px;
 
-    @include mobile(){
+    @include mobile() {
       width: 150px;
       height: 150px;
     }
-    @include tablet(){
+    @include tablet() {
       width: 150px;
       height: 150px;
     }
@@ -206,7 +210,7 @@
 
   &__modal {
     margin-bottom: 1rem;
-   }
+  }
 
   &__modal-wrapper {
     height: 100%;
