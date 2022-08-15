@@ -5,6 +5,7 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserState, logout } from "api/user";
+import CustomModal from "../CustomModal";
 
 function SideNavbar({
   sideMenuIdx,
@@ -17,6 +18,9 @@ function SideNavbar({
   const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+
+  const [open, setOpen] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -93,9 +97,16 @@ function SideNavbar({
         <Link to="/feed/search" onClick={() => handleMenuClick(2)}>
           <h3>검색</h3>
         </Link>
-        <p className="navbar-side__menu__logout" onClick={handleClickLogout}>
+        <p className="navbar-side__menu__logout" onClick={() => setOpen(true)}>
           로그아웃
         </p>
+        <CustomModal
+          open={open}
+          setOpen={setOpen}
+          title="로그아웃 하시겠습니까?"
+          type="0"
+          handleClickOKButton={handleClickLogout}
+        />
       </Grid>
       <Grid className="navbar-side__profile" item>
         <ProfileButton
