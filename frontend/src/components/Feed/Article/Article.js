@@ -16,7 +16,7 @@ function Article({ articleData }) {
   const content = articleData.content;
   const images = articleData.images;
   const location = articleData.location;
-  const likeCnt = articleData.likeCnt;
+  const [likeCnt, setLikeCnt] = useState(articleData.saveCnt);
   const commentCnt = articleData.commentCnt;
   const [saveCnt, setSaveCnt] = useState(articleData.saveCnt);
   const boardLikes = articleData.boardLikes;

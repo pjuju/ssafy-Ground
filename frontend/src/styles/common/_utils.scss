@@ -112,6 +112,18 @@ $wide-desktop: 1249px;
         }
       }
     }
+
+    &__inner {
+      height: 80%;
+
+      &--none {
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $light-gray;
+      }
+    }
   }
 
   & #inner {
