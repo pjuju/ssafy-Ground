@@ -124,9 +124,7 @@ public class UserService {
 	
 	@Transactional
 	//비밀번호 변경
-	public boolean modifyPass(UserModifyPassDto params) {
-		User user = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername()).orElseThrow(()
-				-> new IllegalArgumentException("해당 유저는 존재하지 않습니다."));
+	public boolean modifyPass(User user, UserModifyPassDto params) {
 		try {
 			user.modifyPass(params.getPass());
 			user.saveModDttm(LocalDateTime.now());
