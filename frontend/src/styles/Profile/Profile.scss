@@ -1,0 +1,172 @@
+@import "../common/utils";
+
+.content {
+  &__inner {
+    width: 100%;
+
+    & .profile {
+      padding: 1rem;
+      padding-right: 1.5rem;
+      padding-left: 1.5rem;
+
+      & .user-info {
+        width: 100%;
+
+        & .info {
+          &-top {
+            &__img {
+              width: 16% !important;
+
+              & img {
+                width: 100% !important;
+              }
+            }
+
+            &__right {
+              width: 55%;
+              margin-left: 1.1rem;
+              padding-bottom: 0.5rem;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+
+              @include tablet() {
+                width: 52%;
+              }
+
+              @include mobile() {
+                width: 52%;
+              }
+
+              & p {
+                font-size: 1.6rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                margin-top: 0;
+
+                @include tablet() {
+                  margin-bottom: 0.5rem;
+                  font-size: 1.4rem;
+                }
+
+                @include mobile() {
+                  margin-bottom: 0.5rem;
+                  font-size: 1.4rem;
+                }
+              }
+
+              &__follow {
+                & .follower,
+                .following {
+                  margin-right: 2rem;
+                  cursor: pointer;
+
+                  &__text {
+                    margin-right: 0.5rem;
+                  }
+
+                  &__cnt {
+                    font-weight: 700;
+                  }
+
+                  @include tablet() {
+                    margin-right: 1.5rem;
+                    font-size: 1rem;
+                  }
+
+                  @include mobile() {
+                    margin-right: 1.5rem;
+                    font-size: 1rem;
+                  }
+                }
+
+                & .following {
+                  margin-right: 0;
+                }
+              }
+            }
+
+            &__more {
+              width: 23%;
+              text-align: right;
+
+              @include tablet() {
+                width: 25%;
+              }
+
+              @include mobile() {
+                width: 25%;
+              }
+
+              &__button {
+                padding-top: 1rem;
+                &--follow,
+                &--ing,
+                &--unfollow {
+                  border-radius: 20px !important;
+
+                  @include tablet() {
+                    font-size: 0.7rem;
+                  }
+
+                  @include mobile() {
+                    font-size: 0.7rem;
+                  }
+                }
+              }
+            }
+          }
+
+          &-bottom {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+          }
+        }
+      }
+
+      & .user-ground {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+        & .ground {
+          &__content {
+            text-align: end;
+
+            &__more {
+              color: $light-gray;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      & .user-articles {
+        margin-top: 2rem;
+
+        & .MuiTabs-indicator {
+          background-color: #fff;
+        }
+
+        &__tab {
+          font-size: 1.1rem;
+
+          &.Mui-selected {
+            color: #000;
+            font-weight: 800;
+          }
+        }
+
+        &__tabpanel {
+          & p {
+            text-align: center;
+            color: $light-gray;
+          }
+
+          & .article__inner {
+            max-width: 100% !important;
+          }
+        }
+      }
+    }
+  }
+}
