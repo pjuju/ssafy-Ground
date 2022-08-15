@@ -11,7 +11,7 @@ function ArticleContent(props) {
         <span>더보기</span>
       </Grid>
       <Grid className="article-content__media">
-        <MediaSlider />
+        <MediaSlider images={props.images}/>
       </Grid>
       <Grid className="article-content__location">
         <LocationOnOutlinedIcon />
