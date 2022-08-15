@@ -1,11 +1,10 @@
 import { Grid } from "@mui/material";
-import userImage from "assets/images/userImage.png";
-import NoSearchResult from "./Result/NoSearchResult";
 
-function UserSearchResult({ user }) {
+import userImage from "assets/images/userImage.png";
+
+function UserResultItem({ user }) {
   return (
     <Grid className="user-result__inner" container>
-      {user.length === 0 && (<NoSearchResult />)}
       <div className="user-result__profile-wrapper">
         <img
           className="user-result__profile-img"
@@ -33,4 +32,4 @@ function UserSearchResult({ user }) {
   );
 }
 
-export default UserSearchResult;
+export default UserResultItem;

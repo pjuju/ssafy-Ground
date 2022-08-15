@@ -34,7 +34,7 @@ function SideNavbar({
     getUserState((res) => {
       setId(res.data.id);
       setNickname(res.data.nickname);
-      setImage(res.data.image);
+      setImage(res.data.userImage);
       setEmail(res.data.email);
       setUsername(res.data.username);
     });

@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import { feedDelete } from "api/feed";
 
 function ArticleMore(props) {
   const state = useSelector((state) => state);
@@ -29,7 +30,7 @@ function ArticleMore(props) {
   const menuOpen = Boolean(anchorEl);
   const [isSaveClicked, setIsSaveClicked] = useState(props.isSaved);
   let navigate = useNavigate();
-  let path = `feed/update`;
+  let path = `/feed/update/${props.id}`;
 
   const handleClickMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -46,6 +47,9 @@ function ArticleMore(props) {
   };
 
   const handleClickDelete = () => {
+    feedDelete(props.id, (res)=> {
+      console.log(res.data)
+    })
     console.log("delete");
   };
   const handleClickSave = () => {
