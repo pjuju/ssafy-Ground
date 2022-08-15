@@ -10,6 +10,7 @@ import {
   toggleInterest,
   setInterestCnt,
   setInitFlag,
+  setImgFile,
 } from "modules/init";
 
 import { useEffect } from "react";
@@ -17,11 +18,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@mui/material";
 import { initUserDetail } from "api/user";
 import { useNavigate } from "react-router-dom";
+import { uploadBytes, ref } from "firebase/storage";
+import { storage } from "api/firebase";
+
 
 function WelcomePage() {
   const navigate = useNavigate();
   const state = useSelector((state) => state);
   const img = useSelector((state) => state.init.img);
+  const imgFile = useSelector((state) => state.init.imgFile)
   const desc = useSelector((state) => state.init.desc);
   const interest = useSelector((state) => state.init.interest);
   const interestCnt = useSelector((state) => state.init.interestCnt);
@@ -30,6 +35,7 @@ function WelcomePage() {
   const dispatch = useDispatch();
 
   const onSetImg = (img) => dispatch(setImg(img));
+  const onSetImgFile = (imgFile) => dispatch(setImgFile(imgFile))
   const onSetDesc = (desc) => dispatch(setDesc(desc));
   const onToggleInterest = (id) => dispatch(toggleInterest(id));
   const onSetInterestCnt = (cnt) => dispatch(setInterestCnt(cnt));
@@ -59,9 +65,18 @@ function WelcomePage() {
 
     initUserDetail(userDetail, (res) => {
       navigate("/feed/follow");
+      uploadImg();
     })
   }
 
+  const uploadImg = () => {
+    if(img !== ""){
+      const storageRef = ref(storage, `images/${img}`);
+      uploadBytes(storageRef, imgFile).then((snapshot) => {
+        console.log("Uploaded a blob or file!");
+      });
+    }
+  }
   return (
     <Grid
       className="initial-settings"
@@ -74,7 +89,7 @@ function WelcomePage() {
       <Grid item>
         {initFlag === 0 ? (
           <InitImg
-            img={img}
+            onSetImgFile={onSetImgFile}
             onSetImg={onSetImg}
             onSetInitFlag={onSetInitFlag}
           />

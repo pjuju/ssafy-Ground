@@ -1,25 +1,31 @@
 import { Grid } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import plus from "assets/images/plus.png"
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "api/firebase";
 
 
-function UpdateImg({ feedImages , onSetFeedImages }) {
+function UpdateImg({ boardInfo, setBoardInfo, newImages, setNewImages, uploadImages, setUploadImages }) {
   const selectUserImg = useRef("");
   const [imgList, setImgList] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [isDisplay, setIsDisplay] = useState(true);
   const imgIdx = ["img1", "img2", "img3", "img4", "img5"];
-  const exampleImg = [{id: 21, imageUrl: '166015994929442', imageType: 'mp4'}, {id: 22, imageUrl: '166015994929457', imageType: 'png'}]
+  const images = boardInfo.images
+  const useForceUpdate = () => {
+    const [ignored, newState] = useState();
+    return useCallback(() => newState({}), []);
+  }
 
   useEffect(() => {
-    preview();
+    console.log("download complete")
     console.log(imgList)
     if (isDisplay === true) {
       selectUserImg.current.value="";
     }
   }, [imgList]);
+  
+  useForceUpdate();
 
   useEffect(() => {
     function tick(){
@@ -27,42 +33,31 @@ function UpdateImg({ feedImages , onSetFeedImages }) {
     }
     tick();
     return ()=> clearTimeout(tick)
-  },[feedImages])
+  },[images])
   
   const fetchImage = () => {
     console.log("download")
-    console.log(feedImages)
+    console.log(images)
     let imgUrlList = []
-    feedImages.map((src,index) => {
+    images.map((src,index) => {
       console.log(src)
       const storageRef = ref(storage, `images/${src.imageUrl}`);
       const imgType = ['jpg', 'png', 'gif']
-      getDownloadURL(storageRef).then((url) => {
-        console.log("download complete")
-        if (imgType.indexOf(src.imageType) !== -1) {
-          imgUrlList.push(["img", url])
-        }
-        if (src.imageType === "mp4") {
-          imgUrlList.push(["video", url])
-        }
-      })
+      if (src.imageurl === undefined) {
+        getDownloadURL(storageRef).then((url) => {
+          if (imgType.indexOf(src.imageType) !== -1) {
+            imgUrlList.push(["img", url]);
+          }
+          if (src.imageType === "mp4") {
+            imgUrlList.push(["video", url])
+          }
+        })
+      }
       console.log(imgUrlList)
     })
     setImgList(imgUrlList)
   }
 
-  const preview = () => {
-    if (imgList === []) return false;
-
-    imgIdx.map((id, index) => {
-      let imgElement = document.querySelector(`.${id} > img`);
-      console.log(imgList[index])
-      if (imgElement !== null) {
-        console.log(URL.createObjectURL(imgList[index][1]));
-        imgElement.src = URL.createObjectURL(imgList[index][1]);
-      }
-    });
-  };
 
   const handleClickInput = (event) => {
     event.preventDefault();
@@ -72,8 +67,11 @@ function UpdateImg({ feedImages , onSetFeedImages }) {
     const fileLength = fileName.length;
     const lastDot = fileName.lastIndexOf('.');
     const fileSpec = fileName.substring(lastDot+1, fileLength).toLowerCase();
+    const randNum = parseInt((new Date().getTime() + Math.random())*100);
     let imgUrlList = [...imgList];
     let fileUrlList = [...fileList];
+    let imgNumList = [...newImages];
+    let uploadList = [...uploadImages];
     const imgType = ['jpg', 'png', 'gif']
     console.log(fileSpec)
     if (imgUrlList.length >= 4) {
@@ -87,19 +85,29 @@ function UpdateImg({ feedImages , onSetFeedImages }) {
       if (fileSpec === "mp4") {
         imgUrlList.push(["video",URL.createObjectURL(file)]);
       }
-      
+      imgNumList.push({
+        imageType: fileSpec,
+        imageUrl: randNum.toString(),
+      });
+      uploadList.push({
+        imageType: fileSpec,
+        imageUrl: randNum.toString(),
+        file: file
+      });
       fileUrlList.push(file);
     }
     setImgList(imgUrlList);
     setFileList(fileUrlList);
-    onSetFeedImages(fileUrlList);
+    setNewImages(imgNumList);
+    setUploadImages(uploadList);
     console.log(imgList);
   };
 
   const handleDeleteImage = (id) => {
     setImgList(imgList.filter((_, index) => index !== id));
     setFileList(fileList.filter((_, index) => index !== id));
-    onSetFeedImages(fileList.filter((_, index) => index !== id));
+    setNewImages(newImages.filter((_, index) => index !== id));
+    setUploadImages(uploadImages.filter((_, index) => index !== id))
     setIsDisplay(true);
 
   };

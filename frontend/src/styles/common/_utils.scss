@@ -112,6 +112,18 @@ $wide-desktop: 1249px;
         }
       }
     }
+
+    &__inner {
+      height: 80%;
+
+      &--none {
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $light-gray;
+      }
+    }
   }
 
   & #inner {
@@ -199,6 +211,12 @@ $wide-desktop: 1249px;
       padding-bottom: 1rem;
       font-size: 1rem;
       cursor: pointer;
+    }
+
+    &__button {
+      &--edit {
+        border-radius: 20px;
+      }
     }
   }
 

@@ -5,28 +5,34 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { ThemeProvider } from "@emotion/react";
-import { useState } from "react";
+import { likeBoard, unlikeBoard } from "api/board";
+import { useEffect } from "react";
 
 function ArticleActivity(props) {
-  const [isLikeClicked, setIsLikeClicked] = useState(props.isLiked);
+  const { nickname, id, isLiked, setIsLiked, likeCnt, commentCnt } = props;
+
+  // isLiked가 바뀔 때마다 리렌더링
+  useEffect(() => {}, [isLiked]);
 
   const handleClickLike = () => {
-    setIsLikeClicked(!isLikeClicked);
-
     // 좋아요 요청
-    console.log("좋아요 요청");
+    likeBoard(id, (res) => {
+      setIsLiked(() => true);
+      console.log(res);
+    });
   };
 
   const handleClickUnlike = () => {
-    setIsLikeClicked(!isLikeClicked);
-
     // 좋아요 취소 요청
-    console.log("좋아요 취소 요청");
+    unlikeBoard(id, (res) => {
+      setIsLiked(() => false);
+      console.log(res);
+    });
   };
 
   return (
     <Grid className="activity" container>
-      {isLikeClicked ? (
+      {isLiked ? (
         <Grid className="activity__like" item>
           <ThemeProvider theme={theme}>
             <IconButton color="like" onClick={() => handleClickUnlike()}>
@@ -34,8 +40,8 @@ function ArticleActivity(props) {
             </IconButton>
           </ThemeProvider>
           <span>
-            <span className="bold">{props.nickname}님</span> 외{" "}
-            <span className="bold">{props.likeCnt}명</span>이 좋아합니다.
+            <span className="bold">{nickname}님</span> 외{" "}
+            <span className="bold">{likeCnt}명</span>이 좋아합니다.
           </span>
         </Grid>
       ) : (
@@ -44,7 +50,7 @@ function ArticleActivity(props) {
             <FavoriteBorderIcon />
           </IconButton>
           <span>
-            <span className="bold">{props.likeCnt}명</span>이 좋아합니다.
+            <span className="bold">{likeCnt}명</span>이 좋아합니다.
           </span>
         </Grid>
       )}
@@ -52,7 +58,7 @@ function ArticleActivity(props) {
         <IconButton>
           <ChatBubbleOutlineIcon />
         </IconButton>
-        댓글 <span className="bold">{props.commentCnt}개</span>
+        댓글 <span className="bold">{commentCnt}개</span>
       </Grid>
     </Grid>
   );
