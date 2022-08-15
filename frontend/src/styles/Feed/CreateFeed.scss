@@ -1,0 +1,214 @@
+@import "../common/utils";
+
+@mixin set-layout {
+  margin-bottom: 2rem !important;
+}
+
+.create-feed {
+  @include set-layout();
+  &__top {
+    width: 50% !important;
+    
+    @include mobile(){
+      width: 100% !important;
+    }
+
+    @include tablet(){
+      width: 100% !important;
+    }
+  }
+
+  &__back {
+    height: 50px;
+    margin-top: 4rem;
+
+    @include mobile(){
+      margin: 1rem 0 0 1rem;
+    }
+
+    @include tablet(){
+      margin: 1rem 0 0 1rem;
+    }
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-left: 1rem;
+    @include mobile(){
+      font-size: 1.5rem;
+    }
+
+    @include tablet(){
+      font-size: 1.5rem;
+    }
+  }
+
+  &__button-wrapper {
+    height: 50px;
+    margin-top: 1rem;
+  }
+
+  &__button {
+    margin-left: 1rem !important;
+    width: 10%;
+    border-radius: 60px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+
+    @include mobile(){
+      width: 20%;
+      margin-right: 1rem !important;
+    }
+    @include tablet(){
+      width: 20%;
+      margin-right: 1rem !important;
+    }
+  }
+
+  &__cancel-button {
+    margin-left: 1rem !important;
+    width: 10%;
+    border-radius: 60px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+
+    @include mobile(){
+      display: none !important;
+      width: 20%;
+      margin-right: 1rem !important;
+    }
+    @include tablet(){
+      display: none !important;
+      width: 20%;
+      margin-right: 1rem !important;
+    }
+  }
+
+  &__box {
+    border: 2px solid lightgrey ;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+    @include mobile(){
+      border: none;
+      margin-top: 0;
+    }
+    @include tablet(){
+      border: none;
+      margin-top: 0;
+    }
+  }
+
+  &__textarea {
+    border: 2px solid lightgrey ;
+    border-radius: 10px;
+    width: 100%;
+    resize: none;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  &__dropdown {
+    width: 30%;
+    @include tablet(){
+      width: 40%;
+    }
+  }
+
+  &__length-wrapper {
+    @include set-layout();
+  }
+
+  &__inner-wrapper {
+    @include set-layout();
+  }
+
+  &__label {
+    margin: auto 1rem auto 0;
+    width: 10%;
+    font-size: 1rem;
+    font-weight: 700;
+
+    @include mobile(){
+      width: 15%;
+    }
+
+    @include tablet(){
+      width: 15%;
+    }
+  }
+
+  &__imglabel {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  &__img-button {
+    width: 200px;
+    height: 200px;
+    background: white;
+    border: none;
+    cursor: pointer;
+
+    @include mobile(){
+      width: 150px;
+      height: 150px;
+    }
+    @include tablet(){
+      width: 150px;
+      height: 150px;
+    }
+  }
+
+  &__media-wrapper{
+    position: relative;
+  }
+
+  &__media {
+    width: 200px;
+    height: 200px;
+
+    @include mobile(){
+      width: 150px;
+      height: 150px;
+    }
+    @include tablet(){
+      width: 150px;
+      height: 150px;
+    }
+  }
+
+  &__delete-button {
+    position: absolute;
+    top: 10%;
+    left: 80%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 10px;
+    border: none;
+  }
+
+  &__modal-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 200px;
+    background-color: white;
+    border: 2px solid #000;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+
+  &__modal {
+    margin-bottom: 1rem;
+   }
+
+  &__modal-wrapper {
+    height: 100%;
+  }
+}

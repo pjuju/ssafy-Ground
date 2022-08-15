@@ -1,0 +1,50 @@
+/* 나의 운동장 */
+ $primary: #54bab9;
+
+ .react-calendar-heatmap text {
+  font-size: 10px;
+  fill: #aaa;
+}
+
+.react-calendar-heatmap .react-calendar-heatmap-small-text {
+  font-size: 5px;
+}
+
+.react-calendar-heatmap rect:hover {
+  stroke: #555;
+  stroke-width: 1px;
+}
+
+/*
+ * Default color scale
+ */
+
+.react-calendar-heatmap .color-empty {
+  fill: #eeeeee;
+}
+
+.react-calendar-heatmap .color-filled {
+  fill: $primary;
+}
+
+/*
+ * Ground color scale
+ */
+
+.react-calendar-heatmap .color-scale-0 {
+  fill: #eeeeee;
+}
+.react-calendar-heatmap .color-scale-1 {
+  fill: #bae9e8;
+}
+.react-calendar-heatmap .color-scale-2 {
+  fill: #93dfdd;
+}
+.react-calendar-heatmap .color-scale-3 {
+  fill: #54bab9;
+}
+.react-calendar-heatmap .color-scale-4 {
+  fill: #469290;
+}
+
+
