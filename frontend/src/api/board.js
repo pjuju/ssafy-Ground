@@ -22,10 +22,30 @@ function getBoardDetail(id, success, fail) {
   api.get(`/board/${id}`).then(success).catch(fail);
 }
 
+function likeBoard(boardId, success) {
+  api.post(`/board/${boardId}/like`).then(success);
+}
+
+function unlikeBoard(boardId, success) {
+  api.delete(`/board/${boardId}/like`).then(success);
+}
+
+function saveBoard(boardId, success) {
+  api.post(`/board/${boardId}/save`).then(success);
+}
+
+function unsaveBoard(boardId, success) {
+  api.delete(`/board/${boardId}/save`).then(success);
+}
+
 export {
   getSavedBoard,
   getFollowBoard,
   getLatestBoard,
   getBoardDetail,
   getWrittenBoard,
+  likeBoard,
+  unlikeBoard,
+  saveBoard,
+  unsaveBoard,
 };
