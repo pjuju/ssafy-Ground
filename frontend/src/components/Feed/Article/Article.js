@@ -7,8 +7,10 @@ import ArticleMore from "components/Feed/Article/ArticleMore";
 import { Box, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserState } from "api/user";
+import { useNavigate } from "react-router-dom";
 
 function Article({ articleData }) {
+  const navigate = useNavigate();
   const id = articleData.id;
   const user = articleData.user;
   const category = articleData.category;
@@ -47,14 +49,19 @@ function Article({ articleData }) {
     });
   }, []);
 
+  const handleClickImg = () => {
+    navigate(`/profile/${user.id}`);
+  };
+
   return (
     <Box className="article">
       <Grid className="article__inner" container direction="row">
-        <Grid className="article__inner__userimg">
+        <Grid className="article__inner__userimg" onClick={handleClickImg}>
           <img src={userImage} />
         </Grid>
         <Grid className="article__inner__left">
           <ArticleInfo
+            userId={user.id}
             nickname={user.nickname}
             category={category}
             date={date}
