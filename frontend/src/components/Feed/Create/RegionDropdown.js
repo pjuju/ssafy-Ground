@@ -1,9 +1,9 @@
 import React from "react";
-import { FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Grid, FormHelperText } from "@mui/material";
 import theme from "components/common/theme";
 import { ThemeProvider } from "@emotion/react";
 
-function RegionDropdown({ boardInfo, setBoardInfo }) {
+function RegionDropdown({ boardInfo, setBoardInfo, isLocationError }) {
   const locationId = boardInfo.locationId
   const handleChange = (event) => {
     setBoardInfo({...boardInfo, locationId: event.target.value})
@@ -31,7 +31,7 @@ function RegionDropdown({ boardInfo, setBoardInfo }) {
       <Grid container>
         <div className="create-feed__label">지역</div>
         <ThemeProvider theme={theme}>
-          <FormControl className="create-feed__dropdown" size="small">
+          <FormControl className="create-feed__dropdown" size="small" error={isLocationError}>
             <InputLabel id="demo-simple-select-label">지역</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -44,6 +44,9 @@ function RegionDropdown({ boardInfo, setBoardInfo }) {
                 <MenuItem value={index + 1} key={index}>{category}</MenuItem>
               ))}
             </Select>
+            {isLocationError && (
+              <FormHelperText error>지역을 입력해주세요</FormHelperText>
+            )}
           </FormControl>
         </ThemeProvider>
       </Grid>

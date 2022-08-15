@@ -13,6 +13,7 @@ function Article({ articleData }) {
   const category = articleData.category;
   const date = articleData.regDttm;
   const content = articleData.content;
+  const images = articleData.images;
   const location = articleData.location;
   const likeCnt = articleData.likeCnt;
   const commentCnt = articleData.commentCnt;
@@ -21,7 +22,7 @@ function Article({ articleData }) {
   const isSaved = false;
 
   useEffect(() => {
-    // console.log(articleData);
+    console.log(articleData);
   });
 
   return (
@@ -36,7 +37,7 @@ function Article({ articleData }) {
             category={category}
             date={date}
           />
-          <ArticleContent id={id} content={content} location={location} />
+          <ArticleContent id={id} content={content} location={location} images={images}/>
           <ArticleActivity
             id={id}
             nickname={user.nickname}
@@ -46,7 +47,7 @@ function Article({ articleData }) {
           />
         </Grid>
         <Grid className="article__inner_right">
-          <ArticleMore id={id} isSaved={isSaved} saveCnt={saveCnt} />
+          <ArticleMore id={id} isSaved={isSaved} saveCnt={saveCnt} content={content}/>
         </Grid>
       </Grid>
     </Box>
