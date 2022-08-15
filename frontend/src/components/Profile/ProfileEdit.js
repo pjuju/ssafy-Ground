@@ -81,14 +81,18 @@ function ProfileEdit() {
 
   const {
     register,
+    control,
     formState: { errors },
     getValues,
     setError,
     trigger,
     clearErrors,
+    setValue,
   } = useForm({
+    defaultValues: {
+      nickname: " ",
+    },
     mode: "onBlur",
-    reValidateMode: "onChange",
   });
 
   const selectUserImg = useRef("");
@@ -114,7 +118,8 @@ function ProfileEdit() {
       }
 
       // 값이 수정되었는지 비교하기 위한 state 설정
-      setChangedNickname(res.data.nickname);
+      // setChangedNickname(res.data.nickname);
+      setValue("nickname", res.data.nickname);
       setChangedAge(res.data.age);
       setChangedIntroduce(res.data.introduce);
       setChangedGender(res.data.gender);
@@ -164,6 +169,7 @@ function ProfileEdit() {
 
   const handleNicknameDupCheck = async () => {
     const valid = await trigger("nickname");
+    console.log(getValues("nickname"));
     if (valid === true) {
       nicknameDupCheck(getValues("nickname"), (res) => {
         if (res.data === false) {
@@ -202,7 +208,7 @@ function ProfileEdit() {
   };
 
   const handleClickEditButton = () => {
-    if (nickname !== changedNickname) {
+    if (nickname !== getValues("nickname")) {
       if (!nicknameDupCheck) {
         alert("닉네임 중복을 확인 해주세요.");
         return;
@@ -213,13 +219,14 @@ function ProfileEdit() {
       age: changedAge,
       gender: changedGender,
       introduce: changedIntroduce,
-      nickname: changedNickname,
+      nickname: getValues("nickname"),
       privateYN: changedPrivateYN,
       userImage: changedUserImage,
     };
 
     modifyUserInfo(userDetail, (res) => {
       navigate(`/profile/${userId}`);
+      window.location.reload();
     });
   };
 
@@ -286,19 +293,25 @@ function ProfileEdit() {
                   <th>닉네임</th>
                   <td>
                     <Grid container justifyContent="space-between">
-                      <GrTextField
-                        value={changedNickname}
-                        size="small"
-                        label="닉네임"
-                        onChange={handleChangeNickname}
-                        {...register("nickname", {
-                          required: "닉네임을 입력해주세요",
-                          pattern: {
-                            value: nickNameReg,
-                            message:
-                              "닉네임은 한글, 영문 대소문자, 숫자 2-8자입니다.",
-                          },
-                        })}
+                      <Controller
+                        name="nickname"
+                        control={control}
+                        render={({ field }) => (
+                          <GrTextField
+                            className="profile-edit__field"
+                            size="small"
+                            label="닉네임"
+                            {...field}
+                            {...register("nickname", {
+                              required: "닉네임을 입력해주세요",
+                              pattern: {
+                                value: nickNameReg,
+                                message:
+                                  "닉네임은 한글, 영문 대소문자, 숫자 2-8자입니다.",
+                              },
+                            })}
+                          />
+                        )}
                       />
                       <GrButton
                         variant="contained"
@@ -405,7 +418,7 @@ function ProfileEdit() {
               </tbody>
             </table>
             <Grid className="profile-edit__button">
-              {nickname === changedNickname &&
+              {nickname === getValues("nickname") &&
               introduce === changedIntroduce &&
               age === changedAge &&
               userImage === changedUserImage &&
