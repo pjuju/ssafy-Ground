@@ -29,6 +29,7 @@ function LatestFeed() {
   const [target, setTarget] = useState("");
   // 게시글 데이터를 담을 배열
   const [articles, setArticles] = useState([]);
+  const [newArticles, setNewArticles] = useState([]);
   // 스크롤이 하단에 닿았을 때 pageNumber를 1만큼 증가시켜서 새로운 데이터를 요청한다.
   const [pageNumber, setPageNumber] = useState(1);
   // 로딩 성공 및 실패 정보를 담을 state
@@ -47,6 +48,7 @@ function LatestFeed() {
   const fetchArticles = () => {
     getLatestBoard(pageNumber, (res) => {
       setArticles(articles.concat(res.data));
+      setNewArticles(res.data);
       setPageNumber((pageNumber) => pageNumber + 1);
       console.log(res.data);
       console.log("페이지 넘버: " + pageNumber);
@@ -80,6 +82,12 @@ function LatestFeed() {
           onSetInterest(item.categoryId);
         });
       });
+    });
+
+    // 제일 첫 페이지를 받아옴
+    getLatestBoard(0, (res) => {
+      setArticles(() => articles.concat(res.data));
+      setNewArticles(res.data);
     });
   }, []);
 
@@ -140,18 +148,37 @@ function LatestFeed() {
             />
           </Grid>
         </Grid>
-        {articles.map((article, index) => (
-          <Article key={index} articleData={article} />
-        ))}
-        <ThemeProvider theme={theme}>
-          <Fab className="fab-write" color="primary" aria-label="edit">
-            <EditIcon />
-          </Fab>
-        </ThemeProvider>
-        <div className="loading">
-          <ReactLoading type="spin" color="#54BAB9" />
-        </div>
-        <div ref={setTarget} style={{ height: "100px" }}></div>
+        {articles.length === 0 ? (
+          <div>
+            <p className="content__inner--none">
+              최신 글 피드에 등록된 글이 없습니다.
+            </p>
+            <ThemeProvider theme={theme}>
+              <Fab className="fab-write" color="primary" aria-label="edit">
+                <EditIcon />
+              </Fab>
+            </ThemeProvider>
+          </div>
+        ) : (
+          <div>
+            {articles.map((article, index) => (
+              <Article key={index} articleData={article} />
+            ))}
+            <ThemeProvider theme={theme}>
+              <Fab className="fab-write" color="primary" aria-label="edit">
+                <EditIcon />
+              </Fab>
+            </ThemeProvider>
+          </div>
+        )}
+        {newArticles.length !== 0 && (
+          <div>
+            <div className="loading">
+              <ReactLoading type="spin" color="#54BAB9" />
+            </div>
+            <div ref={setTarget} style={{ height: "100px" }}></div>
+          </div>
+        )}
       </Grid>
     </Grid>
   );

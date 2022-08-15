@@ -37,6 +37,7 @@ function FilterButton({
     console.log("save");
     changeInterestList();
     handleCloseFilter();
+    window.location.reload();
   };
 
   return (
