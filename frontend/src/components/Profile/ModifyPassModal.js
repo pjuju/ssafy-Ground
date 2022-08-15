@@ -6,7 +6,7 @@ import GrButton from "components/common/GrButton";
 import { Grid } from "@mui/material";
 import "styles/Profile/ProfileEdit.scss";
 import { useState } from "react";
-import { modifyPass } from "api/find";
+import { logout, modifyPass } from "api/user";
 import { Controller, useForm } from "react-hook-form";
 import GrTextField from "components/common/GrTextField";
 import ErrorMessage from "components/Register/ErrorMessage";
@@ -59,13 +59,15 @@ export default function ModifyPassModal({ open, setOpen, email, username }) {
       username: username,
     };
 
-    console.log(detail);
+    console.log(data.pass);
 
     // 비밀번호 수정 요청
     modifyPass(detail, (res) => {
-      alert("비밀번호가 변경되었습니다. 다시 로그인 해주세요.");
-      navigate(`/`);
-      console.log(res);
+      logout((res) => {
+        localStorage.removeItem("token");
+        alert("비밀번호가 변경되었습니다. 다시 로그인 해주세요.");
+        navigate(`/`);
+      });
     });
   };
 
