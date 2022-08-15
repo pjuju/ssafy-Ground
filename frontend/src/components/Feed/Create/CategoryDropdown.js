@@ -1,9 +1,10 @@
 import React from "react";
-import { FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Grid, FormHelperText } from "@mui/material";
 import theme from "components/common/theme";
 import { ThemeProvider } from "@emotion/react";
 
-function CategoryDropdown({boardInfo, setBoardInfo}) {
+
+function CategoryDropdown({boardInfo, setBoardInfo, isCategoryError}) {
   const categoryId = boardInfo.categoryId
   const handleChange = (event) => {
     setBoardInfo({...boardInfo, categoryId: event.target.value})
@@ -31,7 +32,7 @@ function CategoryDropdown({boardInfo, setBoardInfo}) {
       <Grid container>
         <div className="create-feed__label">카테고리</div>
         <ThemeProvider theme={theme}>
-          <FormControl className="create-feed__dropdown" size="small">
+          <FormControl className="create-feed__dropdown" size="small" error={isCategoryError}>
             <InputLabel id="demo-simple-select-label">카테고리</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -44,6 +45,9 @@ function CategoryDropdown({boardInfo, setBoardInfo}) {
                 <MenuItem value={category.id} key={index}>{category.value}</MenuItem>
               ))}
             </Select>
+            {isCategoryError && (
+              <FormHelperText error>카테고리를 입력해주세요</FormHelperText>
+            )}
           </FormControl>
         </ThemeProvider>
       </Grid>
