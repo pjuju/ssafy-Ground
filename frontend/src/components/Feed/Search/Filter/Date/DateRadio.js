@@ -1,18 +1,17 @@
 import {
   FormControl,
   FormControlLabel,
-  Grid,
   Radio,
   RadioGroup,
   Typography,
 } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
-import { date } from "../../initData";
+import { date } from "assets/data/initData";
 
-const dateRadio = date.map((item, index) => (
+const radioList = date.map((item, index) => (
   <FormControlLabel
-    className="top__date-select"
+    className="date-radio"
     key={index}
     value={item.value}
     label={<Typography sx={{ fontSize: "0.8rem" }}>{item.label}</Typography>}
@@ -20,22 +19,23 @@ const dateRadio = date.map((item, index) => (
   />
 ));
 
-function DateRange({ dateRange, setDateRange }) {
+function DateRadio({ radio, setRadio, handleRadioChange }) {
   return (
-    <FormControl>
+    <FormControl fullWidth>
       <ThemeProvider theme={theme}>
         <RadioGroup
+          className="date-radio__radio-group"
           row
-          value={dateRange}
+          value={radio}
           onChange={(e) => {
-            setDateRange(e.target.value);
+            handleRadioChange(e.target.value);
           }}
         >
-          {dateRadio}
+          {radioList}
         </RadioGroup>
       </ThemeProvider>
     </FormControl>
   );
 }
 
-export default DateRange;
+export default DateRadio;
