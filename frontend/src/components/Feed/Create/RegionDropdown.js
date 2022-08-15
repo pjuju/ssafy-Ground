@@ -1,11 +1,12 @@
 import React from "react";
-import { FormControl, InputLabel, Select, MenuItem, Grid } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Grid, FormHelperText } from "@mui/material";
 import theme from "components/common/theme";
 import { ThemeProvider } from "@emotion/react";
 
-function RegionDropdown({ feedLocationId, onSetFeedLocationId }) {
+function RegionDropdown({ boardInfo, setBoardInfo, isLocationError }) {
+  const locationId = boardInfo.locationId
   const handleChange = (event) => {
-    onSetFeedLocationId(event.target.value);
+    setBoardInfo({...boardInfo, locationId: event.target.value})
   };
   const regionList = [
     "서울",
@@ -30,12 +31,12 @@ function RegionDropdown({ feedLocationId, onSetFeedLocationId }) {
       <Grid container>
         <div className="create-feed__label">지역</div>
         <ThemeProvider theme={theme}>
-          <FormControl className="create-feed__dropdown" size="small">
+          <FormControl className="create-feed__dropdown" size="small" error={isLocationError}>
             <InputLabel id="demo-simple-select-label">지역</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={feedLocationId}
+              value={locationId|| ''}
               label="region"
               onChange={handleChange}
             >
@@ -43,6 +44,9 @@ function RegionDropdown({ feedLocationId, onSetFeedLocationId }) {
                 <MenuItem value={index + 1} key={index}>{category}</MenuItem>
               ))}
             </Select>
+            {isLocationError && (
+              <FormHelperText error>지역을 입력해주세요</FormHelperText>
+            )}
           </FormControl>
         </ThemeProvider>
       </Grid>

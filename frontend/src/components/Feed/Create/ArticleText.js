@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Grid } from "@mui/material";
 
-function ArticleText({feedContent, onSetFeedContent}) {
+function ArticleText({boardInfo, setBoardInfo}) {
   const [textLength, setTextLength] = useState(0);
-  const handleTextLength = (event) => {
+  const textContent = boardInfo.content
+  const handleTextArea = (event) => {
     setTextLength(event.target.value.length);
-    onSetFeedContent(event.target.value)
+    setBoardInfo({...boardInfo, content: event.target.value })
   };
   return (
     <Grid container justifyContent="center">
@@ -15,8 +16,8 @@ function ArticleText({feedContent, onSetFeedContent}) {
           className="create-feed__textarea"
           rows="10"
           cols="40"
-          value={feedContent}
-          onChange={handleTextLength}
+          value={textContent|| ''}
+          onChange={handleTextArea}
         />
       </Grid>
       <Grid container justifyContent="right" className="create-feed__length-wrapper">

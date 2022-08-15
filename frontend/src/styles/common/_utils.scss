@@ -85,8 +85,8 @@ $wide-desktop: 1249px;
         padding: 2rem;
         padding-top: 1rem;
         padding-bottom: 0.5rem;
-        position: fixed;
-        width: 56%;
+        position: sticky;
+        width: 100%;
         top: 0;
         z-index: 1;
         font-size: 0.9rem;
@@ -115,9 +115,9 @@ $wide-desktop: 1249px;
   }
 
   & #inner {
-    padding-top: 90px;
-
     /* 플로팅 버튼 */
+    padding-top: 1rem;
+
     & .fab-write {
       position: fixed;
       bottom: 5vh;
@@ -161,8 +161,6 @@ $wide-desktop: 1249px;
   }
 
   & #inner {
-    padding-top: 80px;
-
     & .fab-write {
       position: fixed;
       bottom: 10vh;
@@ -180,7 +178,7 @@ $wide-desktop: 1249px;
     display: none;
   }
 
-  position: fixed;
+  position: sticky;
   z-index: 1;
   text-align: center;
   padding-right: 2.5rem;
@@ -189,7 +187,7 @@ $wide-desktop: 1249px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 
   & .titlebar {
-    position: fixed;
+    position: sticky;
     top: 0;
 
     &__toolbar {
@@ -201,6 +199,12 @@ $wide-desktop: 1249px;
       padding-bottom: 1rem;
       font-size: 1rem;
       cursor: pointer;
+    }
+
+    &__button {
+      &--edit {
+        border-radius: 20px;
+      }
     }
   }
 

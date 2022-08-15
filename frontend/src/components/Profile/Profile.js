@@ -7,23 +7,21 @@ import { useEffect } from "react";
 import UserInfo from "./UserInfo";
 import UserArticles from "./UserArticles";
 import UserExerciseRecord from "./UserExerciseRecord";
+import { useOutletContext } from "react-router-dom";
 
-function Profile({ onSetSideMenuIdx, onSetBottomMenuIdx }) {
-  useEffect(() => {
-    // 새로고침 시 Navbar가 알맞은 메뉴 인덱스를 가리키도록 함
-    onSetSideMenuIdx(-1);
-    onSetBottomMenuIdx(4);
-  }, []);
+function Profile() {
+  // Outlet에 생성한 context를 가져온다.
+  const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
 
   return (
-    <Grid className="profile-content">
-      <Grid className="profile-content__title-desktop">
+    <Grid className="content profile">
+      <Grid className="content__title-desktop">
         <h2>프로필</h2>
       </Grid>
-      <Grid className="profile-content__title-mobile">
+      <Grid className="content__title-mobile">
         <TitleBar title="프로필" />
       </Grid>
-      <Grid id="inner" className="profile-content__inner">
+      <Grid id="inner" className="content__inner">
         <Grid className="profile">
           <UserInfo />
           <Divider style={{ width: "100%" }} />
