@@ -141,15 +141,10 @@ public class KakaoService {
 		            JsonParser parser = new JsonParser();
 		            JsonElement element = parser.parse(result);
 		            
-//		            access_Token = element.getAsJsonObject().get("access_token").getAsString();
-//		            String user_email ="";
-//		            element.getAsJsonObject().
 		            String id = ((JsonObject) element).get("id").toString();
 		            String email = ((JsonObject) ((JsonObject) element).get("kakao_account")).get("email").toString();
-		            System.out.println("id: " + id);
-		            System.out.println("email: " + email);
 		            String ftoken = jwtTokenProvider.createToken(id);
-		            System.out.println("ftoken: " + ftoken);
+		            
 		            UserKakaoLoginDto ukld = new UserKakaoLoginDto();
 		            ukld.setUsername(id);
 		            ukld.setEmail(email);
