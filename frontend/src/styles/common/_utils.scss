@@ -1,0 +1,344 @@
+/* 변수 */
+$oauth-mobile-button-size: 200px;
+$oauth-tablet-button-size: 200px;
+$oauth-desktop-button-size: 200px;
+$oauth-wide-desktop-button-size: 200px;
+
+$primary: #54bab9;
+$light-gray: #757575;
+$super-light-gray: rgba(0, 0, 0, 0.1);
+
+/* 반응형 화면 크기*/
+$mobile: 767px;
+$tablet: 1023px;
+$desktop: 1024px;
+$wide-desktop: 1249px;
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$mobile+1}) and (max-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $desktop) and (max-width: #{$wide-desktop}) {
+    @content;
+  }
+}
+
+@mixin wide-desktop {
+  @media (min-width: #{$wide-desktop + 1}) {
+    @content;
+  }
+}
+
+@mixin custom-scrollbar {
+  height: 100%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    position: fixed;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    position: fixed;
+    background: $primary;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    position: fixed;
+    margin-top: 90px;
+    background: #54bab824;
+  }
+}
+
+#desktop {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  @include tablet() {
+    display: none;
+  }
+
+  @include mobile() {
+    display: none;
+  }
+
+  & .content {
+    @include custom-scrollbar();
+
+    width: 56% !important;
+
+    &__title {
+      &-desktop {
+        display: flex;
+        align-items: center;
+        padding: 2rem;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+        position: sticky;
+        width: 100%;
+        top: 0;
+        z-index: 1;
+        font-size: 0.9rem;
+        background: #fff;
+
+        & h2 {
+          display: inline;
+          cursor: pointer;
+        }
+
+        @include tablet() {
+          display: none;
+        }
+
+        @include mobile() {
+          display: none;
+        }
+      }
+
+      &-mobile {
+        @include desktop() {
+          display: none;
+        }
+      }
+    }
+  }
+
+  & #inner {
+    /* 플로팅 버튼 */
+    padding-top: 1rem;
+
+    & .fab-write {
+      position: fixed;
+      bottom: 5vh;
+      right: 25vw;
+    }
+  }
+}
+
+#mobile {
+  height: 100vh;
+
+  @include wide-desktop() {
+    display: none;
+  }
+
+  @include desktop() {
+    display: none;
+  }
+
+  & .content {
+    width: 100% !important;
+    @include custom-scrollbar();
+
+    &::-webkit-scrollbar-track {
+      margin-top: 4rem;
+    }
+
+    &__title {
+      padding: 2rem;
+
+      &-desktop {
+        @include tablet() {
+          display: none !important;
+        }
+
+        @include mobile() {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  & #inner {
+    & .fab-write {
+      position: fixed;
+      bottom: 10vh;
+      right: 5vw;
+    }
+  }
+}
+
+#titlebar {
+  @include desktop() {
+    display: none;
+  }
+
+  @include wide-desktop() {
+    display: none;
+  }
+
+  position: sticky;
+  z-index: 1;
+  text-align: center;
+  padding-right: 2.5rem;
+  background-color: #fff;
+  color: #000;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+
+  & .titlebar {
+    position: sticky;
+    top: 0;
+
+    &__toolbar {
+      width: 100%;
+    }
+
+    &__text {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    &__button {
+      &--edit {
+        border-radius: 20px;
+      }
+    }
+  }
+
+  &__toolbar {
+    width: 100%;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2rem;
+  padding-top: 1rem;
+}
+
+/* 외부 CSS 애니메이션 */
+.heartbeat:hover {
+  -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
+  animation: heartbeat 1.5s ease-in-out infinite both;
+}
+
+@-webkit-keyframes heartbeat {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+
+  10% {
+    -webkit-transform: scale(0.91);
+    transform: scale(0.91);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+
+  17% {
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+
+  33% {
+    -webkit-transform: scale(0.87);
+    transform: scale(0.87);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+
+  45% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+
+@keyframes heartbeat {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+
+  10% {
+    -webkit-transform: scale(0.91);
+    transform: scale(0.91);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+
+  17% {
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+
+  33% {
+    -webkit-transform: scale(0.87);
+    transform: scale(0.87);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+
+  45% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+}
+
+.pulsate-fwd:hover {
+  -webkit-animation: pulsate-fwd 0.5s ease-in-out infinite both;
+  animation: pulsate-fwd 0.5s ease-in-out infinite both;
+}
+
+@-webkit-keyframes pulsate-fwd {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  50% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes pulsate-fwd {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  50% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}

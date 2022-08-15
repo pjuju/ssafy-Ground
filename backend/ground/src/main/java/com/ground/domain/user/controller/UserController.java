@@ -117,10 +117,15 @@ public class UserController {
     @PutMapping("/modifyPass")
     @ApiOperation(value = "비밀번호 변경", response = boolean.class)
     //@RequestHeader String header, 
-    public boolean modifyPass(@RequestBody UserModifyPassDto params) {
-    	return userService.modifyPass(params);
+    public boolean modifyPass(@RequestHeader String Authorization, @RequestBody UserModifyPassDto params) {
+        String ftoken = Authorization.substring(7);
+        User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        return userService.modifyPass(user, params);
     }
-    
+
+
+
+
     
     @PostMapping("/login")
     @ApiOperation(value = "로그인", response = UserStateDto.class)

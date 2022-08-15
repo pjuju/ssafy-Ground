@@ -1,0 +1,214 @@
+@import "./_utils.scss";
+
+@mixin noti-common {
+  padding: 5%;
+  padding-left: 0;
+  padding-right: 3%;
+  align-items: center;
+  justify-content: center;
+  background: rgba(#54bab9, 0.1);
+  width: 100%;
+  text-align: left;
+  margin-right: 1rem;
+  border-bottom: 1px solid $super-light-gray;
+
+  &__img {
+    margin-right: 1rem;
+    width: 13%;
+
+    & img {
+      width: 100%;
+    }
+  }
+
+  &__text {
+    width: 60%;
+  }
+
+  &__delete {
+    width: 10% !important;
+
+    & button {
+      & svg {
+        width: 70% !important;
+      }
+    }
+  }
+}
+
+/* 모바일 + 데스크탑 navbar 전체 */
+.notification {
+  width: 22% !important;
+  min-height: 100vh;
+  justify-content: space-between;
+  border-left: 1px solid $super-light-gray;
+  padding-top: 3rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  &__icon {
+    text-align: right;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &__tabpanel {
+    text-align: center;
+    padding: 0 !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 70vh;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $primary;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(#54bab9, 0.1);
+    }
+
+    &--no-noti {
+      padding-top: 50%;
+      color: $light-gray;
+    }
+  }
+
+  &__bottom {
+    position: fixed;
+    bottom: 0;
+    background: #fff;
+    width: 21.89% !important;
+    display: flex;
+    justify-content: center;
+
+    &__delete {
+      padding: 1rem;
+
+      & button {
+        color: $light-gray;
+        height: 40px;
+        font-size: 1rem;
+
+        &:hover {
+          color: red;
+          background-color: #fff;
+        }
+      }
+    }
+  }
+}
+
+/* 하단 프로필 버튼 */
+.profile-button {
+  display: flex;
+  justify-content: center;
+  width: 18vw !important;
+  border: 1px solid #54bab9;
+  border-radius: 60px;
+  padding: 0.7rem 0.3rem 0.7rem 0.3rem;
+  margin: 1rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
+
+  &__img {
+    img {
+      width: 40px;
+      margin-right: 0.5rem;
+    }
+  }
+
+  &__user-info {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+
+    &__name {
+      font-weight: 700;
+    }
+
+    &__email {
+      font-weight: 400;
+      color: $light-gray;
+    }
+  }
+
+  @include wide-desktop() {
+    width: 16vw !important;
+  }
+}
+
+.noti {
+  &-like,
+  &-comment {
+    @include noti-common();
+  }
+
+  &-fr {
+    @include noti-common();
+
+    &__top {
+      padding-left: 6%;
+
+      &__img {
+        margin-right: 1rem;
+        width: 14%;
+
+        & img {
+          width: 100%;
+        }
+      }
+
+      &__text {
+        width: 70%;
+        align-items: center;
+
+        & p {
+          vertical-align: middle;
+          margin: 0;
+        }
+      }
+    }
+
+    &__button {
+      margin-top: 0.5rem;
+      margin-right: 1rem;
+      width: 100%;
+      text-align: end;
+
+      &--reject {
+        border-radius: 20px !important;
+        margin-right: 0.3rem !important;
+        background: #fff !important;
+      }
+
+      &--accept {
+        border-radius: 20px !important;
+        box-shadow: none !important;
+
+        &:hover {
+          box-shadow: none !important;
+        }
+      }
+    }
+  }
+
+  &-follow {
+    @include noti-common();
+  }
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.checked {
+  background: #fff;
+}

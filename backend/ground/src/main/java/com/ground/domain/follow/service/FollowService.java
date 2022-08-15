@@ -84,7 +84,7 @@ public class FollowService {
         StringBuffer sb = new StringBuffer();
 
         sb.append("SELECT u.id, u.username, u.nickname, u.user_image,");
-        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
+        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id AND flag = TRUE), 1, 2), 0) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");
         sb.append("WHERE u.id = f.from_user_id AND f.to_user_id = ? AND f.flag = TRUE");
@@ -92,7 +92,8 @@ public class FollowService {
         Query query = em.createNativeQuery(sb.toString())
                 .setParameter(1, userId)
                 .setParameter(2, userId)
-                .setParameter(3, profileId);
+                .setParameter(3, userId)
+                .setParameter(4, profileId);
 
         JpaResultMapper result = new JpaResultMapper();
         List<FollowDto> followDtoList = result.list(query, FollowDto.class);
@@ -104,7 +105,7 @@ public class FollowService {
     public List<FollowDto> getFollowing(long profileId, long userId) {
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT u.id, u.username, u.nickname, u.user_image, ");
-        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), TRUE, FALSE) AS followState, ");
+        sb.append("if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id), if ((SELECT 1 FROM t_user_follow WHERE from_user_id = ? AND to_user_id = u.id AND flag = TRUE), 1, 2), 0) AS followState, ");
         sb.append("if ((?=u.id), TRUE, FALSE) AS loginUser ");
         sb.append("FROM t_user u, t_user_follow f ");
         sb.append("WHERE u.id = f.to_user_id AND f.from_user_id = ? AND f.flag = TRUE");
@@ -112,7 +113,8 @@ public class FollowService {
         Query query = em.createNativeQuery(sb.toString())
                 .setParameter(1, userId)
                 .setParameter(2, userId)
-                .setParameter(3, profileId);
+                .setParameter(3, userId)
+                .setParameter(4, profileId);
 
         JpaResultMapper result = new JpaResultMapper();
         List<FollowDto> followDtoList = result.list(query, FollowDto.class);
