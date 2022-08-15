@@ -3,10 +3,15 @@ import { Box } from "@mui/system";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DoneIcon from "@mui/icons-material/Done";
 
 function TitleBar(props) {
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);
+  };
+
+  const handleClickBack = () => {
+    window.history.back();
   };
 
   return (
@@ -19,6 +24,7 @@ function TitleBar(props) {
               edge="start"
               color="inherit"
               aria-label="menu"
+              onClick={handleClickBack}
             >
               <ArrowBackIcon />
             </IconButton>
@@ -44,18 +50,18 @@ function TitleBar(props) {
             >
               <AutoAwesomeOutlinedIcon />
             </IconButton>
+          ) : props.title === "알림" ? (
+            <IconButton
+              size="large"
+              edge="end"
+              color="inherit"
+              aria-label="filter"
+              onClick={props.handleClickAllDelete}
+            >
+              <DeleteOutlineIcon />
+            </IconButton>
           ) : (
-            props.title === "알림" && (
-              <IconButton
-                size="large"
-                edge="end"
-                color="inherit"
-                aria-label="filter"
-                onClick={props.handleClickAllDelete}
-              >
-                <DeleteOutlineIcon />
-              </IconButton>
-            )
+            <div style={{ width: "50.25px" }}></div>
           )}
         </Toolbar>
       </AppBar>

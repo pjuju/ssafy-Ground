@@ -12,9 +12,11 @@ function SideNavbar({
   onSetSideMenuIdx,
   onSetBottomMenuIdx,
 }) {
+  const [id, setId] = useState(0);
   const [nickname, setNickname] = useState("");
   const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,25 +25,26 @@ function SideNavbar({
       element = document
         .querySelector(`.navbar-side__menu a:nth-child(${sideMenuIdx + 1})`)
         .querySelector("h3");
-      element.className = "bold";
+      if (element) {
+        element.className = "bold";
+      }
     }
 
     // 사용자 정보 가져오기
     getUserState((res) => {
+      setId(res.data.id);
       setNickname(res.data.nickname);
       setImage(res.data.image);
       setEmail(res.data.email);
-      console.log(nickname);
-      console.log(image);
-      console.log(email);
+      setUsername(res.data.username);
     });
 
     return () => {
-      if (sideMenuIdx !== -1) {
+      if (element) {
         element.className = "";
       }
     };
-  }, [sideMenuIdx]);
+  }, [sideMenuIdx, bottomMenuIdx]);
 
   const handleMenuClick = (menuIdx) => {
     switch (menuIdx) {
@@ -95,9 +98,13 @@ function SideNavbar({
         </p>
       </Grid>
       <Grid className="navbar-side__profile" item>
-        <Link to="/profile/1">
-          <ProfileButton nickname={nickname} image={image} email={email} />
-        </Link>
+        <ProfileButton
+          id={id}
+          nickname={nickname}
+          image={image}
+          email={email}
+          username={username}
+        />
       </Grid>
     </Grid>
   );
