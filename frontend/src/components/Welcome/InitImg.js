@@ -1,11 +1,12 @@
 import userImageInput from "assets/images/userImageInput.png";
 import GrButton from "components/common/GrButton";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Grid } from "@mui/material";
 
-function InitImg({ img, onSetImg, onSetInitFlag }) {
+function InitImg({ onSetImgFile, onSetImg, onSetInitFlag }) {
   const selectUserImg = useRef("");
+  const [profileImg, setProfileImg] = useState("");
 
   useEffect(() => {
     preview();
@@ -13,22 +14,25 @@ function InitImg({ img, onSetImg, onSetInitFlag }) {
 
   /* 이미지를 첨부했을 때 프리뷰로 해당 이미지 미리보기 */
   const preview = () => {
-    if (img === "") return false;
+    if (profileImg === "") return false;
 
     const imgElement = document.querySelector(
       ".initial-settings__img__input-button > img"
     );
     if (imgElement !== null) {
-      imgElement.src = img;
+      imgElement.src = profileImg;
     }
   };
 
   /* 이미지 첨부 버튼을 눌렀을 때 호출되는 핸들러 */
   const handleClickInput = (event) => {
     event.preventDefault();
-
     const file = event.target.files[0];
-    onSetImg(URL.createObjectURL(file));
+    const randNum = parseInt((new Date().getTime() + Math.random())*100);
+    onSetImg(randNum.toString())
+    onSetImgFile(file)
+    setProfileImg(URL.createObjectURL(file));
+
   };
 
   /* 건너뛰기 혹은 다음 버튼을 눌렀을 때 실행되는 핸들러 */
@@ -61,8 +65,8 @@ function InitImg({ img, onSetImg, onSetInitFlag }) {
       </Grid>
       <Grid className="initial-settings__img__submit-button" item>
         <GrButton
-          variant={img === "" ? "outlined" : "contained"}
-          children={img === "" ? "건너뛰기" : "다음"}
+          variant={profileImg === "" ? "outlined" : "contained"}
+          children={profileImg === "" ? "건너뛰기" : "다음"}
           onClick={handleClickSubmit}
         />
       </Grid>
