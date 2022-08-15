@@ -110,6 +110,26 @@
     &__button {
       margin-top: 1rem;
     }
+
+    @include tablet {
+      & .MuiTextField-root {
+        width: 90%;
+      }
+
+      &__button {
+        width: 90%;
+      }
+    }
+
+    @include mobile {
+      & .MuiTextField-root {
+        width: 90%;
+      }
+
+      &__button {
+        width: 90%;
+      }
+    }
   }
 
   /* 관심 운동 종목 설정 컴포넌트 */
