@@ -13,12 +13,16 @@ function UserExerciseRecord() {
   const [Dates, setDates] = useState([]);
   const [category, setCategory] = useState([]);
   const [board, setBoard] = useState([]);
+  const [isExist, setIsExist] = useState(false);
 
   useEffect(() => {
     getUserProfile(userId, (res) => {
-      setDates(res.data.groundDates);
-      setCategory(res.data.groundCategory);
-      setBoard(res.data.userBoardDtos);
+      if (res.data.groundDates.length !== 0) {
+        setDates(res.data.groundDates);
+        setCategory(res.data.groundCategory);
+        setBoard(res.data.userBoardDtos);
+        setIsExist(true);
+      }
     });
   }, []);
 
@@ -37,8 +41,13 @@ function UserExerciseRecord() {
       </Grid>
       {open && (
         <>
-          <UserGroundBadge board={board} />
-          <UserGroundGraph category={category} />
+          {isExist && (
+            <>
+              <UserGroundBadge board={board} />
+              <UserGroundGraph category={category} />
+            </>
+          )}
+          {!isExist && (<div className="ground__no-record">글을 작성해서 운동장에 잔디를 심으면 상세 정보를 볼 수 있어요!</div>)}
         </>
       )}
     </Grid>
