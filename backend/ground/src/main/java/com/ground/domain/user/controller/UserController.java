@@ -151,22 +151,15 @@ public class UserController {
     	
     	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
     	ukld = kakaoService.getUserInfo(access_Token);
-    	System.out.println("uc ukld: " + ukld);
     	return kakaoService.kakaoLogin(ukld);
     }
     
     @RequestMapping("/oauth/google")
-    @ApiOperation(value = "구글 로그인", response = UserLoginResponseDto.class)
-    public UserLoginResponseDto googleLogin(@RequestParam("code") String code, HttpSession session) throws IOException {
-    	String google_client_id = socialOauth.getGoogle_client_id();
-    	String google_client_secret = socialOauth.getGoogle_client_secret();
-    	String google_redirect_uri = socialOauth.getGoogle_redirect_uri();
-    	String google_token_url = socialOauth.getGoogle_token_url();
-    	String access_Token = GoogleService.getAccessToken(code, google_client_id, google_client_secret, google_redirect_uri, google_token_url);
-    	System.out.println(access_Token); 
+    @ApiOperation(value = "구글 로그인", response = String.class)
+    public UserLoginResponseDto googleLogin(@RequestParam("code") String access_token, HttpSession session) throws IOException {
     	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
-    	ukld = googleService.getUserInfo(access_Token);
-    	System.out.println("uc ukld: " + ukld);
+    	ukld = googleService.getUserInfo(access_token);
+    	System.out.println("hihi: " + googleService.googleLogin(ukld));
     	return googleService.googleLogin(ukld);
     }
     
