@@ -6,6 +6,43 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translate(-50%, 80%);
+  }
+  to {
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes slideUp-mobile {
+  from {
+    transform: translate(-50%, 80%);
+  }
+  to {
+    transform: translate(-50%, -100%);
+  }
+}
+
+/* Search.js */
 .search-inner {
   padding: 0 4rem 0 4rem !important;
 
@@ -41,82 +78,26 @@
   // 반응형
   @include tablet() {
     width: 100%;
+    padding: 2rem 2rem 0 2rem !important;
   }
 
   @include mobile() {
     width: 100%;
-    padding: 4rem 2rem 0 2rem !important;
+    padding: 2rem 2rem 0 2rem !important;
   }
 }
 
-.top {
-  &__search-dropdown,
-  &__search-label {
-    font-size: 0.9rem !important;
-  }
-
-  &__search-standard,
-  &__search-field,
-  &__search-button {
-    width: 100%;
-  }
-
-  &__search-field-wrapper {
-    margin: 0 1rem !important;
-  }
-
-  &__date-select:last-child {
-    margin-right: 0;
-  }
-
-  &__date-picker {
-    position: relative;
-    margin-top: 0.3rem;
-
-    &--calendar {
-      justify-content: end;
-      margin-top: 0.5rem;
-    }
-
-    @include sm {
-      display: none !important;
-    }
-  }
-}
-
-.date-picker {
-  width: 30%;
-
-  &__startDate {
-    margin-right: 1rem !important;
-  }
-
-  @include mobile() {
-    font-size: 0.5rem;
-  }
-}
-
-.latest-search {
+/* SearchBar.js */
+.search-bar {
   position: relative;
-  z-index: 2000;
-}
-
-.filter-modal {
-  width: 100%;
-
-  &__button-wrapper {
-    text-align: end;
-    padding-top: 1rem;
-  }
-
-  &__button {
-    font-weight: 600 !important;
-  }
 
   &__wrapper {
-    &--right {
-      margin-bottom: 1rem;
-    }
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 2px solid #54bab9;
+    box-shadow: none;
   }
 }
 
@@ -159,17 +140,9 @@
   }
 }
 
-.search-bar {
+.latest-search {
   position: relative;
-
-  &__wrapper {
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border: 2px solid #54bab9;
-    box-shadow: none;
-  }
+  z-index: 2000;
 }
 
 .search-latest-box {
@@ -226,6 +199,6 @@
 .no-search-result {
   display: flex;
   justify-content: center;
-  color:rgb(148, 148, 148);
+  color: rgb(148, 148, 148);
   margin-top: 6rem;
 }
