@@ -7,8 +7,10 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { ThemeProvider } from "@emotion/react";
 import { likeBoard, unlikeBoard } from "api/board";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ArticleActivity(props) {
+  const navigate = useNavigate();
   const { nickname, id, isLiked, setIsLiked, likeCnt, commentCnt } = props;
 
   // isLiked가 바뀔 때마다 리렌더링
@@ -28,6 +30,10 @@ function ArticleActivity(props) {
       setIsLiked(() => false);
       console.log(res);
     });
+  };
+
+  const handleClickMore = () => {
+    navigate(`/feed/detail/${id}`);
   };
 
   return (
@@ -55,7 +61,7 @@ function ArticleActivity(props) {
         </Grid>
       )}
       <Grid className="activity_comment" item>
-        <IconButton>
+        <IconButton onClick={handleClickMore}>
           <ChatBubbleOutlineIcon />
         </IconButton>
         댓글 <span className="bold">{commentCnt}개</span>
