@@ -9,8 +9,6 @@ import { setInterest, toggleInterestList } from "modules/interest";
 import FilterModal from "components/Feed/Latest/FilterModal";
 import { useState } from "react";
 import { updateInterest } from "api/user";
-import { deleteAccountNoti, deleteBoardNoti } from "api/notification";
-import { setAccountNotiList } from "modules/notification";
 import CustomModal from "./CustomModal";
 
 function TitleBar(props) {
@@ -21,10 +19,6 @@ function TitleBar(props) {
 
   const dispatch = useDispatch();
   const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
-  const onSetActivityNotiList = (activityNotiList) =>
-    dispatch(setAccountNotiList(activityNotiList));
-  const onSetAccountNotiList = (accountNotiList) =>
-    dispatch(setAccountNotiList(accountNotiList));
 
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);
