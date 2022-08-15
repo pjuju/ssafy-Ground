@@ -7,7 +7,11 @@ import {
 } from "@mui/material";
 import theme from "components/common/theme";
 import { ThemeProvider } from "@emotion/react";
-function ArticleOpen() {
+function ArticleOpen({boardInfo, setBoardInfo}) {
+  const privateYN = boardInfo.privateYN
+  const handleChange  = (event) => {
+    setBoardInfo({...boardInfo, privateYN: event.target.value})
+  }
   return (
     <Grid container direction="row" className="create-feed__inner-wrapper">
       <Grid container>
@@ -16,12 +20,13 @@ function ArticleOpen() {
           <RadioGroup
             row
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="공개"
+            value={privateYN}
             name="radio-buttons-group"
+            onChange={handleChange}
           >
-            <FormControlLabel value="공개" control={<Radio />} label="공개" />
+            <FormControlLabel value="false" control={<Radio />} label="공개" />
             <FormControlLabel
-              value="비공개"
+              value="true"
               control={<Radio />}
               label="비공개"
             />

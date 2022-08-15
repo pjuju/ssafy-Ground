@@ -1,6 +1,5 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import { Grid } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import LatestSearch from "./LatestSearch";
 import { useEffect } from "react";
 import { getSearchBoard, getSearchUser } from "api/search";
@@ -11,64 +10,51 @@ import {
   deleteSearchBoard,
   deleteSearchUser,
 } from "api/search";
+import { useSearchState } from "../SearchContext";
+import { useState } from "react";
 
+function LatestSearchBox({ open, setOpen, handleLatestClick }) {
+  const { standard } = useSearchState();
+  const [userLatest, setUserLatest] = useState([]);
+  const [boardLatest, setBoardLatest] = useState([]);
 
-function LatestSearchBox({
-  standard,
-  setOpenLatest,
-  latestBoard,
-  latestUser,
-  setLatestBoard,
-  setLatestUser,
-  setWord
-}) {
   useEffect(() => {
     getSearchBoard((res) => {
-      setLatestBoard(res.data);
+      setBoardLatest(res.data);
     });
     getSearchUser((res) => {
-      setLatestUser(res.data);
+      setUserLatest(res.data);
     });
   }, []);
 
   const handleDeleteItem = (id) => {
-    if (standard === "board") {
+    if (standard === 0) {
       deleteSearchBoard(id, (res) => {
-        const deletedList = latestBoard.filter((board) => {
+        const deletedList = boardLatest.filter((board) => {
           return board.id !== id;
         });
-        setLatestBoard(deletedList);
+        setBoardLatest(deletedList);
       });
-    } else if (standard === "user") {
+    } else if (standard === 1) {
       deleteSearchUser(id, (res) => {
-        const deletedList = latestUser.filter((user) => {
+        const deletedList = userLatest.filter((user) => {
           return user.id !== id;
         });
-        setLatestUser(deletedList);
+        setUserLatest(deletedList);
       });
     }
   };
 
   const handleDeleteAll = (e) => {
     e.preventDefault();
-    if (standard === "board") {
-      deleteAllSearchBoard(
-        (res) => {
-          setLatestBoard([]);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    } else if (standard === "user") {
-      deleteAllSearchUser(
-        (res) => {
-          setLatestUser([]);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+    if (standard === 0) {
+      deleteAllSearchBoard((res) => {
+        setBoardLatest([]);
+      });
+    } else if (standard === 1) {
+      deleteAllSearchUser((res) => {
+        setUserLatest([]);
+      });
     }
   };
 
@@ -78,22 +64,12 @@ function LatestSearchBox({
         <Grid container className="search-latest-box" direction="column">
           <h4>최근 검색어</h4>
           <Grid className="search-latest-box__content" item>
-            {standard === "board" && (
-              <LatestSearch
-                latest={latestBoard}
-                handleDeleteItem={handleDeleteItem}
-                setOpenLatest={setOpenLatest}
-                setWord={setWord}
-              />
-            )}
-            {standard === "user" && (
-              <LatestSearch
-                latest={latestUser}
-                handleDeleteItem={handleDeleteItem}
-                setOpenLatest={setOpenLatest}
-                setWord={setWord}
-              />
-            )}
+            <LatestSearch
+              latest={standard === 0 ? boardLatest : userLatest}
+              setOpen={setOpen}
+              handleDeleteItem={handleDeleteItem}
+              handleLatestClick={handleLatestClick}
+            />
           </Grid>
           <Grid
             className="search-latest-box__deleteAll--wrapper"
@@ -109,7 +85,7 @@ function LatestSearchBox({
               onBlur={(e) => {
                 const tabIndex = e.relatedTarget?.tabIndex;
                 if (tabIndex !== -1) {
-                  setOpenLatest(false);
+                  setOpen(false);
                 }
               }}
             >
