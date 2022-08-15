@@ -64,6 +64,12 @@ function RegisterPage() {
     };
   }, []);
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      goToOtherInfo();
+    }
+  }, []);
+
   return (
     <Container maxWidth="xs">
       <Grid
@@ -95,13 +101,9 @@ function RegisterPage() {
             goToOtherInfo={goToOtherInfo}
           />
         )}
-        {next && (
-          <OtherInfo
-            sendRequest={sendRequest}
-          />
-        )}
+        {next && <OtherInfo sendRequest={sendRequest} />}
       </Grid>
-      <RegisterModal open={open} setOpen={setOpen}/>
+      <RegisterModal open={open} setOpen={setOpen} />
     </Container>
   );
 }
