@@ -22,7 +22,16 @@ import { getUserState } from "api/user";
 import { saveBoard, unsaveBoard } from "api/board";
 
 function ArticleMore(props) {
-  const { id, isSaved, setIsSaved, saveCnt, setSaveCnt, content } = props;
+  const {
+    id,
+    writerId,
+    userId,
+    isSaved,
+    setIsSaved,
+    saveCnt,
+    setSaveCnt,
+    content,
+  } = props;
 
   const state = useSelector((state) => state);
   const feedData = useSelector((state) => state.feed.feedData);
@@ -79,46 +88,47 @@ function ArticleMore(props) {
 
   return (
     <Grid className="more">
-      <Grid className="more__menu">
-        <IconButton ref={anchorEl}>
-          {/* <MoreVertIcon /> */}
-          <MoreVertIcon
-            aria-controls={menuOpen ? "demo-positioned-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={menuOpen ? "true" : undefined}
-            onClick={handleClickMenu}
-          />
-          <Menu
-            aria-labelledby="demo-positioned-button"
-            anchorEl={anchorEl}
-            open={menuOpen}
-            onClose={handleMenuClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          >
-            <MenuItem onClick={handleClickEdit}>
-              <ListItemIcon>
-                <ModeEditOutlinedIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>수정</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleClickDelete}>
-              <ThemeProvider theme={theme}>
+      {userId === writerId && (
+        <Grid className="more__menu">
+          <IconButton ref={anchorEl}>
+            <MoreVertIcon
+              aria-controls={menuOpen ? "demo-positioned-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={menuOpen ? "true" : undefined}
+              onClick={handleClickMenu}
+            />
+            <Menu
+              aria-labelledby="demo-positioned-button"
+              anchorEl={anchorEl}
+              open={menuOpen}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+            >
+              <MenuItem onClick={handleClickEdit}>
                 <ListItemIcon>
-                  <DeleteOutlinedIcon color="warning" fontSize="small" />
+                  <ModeEditOutlinedIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText style={{ color: "#E6330F" }}>삭제</ListItemText>
-              </ThemeProvider>
-            </MenuItem>
-          </Menu>
-        </IconButton>
-      </Grid>
+                <ListItemText>수정</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={handleClickDelete}>
+                <ThemeProvider theme={theme}>
+                  <ListItemIcon>
+                    <DeleteOutlinedIcon color="warning" fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText style={{ color: "#E6330F" }}>삭제</ListItemText>
+                </ThemeProvider>
+              </MenuItem>
+            </Menu>
+          </IconButton>
+        </Grid>
+      )}
       <Grid className="more__save">
         <Grid>
           {isSaved ? (

@@ -23,12 +23,14 @@ function Article({ articleData }) {
   const boardSaves = articleData.boardSaves;
 
   // 로그인한 사용자의 정보
+  const [userId, setUserId] = useState("");
   const [nickname, setNickname] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     getUserState((res) => {
+      setUserId(res.data.id);
       setNickname(res.data.nickname);
 
       boardLikes.map((item) => {
@@ -77,6 +79,8 @@ function Article({ articleData }) {
         <Grid className="article__inner_right">
           <ArticleMore
             id={id}
+            writerId={user.id}
+            userId={userId}
             isSaved={isSaved}
             setIsSaved={setIsSaved}
             saveCnt={saveCnt}
