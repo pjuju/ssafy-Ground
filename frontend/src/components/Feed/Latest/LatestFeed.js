@@ -4,7 +4,7 @@ import TitleBar from "components/common/TitleBar";
 import theme from "components/common/theme.js";
 import "styles/Feed/LatestFeed.scss";
 
-import { Fab, Grid } from "@mui/material";
+import { Fab, Grid, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { ThemeProvider } from "@emotion/react";
@@ -24,6 +24,8 @@ import {
   modifyUserInfo,
   updateInterest,
 } from "api/user";
+import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
+import FilterModal from "./FilterModal";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
@@ -36,6 +38,7 @@ function LatestFeed() {
   const [isLoading, setIsLoading] = useState(false);
   // Outlet에 생성한 context를 가져온다.
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
+  const [open, setOpen] = useState(false);
 
   // 관심 운동 종목과 관련한 Redux 상태값, 액션함수
   const interestList = useSelector((state) => state.interest.interestList);
@@ -141,7 +144,17 @@ function LatestFeed() {
             />
           </Grid>
           <Grid className="content__inner__filter__icon">
-            <FilterButton
+            {/* <FilterButton
+              interestList={interestList}
+              onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
+            /> */}
+            <IconButton onClick={() => setOpen(true)}>
+              <AutoAwesomeOutlinedIcon />
+            </IconButton>
+            <FilterModal
+              open={open}
+              setOpen={setOpen}
               interestList={interestList}
               onToggleInterestList={onToggleInterestList}
               changeInterestList={changeInterestList}
