@@ -43,7 +43,7 @@ function BoardSearchResult() {
 
   // 정렬 기준 선택했을 때, 페이지 넘버 0으로 바꿔줘야 함
   const handleClickSort = (type) => {
-    observer.unobserve(target);
+    observer.disconnect();
     let searchData = {
       word,
       type,
