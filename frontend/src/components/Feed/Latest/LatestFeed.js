@@ -4,7 +4,7 @@ import TitleBar from "components/common/TitleBar";
 import theme from "components/common/theme.js";
 import "styles/Feed/LatestFeed.scss";
 
-import { Fab, Grid } from "@mui/material";
+import { Fab, Grid, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { ThemeProvider } from "@emotion/react";
@@ -13,28 +13,47 @@ import FilterButton from "./FilterButton";
 import FilterChips from "./FilterChips";
 import { useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleInterestList } from "modules/interest";
+import {
+  deleteInterest,
+  setInterest,
+  toggleInterestList,
+} from "modules/interest";
+import {
+  getUserProfile,
+  getUserState,
+  modifyUserInfo,
+  updateInterest,
+} from "api/user";
+import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
+import FilterModal from "./FilterModal";
+import { useNavigate } from "react-router-dom";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
   // 게시글 데이터를 담을 배열
   const [articles, setArticles] = useState([]);
+  const [newArticles, setNewArticles] = useState([]);
   // 스크롤이 하단에 닿았을 때 pageNumber를 1만큼 증가시켜서 새로운 데이터를 요청한다.
   const [pageNumber, setPageNumber] = useState(1);
   // 로딩 성공 및 실패 정보를 담을 state
   const [isLoading, setIsLoading] = useState(false);
   // Outlet에 생성한 context를 가져온다.
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
+  const [open, setOpen] = useState(false);
 
   // 관심 운동 종목과 관련한 Redux 상태값, 액션함수
   const interestList = useSelector((state) => state.interest.interestList);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
+  const onSetInterest = (id) => dispatch(setInterest(id));
+  const onDeleteInterest = (id) => dispatch(deleteInterest(id));
 
   const fetchArticles = () => {
     getLatestBoard(pageNumber, (res) => {
       setArticles(articles.concat(res.data));
+      setNewArticles(res.data);
       setPageNumber((pageNumber) => pageNumber + 1);
       console.log(res.data);
       console.log("페이지 넘버: " + pageNumber);
@@ -60,6 +79,24 @@ function LatestFeed() {
   }, []);
 
   useEffect(() => {
+    getUserState((res) => {
+      // 사용자의 관심 운동 종목을 redux state인 interestList에서 true로 변경
+      getUserProfile(res.data.id, (res) => {
+        console.log(res.data);
+        res.data.userCategories.map((item) => {
+          onSetInterest(item.categoryId);
+        });
+      });
+    });
+
+    // 제일 첫 페이지를 받아옴
+    getLatestBoard(0, (res) => {
+      setArticles(() => articles.concat(res.data));
+      setNewArticles(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
     let observer;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
@@ -73,6 +110,27 @@ function LatestFeed() {
 
   const handleClickTitle = () => {
     document.querySelector(".content").scrollTo(0, 0);
+  };
+
+  const handleClickCreate = () => {
+    navigate("/feed/create");
+  };
+
+  const changeInterestList = () => {
+    const interestArray = [];
+    // interestList에서 isInterested가 true인 것들의 id만 뽑아서 새로운 배열 생성
+    interestList.map((item) => {
+      if (item.isInterested) {
+        console.log(interestList);
+        interestArray.push(item.id);
+      }
+    });
+    console.log(interestArray);
+
+    updateInterest(interestArray, (res) => {
+      window.location.reload();
+      console.log(res);
+    });
   };
 
   return (
@@ -89,27 +147,58 @@ function LatestFeed() {
             <FilterChips
               interestList={interestList}
               onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
             />
           </Grid>
           <Grid className="content__inner__filter__icon">
-            <FilterButton
+            {/* <FilterButton
               interestList={interestList}
               onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
+            /> */}
+            <IconButton onClick={() => setOpen(true)}>
+              <AutoAwesomeOutlinedIcon />
+            </IconButton>
+            <FilterModal
+              open={open}
+              setOpen={setOpen}
+              interestList={interestList}
+              onToggleInterestList={onToggleInterestList}
+              changeInterestList={changeInterestList}
             />
           </Grid>
         </Grid>
-        {articles.map((article, index) => (
-          <Article key={index} articleData={article} />
-        ))}
-        <ThemeProvider theme={theme}>
-          <Fab className="fab-write" color="primary" aria-label="edit">
-            <EditIcon />
-          </Fab>
-        </ThemeProvider>
-        <div className="loading">
-          <ReactLoading type="spin" color="#54BAB9" />
-        </div>
-        <div ref={setTarget} style={{ height: "100px" }}></div>
+        {articles.length === 0 ? (
+          <div>
+            <p className="content__inner__filter--none">
+              최신 글 피드에 등록된 글이 없습니다.
+            </p>
+            <ThemeProvider theme={theme}>
+              <Fab className="fab-write" color="primary" aria-label="edit">
+                <EditIcon onClick={handleClickCreate}/>
+              </Fab>
+            </ThemeProvider>
+          </div>
+        ) : (
+          <div>
+            {articles.map((article, index) => (
+              <Article key={index} articleData={article} />
+            ))}
+            <ThemeProvider theme={theme}>
+              <Fab className="fab-write" color="primary" aria-label="edit">
+                <EditIcon onClick={handleClickCreate}/>
+              </Fab>
+            </ThemeProvider>
+          </div>
+        )}
+        {newArticles.length !== 0 && (
+          <div>
+            <div className="loading">
+              <ReactLoading type="spin" color="#54BAB9" />
+            </div>
+            <div ref={setTarget} style={{ height: "100px" }}></div>
+          </div>
+        )}
       </Grid>
     </Grid>
   );
