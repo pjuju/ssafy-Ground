@@ -114,8 +114,6 @@ $wide-desktop: 1249px;
     }
 
     &__inner {
-      height: 80%;
-
       &--none {
         height: 80%;
         display: flex;
@@ -154,7 +152,8 @@ $wide-desktop: 1249px;
     @include custom-scrollbar();
 
     &::-webkit-scrollbar-track {
-      margin-top: 4rem;
+      margin-top: 60px;
+      margin-bottom: 60px;
     }
 
     &__title {
@@ -172,10 +171,11 @@ $wide-desktop: 1249px;
     }
 
     &__inner {
-      height: 80%;
+      margin-top: 60px;
+      padding-bottom: 60px;
 
       &--none {
-        height: 80%;
+        padding-top: 40%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -202,7 +202,10 @@ $wide-desktop: 1249px;
     display: none;
   }
 
-  position: sticky;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
   text-align: center;
   padding-right: 2.5rem;
@@ -211,9 +214,6 @@ $wide-desktop: 1249px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 
   & .titlebar {
-    position: sticky;
-    top: 0;
-
     &__toolbar {
       width: 100%;
     }
