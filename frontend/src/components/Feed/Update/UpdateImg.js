@@ -42,7 +42,7 @@ function UpdateImg({ boardInfo, newImages, setNewImages, uploadImages, setUpload
     images.map((src,index) => {
       console.log(src)
       const storageRef = ref(storage, `images/${src.imageUrl}`);
-      const imgType = ['jpg', 'png', 'gif']
+      const imgType = ['jpg', 'png', 'gif', 'jpeg']
       if (src.imageurl === undefined) {
         getDownloadURL(storageRef).then((url) => {
           if (imgType.indexOf(src.imageType) !== -1) {
@@ -72,7 +72,7 @@ function UpdateImg({ boardInfo, newImages, setNewImages, uploadImages, setUpload
     let fileUrlList = [...fileList];
     let imgNumList = [...newImages];
     let uploadList = [...uploadImages];
-    const imgType = ['jpg', 'png', 'gif']
+    const imgType = ['jpg', 'png', 'gif', 'jpeg']
     console.log(fileSpec)
     if (imgUrlList.length >= 4) {
       setIsDisplay(false);
@@ -121,7 +121,7 @@ function UpdateImg({ boardInfo, newImages, setNewImages, uploadImages, setUpload
             <Grid item>
               <input
                 type="file"
-                accept=".jpg, .png, .gif, .mp4"
+                accept=".jpg, .png, .gif, .jpeg, .mp4"
                 ref={selectUserImg}
                 style={{ display: "none" }}
                 onChange={handleClickInput}
