@@ -163,10 +163,7 @@ function ProfileEdit() {
       imgElement.src = profileImg;
     }
   };
-<<<<<<< HEAD
-=======
 
->>>>>>> 1c26e45cf4d6918d97434b58992bbeb85c32bdf3
   const fetchImage = () => {
     const storageRef = ref(storage, `images/${userImage}`);
     if (userImage !== undefined && userImage !== "") {
@@ -242,10 +239,6 @@ function ProfileEdit() {
         return;
       }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 1c26e45cf4d6918d97434b58992bbeb85c32bdf3
     const num = imageInfo.imageUrl;
     const userDetail = {
       age: changedAge,
