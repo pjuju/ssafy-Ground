@@ -2,10 +2,12 @@ FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
 
+COPY /home/ubuntu/S07P12D103/frontend/src/.env /home/ubuntu/S07P12D103/frontend/src/.env 
+
 RUN npm install
 COPY . . 
-#
 RUN npm run build
+
 FROM nginx:stable-alpine as production-stage
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx/deploy.conf /etc/nginx/conf.d/deploy.conf
