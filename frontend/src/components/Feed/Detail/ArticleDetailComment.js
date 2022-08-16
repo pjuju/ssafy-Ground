@@ -11,6 +11,7 @@ function ArticleDetailComment({ commentList }) {
   const { boardId } = useParams();
   const [userId, setUserId] = useState(0);
   const [comments, setComments] = useState(commentList);
+  const [userImage, setUserImage] = useState("");
 
   // 댓글 등록 핸들러
   const handleCommentRegister = (comment) => {
@@ -47,6 +48,8 @@ function ArticleDetailComment({ commentList }) {
 
   useEffect(() => {
     getUserState((res) => {
+      console.log(res.data);
+      setUserImage(res.data.userImage);
       setUserId(res.data.id);
     });
   }, []);
@@ -72,6 +75,19 @@ function ArticleDetailComment({ commentList }) {
           />
         ))}
       </Grid>
+      <CommentBox
+        handleCommentRegister={handleCommentRegister}
+        userImage={userImage}
+      />
+      {comments.map((comment, index) => (
+        <Comment
+          key={index}
+          comment={comment}
+          userId={userId}
+          handleCommentEdit={handleCommentEdit}
+          handleCommentDelete={handleCommentDelete}
+        />
+      ))}
     </Grid>
   );
 }

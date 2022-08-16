@@ -1,10 +1,12 @@
 import { Grid, Stack } from "@mui/material";
-import userImage from "assets/images/userImage.png";
+import userImg from "assets/images/userImage.png";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { useState } from "react";
 import CommentEdit from "./CommentEdit";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "api/firebase";
 
 const formatDate = (date) => {
   // let converted = new Date();
@@ -57,7 +59,24 @@ const formatDate = (date) => {
 
 function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
   const { id, user, regDttm, reply } = comment;
+  const image = user.userImage;
   const [isEdit, setIsEdit] = useState(false);
+  const [profileImg, setProfileImg] = useState("");
+
+  useEffect(() => {
+    fetchImage();
+  }, [image]);
+
+  const fetchImage = () => {
+    const storageRef = ref(storage, `images/${image}`);
+
+    if (image !== undefined && image !== "") {
+      getDownloadURL(storageRef).then((url) => {
+        console.log("download user");
+        setProfileImg(url);
+      });
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -72,7 +91,7 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
           <Grid item>
             <img
               className="comment__info__image"
-              src={userImage}
+              src={profileImg || userImg}
               alt="user_image"
               onClick={handleClickProfile}
             />
