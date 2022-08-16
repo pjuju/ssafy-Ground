@@ -15,6 +15,7 @@ function MediaSlider(images) {
   const [src, setSrc] = useState("");
   const [imgList, setImgList] = useState([]);
   const [isDownload, setIsDownload] = useState(false);
+  const [rerender, setRerender] = useState(false)
   const imgs = images.images;
   useEffect(() => {
     console.log(imgs);
@@ -63,11 +64,13 @@ function MediaSlider(images) {
           if (src.imageType === "mp4") {
             imgUrlList.push(["video", url]);
           }
+        }).then((snapshot) => {
+          setImgList(imgUrlList);
+          setRerender((state) => !state)
         });
       }
       console.log(imgUrlList);
     });
-    setImgList(imgUrlList);
   };
 
   return (
