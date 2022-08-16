@@ -64,7 +64,8 @@
       width: 20%;
       margin-right: 1rem !important;
     }
-    @include tablet() {
+
+    @include tablet(){
       width: 20%;
       margin-right: 1rem !important;
     }
@@ -82,7 +83,8 @@
       width: 20%;
       margin-right: 1rem !important;
     }
-    @include tablet() {
+
+    @include tablet(){
       display: none !important;
       width: 20%;
       margin-right: 1rem !important;
@@ -96,11 +98,11 @@
     margin-top: 2rem;
     margin-bottom: 2rem;
 
-    @include mobile() {
+    @include mobile(){
       border: none;
       margin-top: 0;
     }
-    @include tablet() {
+    @include tablet(){
       border: none;
       margin-top: 0;
     }
@@ -117,7 +119,7 @@
 
   &__dropdown {
     width: 30%;
-    @include tablet() {
+    @include tablet(){
       width: 40%;
     }
   }
@@ -136,11 +138,11 @@
     font-size: 1rem;
     font-weight: 700;
 
-    @include mobile() {
+    @include mobile(){
       width: 15%;
     }
 
-    @include tablet() {
+    @include tablet(){
       width: 15%;
     }
   }
@@ -157,11 +159,11 @@
     border: none;
     cursor: pointer;
 
-    @include mobile() {
+    @include mobile(){
       width: 150px;
       height: 150px;
     }
-    @include tablet() {
+    @include tablet(){
       width: 150px;
       height: 150px;
     }
@@ -179,7 +181,7 @@
       width: 150px;
       height: 150px;
     }
-    @include tablet() {
+    @include tablet(){
       width: 150px;
       height: 150px;
     }

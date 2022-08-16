@@ -16,6 +16,7 @@
 
     &__userimg {
       width: 8%;
+      cursor: pointer;
 
       & img {
         width: 90%;
@@ -42,6 +43,10 @@
     &__category {
       color: $light-gray;
       font-weight: 600;
+    }
+
+    &__username {
+      cursor: pointer;
     }
   }
 

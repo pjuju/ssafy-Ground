@@ -120,10 +120,10 @@ function CreateFeedPage() {
   // };
   const handleSubmit = () => {
     if (boardInfo.categoryId === undefined) {
-      setIsCategoryError(true);
+      setIsCategoryError(true)
     }
     if (boardInfo.locationId === undefined) {
-      setIsLocationError(true);
+      setIsLocationError(true)
     }
     const newBoardInfo = {
       ...boardInfo,
@@ -139,7 +139,14 @@ function CreateFeedPage() {
       });
       setAuthOpen(true);
     }
-  };
+
+    if ((boardInfo.categoryId !== undefined) && (boardInfo.locationId !== undefined)) {
+      feedCreate(newBoardInfo, (res)=> {
+        console.log(res.data)
+      })
+      setAuthOpen(true)
+    }
+  }
 
   const onClickAuth = () => {
     uploadImages.map((src) => {
@@ -194,32 +201,17 @@ function CreateFeedPage() {
       </Grid>
       {!isLoading && (
         <Grid
-          container
-          direction="column"
-          className="create-feed__box"
-          alignItems="center"
-        >
-          <ArticleText boardInfo={boardInfo} setBoardInfo={setBoardInfo} />
-          <CategoryDropdown
-            boardInfo={boardInfo}
-            setBoardInfo={setBoardInfo}
-            isCategoryError={isCategoryError}
-          />
-          <RegionDropdown
-            boardInfo={boardInfo}
-            setBoardInfo={setBoardInfo}
-            isLocationError={isLocationError}
-          />
-          <ArticleOpen boardInfo={boardInfo} setBoardInfo={setBoardInfo} />
-          <ArticleImg
-            boardInfo={boardInfo}
-            newImages={newImages}
-            uploadImages={uploadImages}
-            setBoardInfo={setBoardInfo}
-            setNewImages={setNewImages}
-            setUploadImages={setUploadImages}
-          />
-        </Grid>
+        container
+        direction="column"
+        className="create-feed__box"
+        alignItems="center"
+      >
+        <ArticleText boardInfo={boardInfo} setBoardInfo={setBoardInfo}/>
+        <CategoryDropdown boardInfo={boardInfo} setBoardInfo={setBoardInfo} isCategoryError={isCategoryError}/>
+        <RegionDropdown boardInfo={boardInfo} setBoardInfo={setBoardInfo} isLocationError={isLocationError}/>
+        <ArticleOpen boardInfo={boardInfo} setBoardInfo={setBoardInfo}/>
+        <ArticleImg boardInfo={boardInfo} newImages={newImages} uploadImages={uploadImages} setBoardInfo={setBoardInfo} setNewImages={setNewImages} setUploadImages={setUploadImages}/>
+      </Grid>
       )}
       <Modal open={authOpen}>
         <Box className="create-feed__modal-box">

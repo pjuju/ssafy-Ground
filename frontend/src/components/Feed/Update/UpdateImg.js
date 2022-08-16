@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
 import { useEffect, useRef, useState, useCallback } from "react";
 import plus from "assets/images/plus.png"
-import { ref, getDownloadURL } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "api/firebase";
 
 
-function UpdateImg({ boardInfo, setBoardInfo, newImages, setNewImages, uploadImages, setUploadImages }) {
+function UpdateImg({ boardInfo, newImages, setNewImages, uploadImages, setUploadImages }) {
   const selectUserImg = useRef("");
   const [imgList, setImgList] = useState([]);
   const [fileList, setFileList] = useState([]);
