@@ -165,18 +165,22 @@ public class KakaoService {
 		 public UserLoginResponseDto kakaoLogin(UserKakaoLoginDto params) {
 			 Optional<User> user = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
 			 UserLoginResponseDto ulrd = new UserLoginResponseDto();
-			 System.out.println("ks user: " + user);
+//			 System.out.println("???: " + user.get().getEmail());
+//			 System.out.println("???: " + user.get().getUsername());
 			 if(user.isEmpty()) {
 				 userRepository.save(params.toEntity());
 				 Optional<User> kakaoUser = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
+				 System.out.println("1success signup");
 				 ulrd.setResult("success signup");
-				 ulrd.setFtoken(params.getFtoken());
+				 ulrd.setFtoken(kakaoUser.get().getFtoken());
 				 ulrd.setRegisterYN(kakaoUser.get().isRegisterYN());
 				 return ulrd;
 			 }
 			 else {
+				 System.out.println("2success login");
 				 ulrd.setResult("success login");
-				 ulrd.setFtoken(params.getFtoken());
+				 String ftoken = jwtTokenProvider.createToken(user.get().getUsername());
+				 ulrd.setFtoken(ftoken);
 				 ulrd.setRegisterYN(user.get().isRegisterYN());
 				 return ulrd;
 			 }
