@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserState, logout } from "api/user";
 import CustomModal from "../CustomModal";
+import { useAuth } from "auth/AuthProvider";
 
 function SideNavbar({
   sideMenuIdx,
@@ -22,6 +23,8 @@ function SideNavbar({
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const { systemLogout } = useAuth();
 
   useEffect(() => {
     let element;
@@ -67,7 +70,8 @@ function SideNavbar({
   const handleClickLogout = () => {
     logout(
       () => {
-        localStorage.removeItem("token");
+        // localStorage.removeItem("token");
+        systemLogout();
         navigate("/");
       },
       (err) => {
