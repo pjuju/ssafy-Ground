@@ -11,11 +11,11 @@ function getLatestBoard(pageNumber, success) {
 }
 
 function getWrittenBoard(userId, pageNumber, success) {
-  api.get(`/board/list/me/${userId}?pageNumber=${pageNumber}`).then(success);
+  api.get(`/board/list/me/${userId}/${pageNumber}`).then(success);
 }
 
 function getSavedBoard(userId, pageNumber, success) {
-  api.get(`/board/list/save/${userId}?pageNumber=${pageNumber}`).then(success);
+  api.get(`/board/list/save/${userId}/${pageNumber}`).then(success);
 }
 
 function getBoardDetail(id, success, fail) {
