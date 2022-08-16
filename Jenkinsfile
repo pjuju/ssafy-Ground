@@ -1,6 +1,19 @@
 pipeline { 
         agent none
         stages {
+                state('Create .env') {
+                        echo "REACT_APP_KAKAO_REST_API_KEY=${env.REACT_APP_KAKAO_REST_API_KEY}" >> .env
+                        echo "REACT_APP_KAKAO_REDIRECT_URI=${env.REACT_APP_KAKAO_REDIRECT_URI}" >> .env
+                        echo "REACT_APP_GOOGLE_CLIENT_ID=${env.REACT_APP_GOOGLE_CLIENT_ID}" >> .env
+                        echo "REACT_APP_GOOGLE_REDIRECT_URI=${env.REACT_APP_GOOGLE_REDIRECT_URI}" >> .env
+
+                        echo "REACT_APP_FB_API_KEY=${env.REACT_APP_FB_API_KEY}" >> .env
+                        echo "REACT_APP_FB_AUTH_DOMAIN=${env.REACT_APP_FB_AUTH_DOMAIN}" >> .env
+                        echo "REACT_APP_FB_PROJECT_ID=${env.REACT_APP_FB_PROJECT_ID}" >> .env
+                        echo "REACT_APP_FB_STORAGE_BUCKET=${env.REACT_APP_FB_STORAGE_BUCKET}" >> .env
+                        echo "REACT_APP_FB_MESSAGE_ID=${env.REACT_APP_FB_MESSAGE_ID}" >> .env
+                        echo "REACT_APP_FB_APP_ID=${REACT_APP_FB_APP_ID}" >> .env
+                }
                 stage('Docker build') {
                         agent any
                         steps { 
