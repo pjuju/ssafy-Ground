@@ -8,7 +8,6 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-
 FROM nginx:stable-alpine as production-stage
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx/deploy.conf /etc/nginx/conf.d/deploy.conf
