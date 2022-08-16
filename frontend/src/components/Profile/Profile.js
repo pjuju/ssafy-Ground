@@ -16,7 +16,7 @@ function Profile() {
   const [onSetSideMenuIdx, onSetBottomMenuIdx] = useOutletContext();
 
   // 조회하고자 하는 사용자의 정보
-  const [userId, setUserId] = useState("");
+  const [id, setId] = useState("");
   const [privateYN, setPrivateYN] = useState(false);
   const [followState, setFollowState] = useState(0);
   // 내 정보
@@ -26,10 +26,9 @@ function Profile() {
     // 조회하고자 하는 사용자의 프로필 정보를 받아옴
     const parseURL = window.location.href.split("/");
     const userId = parseURL[parseURL.length - 1];
-    setUserId(userId);
+    setId(userId);
 
     getUserProfile(userId, (res) => {
-      console.log(res.data);
       setPrivateYN(res.data.user.privateYN);
       setFollowState(res.data.follow);
     });
@@ -53,7 +52,7 @@ function Profile() {
           <UserInfo />
           <Divider style={{ width: "100%" }} />
           {privateYN &&
-          userId !== myId &&
+          id !== myId &&
           (followState === 0 || followState === 2) ? (
             <div className="profile--private">
               <IconButton sx={{ marginRight: "0.2rem" }} disabled>
