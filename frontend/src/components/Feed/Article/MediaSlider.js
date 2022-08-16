@@ -15,18 +15,18 @@ function MediaSlider(images) {
   const [src, setSrc] = useState("");
   const [imgList, setImgList] = useState([]);
   const [isDownload, setIsDownload] = useState(false);
-  const [rerender, setRerender] = useState(false)
+  const [rerender, setRerender] = useState(false);
   const imgs = images.images;
   useEffect(() => {
-    console.log(imgs);
+    // console.log(imgs);
     if (imgs !== []) {
       fetchImage();
     }
   }, [imgs]);
 
   useEffect(() => {
-    console.log("download complete");
-    console.log(imgList);
+    // console.log("download complete");
+    // console.log(imgList);
     setIsDownload(true);
   }, [imgList]);
 
@@ -49,27 +49,29 @@ function MediaSlider(images) {
   };
 
   const fetchImage = () => {
-    console.log("download");
-    console.log(images);
+    // console.log("download");
+    // console.log(images);
     let imgUrlList = [];
     imgs.map((src, index) => {
-      console.log(src);
+      // console.log(src);
       const storageRef = ref(storage, `images/${src.imageUrl}`);
       const imgType = ["jpg", "png", "gif"];
       if (src.imageurl === undefined) {
-        getDownloadURL(storageRef).then((url) => {
-          if (imgType.indexOf(src.imageType) !== -1) {
-            imgUrlList.push(["img", url]);
-          }
-          if (src.imageType === "mp4") {
-            imgUrlList.push(["video", url]);
-          }
-        }).then((snapshot) => {
-          setImgList(imgUrlList);
-          setRerender((state) => !state)
-        });
+        getDownloadURL(storageRef)
+          .then((url) => {
+            if (imgType.indexOf(src.imageType) !== -1) {
+              imgUrlList.push(["img", url]);
+            }
+            if (src.imageType === "mp4") {
+              imgUrlList.push(["video", url]);
+            }
+          })
+          .then((snapshot) => {
+            setImgList(imgUrlList);
+            setRerender((state) => !state);
+          });
       }
-      console.log(imgUrlList);
+      // console.log(imgUrlList);
     });
   };
 
@@ -78,9 +80,22 @@ function MediaSlider(images) {
       <Slider className="slider" {...settings}>
         {imgList.map((src, index) => (
           <div key={index} className="slider__item">
-            {src[0] === "img" && <img src={src[1]} style={{ width: "200px", height: "200px" }}alt="" />}
+            {src[0] === "img" && (
+              <img
+                src={src[1]}
+                style={{ width: "200px", height: "200px" }}
+                alt=""
+              />
+            )}
 
-            {src[0] === "video" && <video src={src[1]} alt="" style={{ width: "200px", height: "200px" }} controls />}
+            {src[0] === "video" && (
+              <video
+                src={src[1]}
+                alt=""
+                style={{ width: "200px", height: "200px" }}
+                controls
+              />
+            )}
           </div>
         ))}
       </Slider>

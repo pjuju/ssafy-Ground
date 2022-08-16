@@ -4,15 +4,10 @@
   height: 100vh;
 
   &__inner {
-    height: 100%;
+    margin-top: 60px;
+    margin-bottom: 60px;
 
     &__noti {
-      height: 100%;
-
-      & .MuiTabs-flexContainer {
-        height: 7vw;
-      }
-
       & .notification__tabpanel {
         & .noti {
           &-like,
