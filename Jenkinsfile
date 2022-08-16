@@ -7,10 +7,10 @@ pipeline {
                         steps { 
                                 dir('/home/ubuntu/S07P12D103/frontend/src/') {
                                         sh 'touch .env'
-                                        sh 'echo -e "REACT_APP_KAKAO_REST_API_KEY=${env.REACT_APP_KAKAO_REST_API_KEY}" > .env'
-                                        sh 'echo -e "REACT_APP_KAKAO_REST_API_KEY=${env.REACT_APP_KAKAO_REST_API_KEY}" > .env'
-                                        sh 'echo -e "REACT_APP_KAKAO_REDIRECT_URI=${env.REACT_APP_KAKAO_REDIRECT_URI}" > .env'
-                                        sh 'echo -e "REACT_APP_GOOGLE_CLIENT_ID=${env.REACT_APP_GOOGLE_CLIENT_ID}" > .env'
+                                        sh 'echo -e "REACT_APP_KAKAO_REST_API_KEY={env.REACT_APP_KAKAO_REST_API_KEY}" > .env'
+                                        sh 'echo -e "REACT_APP_KAKAO_REST_API_KEY={env.REACT_APP_KAKAO_REST_API_KEY}" > .env'
+                                        sh 'echo -e "REACT_APP_KAKAO_REDIRECT_URI={env.REACT_APP_KAKAO_REDIRECT_URI}" > .env'
+                                        sh 'echo -e "REACT_APP_GOOGLE_CLIENT_ID={env.REACT_APP_GOOGLE_CLIENT_ID}" > .env'
                                         sh 'echo -e "REACT_APP_GOOGLE_REDIRECT_URI=${env.REACT_APP_GOOGLE_REDIRECT_URI}" > .env'
 
                                         sh 'echo -e "REACT_APP_FB_API_KEY=${env.REACT_APP_FB_API_KEY}" > .env'
