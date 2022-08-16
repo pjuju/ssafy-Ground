@@ -26,6 +26,7 @@ import {
 } from "api/user";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
 import FilterModal from "./FilterModal";
+import { useNavigate } from "react-router-dom";
 
 function LatestFeed() {
   const [target, setTarget] = useState("");
@@ -43,6 +44,7 @@ function LatestFeed() {
   // 관심 운동 종목과 관련한 Redux 상태값, 액션함수
   const interestList = useSelector((state) => state.interest.interestList);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
   const onSetInterest = (id) => dispatch(setInterest(id));
@@ -110,6 +112,10 @@ function LatestFeed() {
     document.querySelector(".content").scrollTo(0, 0);
   };
 
+  const handleClickCreate = () => {
+    navigate("/feed/create");
+  };
+
   const changeInterestList = () => {
     const interestArray = [];
     // interestList에서 isInterested가 true인 것들의 id만 뽑아서 새로운 배열 생성
@@ -169,7 +175,7 @@ function LatestFeed() {
             </p>
             <ThemeProvider theme={theme}>
               <Fab className="fab-write" color="primary" aria-label="edit">
-                <EditIcon />
+                <EditIcon onClick={handleClickCreate}/>
               </Fab>
             </ThemeProvider>
           </div>
@@ -180,7 +186,7 @@ function LatestFeed() {
             ))}
             <ThemeProvider theme={theme}>
               <Fab className="fab-write" color="primary" aria-label="edit">
-                <EditIcon />
+                <EditIcon onClick={handleClickCreate}/>
               </Fab>
             </ThemeProvider>
           </div>

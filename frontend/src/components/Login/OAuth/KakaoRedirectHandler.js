@@ -12,18 +12,18 @@ function KakaoRedirectHandler() {
         // console.log(code);
         await kakaoLogin(code, (res) => {
           localStorage.setItem("token", res.data.ftoken);
+          console.log(code);
           const result = res.data.result;
           // 회원가입인 경우
-          if(result === "success signup") {
-            navigate("/register")
+          if (result === "success signup") {
+            navigate("/register");
           }
           // 로그인인 경우
           else {
             if (res.data.registerYN) {
               navigate("/feed/follow");
-            }
-            else {
-              navigate("/welcome")
+            } else {
+              navigate("/welcome");
             }
           }
         });
