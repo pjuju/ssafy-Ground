@@ -1,37 +1,38 @@
 import { useRef } from "react";
 import ReactFrappeChart from "react-frappe-charts";
 import { color } from "./colorPalette";
+import { interest } from "assets/data/initData";
+import { Grid } from "@mui/material";
+
+const getLabels = (category) => {
+  const labels = category.map((item) => interest[item.id - 1].value);
+  return labels;
+};
+
+const getValues = (category) => {
+  const values = category.map((item) => item.count);
+  return values;
+};
 
 function UserGroundGraph(props) {
   const chartRef = useRef();
+  const category = props.category;
 
   return (
-    <ReactFrappeChart
-      ref={chartRef}
-      type="donut"
-      colors={color}
-      data={{
-        labels: [
-          "헬스",
-          "요가",
-          "필라테스",
-          "러닝",
-          "홈트레이닝",
-          "축구",
-          "야구",
-          "농구",
-          "테니스",
-          "배드민턴",
-          "등산",
-          "수영",
-          "골프",
-          "볼링",
-          "자전거/사이클",
-          "기타"
-        ],
-        datasets: [{ values: [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1] }],
-      }}
-    />
+    <>
+      <Grid className="ground__title category-graph__title">
+        <h2>통계</h2>
+      </Grid>
+      <ReactFrappeChart
+        ref={chartRef}
+        type="donut"
+        colors={color}
+        data={{
+          labels: getLabels(category),
+          datasets: [{ values: getValues(category) }],
+        }}
+      />
+    </>
   );
 }
 

@@ -179,8 +179,8 @@ public class KakaoService {
 			 else {
 				 System.out.println("2success login");
 				 ulrd.setResult("success login");
-				 String ftoken = jwtTokenProvider.createToken(user.get().getUsername());
-				 ulrd.setFtoken(ftoken);
+				 user.get().saveFtoken(params.getFtoken());
+				 ulrd.setFtoken(params.getFtoken());
 				 ulrd.setRegisterYN(user.get().isRegisterYN());
 				 return ulrd;
 			 }

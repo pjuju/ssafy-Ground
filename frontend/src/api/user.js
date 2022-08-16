@@ -38,6 +38,10 @@ function logout(success) {
   api.delete("/user/logout").then(success);
 }
 
+function deleteUser(success) {
+  api.put("/user/deleteUser").then(success);
+}
+
 export {
   getUserState,
   initUserDetail,
@@ -48,4 +52,5 @@ export {
   modifyProfile,
   modifyPass,
   logout,
+  deleteUser,
 };

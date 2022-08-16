@@ -1,10 +1,23 @@
 pipeline { 
+        
         agent none
         stages {
+                stage('Create .env') {
+                        agent any
+                        steps { 
+                                
+                                sh 'echo "REACT_APP_KAKAO_REST_API_KEY=${REACT_APP_KAKAO_REST_API_KEY}\nREACT_APP_KAKAO_REDIRECT_URI=${REACT_APP_KAKAO_REDIRECT_URI}\nREACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID}\nREACT_APP_GOOGLE_REDIRECT_URI=${REACT_APP_GOOGLE_REDIRECT_URI}\nREACT_APP_FB_API_KEY=${REACT_APP_FB_API_KEY}\nREACT_APP_FB_AUTH_DOMAIN=${REACT_APP_FB_AUTH_DOMAIN}\nREACT_APP_FB_PROJECT_ID=${REACT_APP_FB_PROJECT_ID}\nREACT_APP_FB_STORAGE_BUCKET=${REACT_APP_FB_STORAGE_BUCKET}\nREACT_APP_FB_MESSAGE_ID=${REACT_APP_FB_MESSAGE_ID}\nREACT_APP_FB_APP_ID=${REACT_APP_FB_APP_ID}\n" > .env'
+                                sh 'cat .env'
+                                sh 'ls -al'
+                                sh 'cp .env frontend'
+                                
+                        }
+                }
                 
                 stage('Docker build') {
                         agent any
-                        steps {
+                        steps { 
+                                // sh 'touch ./frontend/123.env'                                                           
                                 sh 'docker build -t backimg ./backend/ground'
                                 sh 'docker build -t frontimg ./frontend'
                                 sh 'echo hello2'

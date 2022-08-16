@@ -9,7 +9,7 @@ import FeedPage from "pages/FeedPage";
 import Search from "components/Feed/Search/Search";
 import FollowFeed from "components/Feed/Follow/FollowFeed";
 import LatestFeed from "components/Feed/Latest/LatestFeed";
-import CreateFeedPage from "components/Feed/Create/CreateFeedPage";
+import CreateFeed from "components/Feed/Create/CreateFeed";
 import UpdateFeed from "components/Feed/Update/UpdateFeed";
 import MobileNotiPage from "pages/MobileNotiPage";
 
@@ -18,37 +18,70 @@ import ProfilePage from "pages/ProfilePage";
 import ArticleDetail from "components/Feed/Detail/ArticleDetail";
 import ProfileEdit from "components/Profile/ProfileEdit";
 import Profile from "components/Profile/Profile";
+import { AuthProvider } from "auth/AuthProvider";
+import { ProtectedRoute } from "auth/ProtectedRoute";
+import { LoginRoute } from "auth/LoginRoute";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/" element={<LoginPage />} />
-        <Route
-          path="/oauth/callback/google"
-          element={<GoogleRedirectHandler />}
-        />
-        <Route
-          path="/oauth/callback/kakao"
-          element={<KakaoRedirectHandler />}
-        />
-        <Route path="/findid" element={<FindIdPage />} />
-        <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/feed" element={<FeedPage />}>
-          <Route path="follow" element={<FollowFeed />} />
-          <Route path="create" element={<CreateFeedPage />} />
-          <Route path="update/:boardId" element={<UpdateFeed />} />
-          <Route path="latest" element={<LatestFeed />} />
-          <Route path="search" element={<Search />} />
-          <Route path="detail/:boardId" element={<ArticleDetail />} />
-        </Route>
-        <Route path="/profile" element={<ProfilePage />}>
-          <Route path=":userId" element={<Profile />} />
-          <Route path="edit/:userId" element={<ProfileEdit />} />
-        </Route>
-        <Route path="/notification" element={<MobileNotiPage />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route
+            path="/register"
+            element={
+              <LoginRoute>
+                <RegisterPage />
+              </LoginRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <LoginRoute>
+                <LoginPage />
+              </LoginRoute>
+            }
+          />
+          <Route
+            path="/oauth/callback/google"
+            element={<GoogleRedirectHandler />}
+          />
+          <Route
+            path="/oauth/callback/kakao"
+            element={<KakaoRedirectHandler />}
+          />
+          <Route path="/findid" element={<FindIdPage />} />
+          <Route
+            path="/welcome"
+            element={
+              <ProtectedRoute>
+                <WelcomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/feed" element={<FeedPage />}>
+            <Route path="follow" element={<FollowFeed />} />
+            <Route path="create" element={<CreateFeed />} />
+            <Route path="update/:boardId" element={<UpdateFeed />} />
+            <Route path="latest" element={<LatestFeed />} />
+            <Route path="search" element={<Search />} />
+            <Route path="detail/:boardId" element={<ArticleDetail />} />
+          </Route>
+          <Route path="/profile" element={<ProfilePage />}>
+            <Route path=":userId" element={<Profile />} />
+            <Route path="edit/:userId" element={<ProfileEdit />} />
+          </Route>
+          <Route
+            path="/notification"
+            element={
+              <ProtectedRoute>
+                <MobileNotiPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

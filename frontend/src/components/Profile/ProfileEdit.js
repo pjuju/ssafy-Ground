@@ -10,7 +10,12 @@ import {
   RadioGroup,
   Select,
 } from "@mui/material";
-import { getUserModifyInfo, getUserState, modifyUserInfo } from "api/user";
+import {
+  deleteUser,
+  getUserModifyInfo,
+  getUserState,
+  modifyUserInfo,
+} from "api/user";
 import TitleBar from "components/common/TitleBar";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -28,6 +33,8 @@ import { ThemeProvider } from "@emotion/react";
 import theme from "components/common/theme.js";
 import CustomModal from "../common/CustomModal";
 import ModifyPassModal from "./ModifyPassModal";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "api/firebase";
 
 function ProfileEdit() {
   // Outlet에 생성한 context를 가져온다.
@@ -46,19 +53,20 @@ function ProfileEdit() {
   const [gender, setGender] = useState("");
   const [userImage, setUserImage] = useState("");
   const [privateYN, setPrivateYN] = useState(false);
+  const [profileImg, setProfileImg] = useState("");
+  const [imageInfo, setImageInfo] = useState({});
 
-  const [changedNickname, setChangedNickname] = useState("");
   const [changedIntroduce, setChangedIntroduce] = useState("");
   const [changedAge, setChangedAge] = useState("");
   const [changedGender, setChangedGender] = useState("");
   const [changedUserImage, setChangedUserImage] = useState("");
   const [changedPrivateYN, setChangedPrivateYN] = useState(false);
-
   const [imageChange, setImageChange] = useState(false);
 
   // 모달창 컨트롤
   const [open, setOpen] = useState(false);
   const [modifyPassOpen, setModifyPassOpen] = useState(false);
+  const [quitOpen, setQuitOpen] = useState(false);
 
   const ages = [
     { id: "teenager", value: "10대", checked: false },
@@ -134,11 +142,16 @@ function ProfileEdit() {
 
   useEffect(() => {
     // 이미지 프리뷰 보여주기
-    if (userImage !== changedUserImage) {
-      preview();
-    }
-  }, [changedUserImage]);
+    preview();
+  }, [profileImg]);
 
+  useEffect(() => {
+    fetchImage();
+  }, [userImage]);
+
+  useEffect(() => {
+    console.log(imageInfo);
+  }, [open]);
   /* 이미지를 첨부했을 때 프리뷰로 해당 이미지 미리보기 */
   const preview = () => {
     if (changedUserImage.length === 0) return false;
@@ -147,14 +160,30 @@ function ProfileEdit() {
       ".profile-edit__img > button > img"
     );
     if (imgElement !== null) {
-      imgElement.src = changedUserImage;
+      imgElement.src = profileImg;
+    }
+  };
+
+  const fetchImage = () => {
+    const storageRef = ref(storage, `images/${userImage}`);
+    if (userImage !== undefined && userImage !== "") {
+      getDownloadURL(storageRef).then((url) => {
+        console.log("download");
+        setProfileImg(url);
+      });
     }
   };
 
   /* 이미지 첨부 버튼을 눌렀을 때 호출되는 핸들러 */
   const handleClickInput = (event) => {
     const file = event.target.files[0];
+    const randNum = parseInt((new Date().getTime() + Math.random()) * 100);
+    const info = {
+      imageUrl: randNum.toString(),
+      file: file,
+    };
     setChangedUserImage(URL.createObjectURL(file));
+    setImageInfo(info);
     console.log("handleClickInput");
     console.log(event.target.files[0]);
   };
@@ -186,10 +215,6 @@ function ProfileEdit() {
     }
   };
 
-  const handleChangeNickname = (event) => {
-    setChangedNickname(event.target.value);
-  };
-
   const handleChangeIntroduce = (event) => {
     setChangedIntroduce(event.target.value);
   };
@@ -214,19 +239,38 @@ function ProfileEdit() {
         return;
       }
     }
-
+    const num = imageInfo.imageUrl;
     const userDetail = {
       age: changedAge,
       gender: changedGender,
       introduce: changedIntroduce,
       nickname: getValues("nickname"),
       privateYN: changedPrivateYN,
-      userImage: changedUserImage,
+      userImage: num,
     };
+    console.log(userDetail);
 
-    modifyUserInfo(userDetail, (res) => {
-      navigate(`/profile/${userId}`);
-      window.location.reload();
+    if (imageInfo.imageUrl !== undefined) {
+      const storageRef = ref(storage, `images/${imageInfo.imageUrl}`);
+      uploadBytes(storageRef, imageInfo.file)
+        .then((snapshot) => {
+          console.log("Uploaded a blob or file!");
+        })
+        .then((snapshot) => {
+          modifyUserInfo(userDetail, (res) => {
+            console.log(userDetail);
+            navigate(`/profile/${userId}`);
+            window.location.reload();
+          });
+        });
+    }
+  };
+
+  const handleClickQuit = () => {
+    deleteUser((res) => {
+      alert("정상적으로 탈퇴되었습니다. 이용해주셔서 감사합니다.");
+      localStorage.removeItem("token");
+      navigate("/");
     });
   };
 
@@ -257,9 +301,9 @@ function ProfileEdit() {
                 onClick={() => selectUserImg.current.click()}
               >
                 {userImage.length === 0 && userImage === changedUserImage ? (
-                  <img src={userImg} alt="img-input" />
+                  <img src={profileImg||userImg} alt="img-input" />
                 ) : (
-                  <img src={changedUserImage} alt="img-input" />
+                  <img src={changedUserImage||userImg} alt="img-input" />
                 )}
               </button>
             </Grid>
@@ -445,6 +489,16 @@ function ProfileEdit() {
               title="수정하시겠습니까?"
               type="0"
               handleClickOKButton={handleClickEditButton}
+            />
+            <Grid className="profile-edit__quit">
+              <p onClick={() => setQuitOpen(true)}>회원 탈퇴</p>
+            </Grid>
+            <CustomModal
+              open={quitOpen}
+              setOpen={setQuitOpen}
+              title="정말 탈퇴하시겠습니까?"
+              type="0"
+              handleClickOKButton={handleClickQuit}
             />
           </Grid>
         </Grid>

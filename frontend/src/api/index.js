@@ -15,6 +15,19 @@ function apiInstance() {
     config.headers.Authorization = "Bearer " + token;
     return config;
   });
+
+  instance.interceptors.response.use(
+    function (response) {
+      // 2xx 범위에 있는 상태 코드 트리거
+      return response;
+    },
+    function (error) {
+      // 2xx 외의 범위에 있는 상태 코드 트리거
+      localStorage.removeItem("token");
+      window.location.replace("/");
+    }
+  );
+
   return instance;
 }
 

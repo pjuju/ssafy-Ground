@@ -8,6 +8,21 @@
       padding: 1rem;
       padding-right: 1.5rem;
       padding-left: 1.5rem;
+      padding-bottom: 3rem;
+
+      &--private {
+        color: $light-gray;
+        display: flex;
+        justify-content: center;
+        padding-top: 25%;
+      }
+
+      &--private {
+        color: $light-gray;
+        display: flex;
+        justify-content: center;
+        padding-top: 25%;
+      }
 
       & .user-info {
         width: 100%;
@@ -19,6 +34,7 @@
 
               & img {
                 width: 100% !important;
+                border-radius: 45%;
               }
             }
 
@@ -38,20 +54,37 @@
                 width: 52%;
               }
 
-              & p {
-                font-size: 1.6rem;
-                font-weight: 700;
-                margin-bottom: 1rem;
-                margin-top: 0;
+              &__name {
+                display: flex;
+                align-items: center;
 
-                @include tablet() {
-                  margin-bottom: 0.5rem;
-                  font-size: 1.4rem;
+                & p {
+                  font-size: 1.6rem;
+                  font-weight: 700;
+                  margin-bottom: 1rem;
+                  margin-top: 0;
+
+                  @include tablet() {
+                    margin-bottom: 0.5rem;
+                    font-size: 1.4rem;
+                  }
+
+                  @include mobile() {
+                    margin-bottom: 0.5rem;
+                    font-size: 1.4rem;
+                  }
                 }
 
-                @include mobile() {
-                  margin-bottom: 0.5rem;
-                  font-size: 1.4rem;
+                & button {
+                  margin-bottom: 1rem;
+
+                  @include tablet() {
+                    margin-bottom: 0.5rem;
+                  }
+
+                  @include mobile() {
+                    margin-bottom: 0.5rem;
+                  }
                 }
               }
 
@@ -137,6 +170,13 @@
               cursor: pointer;
             }
           }
+
+          &__no-record {
+            text-align: center;
+            padding: 50px 0;
+            font-size: 13px;
+            color: #999;
+          }
         }
       }
 
@@ -157,6 +197,10 @@
         }
 
         &__tabpanel {
+          @include mobile() {
+            padding: 0 !important;
+          }
+
           & p {
             text-align: center;
             color: $light-gray;

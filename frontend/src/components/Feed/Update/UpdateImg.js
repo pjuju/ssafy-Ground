@@ -1,63 +1,66 @@
 import { Grid } from "@mui/material";
 import { useEffect, useRef, useState, useCallback } from "react";
-import plus from "assets/images/plus.png"
-import { ref, getDownloadURL } from "firebase/storage";
+import plus from "assets/images/plus.png";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "api/firebase";
 
-
-function UpdateImg({ boardInfo, setBoardInfo, newImages, setNewImages, uploadImages, setUploadImages }) {
+function UpdateImg({
+  boardInfo,
+  newImages,
+  setNewImages,
+  uploadImages,
+  setUploadImages,
+}) {
   const selectUserImg = useRef("");
   const [imgList, setImgList] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [isDisplay, setIsDisplay] = useState(true);
+  const [rerender, setRerender] = useState(false);
   const imgIdx = ["img1", "img2", "img3", "img4", "img5"];
-  const images = boardInfo.images
-  const useForceUpdate = () => {
-    const [ignored, newState] = useState();
-    return useCallback(() => newState({}), []);
-  }
+  const images = boardInfo.images;
 
   useEffect(() => {
-    console.log("download complete")
-    console.log(imgList)
+    console.log("download complete");
+    console.log(imgList);
     if (isDisplay === true) {
-      selectUserImg.current.value="";
+      selectUserImg.current.value = "";
     }
   }, [imgList]);
-  
-  useForceUpdate();
 
   useEffect(() => {
-    function tick(){
-      return setTimeout(()=> fetchImage(), 1000)
+    function tick() {
+      return setTimeout(() => fetchImage(), 1000);
     }
     tick();
-    return ()=> clearTimeout(tick)
-  },[images])
-  
-  const fetchImage = () => {
-    console.log("download")
-    console.log(images)
-    let imgUrlList = []
-    images.map((src,index) => {
-      console.log(src)
-      const storageRef = ref(storage, `images/${src.imageUrl}`);
-      const imgType = ['jpg', 'png', 'gif']
-      if (src.imageurl === undefined) {
-        getDownloadURL(storageRef).then((url) => {
-          if (imgType.indexOf(src.imageType) !== -1) {
-            imgUrlList.push(["img", url]);
-          }
-          if (src.imageType === "mp4") {
-            imgUrlList.push(["video", url])
-          }
-        })
-      }
-      console.log(imgUrlList)
-    })
-    setImgList(imgUrlList)
-  }
+    return () => clearTimeout(tick);
+  }, [images]);
 
+  const fetchImage = () => {
+    console.log("download");
+    console.log(images);
+    let imgUrlList = [];
+    images.map((src, index) => {
+      console.log(src);
+      const storageRef = ref(storage, `images/${src.imageUrl}`);
+      const imgType = ["jpg", "png", "gif", "jpeg"];
+      if (src.imageurl === undefined) {
+        getDownloadURL(storageRef)
+          .then((url) => {
+            if (imgType.indexOf(src.imageType) !== -1) {
+              imgUrlList.push(["img", url]);
+            }
+            if (src.imageType === "mp4") {
+              imgUrlList.push(["video", url]);
+            }
+          })
+          .then((snapshot) => {
+            setImgList(imgUrlList);
+            setRerender((state) => !state);
+          });
+      }
+      console.log(imgUrlList);
+    });
+  };
 
   const handleClickInput = (event) => {
     event.preventDefault();
@@ -65,25 +68,25 @@ function UpdateImg({ boardInfo, setBoardInfo, newImages, setNewImages, uploadIma
     const file = event.target.files[0];
     const fileName = file.name;
     const fileLength = fileName.length;
-    const lastDot = fileName.lastIndexOf('.');
-    const fileSpec = fileName.substring(lastDot+1, fileLength).toLowerCase();
-    const randNum = parseInt((new Date().getTime() + Math.random())*100);
+    const lastDot = fileName.lastIndexOf(".");
+    const fileSpec = fileName.substring(lastDot + 1, fileLength).toLowerCase();
+    const randNum = parseInt((new Date().getTime() + Math.random()) * 100);
     let imgUrlList = [...imgList];
     let fileUrlList = [...fileList];
     let imgNumList = [...newImages];
     let uploadList = [...uploadImages];
-    const imgType = ['jpg', 'png', 'gif']
-    console.log(fileSpec)
+    const imgType = ["jpg", "png", "gif", "jpeg"];
+    console.log(fileSpec);
     if (imgUrlList.length >= 4) {
       setIsDisplay(false);
     }
 
     if (event.target.files.length !== 0) {
       if (imgType.indexOf(fileSpec) !== -1) {
-        imgUrlList.push(["img",URL.createObjectURL(file)]);
+        imgUrlList.push(["img", URL.createObjectURL(file)]);
       }
       if (fileSpec === "mp4") {
-        imgUrlList.push(["video",URL.createObjectURL(file)]);
+        imgUrlList.push(["video", URL.createObjectURL(file)]);
       }
       imgNumList.push({
         imageType: fileSpec,
@@ -92,7 +95,7 @@ function UpdateImg({ boardInfo, setBoardInfo, newImages, setNewImages, uploadIma
       uploadList.push({
         imageType: fileSpec,
         imageUrl: randNum.toString(),
-        file: file
+        file: file,
       });
       fileUrlList.push(file);
     }
@@ -107,9 +110,8 @@ function UpdateImg({ boardInfo, setBoardInfo, newImages, setNewImages, uploadIma
     setImgList(imgList.filter((_, index) => index !== id));
     setFileList(fileList.filter((_, index) => index !== id));
     setNewImages(newImages.filter((_, index) => index !== id));
-    setUploadImages(uploadImages.filter((_, index) => index !== id))
+    setUploadImages(uploadImages.filter((_, index) => index !== id));
     setIsDisplay(true);
-
   };
 
   return (
@@ -121,7 +123,7 @@ function UpdateImg({ boardInfo, setBoardInfo, newImages, setNewImages, uploadIma
             <Grid item>
               <input
                 type="file"
-                accept=".jpg, .png, .gif, .mp4"
+                accept=".jpg, .png, .gif, .jpeg, .mp4"
                 ref={selectUserImg}
                 style={{ display: "none" }}
                 onChange={handleClickInput}
@@ -138,28 +140,29 @@ function UpdateImg({ boardInfo, setBoardInfo, newImages, setNewImages, uploadIma
               </button>
             </Grid>
           )}
-            {imgList.map((src, index) => (
-                <Grid item key={index} className="update-feed__media-wrapper">
-                  {src[0] === "img" && (
-                    <img
-                      src={src[1]}
-                      className="update-feed__media"
-                      alt=""
-                    />
-                  )}
+          {imgList.map((src, index) => (
+            <Grid item key={index} className="update-feed__media-wrapper">
+              {src[0] === "img" && (
+                <img src={src[1]} className="update-feed__media" alt="" />
+              )}
 
-                  {src[0] === "video" && (
-                    <video
-                      src={src[1]}
-                      className="update-feed__media"
-                      alt=""
-                      autoPlay
-                      controls
-                    />
-                  )}
-                  <button className="update-feed__delete-button" onClick={() => handleDeleteImage(index)}>x</button>
-                </Grid>
-            ))}
+              {src[0] === "video" && (
+                <video
+                  src={src[1]}
+                  className="update-feed__media"
+                  alt=""
+                  autoPlay
+                  controls
+                />
+              )}
+              <button
+                className="update-feed__delete-button"
+                onClick={() => handleDeleteImage(index)}
+              >
+                x
+              </button>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
     </Grid>

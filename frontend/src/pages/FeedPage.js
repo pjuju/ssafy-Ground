@@ -14,6 +14,9 @@ import { Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
+import { Navigate } from "react-router-dom";
+import { useAuth } from "auth/AuthProvider";
+
 function FeedPage() {
   const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);
   const bottomMenuIdx = useSelector((state) => state.menu.bottomMenuIdx);
@@ -22,6 +25,14 @@ function FeedPage() {
 
   const onSetSideMenuIdx = (menuIdx) => dispatch(setSideMenuIdx(menuIdx));
   const onSetBottomMenuIdx = (menuIdx) => dispatch(setBottomMenuIdx(menuIdx));
+
+  const { token } = useAuth();
+
+  if(!token) {
+    alert("로그인이 필요한 서비스입니다.")
+    console.log("feed")
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="outlet">

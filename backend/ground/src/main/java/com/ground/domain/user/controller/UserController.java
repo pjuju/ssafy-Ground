@@ -157,9 +157,6 @@ public class UserController {
     public UserLoginResponseDto googleLogin(@RequestParam("code") String access_token, HttpSession session) throws IOException {
     	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
     	ukld = googleService.getUserInfo(access_token);
-    	System.out.println("1: " + ukld.getUsername());
-    	System.out.println("2: " + ukld.getEmail());
-    	System.out.println("3: " + ukld.getFtoken());
     	return googleService.googleLogin(ukld);
     }
     

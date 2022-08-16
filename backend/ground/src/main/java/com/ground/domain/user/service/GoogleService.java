@@ -89,7 +89,7 @@ public class GoogleService {
 			 if(user.isEmpty()) {
 				 userRepository.save(params.toEntity());
 				 Optional<User> kakaoUser = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
-				 System.out.println("1success signup");
+				 System.out.println("success signup");
 				 ulrd.setResult("success signup");
 				 ulrd.setFtoken(params.getFtoken());
 				 ulrd.setRegisterYN(kakaoUser.get().isRegisterYN());
@@ -97,9 +97,9 @@ public class GoogleService {
 			 }
 			 else {
 				 ulrd.setResult("success login");
-				 System.out.println("2success login");
-				 String ftoken = jwtTokenProvider.createToken(user.get().getUsername());
-				 ulrd.setFtoken(ftoken);
+				 System.out.println("success login");
+				 user.get().saveFtoken(params.getFtoken());
+				 ulrd.setFtoken(params.getFtoken());
 				 ulrd.setRegisterYN(user.get().isRegisterYN());
 				 return ulrd;
 			 }
