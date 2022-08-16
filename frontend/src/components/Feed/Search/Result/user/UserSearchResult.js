@@ -8,8 +8,8 @@ function UserSearchResult() {
   return (
     <>
       {userResult.length === 0 && <NoSearchResult />}
-      {userResult.length !== 1 &&
-        userResult.map((user) => <UserResultItem user={user} />)}
+      {userResult.length !== 0 &&
+        userResult.map((user) => <UserResultItem key={user.id} user={user} />)}
     </>
   );
 }

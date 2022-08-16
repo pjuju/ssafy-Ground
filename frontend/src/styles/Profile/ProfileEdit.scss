@@ -73,6 +73,7 @@
       }
     }
   }
+
   &__button {
     margin: 1.5rem 0;
     text-align: center;
@@ -81,6 +82,15 @@
       width: 30%;
       font-size: 1rem;
     }
+  }
+
+  &__quit {
+    text-align: center;
+    color: $light-gray;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    margin-top: 2rem;
+    cursor: pointer;
   }
 }
 
