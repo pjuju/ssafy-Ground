@@ -16,14 +16,16 @@
 
     &__userimg {
       width: 8%;
+      cursor: pointer;
 
       & img {
         width: 90%;
+        border-radius: 50%;
       }
     }
 
     &__left {
-      width: 80%;
+      width: 75%;
       padding-left: 0.5rem;
       padding-right: 0.5rem;
     }
@@ -42,6 +44,10 @@
     &__category {
       color: $light-gray;
       font-weight: 600;
+    }
+
+    &__username {
+      cursor: pointer;
     }
   }
 

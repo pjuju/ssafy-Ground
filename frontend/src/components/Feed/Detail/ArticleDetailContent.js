@@ -14,6 +14,7 @@ function ArticleDetailContent({ articleData }) {
   const content = articleData.content;
   const location = articleData.location;
   const saveCnt = articleData.saveCnt;
+  const images = articleData.images;
   const isSaved = false;
 
   return (
@@ -23,7 +24,7 @@ function ArticleDetailContent({ articleData }) {
       </Grid>
       <Grid className="article__inner__left">
         <ArticleInfo nickname={user.nickname} category={category} date={date} />
-        <ArticleContent id={id} content={content} location={location} />
+        <ArticleContent id={id} content={content} location={location} images={images} />
       </Grid>
       <Grid className="article__inner_right">
         <ArticleMore id={id} isSaved={isSaved} saveCnt={saveCnt} />
