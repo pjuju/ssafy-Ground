@@ -10,6 +10,8 @@
     display: flex;
     justify-content: center;
     padding: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     max-width: 90% !important;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -25,7 +27,7 @@
     }
 
     &__left {
-      width: 75%;
+      width: 80%;
       padding-left: 0.5rem;
       padding-right: 0.5rem;
     }
