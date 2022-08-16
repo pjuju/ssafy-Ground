@@ -15,6 +15,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAccountNoti, getBoardNoti } from "api/notification";
+import { getUserState } from "api/user";
 
 function BottomNavbar({
   sideMenuIdx,
@@ -27,6 +28,8 @@ function BottomNavbar({
   const [activityNotiList, setActivityNotiList] = useState([]);
   const [accountNotiList, setAccountNotiList] = useState([]);
   const [notiCnt, setNotiCnt] = useState(0);
+
+  const [id, setId] = useState(0);
 
   useEffect(() => {
     // 서버에서 활동 알림 목록 받아오기
@@ -71,6 +74,12 @@ function BottomNavbar({
     console.log("account : " + accountNotiCnt);
   }, [accountNotiCnt]);
 
+  useEffect(() => {
+    // 내 정보를 받아옴
+    getUserState((res) => {
+      setId(res.data.id);
+    });
+  });
   return (
     <Grid className="navbar-bottom">
       <ThemeProvider theme={theme}>
@@ -86,6 +95,9 @@ function BottomNavbar({
                 case 2:
                 case 3:
                   onSetSideMenuIdx(newValue - 1);
+                  break;
+                case 4:
+                  onSetSideMenuIdx(-1);
                   break;
                 default:
                   onSetSideMenuIdx(newValue);
@@ -117,7 +129,7 @@ function BottomNavbar({
             />
             <BottomNavigationAction
               component={Link}
-              to="/profile/1"
+              to={`/profile/${id}`}
               icon={<PersonIcon />}
             />
           </BottomNavigation>

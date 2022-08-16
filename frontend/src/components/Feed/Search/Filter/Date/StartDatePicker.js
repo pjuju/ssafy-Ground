@@ -3,27 +3,27 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { ThemeProvider } from "@emotion/react";
+
+import moment from "moment";
 import theme from "components/common/theme.js";
 
-export default function StartDatePicker({ startDate, setStartDate }) {
+
+export default function StartDatePicker({ radio, startDate, setStartDate }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <ThemeProvider theme={theme}>
         <DatePicker
-          label="시작 날짜"
           value={startDate}
-          inputFormat={"yyyy/MM/dd"}
+          inputFormat={"yyyy-MM-dd"}
           maxDate={new Date()}
           onChange={(newValue) => {
-            setStartDate(newValue);
+            setStartDate(moment(newValue));
           }}
           renderInput={(params) => (
-            <TextField
-              {...params}
-              className="date-picker date-picker__startDate"
-              size="small"
-            />
+            <TextField {...params} className="date-picker" size="small" />
           )}
+          closeOnSelect={true}
+          readOnly={radio !== "custom" ? true : false}
         />
       </ThemeProvider>
     </LocalizationProvider>
