@@ -11,14 +11,14 @@ import "styles/Register/RegisterPage.scss";
 import { useState, useEffect } from "react";
 import { signUp } from "api/register";
 import RegisterModal from "components/Register/RegisterModal";
-import { modifyUserInfo } from "api/user";
 import { useAuth } from "auth/AuthProvider";
+import axios from "axios";
 
 function RegisterPage() {
   const [next, setNext] = useState(false);
   const [basicInfo, setBasicInfo] = useState({});
   const [open, setOpen] = useState(false);
-  const { token } = useAuth();
+  const { systemLogin } = useAuth();
 
   // 다음 버튼 핸들러
   const goToOtherInfo = () => {
@@ -38,7 +38,7 @@ function RegisterPage() {
     let info = {};
     Object.assign(info, basicInfo, newOtherInfo);
     // 일반 회원가입
-    if (!token) {
+    if (!localStorage.getItem("ftoken")) {
       signUp(
         info,
         (res) => {
@@ -53,9 +53,21 @@ function RegisterPage() {
     }
     // 소셜 회원가입
     else {
-      modifyUserInfo(newOtherInfo, (res) => {
-        setOpen(true);
+      const ftoken = localStorage.getItem("ftoken");     
+      const instance = axios.create({
+        baseURL: "http://localhost:3000/api",
+        headers: {
+          "Content-type": "application/json",
+        },
       });
+      instance.interceptors.request.use(function (config) {
+        // 요청을 보내기 전에 토큰 값 갱신
+        config.headers.Authorization = "Bearer " + ftoken;
+        return config;
+      });
+      instance.put(`/user/modifyUser`, newOtherInfo).then((res) => {
+        setOpen(true);
+      })
     }
   };
 
@@ -77,7 +89,7 @@ function RegisterPage() {
 
   // 소셜 로그인으로 토큰이 이미 존재하면 닉네임 입력 페이지로 이동
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("ftoken")) {
       goToOtherInfo();
     }
   }, []);
