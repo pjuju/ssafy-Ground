@@ -73,9 +73,21 @@ $wide-desktop: 1249px;
     box-shadow: none;
   }
 
+  &__wrapper {
+    @include tablet() {
+      margin-top: 85px;
+      margin-bottom: 60px;
+    }
+
+    @include mobile() {
+      margin-top: 60px;
+      margin-bottom: 60px;
+    }
+  }
+
   &__inner {
     margin: 2rem 0;
-    padding: 2rem 0;
+    padding: 2rem 0 0 0;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border-radius: 10px;
   }
@@ -118,11 +130,16 @@ $wide-desktop: 1249px;
     &__image {
       width: 100%;
       max-width: 50px;
+      cursor: pointer;
     }
 
     &--right {
       height: 100%;
       padding-left: 8px;
+
+      & .comment__nickname {
+        cursor: pointer;
+      }
     }
   }
 
@@ -130,7 +147,6 @@ $wide-desktop: 1249px;
     font-weight: bold;
     @include sm() {
       padding-top: 0.2rem;
-      font-size: 0.8rem;
     }
   }
 
@@ -160,9 +176,34 @@ $wide-desktop: 1249px;
 .comment-box {
   width: 100%;
   margin: 1rem 0;
+  flex-wrap: nowrap !important;
+
+  &__info {
+    width: 18%;
+    max-width: 65px;
+    &__image {
+      width: 100%;
+    }
+  }
+
+  &__field {
+    width: 70%;
+    margin-left: 1rem !important;
+    margin-right: 1rem !important;
+    &__input {
+      width: 100%;
+    }
+  }
 
   &__field {
     width: 100%;
+  }
+
+  @include mobile {
+    &__field {
+      margin-left: 0.5rem !important;
+      margin-right: 0.6rem !important;
+    }
   }
 }
 

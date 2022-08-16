@@ -4,10 +4,18 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useState } from "react";
 import CommentEdit from "./CommentEdit";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (date) => {
   // let converted = new Date();
-  let converted = new Date(date[0], date[1] - 1, date[2], date[3], date[4], date[5]);
+  let converted = new Date(
+    date[0],
+    date[1] - 1,
+    date[2],
+    date[3],
+    date[4],
+    date[5]
+  );
   let diff = new Date() - converted; // 차이(ms)
 
   // 차이가 1초 미만이라면
@@ -51,15 +59,22 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
   const { id, user, regDttm, reply } = comment;
   const [isEdit, setIsEdit] = useState(false);
 
+  const navigate = useNavigate();
+
+  const handleClickProfile = () => {
+    navigate(`/profile/${user.id}`);
+  };
+
   return (
     <div className="comment">
       <Stack className="comment__inner">
         <Grid className="comment__info" container justifyContent="center">
-          <Grid item xs={0.8}>
+          <Grid item>
             <img
               className="comment__info__image"
               src={userImage}
               alt="user_image"
+              onClick={handleClickProfile}
             />
           </Grid>
           <Grid item xs={10}>
@@ -71,7 +86,12 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
             >
               <Grid container justifyContent="space-between">
                 <Stack direction="row">
-                  <Grid className="comment__nickname" item textAlign="center">
+                  <Grid
+                    className="comment__nickname"
+                    item
+                    textAlign="center"
+                    onClick={handleClickProfile}
+                  >
                     {user.nickname}
                   </Grid>
                   <Grid className="comment__regDate" item textAlign="center">
