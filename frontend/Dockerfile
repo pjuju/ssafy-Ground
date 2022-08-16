@@ -2,7 +2,7 @@ FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
 
-COPY /home/ubuntu/env /home/ubuntu/S07P12D103/frontend/src/.env
+# COPY /home/ubuntu/env /home/ubuntu/S07P12D103/frontend/src/.env
 
 RUN npm install
 COPY . . 
