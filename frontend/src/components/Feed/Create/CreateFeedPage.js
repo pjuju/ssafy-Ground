@@ -1,8 +1,8 @@
-import { Button, Container, Grid, Modal } from "@mui/material";
+import { Button, Container, Grid, IconButton, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ArrowBack from "@mui/icons-material/ArrowBack";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Box } from "@mui/system";
 import { storage } from "api/firebase";
 import { ref, uploadBytes } from "firebase/storage";
@@ -23,6 +23,8 @@ import ArticleOpen from "./ArticleOpen";
 import ArticleImg from "./ArticleImg";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import TitleBar from "components/common/TitleBar";
 
 function CreateFeedPage() {
   const [authOpen, setAuthOpen] = useState(false);
@@ -40,20 +42,20 @@ function CreateFeedPage() {
       images: [],
       locationId: undefined,
       categoryId: undefined,
-      privateYN: false, 
+      privateYN: false,
     };
     setBoardInfo(data);
   }, []);
 
   useEffect(() => {
     setIsLoading(false);
-  }, [boardInfo])
+  }, [boardInfo]);
 
   useEffect(() => {
-    console.log(boardInfo)
-    console.log(uploadImages)
-    console.log(newImages)
-  })
+    console.log(boardInfo);
+    console.log(uploadImages);
+    console.log(newImages);
+  });
   // const onClickAuth = () => {
   //   const data = {
   //     content: feedContent,
@@ -73,7 +75,6 @@ function CreateFeedPage() {
   //   );
   //   setAuthOpen(false);
   // };
-
 
   // const handleSubmit = async (event) => {
   //   event.preventDefault();
@@ -114,7 +115,7 @@ function CreateFeedPage() {
   //   } catch (err) {
   //     console.log("err");
   //   }
-    
+
   //   setAuthOpen(true);
   // };
   const handleSubmit = () => {
@@ -125,7 +126,18 @@ function CreateFeedPage() {
       setIsLocationError(true)
     }
     const newBoardInfo = {
-      ...boardInfo, images: newImages
+      ...boardInfo,
+      images: newImages,
+    };
+
+    if (
+      boardInfo.categoryId !== undefined &&
+      boardInfo.locationId !== undefined
+    ) {
+      feedCreate(newBoardInfo, (res) => {
+        console.log(res.data);
+      });
+      setAuthOpen(true);
     }
 
     if ((boardInfo.categoryId !== undefined) && (boardInfo.locationId !== undefined)) {
@@ -138,29 +150,37 @@ function CreateFeedPage() {
 
   const onClickAuth = () => {
     uploadImages.map((src) => {
-      if(src.id === undefined){
+      if (src.id === undefined) {
         const storageRef = ref(storage, `images/${src.imageUrl}`);
         uploadBytes(storageRef, src.file).then((snapshot) => {
           console.log("Uploaded a blob or file!");
         });
       }
-      
-    })
+    });
     setAuthOpen(false);
     navigate(-1);
-  }
+  };
 
   return (
     <Grid container direction="column" className="create-feed__top">
-      <Grid
+      {/* <Grid
         container
         direction="row"
         className="create-feed__back"
         alignItems="center"
       >
-        {/* <ArrowBack fontSize="large" /> */}
         <ArrowBackIosIcon fontSize="large" />
         <div className="create-feed__title"> 글 작성 </div>
+      </Grid> */}
+      <Grid className="content__title-desktop create-feed__top__title">
+        <IconButton
+         >
+          <ArrowBackIcon />
+        </IconButton>
+        <h2 className="back">글 작성</h2>
+      </Grid>
+      <Grid className="content__title-mobile">
+        <TitleBar title="글 작성" isBack={true} />
       </Grid>
       <Grid
         container

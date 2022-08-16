@@ -107,6 +107,7 @@
     border-radius: 8px;
     padding: 1rem 2rem;
     margin-bottom: 1rem;
+    cursor: pointer;
   }
 
   &__profile {
@@ -120,6 +121,7 @@
 
   &__profile-img {
     height: 100%;
+    border-radius: 50%;
   }
 
   &__info-wrapper {
