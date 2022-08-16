@@ -18,7 +18,12 @@ export const useLocalStorage = (key, defaultValue) => {
 
   const setValue = (newValue) => {
     try {
-      window.localStorage.setItem(key, newValue);
+      if(newValue === null) {
+        localStorage.removeItem("token");
+      }
+      else {
+        window.localStorage.setItem(key, newValue);
+      }     
     } catch (err) {}
     setStoredValue(newValue);
   };

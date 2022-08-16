@@ -9,12 +9,12 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   // call this function when you want to authenticate the user
-  const login = async (token) => {
+  const systemLogin = async (token) => {
     setToken(token);
   };
 
   // call this function to sign out logged in user
-  const logout = () => {
+  const systemLogout = () => {
     setToken(null);
     navigate("/", { replace: true });
   };
@@ -22,8 +22,8 @@ export const AuthProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       token,
-      login,
-      logout,
+      systemLogin,
+      systemLogout,
     }),
     [token]
   );

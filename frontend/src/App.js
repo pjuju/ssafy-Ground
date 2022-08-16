@@ -57,7 +57,14 @@ function App() {
             <Route path=":userId" element={<Profile />} />
             <Route path="edit/:userId" element={<ProfileEdit />} />
           </Route>
-          <Route path="/notification" element={<MobileNotiPage />} />
+          <Route
+            path="/notification"
+            element={
+              <ProtectedRoute>
+                <MobileNotiPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
