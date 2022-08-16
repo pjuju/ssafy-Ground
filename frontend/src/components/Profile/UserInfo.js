@@ -43,8 +43,7 @@ function UserInfo() {
     const id = parseURL[parseURL.length - 1];
     setUserId(id);
 
-    getUserProfile(userId, (res) => {
-      console.log(res.data);
+    getUserProfile(id, (res) => {
       setIntroduce(res.data.user.introduce);
       setNickname(res.data.user.nickname);
       setUserImage(res.data.user.userImage);
