@@ -52,23 +52,26 @@ function ArticleDetailComment({ commentList }) {
   }, []);
 
   return (
-    <Grid className="activity_comment" container>
-      <IconButton>
-        <ChatBubbleOutlineIcon />
-      </IconButton>
-      <Grid item>
-        댓글 <span className="bold">{comments.length}개</span>
+    <Grid className="activity" container>
+      <Grid className="activity__comment" container>
+        <IconButton>
+          <ChatBubbleOutlineIcon />
+        </IconButton>
+        <Grid item>
+          <span>댓글</span>&nbsp;
+          <span className="bold">{comments.length}개</span>
+        </Grid>
+        <CommentBox handleCommentRegister={handleCommentRegister} />
+        {comments.map((comment, index) => (
+          <Comment
+            key={index}
+            comment={comment}
+            userId={userId}
+            handleCommentEdit={handleCommentEdit}
+            handleCommentDelete={handleCommentDelete}
+          />
+        ))}
       </Grid>
-      <CommentBox handleCommentRegister={handleCommentRegister} />
-      {comments.map((comment, index) => (
-        <Comment
-          key={index}
-          comment={comment}
-          userId={userId}
-          handleCommentEdit={handleCommentEdit}
-          handleCommentDelete={handleCommentDelete}
-        />
-      ))}
     </Grid>
   );
 }

@@ -9,6 +9,7 @@ import ArticleDetailComment from "./ArticleDetailComment";
 import ArticleDetailLike from "./ArticleDetailLike";
 import { deleteComment } from "api/comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import TitleBar from "components/common/TitleBar";
 
 function ArticleDetail() {
   const navigate = useNavigate();
@@ -38,6 +39,9 @@ function ArticleDetail() {
         <IconButton onClick={() => navigate(-1)}>
           <ArrowBackIcon />
         </IconButton>
+      </Grid>
+      <Grid className="content__title-mobile">
+        <TitleBar isBack={true} />
       </Grid>
       <Container>
         <Grid className="article-detail__inner" container direction="column">

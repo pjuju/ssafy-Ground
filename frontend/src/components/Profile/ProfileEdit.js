@@ -503,7 +503,7 @@ function ProfileEdit() {
             />
           </Grid>
         </Grid>
-        <div style={{ height: "30px" }}></div>
+        <div className="empty-div" style={{ height: "30px" }}></div>
       </Grid>
     </Grid>
   );
