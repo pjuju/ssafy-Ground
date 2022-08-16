@@ -1,8 +1,6 @@
-import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
 import GrButton from "components/common/GrButton";
 import text_logo from "assets/images/text_logo.png";
 import { Grid } from "@mui/material";
@@ -23,7 +21,6 @@ const style = {
 
 export default function RegisterModal({ open, setOpen }) {
   const navigate = useNavigate();
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     if (localStorage.getItem("token")) {
@@ -35,15 +32,10 @@ export default function RegisterModal({ open, setOpen }) {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}
         closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
       >
         <Fade in={open}>
           <Box sx={style}>
