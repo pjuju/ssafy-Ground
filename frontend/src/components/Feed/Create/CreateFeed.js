@@ -140,12 +140,6 @@ function CreateFeedPage() {
       setAuthOpen(true);
     }
 
-    if ((boardInfo.categoryId !== undefined) && (boardInfo.locationId !== undefined)) {
-      feedCreate(newBoardInfo, (res)=> {
-        console.log(res.data)
-      })
-      setAuthOpen(true)
-    }
   }
 
   const onClickAuth = () => {

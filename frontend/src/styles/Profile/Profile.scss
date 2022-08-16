@@ -8,6 +8,14 @@
       padding: 1rem;
       padding-right: 1.5rem;
       padding-left: 1.5rem;
+      padding-bottom: 3rem;
+
+      &--private {
+        color: $light-gray;
+        display: flex;
+        justify-content: center;
+        padding-top: 25%;
+      }
 
       &--private {
         color: $light-gray;
@@ -189,6 +197,10 @@
         }
 
         &__tabpanel {
+          @include mobile() {
+            padding: 0 !important;
+          }
+
           & p {
             text-align: center;
             color: $light-gray;
