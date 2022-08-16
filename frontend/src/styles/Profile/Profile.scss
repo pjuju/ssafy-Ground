@@ -17,6 +17,13 @@
         padding-top: 25%;
       }
 
+      &--private {
+        color: $light-gray;
+        display: flex;
+        justify-content: center;
+        padding-top: 25%;
+      }
+
       & .user-info {
         width: 100%;
 

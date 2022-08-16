@@ -6,8 +6,7 @@ export const ProtectedRoute = ({ children }) => {
 
   if (!token) {
     // user is not authenticated
-    console.log("null")
-    // alert("로그인이 필요한 서비스입니다.");
+    alert("로그인이 필요한 서비스입니다.");
     return <Navigate to="/" />;
   }
   return children;

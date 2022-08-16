@@ -12,11 +12,13 @@ import { useState, useEffect } from "react";
 import { signUp } from "api/register";
 import RegisterModal from "components/Register/RegisterModal";
 import { modifyUserInfo } from "api/user";
+import { useAuth } from "auth/AuthProvider";
 
 function RegisterPage() {
   const [next, setNext] = useState(false);
   const [basicInfo, setBasicInfo] = useState({});
   const [open, setOpen] = useState(false);
+  const { token } = useAuth();
 
   // 다음 버튼 핸들러
   const goToOtherInfo = () => {
@@ -36,7 +38,7 @@ function RegisterPage() {
     let info = {};
     Object.assign(info, basicInfo, newOtherInfo);
     // 일반 회원가입
-    if (!localStorage.getItem("token")) {
+    if (!token) {
       signUp(
         info,
         (res) => {
