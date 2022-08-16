@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import UserGroundBadge from "./static/UserGroundBadge";
 import UserGroundCalendar from "./static/UserGroundCalendar";
 import UserGroundGraph from "./static/UserGroundGraph";
-import UserGround from "./UserGround";
 
 const { Grid } = require("@mui/material");
 
@@ -47,7 +46,11 @@ function UserExerciseRecord() {
               <UserGroundGraph category={category} />
             </>
           )}
-          {!isExist && (<div className="ground__no-record">글을 작성해서 운동장에 잔디를 심으면 상세 정보를 볼 수 있어요!</div>)}
+          {!isExist && (
+            <div className="ground__no-record">
+              글을 작성해서 운동장에 잔디를 심으면 상세 정보를 볼 수 있어요!
+            </div>
+          )}
         </>
       )}
     </Grid>

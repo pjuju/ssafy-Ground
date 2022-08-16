@@ -25,16 +25,15 @@ function Article({ articleData }) {
   const [saveCnt, setSaveCnt] = useState(articleData.saveCnt);
   const boardLikes = articleData.boardLikes;
   const boardSaves = articleData.boardSaves;
-  const userImage = user.userImage
+  const userImage = user.userImage;
   const [profileImg, setProfileImg] = useState("");
 
   // 로그인한 사용자의 정보
   const [nickname, setNickname] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  
+
   useEffect(() => {
-    console.log(articleData);
     getUserState((res) => {
       setNickname(res.data.nickname);
 
@@ -92,7 +91,7 @@ function Article({ articleData }) {
     <Box className="article">
       <Grid className="article__inner" container direction="row">
         <Grid className="article__inner__userimg" onClick={handleClickImg}>
-          <img src={userImg} />
+          <img src={profileImg||userImg} />
         </Grid>
         <Grid className="article__inner__left">
           <ArticleInfo

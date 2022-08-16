@@ -52,6 +52,9 @@ function MobileNotiPage() {
     getAccountNoti((res) => {
       setAccountNotiList(res.data);
     });
+
+    // 처음에 보이는 화면이 활동 탭이므로 활동 탭의 모든 알림을 읽음 처리
+    readAllBoardNoti((res) => {});
   }, [value]);
 
   useEffect(() => {
