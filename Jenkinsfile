@@ -6,19 +6,9 @@ pipeline {
                         agent any
                         steps { 
                                 dir('/home/ubuntu/S07P12D103/frontend/src/') {
-                                        sh 'touch .env'
-                                        sh 'echo -e "REACT_APP_KAKAO_REST_API_KEY={env.REACT_APP_KAKAO_REST_API_KEY}" > .env'
-                                        sh 'echo -e "REACT_APP_KAKAO_REST_API_KEY={env.REACT_APP_KAKAO_REST_API_KEY}" > .env'
-                                        sh 'echo -e "REACT_APP_KAKAO_REDIRECT_URI={env.REACT_APP_KAKAO_REDIRECT_URI}" > .env'
-                                        sh 'echo -e "REACT_APP_GOOGLE_CLIENT_ID={env.REACT_APP_GOOGLE_CLIENT_ID}" > .env'
-                                        sh 'echo -e "REACT_APP_GOOGLE_REDIRECT_URI={env.REACT_APP_GOOGLE_REDIRECT_URI}" > .env'
-
-                                        sh 'echo -e "REACT_APP_FB_API_KEY={env.REACT_APP_FB_API_KEY}" > .env'
-                                        sh 'echo -e "REACT_APP_FB_AUTH_DOMAIN={env.REACT_APP_FB_AUTH_DOMAIN}" > .env'
-                                        sh 'echo -e "REACT_APP_FB_PROJECT_ID={env.REACT_APP_FB_PROJECT_ID}" > .env'
-                                        sh 'echo -e "REACT_APP_FB_STORAGE_BUCKET={env.REACT_APP_FB_STORAGE_BUCKET}" > .env'
-                                        sh 'echo -e "REACT_APP_FB_MESSAGE_ID={env.REACT_APP_FB_MESSAGE_ID}" > .env'
-                                        sh 'echo -e "REACT_APP_FB_APP_ID={REACT_APP_FB_APP_ID}" > .env'
+                                        
+                                        sh 'echo "REACT_APP_KAKAO_REST_API_KEY=${REACT_APP_KAKAO_REST_API_KEY}\nREACT_APP_KAKAO_REDIRECT_URI=${REACT_APP_KAKAO_REDIRECT_URI}\nREACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID}\nREACT_APP_GOOGLE_REDIRECT_URI=${REACT_APP_GOOGLE_REDIRECT_URI}\nREACT_APP_FB_API_KEY=${REACT_APP_FB_API_KEY}\nREACT_APP_FB_AUTH_DOMAIN=${REACT_APP_FB_AUTH_DOMAIN}\nREACT_APP_FB_PROJECT_ID=${REACT_APP_FB_PROJECT_ID}\nREACT_APP_FB_STORAGE_BUCKET=${REACT_APP_FB_STORAGE_BUCKET}\nREACT_APP_FB_MESSAGE_ID=${REACT_APP_FB_MESSAGE_ID}\nREACT_APP_FB_APP_ID=${REACT_APP_FB_APP_ID}\n" > .env'
+                                        sh 'cat .env'
                                 }
                         }
                 }
