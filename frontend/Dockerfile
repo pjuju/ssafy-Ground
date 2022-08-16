@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install
 COPY . . 
 # ENV ENV /home/ubuntu/.env
-RUN npm run build
+RUN npm run build --env-file /home/ubuntu/.env
 FROM nginx:stable-alpine as production-stage
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx/deploy.conf /etc/nginx/conf.d/deploy.conf
