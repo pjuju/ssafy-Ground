@@ -5,7 +5,7 @@ pipeline {
                 stage('Create .env') {
                         agent any
                         steps { 
-                                dir('frontend/src') {
+                                dir('./frontend/src') {
                                         sh 'touch .env'
                                         sh 'echo -e "REACT_APP_KAKAO_REST_API_KEY=${env.REACT_APP_KAKAO_REST_API_KEY}" > .env'
                                         sh 'echo -e "REACT_APP_KAKAO_REST_API_KEY=${env.REACT_APP_KAKAO_REST_API_KEY}" > .env'
