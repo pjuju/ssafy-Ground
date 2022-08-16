@@ -307,9 +307,10 @@ public class BoardService {
     // -----------------BSH-----------------
     // 유저가 쓴 피드 조회
     @Transactional
-    public List<BoardResponseDto> getMyBoard(long userId, Pageable pageable, User loginUser) {
+    public List<BoardResponseDto> getMyBoard(long userId, int pageNumber, User loginUser) {
 
         List<BoardResponseDto> result = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
         List<Board> boardList = boardRepository.findAllByUserIdOrderByRegDttmDesc(userId, pageable);
 
         for (Board board : boardList) {
@@ -320,7 +321,7 @@ public class BoardService {
 
     // 저장한 피드 조회
     @Transactional
-    public List<BoardResponseDto> getSaveBoard(long userId, Pageable pageable, User loginUser) {
+    public List<BoardResponseDto> getSaveBoard(long userId, int pageNumber, User loginUser) {
         List<Long> boardIdList = new ArrayList<>();
         List<BoardSave> saveList = boardSaveRepository.findAllByUserId(userId);
         for (BoardSave boardSave : saveList) boardIdList.add(boardSave.getBoard().getId());
@@ -335,6 +336,7 @@ public class BoardService {
         // 작성자가 나
         userList.add(loginUser);
 
+        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by("id").descending());
         List<Board> boardList = boardRepository.findAllByIdInAndUserInAndPrivateYNOrderByRegDttmDesc(boardIdList, userList,false, pageable);
         List<BoardResponseDto> result = new ArrayList<>();
         for (Board board : boardList) result.add(new BoardResponseDto(board, loginUser));

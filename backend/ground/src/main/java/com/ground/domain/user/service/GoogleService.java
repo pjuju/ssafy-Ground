@@ -8,15 +8,20 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.JsonElement;
@@ -42,85 +47,38 @@ public class GoogleService {
 	
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
-	
-	public static String getAccessToken (String code,String google_client_id, String google_client_secret, String google_redirect_uri, String google_token_url) {
-		RestTemplate restTemplate = new RestTemplate();
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("code", code);
-        params.put("client_id", google_client_id);
-        params.put("client_secret", google_client_secret);
-        params.put("redirect_uri", google_redirect_uri);
-        params.put("grant_type", "authorization_code");
-
-        ResponseEntity<String> responseEntity =
-                restTemplate.postForEntity(google_token_url, params, String.class);
-
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-        	System.out.println("getaccesstoken(google): " + responseEntity.getBody());
-            return responseEntity.getBody();
-        }
-        return "구글 로그인 요청 처리 실패";
-    }
-		 
 		 
 	public UserKakaoLoginDto getUserInfo(String access_token){
 			 
-			 System.out.println("------Kakao - getUserinfo --------");
+			 System.out.println("------Google - getUserinfo --------");
+			 String GOOGLE_USERINFO_REQUEST_URL="https://www.googleapis.com/oauth2/v1/userinfo";
 
-		     String reqURL = "https://kapi.kakao.com/v2/user/me";
-		        
-		        try {
-	                //URL객체 생성
-		            URL url = new URL(reqURL);
-		            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		            
-		            conn.setRequestMethod("POST");
-		            conn.setDoOutput(true);
-		            
-		            conn.setRequestProperty("Authorization", "Bearer " + access_token);
-		            
-		            //응답확인 200이면 정상
-		            int responseCode = conn.getResponseCode();
-		            System.out.println("responseCode : " + responseCode);
-		 
-		            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-		            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		            String line = "";
-		            String result = "";
-		            
-		            while ((line = br.readLine()) != null) {
-		                result += line;
-		            }
-		            System.out.println("response body : " + result);
-		            
-		            // Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-		            JsonParser parser = new JsonParser();
-		            JsonElement element = parser.parse(result);
-		            
-//		            access_Token = element.getAsJsonObject().get("access_token").getAsString();
-//		            String user_email ="";
-//		            element.getAsJsonObject().
-		            String id = ((JsonObject) element).get("id").toString();
-		            String email = ((JsonObject) ((JsonObject) element).get("kakao_account")).get("email").toString();
-		            System.out.println("id: " + id);
-		            System.out.println("email: " + email);
-		            String ftoken = jwtTokenProvider.createToken(id);
-		            System.out.println("ftoken: " + ftoken);
-		            UserKakaoLoginDto ukld = new UserKakaoLoginDto();
-		            ukld.setUsername(id);
-		            ukld.setEmail(email);
-		            ukld.setFtoken(ftoken);
-		           
-		            
-		            br.close();
-		            return ukld;
-		        } catch (IOException e) {
-		            // TODO Auto-generated catch block
-		            e.printStackTrace();
-		        } 
-		        
-		        return null;
+			 //header에 accessToken을 담는다.
+			 HttpHeaders headers = new HttpHeaders();
+			 headers.add("Authorization","Bearer "+ access_token);
+			        
+			 //HttpEntity를 하나 생성해 헤더를 담아서 restTemplate으로 구글과 통신하게 된다
+			 RestTemplate restTemplate = new RestTemplate();
+			 HttpEntity<MultiValueMap<String, String>> request = new HttpEntity(headers);
+			 ResponseEntity<String> response= restTemplate.exchange(GOOGLE_USERINFO_REQUEST_URL, HttpMethod.GET,request,String.class);
+			 
+			 JsonParser parser = new JsonParser();
+			 Object obj = parser.parse(response.getBody());
+			 JsonObject jsonObj = (JsonObject) obj;
+			 
+			 UserKakaoLoginDto ukld = new UserKakaoLoginDto();
+			 String id = jsonObj.get("id").toString();
+			 
+			 id = id.replace("\"", "");
+			 String email = jsonObj.get("email").toString();
+			 String ftoken = jwtTokenProvider.createToken(id);
+			 
+			 ukld.setUsername(id);
+			 ukld.setEmail(email);
+			 ukld.setFtoken(ftoken);
+			 
+			 return ukld;
+
 		 }
 		 
 		 @Transactional
@@ -131,6 +89,7 @@ public class GoogleService {
 			 if(user.isEmpty()) {
 				 userRepository.save(params.toEntity());
 				 Optional<User> kakaoUser = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
+				 System.out.println("1success signup");
 				 ulrd.setResult("success signup");
 				 ulrd.setFtoken(params.getFtoken());
 				 ulrd.setRegisterYN(kakaoUser.get().isRegisterYN());
@@ -138,7 +97,9 @@ public class GoogleService {
 			 }
 			 else {
 				 ulrd.setResult("success login");
-				 ulrd.setFtoken(params.getFtoken());
+				 System.out.println("2success login");
+				 String ftoken = jwtTokenProvider.createToken(user.get().getUsername());
+				 ulrd.setFtoken(ftoken);
 				 ulrd.setRegisterYN(user.get().isRegisterYN());
 				 return ulrd;
 			 }

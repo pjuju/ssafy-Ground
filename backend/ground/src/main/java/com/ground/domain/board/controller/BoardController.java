@@ -166,20 +166,20 @@ public class BoardController {
     // -----------------BSH-----------------
     // 유저가 쓴 피드 조회
     @ApiOperation(value = "유저가 쓴 피드 조회")
-    @GetMapping("/list/me/{userId}")
-    public List<BoardResponseDto> getMyBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable, @RequestHeader String Authorization) {
+    @GetMapping("/list/me/{userId}/{pageNumber}")
+    public List<BoardResponseDto> getMyBoard(@PathVariable long userId, @PathVariable int pageNumber, @RequestHeader String Authorization) {
     	String ftoken = Authorization.substring(7);
         User loginUser = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        return boardService.getMyBoard(userId, pageable, loginUser);
+        return boardService.getMyBoard(userId, pageNumber, loginUser);
     }
 
     // 저장한 피드 조회
     @ApiOperation(value = "저장한 피드 조회")
-    @GetMapping("/list/save/{userId}")
-    public List<BoardResponseDto> getSaveBoard(@PathVariable long userId, @PageableDefault(size=12) Pageable pageable, @RequestHeader String Authorization) {
+    @GetMapping("/list/save/{userId}/{pageNumber}")
+    public List<BoardResponseDto> getSaveBoard(@PathVariable long userId, @PathVariable int pageNumber, @RequestHeader String Authorization) {
     	String ftoken = Authorization.substring(7);
         User loginUser = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
-        return boardService.getSaveBoard(userId, pageable, loginUser);
+        return boardService.getSaveBoard(userId, pageNumber, loginUser);
     }
 
 }
