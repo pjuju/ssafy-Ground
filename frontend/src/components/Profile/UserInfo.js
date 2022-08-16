@@ -1,4 +1,4 @@
-import userImage from "assets/images/userImage.png";
+import userImg from "assets/images/userImage.png";
 
 import { Grid, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -134,7 +134,7 @@ function UserInfo() {
     <Grid className="user-info">
       <Grid className="info-top" container direction="row">
         <Grid className="info-top__img">
-          <img src={userImage} />
+          <img src={profileImg||userImg}/>
         </Grid>
         <Grid className="info-top__right">
           <Grid className="info-top__right__name">
