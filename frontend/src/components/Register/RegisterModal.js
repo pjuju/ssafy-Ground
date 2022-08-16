@@ -21,13 +21,16 @@ const style = {
   p: 4,
 };
 
-
-export default function RegisterModal({open, setOpen}) {
+export default function RegisterModal({ open, setOpen }) {
   const navigate = useNavigate();
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    navigate("/");
+    if (localStorage.getItem("token")) {
+      navigate("/welcome");
+    } else {
+      navigate("/");
+    }
   };
 
   return (
@@ -67,7 +70,7 @@ export default function RegisterModal({open, setOpen}) {
                   variant="contained"
                   onClick={handleClose}
                 >
-                  로그인하러 가기
+                  확인
                 </GrButton>
               </Grid>
             </Grid>
