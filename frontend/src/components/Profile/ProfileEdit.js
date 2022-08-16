@@ -10,7 +10,12 @@ import {
   RadioGroup,
   Select,
 } from "@mui/material";
-import { getUserModifyInfo, getUserState, modifyUserInfo } from "api/user";
+import {
+  deleteUser,
+  getUserModifyInfo,
+  getUserState,
+  modifyUserInfo,
+} from "api/user";
 import TitleBar from "components/common/TitleBar";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -51,7 +56,6 @@ function ProfileEdit() {
   const [profileImg, setProfileImg] = useState("");
   const [imageInfo, setImageInfo] = useState({});
 
-  const [changedNickname, setChangedNickname] = useState("");
   const [changedIntroduce, setChangedIntroduce] = useState("");
   const [changedAge, setChangedAge] = useState("");
   const [changedGender, setChangedGender] = useState("");
@@ -62,6 +66,7 @@ function ProfileEdit() {
   // 모달창 컨트롤
   const [open, setOpen] = useState(false);
   const [modifyPassOpen, setModifyPassOpen] = useState(false);
+  const [quitOpen, setQuitOpen] = useState(false);
 
   const ages = [
     { id: "teenager", value: "10대", checked: false },
@@ -137,16 +142,16 @@ function ProfileEdit() {
 
   useEffect(() => {
     // 이미지 프리뷰 보여주기
-      preview();
+    preview();
   }, [profileImg]);
 
   useEffect(() => {
     fetchImage();
-  },[userImage])
+  }, [userImage]);
 
   useEffect(() => {
-    console.log(imageInfo)
-  },[open])
+    console.log(imageInfo);
+  }, [open]);
   /* 이미지를 첨부했을 때 프리뷰로 해당 이미지 미리보기 */
   const preview = () => {
     if (changedUserImage.length === 0) return false;
@@ -158,7 +163,7 @@ function ProfileEdit() {
       imgElement.src = profileImg;
     }
   };
-  
+
   const fetchImage = () => {
     const storageRef = ref(storage, `images/${userImage}`);
     if (userImage !== undefined && userImage !== "") {
@@ -172,13 +177,13 @@ function ProfileEdit() {
   /* 이미지 첨부 버튼을 눌렀을 때 호출되는 핸들러 */
   const handleClickInput = (event) => {
     const file = event.target.files[0];
-    const randNum = parseInt((new Date().getTime() + Math.random())*100);
+    const randNum = parseInt((new Date().getTime() + Math.random()) * 100);
     const info = {
       imageUrl: randNum.toString(),
-      file: file
-    }
+      file: file,
+    };
     setChangedUserImage(URL.createObjectURL(file));
-    setImageInfo(info)
+    setImageInfo(info);
     console.log("handleClickInput");
     console.log(event.target.files[0]);
   };
@@ -210,10 +215,6 @@ function ProfileEdit() {
     }
   };
 
-  const handleChangeNickname = (event) => {
-    setChangedNickname(event.target.value);
-  };
-
   const handleChangeIntroduce = (event) => {
     setChangedIntroduce(event.target.value);
   };
@@ -239,29 +240,39 @@ function ProfileEdit() {
       }
     }
 
-    const num = imageInfo.imageUrl
+    const num = imageInfo.imageUrl;
     const userDetail = {
       age: changedAge,
       gender: changedGender,
       introduce: changedIntroduce,
       nickname: getValues("nickname"),
       privateYN: changedPrivateYN,
-      userImage: num
+      userImage: num,
     };
-    console.log(userDetail)
+    console.log(userDetail);
 
-    if(imageInfo.imageUrl !== undefined){
+    if (imageInfo.imageUrl !== undefined) {
       const storageRef = ref(storage, `images/${imageInfo.imageUrl}`);
-      uploadBytes(storageRef, imageInfo.file).then((snapshot) => {
-        console.log("Uploaded a blob or file!")
-      }).then((snapshot) => {
-        modifyUserInfo(userDetail, (res) => {
-          console.log(userDetail)
-          navigate(`/profile/${userId}`);
-          window.location.reload();
+      uploadBytes(storageRef, imageInfo.file)
+        .then((snapshot) => {
+          console.log("Uploaded a blob or file!");
+        })
+        .then((snapshot) => {
+          modifyUserInfo(userDetail, (res) => {
+            console.log(userDetail);
+            navigate(`/profile/${userId}`);
+            window.location.reload();
+          });
         });
-      });
     }
+  };
+
+  const handleClickQuit = () => {
+    deleteUser((res) => {
+      alert("정상적으로 탈퇴되었습니다. 이용해주셔서 감사합니다.");
+      localStorage.removeItem("token");
+      navigate("/");
+    });
   };
 
   return (
@@ -479,6 +490,16 @@ function ProfileEdit() {
               title="수정하시겠습니까?"
               type="0"
               handleClickOKButton={handleClickEditButton}
+            />
+            <Grid className="profile-edit__quit">
+              <p onClick={() => setQuitOpen(true)}>회원 탈퇴</p>
+            </Grid>
+            <CustomModal
+              open={quitOpen}
+              setOpen={setQuitOpen}
+              title="정말 탈퇴하시겠습니까?"
+              type="0"
+              handleClickOKButton={handleClickQuit}
             />
           </Grid>
         </Grid>
