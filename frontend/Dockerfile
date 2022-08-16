@@ -2,7 +2,7 @@ FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
 
-ADD /home/ubuntu/.env /home/ubuntu/S07P12D103/frontend/src/
+ADD /{env.REACT_APP_KAKAO_REST_API_KEY}/home/ubuntu/.env /home/ubuntu/S07P12D103/frontend/src/
 
 RUN npm install
 COPY . . 
