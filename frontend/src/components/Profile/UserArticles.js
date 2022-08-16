@@ -71,7 +71,9 @@ function UserArticles() {
           {savedArticles.length === 0 ? (
             <p>저장한 글이 없습니다.</p>
           ) : (
-            <p>하이</p>
+            savedArticles.map((article, index) => (
+              <Article key={index} articleData={article} />
+            ))
           )}
         </TabPanel>
       </TabContext>
