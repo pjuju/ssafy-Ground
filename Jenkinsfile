@@ -1,7 +1,7 @@
 pipeline { 
         agent none
         stages {
-                state('Create .env') {
+                stage('Create .env') {
                         sh 'echo "REACT_APP_KAKAO_REST_API_KEY=${env.REACT_APP_KAKAO_REST_API_KEY}" >> .env'
                         sh 'echo "REACT_APP_KAKAO_REDIRECT_URI=${env.REACT_APP_KAKAO_REDIRECT_URI}" >> .env'
                         sh 'echo "REACT_APP_GOOGLE_CLIENT_ID=${env.REACT_APP_GOOGLE_CLIENT_ID}" >> .env'
