@@ -2,11 +2,11 @@ FROM node:lts-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
 
-# ENV ENV /home/ubuntu/.env
 
 RUN npm install
 COPY . . 
-RUN npm run build -e /home/ubuntu/.env
+ENV ENV /home/ubuntu/.env
+RUN npm run build
 
 FROM nginx:stable-alpine as production-stage
 RUN rm /etc/nginx/conf.d/default.conf
