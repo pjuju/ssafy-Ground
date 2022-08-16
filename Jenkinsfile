@@ -3,7 +3,7 @@ pipeline {
         stages {
                 stage('Docker build') {
                         agent any
-                        steps {                                                            
+                        steps { sh 'touch /home/ubuntu/123.env'                                                           
                                 sh 'docker build -t backimg ./backend/ground'
                                 sh 'docker build -t frontimg ./frontend'
                                 sh 'echo hello2'
