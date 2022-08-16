@@ -9,12 +9,11 @@ const getStartDate = () => {
 
 const getColorScale = (count) => {
   let colorScale = count;
-  if(count > 4) colorScale = 4;
+  if (count > 4) colorScale = 4;
   return colorScale;
-}
+};
 
-function UserGroundCalendar() {
-  getStartDate();
+function UserGroundCalendar({ date }) {
   return (
     <CalendarHeatmap
       startDate={getStartDate()}
@@ -22,16 +21,10 @@ function UserGroundCalendar() {
       showMonthLabels={false}
       showWeekdayLabels
       weekdayLabels={["S", "M", "T", "W", "T", "F", "S"]}
-      values={[
-        { date: "2022-08-01", count: 1 },
-        { date: "2022-08-02", count: 2 },
-        { date: "2022-08-03", count: 3 },
-        { date: "2022-08-04", count: 4 },
-        // ...and so on
-      ]}
+      values={date}
       classForValue={(value) => {
         if (!value) {
-          return 'color-empty';
+          return "color-empty";
         }
         return `color-scale-${getColorScale(value.count)}`;
       }}
