@@ -5,6 +5,7 @@ import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserState, logout } from "api/user";
+import CustomModal from "../CustomModal";
 
 function SideNavbar({
   sideMenuIdx,
@@ -12,9 +13,14 @@ function SideNavbar({
   onSetSideMenuIdx,
   onSetBottomMenuIdx,
 }) {
+  const [id, setId] = useState(0);
   const [nickname, setNickname] = useState("");
   const [image, setImage] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+
+  const [open, setOpen] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,25 +29,26 @@ function SideNavbar({
       element = document
         .querySelector(`.navbar-side__menu a:nth-child(${sideMenuIdx + 1})`)
         .querySelector("h3");
-      element.className = "bold";
+      if (element) {
+        element.className = "bold";
+      }
     }
 
     // 사용자 정보 가져오기
     getUserState((res) => {
+      setId(res.data.id);
       setNickname(res.data.nickname);
-      setImage(res.data.image);
+      setImage(res.data.userImage);
       setEmail(res.data.email);
-      console.log(nickname);
-      console.log(image);
-      console.log(email);
+      setUsername(res.data.username);
     });
 
     return () => {
-      if (sideMenuIdx !== -1) {
+      if (element) {
         element.className = "";
       }
     };
-  }, [sideMenuIdx]);
+  }, [sideMenuIdx, bottomMenuIdx]);
 
   const handleMenuClick = (menuIdx) => {
     switch (menuIdx) {
@@ -58,10 +65,19 @@ function SideNavbar({
 
   /* 로그아웃 */
   const handleClickLogout = () => {
-    logout(() => {
-      localStorage.removeItem("token");
-      navigate("/");
-    });
+    logout(
+      () => {
+        localStorage.removeItem("token");
+        navigate("/");
+      },
+      (err) => {
+        // JWT 토근이 만료되어 500 에러가 반환됐다면
+        if (err.response.status === 500) {
+          localStorage.removeItem("token");
+          navigate("/");
+        }
+      }
+    );
   };
 
   return (
@@ -81,14 +97,25 @@ function SideNavbar({
         <Link to="/feed/search" onClick={() => handleMenuClick(2)}>
           <h3>검색</h3>
         </Link>
-        <p className="navbar-side__menu__logout" onClick={handleClickLogout}>
+        <p className="navbar-side__menu__logout" onClick={() => setOpen(true)}>
           로그아웃
         </p>
+        <CustomModal
+          open={open}
+          setOpen={setOpen}
+          title="로그아웃 하시겠습니까?"
+          type="0"
+          handleClickOKButton={handleClickLogout}
+        />
       </Grid>
       <Grid className="navbar-side__profile" item>
-        <Link to="/profile/1">
-          <ProfileButton nickname={nickname} image={image} email={email} />
-        </Link>
+        <ProfileButton
+          id={id}
+          nickname={nickname}
+          image={image}
+          email={email}
+          username={username}
+        />
       </Grid>
     </Grid>
   );

@@ -14,9 +14,7 @@ const FilterRadio = ({ radio, setRadio }) => {
         <RadioGroup
           row
           value={radio}
-          onChange={(e) => {
-            setRadio(e.target.value);
-          }}
+          onChange={(e) => setRadio(e.target.value)}
         >
           <FormControlLabel value="all" label="전체" control={<Radio />} />
           <FormControlLabel

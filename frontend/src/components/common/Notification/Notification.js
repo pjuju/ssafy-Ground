@@ -20,6 +20,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { acceptFollow, declineFollow } from "api/follow";
+import CustomModal from "../CustomModal";
 
 function Notification() {
   const [activityNotiList, setActivityNotiList] = useState([]);
@@ -30,6 +31,8 @@ function Notification() {
   const [value, setValue] = useState("0");
   const [isClicked, setIsClicked] = useState(false);
   const [deleteCheck, setDeleteCheck] = useState(false);
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     // 서버에서 활동 알림 목록 받아오기
@@ -270,11 +273,18 @@ function Notification() {
             <Grid className="notification__bottom__delete">
               <Button
                 startIcon={<DeleteOutlineIcon />}
-                onClick={handleClickAllDelete}
+                onClick={() => setOpen(true)}
               >
                 전체 삭제
               </Button>
             </Grid>
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              title="알림 전체를 삭제하시겠습니까?"
+              type="0"
+              handleClickOKButton={handleClickAllDelete}
+            />
           </Grid>
         </Grid>
       )}
