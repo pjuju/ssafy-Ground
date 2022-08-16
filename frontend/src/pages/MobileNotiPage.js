@@ -22,6 +22,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { ThemeProvider } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { acceptFollow, declineFollow } from "api/follow";
 
 function MobileNotiPage() {
   const [activityNotiCnt, setActivityNotiCnt] = useState(0);
@@ -29,6 +30,8 @@ function MobileNotiPage() {
   const [activityNotiList, setActivityNotiList] = useState([]);
   const [accountNotiList, setAccountNotiList] = useState([]);
   const [value, setValue] = useState("0");
+
+  const [deleteCheck, setDeleteCheck] = useState(false);
 
   const sideMenuIdx = useSelector((state) => state.menu.sideMenuIdx);
   const bottomMenuIdx = useSelector((state) => state.menu.bottomMenuIdx);
@@ -44,6 +47,14 @@ function MobileNotiPage() {
   });
 
   useEffect(() => {
+    // 활동 탭이 먼저 열리므로 서버에 활동 알림 데이터 요청
+    readAllBoardNoti((res) => {
+      console.log("활동 전체 읽음");
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(value);
     // 서버에서 활동 알림 목록 받아오기
     getBoardNoti((res) => {
       setActivityNotiList(res.data);
@@ -52,6 +63,9 @@ function MobileNotiPage() {
     getAccountNoti((res) => {
       setAccountNotiList(res.data);
     });
+
+    // 처음에 보이는 화면이 활동 탭이므로 활동 탭의 모든 알림을 읽음 처리
+    readAllBoardNoti((res) => {});
   }, [value]);
 
   useEffect(() => {
@@ -82,10 +96,14 @@ function MobileNotiPage() {
     // 현재 탭에 따라 읽음 처리를 서버에 요청
     if (newValue === "0") {
       // 활동 탭을 보고 있다면 활동 탭의 알림들의 읽음 처리를 요청
-      readAllBoardNoti((res) => {});
+      readAllBoardNoti((res) => {
+        console.log("활동 전체 읽음");
+      });
     } else {
       // 계정 탭을 보고 있다면 계정 탭의 알림들의 읽음 처리를 요청
-      readAllAccountNoti((res) => {});
+      readAllAccountNoti((res) => {
+        console.log("계정 전체 읽음");
+      });
     }
   };
 
@@ -108,6 +126,45 @@ function MobileNotiPage() {
         setAccountNotiList([]);
       });
     }
+  };
+
+  const handleDeleteAccountNoti = (id) => {
+    deleteAccountNoti(id, (res) => {
+      console.log("계정" + id + " 삭제");
+      const deletedList = accountNotiList.filter((item) => item.id !== id);
+      setAccountNotiList(deletedList);
+      setAccountNotiCnt(deletedList.length);
+    });
+  };
+
+  const handleDeleteActivityNoti = (id) => {
+    deleteBoardNoti(id, (res) => {
+      console.log("활동" + id + " 삭제");
+      const deletedList = activityNotiList.filter((item) => item.id !== id);
+      setActivityNotiList(deletedList);
+      setActivityNotiCnt(deletedList.length);
+    });
+    setDeleteCheck(!deleteCheck);
+  };
+
+  const handleClickReject = (id, nickname) => {
+    console.log("거절");
+
+    // 서버에 팔로우 거절 요청하기
+    declineFollow(id, (res) => console.log(nickname + "의 팔로우 거절"));
+    const deletedList = accountNotiList.filter((item) => item.id !== id);
+    setAccountNotiList(deletedList);
+    setAccountNotiCnt(deletedList.length);
+  };
+
+  const handleClickAccept = (id, nickname) => {
+    console.log("수락");
+
+    // 서버에 팔로우 수락 요청하기
+    acceptFollow(id, (res) => console.log(nickname + "의 팔로우 수락"));
+    const deletedList = accountNotiList.filter((item) => item.id !== id);
+    setAccountNotiList(deletedList);
+    setAccountNotiCnt(deletedList.length);
   };
 
   return (
@@ -140,6 +197,7 @@ function MobileNotiPage() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          handleClickDelete={handleDeleteActivityNoti}
                         />
                       );
                     } else {
@@ -150,6 +208,7 @@ function MobileNotiPage() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          handleClickDelete={handleDeleteActivityNoti}
                         />
                       );
                     }
@@ -171,6 +230,7 @@ function MobileNotiPage() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          handleClickDelete={handleDeleteAccountNoti}
                         />
                       );
                     } else {
@@ -181,6 +241,8 @@ function MobileNotiPage() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          handleClickReject={handleClickReject}
+                          handleClickAccept={handleClickAccept}
                         />
                       );
                     }

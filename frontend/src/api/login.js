@@ -10,4 +10,8 @@ function kakaoLogin(code, success, fail) {
   api.post(`/user/oauth/kakao?code=${code}`).then(success).catch(fail);
 }
 
-export { login, kakaoLogin };
+function googleLogin(code, success, fail) {
+  api.post(`/user/oauth/google?code=${code}`).then(success).catch(fail);
+}
+
+export { login, kakaoLogin, googleLogin };

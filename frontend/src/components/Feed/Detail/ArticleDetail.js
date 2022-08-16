@@ -1,15 +1,17 @@
 import "styles/Feed/ArticleDetail.scss";
 
-import { Container, Grid, Stack } from "@mui/material";
+import { Container, Grid, IconButton, Stack } from "@mui/material";
 import { getBoardDetail } from "api/board";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ArticleDetailContent from "./ArticleDetailContent";
 import ArticleDetailComment from "./ArticleDetailComment";
 import ArticleDetailLike from "./ArticleDetailLike";
 import { deleteComment } from "api/comment";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function ArticleDetail() {
+  const navigate = useNavigate();
   const { boardId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [boardInfo, setBoardInfo] = useState({});
@@ -31,23 +33,30 @@ function ArticleDetail() {
   }, [boardInfo]);
 
   return (
-    <Container className="content article-detail">
-      <Grid className="article-detail__inner" container direction="column">
-        {!isLoading && (
-          <>
-            <ArticleDetailContent articleData={boardInfo} />
-            <Stack spacing={1} className="article-detail__activity">
-              <ArticleDetailLike
-                nickname={boardInfo.user.nickname}
-                isLiked={boardInfo.isLiked}
-                likeCnt={boardInfo.likeCnt}
-              />
-              <ArticleDetailComment commentList={boardInfo.comments} />
-            </Stack>
-          </>
-        )}
+    <Grid className="content article-detail">
+      <Grid className="content__title-desktop">
+        <IconButton onClick={() => navigate(-1)}>
+          <ArrowBackIcon />
+        </IconButton>
       </Grid>
-    </Container>
+      <Container>
+        <Grid className="article-detail__inner" container direction="column">
+          {!isLoading && (
+            <>
+              <ArticleDetailContent articleData={boardInfo} />
+              <Stack spacing={1} className="article-detail__activity">
+                <ArticleDetailLike
+                  nickname={boardInfo.user.nickname}
+                  isLiked={boardInfo.isLiked}
+                  likeCnt={boardInfo.likeCnt}
+                />
+                <ArticleDetailComment commentList={boardInfo.comments} />
+              </Stack>
+            </>
+          )}
+        </Grid>
+      </Container>
+    </Grid>
   );
 }
 

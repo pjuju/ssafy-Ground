@@ -93,9 +93,7 @@ export default function SearchBar() {
     }
     // 유저 검색일 때
     else {
-      searchUser(searchData, (res) =>
-        dispatch({ type: "user", result: res.data })
-      );
+      searchUser(searchData, (res) => dispatch({ type: "user", result: res.data }));
     }
     setWord(latest);
     setLatest(false);
