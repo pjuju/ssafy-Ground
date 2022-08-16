@@ -30,6 +30,10 @@
       width: 80%;
       padding-left: 0.5rem;
       padding-right: 0.5rem;
+
+      @include mobile() {
+        width: 70%;
+      }
     }
 
     &__right {
