@@ -24,6 +24,7 @@ function GoogleRedirectHandler() {
           }
           // 로그인인 경우
           else {
+            systemLogin(ftoken);
             localStorage.setItem("token", ftoken);
             if (res.data.registerYN) {
               navigate("/feed/follow");
