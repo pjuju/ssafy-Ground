@@ -35,7 +35,7 @@ function ArticleImg({ boardInfo, newImages, setNewImages, uploadImages, setUploa
     let fileUrlList = [...fileList];
     let imgNumList = [...newImages];
     let uploadList = [...uploadImages];
-    const imgType = ['jpg', 'png', 'gif']
+    const imgType = ['jpg', 'png', 'gif', 'jpeg']
     console.log(fileSpec)
     if (imgUrlList.length >= 4) {
       setIsDisplay(false);
@@ -84,7 +84,7 @@ function ArticleImg({ boardInfo, newImages, setNewImages, uploadImages, setUploa
             <Grid item>
               <input
                 type="file"
-                accept=".jpg, .png, .gif, .mp4"
+                accept=".jpg, .png, .gif, .jpeg, .mp4"
                 ref={selectUserImg}
                 style={{ display: "none" }}
                 onChange={handleClickInput}

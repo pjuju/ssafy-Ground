@@ -1,6 +1,9 @@
 import { Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function ArticleInfo(props) {
+  const navigate = useNavigate();
+
   const formatDate = (date) => {
     // let converted = new Date();
     let converted = new Date(
@@ -49,10 +52,14 @@ function ArticleInfo(props) {
     return d.slice(0, 3).join(".") + " " + d.slice(3).join(":");
   };
 
+  const handleClickNickname = () => {
+    navigate(`/profile/${props.userId}`)
+  }
+
   return (
     <Grid className="info" container direction="row">
       <Grid className="info__others">
-        <Grid className="info__others__username bold">{props.nickname}</Grid>
+        <Grid className="info__others__username bold" onClick={handleClickNickname}>{props.nickname}</Grid>
         <Grid className="info__others__category">{props.category}</Grid>
       </Grid>
       <Grid className="info__regtime">{formatDate(props.date)}</Grid>

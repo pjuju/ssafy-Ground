@@ -11,6 +11,7 @@ import "styles/Register/RegisterPage.scss";
 import { useState, useEffect } from "react";
 import { signUp } from "api/register";
 import RegisterModal from "components/Register/RegisterModal";
+import { modifyUserInfo } from "api/user";
 
 function RegisterPage() {
   const [next, setNext] = useState(false);
@@ -34,18 +35,26 @@ function RegisterPage() {
   const sendRequest = (newOtherInfo) => {
     let info = {};
     Object.assign(info, basicInfo, newOtherInfo);
-    console.log(info);
-    signUp(
-      info,
-      (res) => {
-        if (res.data === true) {
-          setOpen(true);
+    // 일반 회원가입
+    if (!localStorage.getItem("token")) {
+      signUp(
+        info,
+        (res) => {
+          if (res.data === true) {
+            setOpen(true);
+          }
+        },
+        (err) => {
+          console.log(err);
         }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+      );
+    }
+    // 소셜 회원가입
+    else {
+      modifyUserInfo(newOtherInfo, (res) => {
+        setOpen(true);
+      });
+    }
   };
 
   useEffect(() => {
@@ -62,6 +71,13 @@ function RegisterPage() {
     return () => {
       window.removeEventListener("beforeunload", preventClose);
     };
+  }, []);
+
+  // 소셜 로그인으로 토큰이 이미 존재하면 닉네임 입력 페이지로 이동
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      goToOtherInfo();
+    }
   }, []);
 
   return (
@@ -95,13 +111,9 @@ function RegisterPage() {
             goToOtherInfo={goToOtherInfo}
           />
         )}
-        {next && (
-          <OtherInfo
-            sendRequest={sendRequest}
-          />
-        )}
+        {next && <OtherInfo sendRequest={sendRequest} />}
       </Grid>
-      <RegisterModal open={open} setOpen={setOpen}/>
+      <RegisterModal open={open} setOpen={setOpen} />
     </Container>
   );
 }
