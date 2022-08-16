@@ -14,10 +14,15 @@ spring:
             enable: true
             
   datasource:
-    url: jdbc:mysql://ground.cspd92r3jqje.ap-northeast-2.rds.amazonaws.com/ground?useSSL=false&serverTimezone=Asia/Seoul
-    username: admin
-    password: Abcd123!
+#    url: jdbc:mysql://ground.cspd92r3jqje.ap-northeast-2.rds.amazonaws.com/ground?useSSL=false&serverTimezone=Asia/Seoul
+#    username: admin
+#    password: Abcd123!
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ground?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+    
 
   jpa:
     hibernate:

@@ -68,10 +68,8 @@ public class GoogleService {
 			 
 			 UserKakaoLoginDto ukld = new UserKakaoLoginDto();
 			 String id = jsonObj.get("id").toString();
-			 System.out.println("before: " + id);
 			 
 			 id = id.replace("\"", "");
-			 System.out.println("after: " + id);
 			 String email = jsonObj.get("email").toString();
 			 String ftoken = jwtTokenProvider.createToken(id);
 			 
@@ -91,6 +89,7 @@ public class GoogleService {
 			 if(user.isEmpty()) {
 				 userRepository.save(params.toEntity());
 				 Optional<User> kakaoUser = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
+				 System.out.println("1success signup");
 				 ulrd.setResult("success signup");
 				 ulrd.setFtoken(params.getFtoken());
 				 ulrd.setRegisterYN(kakaoUser.get().isRegisterYN());
@@ -98,7 +97,9 @@ public class GoogleService {
 			 }
 			 else {
 				 ulrd.setResult("success login");
-				 ulrd.setFtoken(params.getFtoken());
+				 System.out.println("2success login");
+				 String ftoken = jwtTokenProvider.createToken(user.get().getUsername());
+				 ulrd.setFtoken(ftoken);
 				 ulrd.setRegisterYN(user.get().isRegisterYN());
 				 return ulrd;
 			 }
