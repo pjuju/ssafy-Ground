@@ -4,18 +4,15 @@ import plus from "assets/images/plus.png"
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "api/firebase";
 
-
 function UpdateImg({ boardInfo, newImages, setNewImages, uploadImages, setUploadImages }) {
   const selectUserImg = useRef("");
   const [imgList, setImgList] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [isDisplay, setIsDisplay] = useState(true);
+  const [rerender, setRerender] = useState(false);
   const imgIdx = ["img1", "img2", "img3", "img4", "img5"];
   const images = boardInfo.images
-  const useForceUpdate = () => {
-    const [ignored, newState] = useState();
-    return useCallback(() => newState({}), []);
-  }
+  
 
   useEffect(() => {
     console.log("download complete")
@@ -25,7 +22,6 @@ function UpdateImg({ boardInfo, newImages, setNewImages, uploadImages, setUpload
     }
   }, [imgList]);
   
-  useForceUpdate();
 
   useEffect(() => {
     function tick(){
@@ -51,11 +47,14 @@ function UpdateImg({ boardInfo, newImages, setNewImages, uploadImages, setUpload
           if (src.imageType === "mp4") {
             imgUrlList.push(["video", url])
           }
+        }).then((snapshot) => {
+          setImgList(imgUrlList)
+          setRerender((state) => !state)
         })
       }
       console.log(imgUrlList)
     })
-    setImgList(imgUrlList)
+    
   }
 
 

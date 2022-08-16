@@ -1,4 +1,4 @@
-import userImage from "assets/images/userImage.png";
+import userImg from "assets/images/userImage.png";
 import ArticleActivity from "components/Feed/Article/ArticleActivity";
 import ArticleContent from "components/Feed/Article/ArticleContent";
 import ArticleInfo from "components/Feed/Article/ArticleInfo";
@@ -8,6 +8,8 @@ import { Box, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserState } from "api/user";
 import { useNavigate } from "react-router-dom";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "api/firebase";
 
 function Article({ articleData }) {
   const navigate = useNavigate();
@@ -23,17 +25,16 @@ function Article({ articleData }) {
   const [saveCnt, setSaveCnt] = useState(articleData.saveCnt);
   const boardLikes = articleData.boardLikes;
   const boardSaves = articleData.boardSaves;
+  const userImage = user.userImage
+  const [profileImg, setProfileImg] = useState("");
 
   // 로그인한 사용자의 정보
   const [nickname, setNickname] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-
+  
   useEffect(() => {
-<<<<<<< HEAD
     console.log(articleData);
-  });
-=======
     getUserState((res) => {
       setNickname(res.data.nickname);
 
@@ -53,16 +54,45 @@ function Article({ articleData }) {
     });
   }, []);
 
+  useEffect(() => {
+    preview();
+  });
+
+  useEffect(() => {
+    fetchImage();
+  }, [userImage]);
+
+  const preview = () => {
+    if (profileImg === "") return false;
+    const imgElement = document.querySelector(".article__inner__userimg > img");
+    if (imgElement !== null) {
+      imgElement.src = profileImg;
+    }
+    if (imgElement === undefined) {
+      imgElement.src = userImg;
+    }
+  };
+
+  const fetchImage = () => {
+    const storageRef = ref(storage, `images/${userImage}`);
+
+    if (userImage !== undefined && userImage !== "") {
+      getDownloadURL(storageRef).then((url) => {
+        console.log("download user");
+        setProfileImg(url);
+      });
+    }
+  };
+
   const handleClickImg = () => {
     navigate(`/profile/${user.id}`);
   };
->>>>>>> a6cccfc57a374dae27d126cf206ee0c55b1dc0a1
 
   return (
     <Box className="article">
       <Grid className="article__inner" container direction="row">
         <Grid className="article__inner__userimg" onClick={handleClickImg}>
-          <img src={userImage} />
+          <img src={userImg} />
         </Grid>
         <Grid className="article__inner__left">
           <ArticleInfo
@@ -71,10 +101,6 @@ function Article({ articleData }) {
             category={category}
             date={date}
           />
-<<<<<<< HEAD
-          <ArticleContent id={id} content={content} location={location} images={images}/>
-          <ArticleActivity
-=======
           <ArticleContent
             id={id}
             content={content}
@@ -83,7 +109,6 @@ function Article({ articleData }) {
           />
           <ArticleActivity
             nickname={nickname}
->>>>>>> a6cccfc57a374dae27d126cf206ee0c55b1dc0a1
             id={id}
             isLiked={isLiked}
             setIsLiked={setIsLiked}

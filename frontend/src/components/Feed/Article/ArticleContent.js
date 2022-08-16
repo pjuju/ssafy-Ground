@@ -22,11 +22,7 @@ function ArticleContent(props) {
         </span>
       </Grid>
       <Grid className="article-content__media">
-<<<<<<< HEAD
-        <MediaSlider images={props.images}/>
-=======
         <MediaSlider images={props.images} />
->>>>>>> a6cccfc57a374dae27d126cf206ee0c55b1dc0a1
       </Grid>
       <Grid className="article-content__location">
         <LocationOnOutlinedIcon />
