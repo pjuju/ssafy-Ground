@@ -11,3 +11,5 @@ module.exports = function (app) {
     })
   );
 };
+
+// "http://i7d103.p.ssafy.io/rest"
