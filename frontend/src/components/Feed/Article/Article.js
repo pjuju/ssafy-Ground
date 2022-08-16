@@ -92,7 +92,7 @@ function Article({ articleData }) {
     <Box className="article">
       <Grid className="article__inner" container direction="row">
         <Grid className="article__inner__userimg" onClick={handleClickImg}>
-          <img src={userImg} />
+          <img src={profileImg||userImg} />
         </Grid>
         <Grid className="article__inner__left">
           <ArticleInfo
