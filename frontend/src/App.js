@@ -20,14 +20,29 @@ import ProfileEdit from "components/Profile/ProfileEdit";
 import Profile from "components/Profile/Profile";
 import { AuthProvider } from "auth/AuthProvider";
 import { ProtectedRoute } from "auth/ProtectedRoute";
+import { LoginRoute } from "auth/LoginRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/" element={<LoginPage />} />
+          <Route
+            path="/register"
+            element={
+              <LoginRoute>
+                <RegisterPage />
+              </LoginRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <LoginRoute>
+                <LoginPage />
+              </LoginRoute>
+            }
+          />
           <Route
             path="/oauth/callback/google"
             element={<GoogleRedirectHandler />}
