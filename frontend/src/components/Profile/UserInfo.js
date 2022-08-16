@@ -88,7 +88,10 @@ function UserInfo() {
     }
   };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1c26e45cf4d6918d97434b58992bbeb85c32bdf3
   const handleOpenFollowerList = () => {
     setFollowerOpen(true);
   };
@@ -135,7 +138,11 @@ function UserInfo() {
     <Grid className="user-info">
       <Grid className="info-top" container direction="row">
         <Grid className="info-top__img">
+<<<<<<< HEAD
           <img src={profileImg||userImg}/>
+=======
+          <img src={userImage} />
+>>>>>>> 1c26e45cf4d6918d97434b58992bbeb85c32bdf3
         </Grid>
         <Grid className="info-top__right">
           <Grid className="info-top__right__name">
