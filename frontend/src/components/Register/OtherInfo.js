@@ -64,8 +64,7 @@ function OtherInfo({ sendRequest }) {
         type: "nicknameDupCheck",
         message: "닉네임 중복 확인을 해주세요.",
       });
-    }
-    else {
+    } else {
       const newOtherInfo = {
         nickname: data.nickname,
         age: data.age,
@@ -121,7 +120,7 @@ function OtherInfo({ sendRequest }) {
             )}
           />
           <GrButton
-            className="register-form__innerBtn"
+            className="register-form__innerBtn--bottom"
             variant="contained"
             onClick={handleNicknameDupCheck}
           >
@@ -144,22 +143,35 @@ function OtherInfo({ sendRequest }) {
         container
         justifyContent="space-between"
       >
-        <FormControl sx={{ minWidth: 180 }} size="small">
+        <FormControl
+          className="register-form__age-select"
+          sx={{ minWidth: 180 }}
+          size="small"
+        >
           <InputLabel id="age-label">연령대</InputLabel>
           <Controller
             name="age"
             control={control}
             render={({ field }) => (
               <ThemeProvider theme={theme}>
-                <Select labelId="age-label" label="연령대" value="teenager" {...field}>
+                <Select
+                  labelId="age-label"
+                  label="연령대"
+                  value="teenager"
+                  {...field}
+                >
                   {ageList}
                 </Select>
               </ThemeProvider>
             )}
           />
         </FormControl>
-        <Divider orientation="vertical" flexItem />
-        <FormControl>
+        <Divider
+          className="register-form__divider"
+          orientation="vertical"
+          flexItem
+        />
+        <FormControl className="register-form__gender-select">
           <Controller
             name="gender"
             control={control}
@@ -167,6 +179,7 @@ function OtherInfo({ sendRequest }) {
               <ThemeProvider theme={theme}>
                 <RadioGroup row {...field}>
                   <FormControlLabel
+                    className="register-form__gender-select--item"
                     value="MALE"
                     label="남"
                     control={<Radio />}
