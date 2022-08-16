@@ -93,8 +93,8 @@ public class UserService {
 	
 	@Transactional
 	//유저 계정 삭제 처리
-	public boolean deleteUser(Long id) {
-		User user = userRepository.findById(id).orElseThrow();
+	public boolean deleteUser(String username) {
+		User user = userRepository.findByUsername(username).orElseThrow();
 		try {
 			user.deleteUser();
 			return true;

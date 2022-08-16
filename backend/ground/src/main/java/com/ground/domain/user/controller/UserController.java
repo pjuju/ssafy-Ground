@@ -98,8 +98,9 @@ public class UserController {
     
     @PutMapping("/deleteUser")
     @ApiOperation(value = "회원 탈퇴", response = String.class)
-    public boolean deleteUser(Long id){
-        return userService.deleteUser(id);
+    public boolean deleteUser(@RequestHeader String Authorization){
+    	String ftoken = Authorization.substring(7);
+        return userService.deleteUser(jwtTokenProvider.getSubject(ftoken));
     }
     
     @GetMapping("/findId/{email}")
@@ -122,9 +123,6 @@ public class UserController {
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
         return userService.modifyPass(user, params);
     }
-
-
-
 
     
     @PostMapping("/login")
