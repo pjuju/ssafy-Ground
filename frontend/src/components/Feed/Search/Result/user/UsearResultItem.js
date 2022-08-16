@@ -47,7 +47,7 @@ function UserResultItem({ user }) {
       <div className="user-result__profile-wrapper">
         <img
           className="user-result__profile-img"
-          src={userImage}
+          src={profileImg||userImage}
           alt="user_image"
         />
       </div>
