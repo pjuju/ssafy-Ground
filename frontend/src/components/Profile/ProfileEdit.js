@@ -239,7 +239,6 @@ function ProfileEdit() {
         return;
       }
     }
-
     const num = imageInfo.imageUrl;
     const userDetail = {
       age: changedAge,
@@ -302,9 +301,9 @@ function ProfileEdit() {
                 onClick={() => selectUserImg.current.click()}
               >
                 {userImage.length === 0 && userImage === changedUserImage ? (
-                  <img src={profileImg} alt="img-input" />
+                  <img src={profileImg||userImg} alt="img-input" />
                 ) : (
-                  <img src={changedUserImage} alt="img-input" />
+                  <img src={changedUserImage||userImg} alt="img-input" />
                 )}
               </button>
             </Grid>
