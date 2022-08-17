@@ -64,7 +64,10 @@ function ArticleDetailComment({ commentList }) {
           <span>댓글</span>&nbsp;
           <span className="bold">{comments.length}개</span>
         </Grid>
-        <CommentBox handleCommentRegister={handleCommentRegister} />
+        <CommentBox
+          handleCommentRegister={handleCommentRegister}
+          userImage={userImage}
+        />
         {comments.map((comment, index) => (
           <Comment
             key={index}
@@ -75,19 +78,6 @@ function ArticleDetailComment({ commentList }) {
           />
         ))}
       </Grid>
-      <CommentBox
-        handleCommentRegister={handleCommentRegister}
-        userImage={userImage}
-      />
-      {comments.map((comment, index) => (
-        <Comment
-          key={index}
-          comment={comment}
-          userId={userId}
-          handleCommentEdit={handleCommentEdit}
-          handleCommentDelete={handleCommentDelete}
-        />
-      ))}
     </Grid>
   );
 }
