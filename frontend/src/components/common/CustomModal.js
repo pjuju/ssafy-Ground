@@ -30,6 +30,7 @@ export default function CustomModal({
     setOpen(false);
   };
   const handleOK = () => {
+    console.log("OK");
     setOpen(false);
     handleClickOKButton();
   };
@@ -79,7 +80,7 @@ export default function CustomModal({
                   <GrButton
                     className="profile-edit-modal__button--ok-2"
                     variant="contained"
-                    onClick={handleCancel}
+                    onClick={handleOK}
                   >
                     확인
                   </GrButton>

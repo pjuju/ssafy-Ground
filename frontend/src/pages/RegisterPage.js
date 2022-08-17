@@ -55,7 +55,7 @@ function RegisterPage() {
     else {
       const ftoken = localStorage.getItem("ftoken");     
       const instance = axios.create({
-        baseURL: "http://i7d103.p.ssafy.io/rest",
+        baseURL: "http://localhost:3000/api",
         headers: {
           "Content-type": "application/json",
         },

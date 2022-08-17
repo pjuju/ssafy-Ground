@@ -48,30 +48,36 @@ function ArticleDetailComment({ commentList }) {
 
   useEffect(() => {
     getUserState((res) => {
-      console.log(res.data)
-      setUserImage(res.data.userImage)
+      console.log(res.data);
+      setUserImage(res.data.userImage);
       setUserId(res.data.id);
     });
   }, []);
 
   return (
-    <Grid className="activity_comment" container>
-      <IconButton>
-        <ChatBubbleOutlineIcon />
-      </IconButton>
-      <Grid item>
-        댓글 <span className="bold">{comments.length}개</span>
-      </Grid>
-      <CommentBox handleCommentRegister={handleCommentRegister} userImage={userImage}/>
-      {comments.map((comment, index) => (
-        <Comment
-          key={index}
-          comment={comment}
-          userId={userId}
-          handleCommentEdit={handleCommentEdit}
-          handleCommentDelete={handleCommentDelete}
+    <Grid className="activity" container>
+      <Grid className="activity__comment" container>
+        <IconButton>
+          <ChatBubbleOutlineIcon />
+        </IconButton>
+        <Grid item>
+          <span>댓글</span>&nbsp;
+          <span className="bold">{comments.length}개</span>
+        </Grid>
+        <CommentBox
+          handleCommentRegister={handleCommentRegister}
+          userImage={userImage}
         />
-      ))}
+        {comments.map((comment, index) => (
+          <Comment
+            key={index}
+            comment={comment}
+            userId={userId}
+            handleCommentEdit={handleCommentEdit}
+            handleCommentDelete={handleCommentDelete}
+          />
+        ))}
+      </Grid>
     </Grid>
   );
 }

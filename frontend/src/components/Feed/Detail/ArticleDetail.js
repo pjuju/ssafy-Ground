@@ -9,8 +9,9 @@ import ArticleDetailComment from "./ArticleDetailComment";
 import ArticleDetailLike from "./ArticleDetailLike";
 import { deleteComment } from "api/comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import TitleBar from "components/common/TitleBar";
 
-function ArticleDetail() {
+function ArticleDetail({ title }) {
   const navigate = useNavigate();
   const { boardId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -32,14 +33,22 @@ function ArticleDetail() {
     }
   }, [boardInfo]);
 
+  const handleClickBack = () => {
+    window.history.back();
+  };
+
   return (
     <Grid className="content article-detail">
       <Grid className="content__title-desktop">
-        <IconButton onClick={() => navigate(-1)}>
+        <IconButton onClick={handleClickBack}>
           <ArrowBackIcon />
         </IconButton>
+        <h2 className="back">&nbsp;</h2>
       </Grid>
-      <Container>
+      <Grid className="content__title-mobile">
+        <TitleBar isBack={true} />
+      </Grid>
+      <Container className="article-detail__wrapper">
         <Grid className="article-detail__inner" container direction="column">
           {!isLoading && (
             <>
