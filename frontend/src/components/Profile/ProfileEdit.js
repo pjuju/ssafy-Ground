@@ -246,7 +246,7 @@ function ProfileEdit() {
       introduce: changedIntroduce,
       nickname: getValues("nickname"),
       privateYN: changedPrivateYN,
-      userImage: num,
+      userImage: num.toString(),
     };
 
     if (imageInfo.imageUrl !== undefined) {
