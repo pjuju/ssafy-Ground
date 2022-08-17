@@ -1,13 +1,12 @@
-import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
 import GrButton from "components/common/GrButton";
 import text_logo from "assets/images/text_logo.png";
 import { Grid } from "@mui/material";
 import { Container } from "@mui/system";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "auth/AuthProvider";
 
 const style = {
   position: "absolute",
@@ -21,27 +20,25 @@ const style = {
   p: 4,
 };
 
-
-export default function RegisterModal({open, setOpen}) {
+export default function RegisterModal({ open, setOpen }) {
   const navigate = useNavigate();
-  const handleOpen = () => setOpen(true);
+  const { systemLogin } = useAuth();
+
   const handleClose = () => {
     setOpen(false);
-    navigate("/");
+    const ftoken = localStorage.getItem("ftoken");
+    if (ftoken) {
+      systemLogin(ftoken);
+      localStorage.removeItem("ftoken");
+      navigate("/welcome");
+    } else {
+      navigate("/");
+    }
   };
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
+      <Modal open={open} onClose={handleClose} closeAfterTransition>
         <Fade in={open}>
           <Box sx={style}>
             <Grid
@@ -67,7 +64,7 @@ export default function RegisterModal({open, setOpen}) {
                   variant="contained"
                   onClick={handleClose}
                 >
-                  로그인하러 가기
+                  확인
                 </GrButton>
               </Grid>
             </Grid>

@@ -1,7 +1,12 @@
 import { Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-function LatestSearch({ latest, handleDeleteItem, setOpenLatest }) {
+function LatestSearch({
+  latest,
+  setOpen,
+  handleDeleteItem,
+  handleLatestClick,
+}) {
   return (
     <>
       {latest?.map((item, index) => (
@@ -16,25 +21,18 @@ function LatestSearch({ latest, handleDeleteItem, setOpenLatest }) {
             item
             xs={10}
             tabIndex={-1}
-            onBlur={(e) => {
-              const tabIndex = e.relatedTarget?.tabIndex;
-              if (tabIndex !== -1) {
-                setOpenLatest(false);
-              }
-            }}
+            onClick={() => handleLatestClick(item.word)}
           >
             {item.word}
           </Grid>
           <CloseIcon
             className="search-latest-box__delete"
             tabIndex={-1}
-            onClick={() => {
-              handleDeleteItem(item.id);
-            }}
+            onClick={() => handleDeleteItem(item.id)}
             onBlur={(e) => {
               const tabIndex = e.relatedTarget?.tabIndex;
               if (tabIndex !== -1) {
-                setOpenLatest(false);
+                setOpen(false);
               }
             }}
           />

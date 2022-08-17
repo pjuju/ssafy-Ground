@@ -1,27 +1,43 @@
-import axios from 'axios';
-import { useEffect } from 'react';
+import { googleLogin } from "api/login";
+import { useAuth } from "auth/AuthProvider";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function GoogleRedirectHandler() {
-    const accessToken = new URLSearchParams(window.location.hash.substring(1)).get("access_token");
-    
-    useEffect(() => {
+  const navigate = useNavigate();
+  const accessToken = new URLSearchParams(
+    window.location.hash.substring(1)
+  ).get("access_token");
+  const { systemLogin } = useAuth();
+
+  useEffect(() => {
+    (async () => {
+      try {
         console.log(accessToken);
-        // 백엔드 서버로 액세스 토큰을 보낸다.
-        // axios.post(`oauth/callback/google`, { accessToken })
-        // .then((res) => {
-        //     console.log(res);
-            
-        //     // 백엔드 서버에서 받은 액세스 토큰을 로컬 저장소에 저장한다.
-        //     const ACCESS_TOKEN = res.data.accessToken;
-        //     localStorage.setItem('token', ACCESS_TOKEN);
-        //     window.location.href('/');
-        // })
-        // .catch((err) => {
-        //     console.error(err);
-        //     alert('로그인에 실패했습니다.');
-        //     window.location.href('/');
-        // })
-    })
+        await googleLogin(accessToken, (res) => {
+          const result = res.data.result;
+          const ftoken = res.data.ftoken;
+          // 회원가입인 경우
+          if (result === "success signup") {
+            localStorage.setItem("ftoken", ftoken);
+            navigate("/register");
+          }
+          // 로그인인 경우
+          else {
+            systemLogin(ftoken);
+            localStorage.setItem("token", ftoken);
+            if (res.data.registerYN) {
+              navigate("/feed/follow");
+            } else {
+              navigate("/welcome");
+            }
+          }
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [accessToken]);
 }
 
 export default GoogleRedirectHandler;

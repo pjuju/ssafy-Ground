@@ -1,9 +1,19 @@
 import { Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function ArticleInfo(props) {
+  const navigate = useNavigate();
+
   const formatDate = (date) => {
     // let converted = new Date();
-    let converted = new Date(date[0], date[1] - 1, date[2], date[3], date[4], date[5]);
+    let converted = new Date(
+      date[0],
+      date[1] - 1,
+      date[2],
+      date[3],
+      date[4],
+      date[5]
+    );
     let diff = new Date() - converted; // 차이(ms)
 
     // 차이가 1초 미만이라면
@@ -26,7 +36,6 @@ function ArticleInfo(props) {
     if (hour < 24) {
       return hour + "시간 전";
     }
-    console.log("시간 : " + hour);
 
     // 날짜의 포맷을 변경
     // 일, 월, 시, 분이 숫자 하나로 구성되어있는 경우, 앞에 0을 추가해줌
@@ -43,10 +52,14 @@ function ArticleInfo(props) {
     return d.slice(0, 3).join(".") + " " + d.slice(3).join(":");
   };
 
+  const handleClickNickname = () => {
+    navigate(`/profile/${props.userId}`)
+  }
+
   return (
     <Grid className="info" container direction="row">
       <Grid className="info__others">
-        <Grid className="info__others__username bold">{props.nickname}</Grid>
+        <Grid className="info__others__username bold" onClick={handleClickNickname}>{props.nickname}</Grid>
         <Grid className="info__others__category">{props.category}</Grid>
       </Grid>
       <Grid className="info__regtime">{formatDate(props.date)}</Grid>
