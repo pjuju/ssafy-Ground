@@ -30,6 +30,10 @@
       width: 80%;
       padding-left: 0.5rem;
       padding-right: 0.5rem;
+
+      @include mobile() {
+        width: 70%;
+      }
     }
 
     &__right {
@@ -138,10 +142,6 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-
-  @include mobile() {
-    font-size: 0.9rem;
-  }
 }
 
 .more {

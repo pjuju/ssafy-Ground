@@ -51,6 +51,20 @@ function MobileNotiPage() {
     readAllBoardNoti((res) => {
       console.log("활동 전체 읽음");
     });
+
+    return () => {
+      if (value === "0") {
+        // 마지막으로 켜놨던 탭이 활동 탭이라면 활동 탭의 알림들의 읽음 처리를 요청
+        readAllBoardNoti((res) => {
+          console.log("활동 전체 읽음");
+        });
+      } else {
+        // 마지막으로 켜놨던 탭이 계정 탭이라면 계정 탭의 알림들의 읽음 처리를 요청
+        readAllAccountNoti((res) => {
+          console.log("계정 전체 읽음");
+        });
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -93,8 +107,8 @@ function MobileNotiPage() {
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
 
-    // 현재 탭에 따라 읽음 처리를 서버에 요청
-    if (newValue === "0") {
+    // 현재 탭에 따라 이전 탭의 읽음 처리를 서버에 요청
+    if (newValue === "1") {
       // 활동 탭을 보고 있다면 활동 탭의 알림들의 읽음 처리를 요청
       readAllBoardNoti((res) => {
         console.log("활동 전체 읽음");

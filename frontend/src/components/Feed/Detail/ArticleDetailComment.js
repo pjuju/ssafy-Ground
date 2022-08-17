@@ -48,8 +48,8 @@ function ArticleDetailComment({ commentList }) {
 
   useEffect(() => {
     getUserState((res) => {
-      console.log(res.data)
-      setUserImage(res.data.userImage)
+      console.log(res.data);
+      setUserImage(res.data.userImage);
       setUserId(res.data.id);
     });
   }, []);

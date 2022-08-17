@@ -6,6 +6,7 @@ import text_logo from "assets/images/text_logo.png";
 import { Grid } from "@mui/material";
 import { Container } from "@mui/system";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "auth/AuthProvider";
 
 const style = {
   position: "absolute",
@@ -21,9 +22,14 @@ const style = {
 
 export default function RegisterModal({ open, setOpen }) {
   const navigate = useNavigate();
+  const { systemLogin } = useAuth();
+
   const handleClose = () => {
     setOpen(false);
-    if (localStorage.getItem("token")) {
+    const ftoken = localStorage.getItem("ftoken");
+    if (ftoken) {
+      systemLogin(ftoken);
+      localStorage.removeItem("ftoken");
       navigate("/welcome");
     } else {
       navigate("/");
@@ -32,11 +38,7 @@ export default function RegisterModal({ open, setOpen }) {
 
   return (
     <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-      >
+      <Modal open={open} onClose={handleClose} closeAfterTransition>
         <Fade in={open}>
           <Box sx={style}>
             <Grid

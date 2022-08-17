@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { useEffect, useRef, useState, useCallback } from "react";
-import plus from "assets/images/plus.png";
+import add from "assets/images/add.png";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "api/firebase";
 
@@ -133,8 +133,8 @@ function UpdateImg({
                 className="update-feed__img-button"
               >
                 <img
-                  src={plus}
-                  style={{ width: "100%", height: "100%" }}
+                  src={add}
+                  style={{ width: "100%", border: "1px solid #d3d3d3", borderRadius: "10px" }}
                   alt=""
                 />
               </button>

@@ -116,6 +116,7 @@ $wide-desktop: 1249px;
     &__inner {
       &--none {
         height: 80%;
+        margin-top: 30%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -174,12 +175,20 @@ $wide-desktop: 1249px;
       margin-top: 60px;
       padding-bottom: 60px;
 
+      @include tablet() {
+        margin-top: 70px;
+      }
+
       &--none {
-        padding-top: 40%;
+        padding-top: 35%;
         display: flex;
         justify-content: center;
         align-items: center;
         color: $light-gray;
+
+        @include tablet() {
+          padding-top: 25%;
+        }
       }
     }
   }
@@ -202,13 +211,16 @@ $wide-desktop: 1249px;
     display: none;
   }
 
+  & .MuiToolbar-root {
+    padding: 0;
+  }
+
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1;
   text-align: center;
-  padding-right: 2.5rem;
   background-color: #fff;
   color: #000;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
@@ -216,6 +228,11 @@ $wide-desktop: 1249px;
   & .titlebar {
     &__toolbar {
       width: 100%;
+
+      & .MuiButtonBase-root.MuiIconButton-root {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
     }
 
     &__text {
@@ -223,6 +240,10 @@ $wide-desktop: 1249px;
       padding-bottom: 1rem;
       font-size: 1rem;
       cursor: pointer;
+
+      & button {
+        margin-right: 0 !important;
+      }
     }
 
     &__button {
