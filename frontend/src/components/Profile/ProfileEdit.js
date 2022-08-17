@@ -320,7 +320,7 @@ function ProfileEdit() {
                 </tr>
                 <tr className="profile-edit__table__email">
                   <th>이메일</th>
-                  <td>{email}</td>
+                  <td>{email.replace('"', "").replace('"', "")}</td>
                 </tr>
                 <tr className="profile-edit__table__password">
                   <th>비밀번호</th>
