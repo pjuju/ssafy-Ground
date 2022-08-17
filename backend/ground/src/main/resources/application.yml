@@ -37,7 +37,7 @@ spring:
       
 jwt:
   secret: 1234
-  token-validity-in-seconds: 120000
+  token-validity-in-seconds: 12000000
   #60000 -> 1분
     
 kakao:
