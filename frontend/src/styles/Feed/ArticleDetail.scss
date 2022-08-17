@@ -187,7 +187,7 @@ $wide-desktop: 1249px;
 
   &__info {
     width: 18%;
-    max-width: 65px;
+    max-width: 50px;
     &__image {
       width: 100%;
     }
@@ -195,8 +195,8 @@ $wide-desktop: 1249px;
 
   &__field {
     width: 70%;
-    margin-left: 1rem !important;
-    margin-right: 1rem !important;
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
     &__input {
       width: 100%;
     }
@@ -210,6 +210,10 @@ $wide-desktop: 1249px;
     &__field {
       margin-left: 0.5rem !important;
       margin-right: 0.6rem !important;
+    }
+
+    &__info {
+      padding-top: 5px;
     }
   }
 }
