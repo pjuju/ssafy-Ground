@@ -157,7 +157,7 @@ public class SearchService {
 
         // 팔로우 유저 Id들
         List<Long> followIdList = new ArrayList<>();
-        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        List<Follow> followList = followRepository.findAllByFromUserIdAndFlag(user, true);
         for (Follow follow : followList) followIdList.add(follow.getToUserId().getId());
         followIdList.add(user.getId());
         // 작성자가 공개유저나 팔로우한 유저들이거나 나
