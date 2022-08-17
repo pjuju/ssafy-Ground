@@ -3,10 +3,7 @@ import userImg from "assets/images/userImage.png";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CommentEdit from "./CommentEdit";
-<<<<<<< HEAD
-=======
 import { useNavigate } from "react-router-dom";
->>>>>>> 8aaa2305c4dc8c6b381c5e613985845a78bd45e0
 import { useState, useEffect } from "react";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "api/firebase";
