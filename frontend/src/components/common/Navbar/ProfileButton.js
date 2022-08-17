@@ -58,7 +58,7 @@ function ProfileButton({ id, nickname, image, email, username }) {
           direction="column"
         >
           <Grid className="profile-button__user-info__name">{nickname}</Grid>
-          <Grid className="profile-button__user-info__email">{email}</Grid>
+          <Grid className="profile-button__user-info__email">{email.replace('"', "").replace('"', "")}</Grid>
         </Grid>
       </Grid>
     </Grid>
