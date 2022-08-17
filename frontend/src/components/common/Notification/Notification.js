@@ -21,6 +21,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { acceptFollow, declineFollow } from "api/follow";
 import CustomModal from "../CustomModal";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Notification() {
   const [activityNotiList, setActivityNotiList] = useState([]);
@@ -31,6 +32,8 @@ function Notification() {
   const [value, setValue] = useState("0");
   const [isClicked, setIsClicked] = useState(false);
   const [deleteCheck, setDeleteCheck] = useState(false);
+
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
 
@@ -162,6 +165,16 @@ function Notification() {
     setAccountNotiCnt(deletedList.length);
   };
 
+  const handleClickAccount = (userId) => {
+    navigate(`/profile/${userId}`);
+    console.log(userId + "의 프로필로 이동");
+  }
+
+  const handleClickActivity = (boardId) => {
+    navigate(`/feed/detail/${boardId}`);
+    console.log(boardId + "의 게시글로 이동");
+  }
+
   return (
     <Grid className="notification">
       <Grid className="notification__icon">
@@ -210,7 +223,9 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          boardId={item.boardId}
                           handleClickDelete={handleDeleteActivityNoti}
+                          onClick={() => handleClickActivity(item.boardId)}
                         />
                       );
                     } else {
@@ -221,6 +236,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          boardId={item.boardId}
                           handleClickDelete={handleDeleteActivityNoti}
                         />
                       );
@@ -243,6 +259,7 @@ function Notification() {
                           idx={index}
                           nickname={item.nickname}
                           isChecked={item.checkYN}
+                          fromUserId={item.fromUserId}
                           handleClickDelete={handleDeleteAccountNoti}
                         />
                       );

@@ -146,6 +146,14 @@
 }
 
 .noti {
+
+  &-like,
+  &-comment,
+  &-fr,
+  &-follow {
+    cursor: pointer;
+  }
+
   &-like,
   &-comment {
     @include noti-common();
