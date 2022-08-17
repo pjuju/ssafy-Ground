@@ -1,5 +1,7 @@
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
+import "moment/locale/ko";
 
 function ArticleInfo(props) {
   const navigate = useNavigate();
@@ -15,6 +17,8 @@ function ArticleInfo(props) {
       date[5]
     );
     let diff = new Date() - converted; // 차이(ms)
+    const momentDate = date.filter((time, index) => index < 5);
+    momentDate[1] = momentDate[1] - 1;
 
     // 차이가 1초 미만이라면
     if (diff < 1000) {
@@ -53,13 +57,18 @@ function ArticleInfo(props) {
   };
 
   const handleClickNickname = () => {
-    navigate(`/profile/${props.userId}`)
-  }
+    navigate(`/profile/${props.userId}`);
+  };
 
   return (
     <Grid className="info" container direction="row">
       <Grid className="info__others">
-        <Grid className="info__others__username bold" onClick={handleClickNickname}>{props.nickname}</Grid>
+        <Grid
+          className="info__others__username bold"
+          onClick={handleClickNickname}
+        >
+          {props.nickname}
+        </Grid>
         <Grid className="info__others__category">{props.category}</Grid>
       </Grid>
       <Grid className="info__regtime">{formatDate(props.date)}</Grid>
