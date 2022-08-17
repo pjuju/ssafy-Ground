@@ -73,14 +73,16 @@ function Article({ articleData }) {
   };
 
   const handleClickImg = () => {
+    console.log(user.id);
     navigate(`/profile/${user.id}`);
+    window.location.reload();
   };
 
   return (
     <Box className="article">
       <Grid className="article__inner" container direction="row">
         <Grid className="article__inner__userimg" onClick={handleClickImg}>
-          <img src={profileImg||userImg} />
+          <img src={profileImg || userImg} />
         </Grid>
         <Grid className="article__inner__left">
           <ArticleInfo
