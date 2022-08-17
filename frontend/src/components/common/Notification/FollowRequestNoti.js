@@ -25,7 +25,6 @@ function FollowRequestNoti({
 
   const handleClickAccount = (userId) => {
     navigate(`/profile/${userId}`);
-    console.log(userId + "의 프로필로 이동");
   }
 
   return (
@@ -34,7 +33,7 @@ function FollowRequestNoti({
         <Grid className="noti-fr__top__img">
           <img src={userImage} />
         </Grid>
-        <Grid className="noti-fr__top__text">
+        <Grid className="noti-fr__top__text" onClick={() => handleClickAccount(fromUserId)}>
           <p>
             <span className="bold">{nickname}님</span>이 회원님이 팔로우를
             요청했습니다.

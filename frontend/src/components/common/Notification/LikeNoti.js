@@ -28,7 +28,7 @@ function LikeNoti({ id, idx, nickname, isChecked, boardId, handleClickDelete }) 
       <Grid className="noti-like__img">
         <img src={userImage} />
       </Grid>
-      <Grid className="noti-like__text">
+      <Grid className="noti-like__text" onClick={() => handleClickActivity(boardId)}>
         <span className="bold">{nickname}님</span>이 회원님의 게시글을
         좋아합니다.
       </Grid>

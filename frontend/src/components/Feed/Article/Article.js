@@ -81,8 +81,8 @@ function Article({ articleData }) {
   return (
     <Box className="article">
       <Grid className="article__inner" container direction="row">
-        <Grid className="article__inner__userimg" onClick={handleClickImg}>
-          <img src={profileImg || userImg} />
+        <Grid className="article__inner__userimg">
+          <img src={profileImg || userImg} onClick={handleClickImg} />
         </Grid>
         <Grid className="article__inner__left">
           <ArticleInfo

@@ -151,7 +151,9 @@
   &-comment,
   &-fr,
   &-follow {
-    cursor: pointer;
+    &__text {
+      cursor: pointer;
+    }
   }
 
   &-like,

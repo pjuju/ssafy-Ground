@@ -69,6 +69,10 @@ $wide-desktop: 1249px;
 .article-detail {
   @include custom-scrollbar();
 
+  & .article-content__text {
+    cursor: text;
+  }
+
   & .article__inner {
     box-shadow: none;
   }
@@ -152,6 +156,7 @@ $wide-desktop: 1249px;
 
   &__nickname {
     font-weight: bold;
+
     @include sm() {
       padding-top: 0.2rem;
     }
@@ -162,6 +167,7 @@ $wide-desktop: 1249px;
     margin-left: 1rem !important;
     font-size: 0.7rem;
     color: rgba(0, 0, 0, 0.493);
+
     @include sm() {
       margin-left: 0.5rem !important;
     }
@@ -188,6 +194,7 @@ $wide-desktop: 1249px;
   &__info {
     width: 18%;
     max-width: 50px;
+
     &__image {
       width: 100%;
       border-radius: 50%;
@@ -198,6 +205,7 @@ $wide-desktop: 1249px;
     width: 70%;
     margin-left: 0.5rem !important;
     margin-right: 0.5rem !important;
+
     &__input {
       width: 100%;
 
@@ -227,6 +235,7 @@ $wide-desktop: 1249px;
 
 .comment-update {
   min-width: 280px;
+
   &__field {
     width: 100%;
   }

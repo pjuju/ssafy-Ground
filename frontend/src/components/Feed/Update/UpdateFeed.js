@@ -40,9 +40,7 @@ function UpdateFeed() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(boardId);
     feedRead(boardId, (res) => {
-      console.log(res.data);
       setBoardInfo(res.data);
     });
   }, [boardId]);
@@ -55,9 +53,9 @@ function UpdateFeed() {
   }, [boardInfo]);
 
   useEffect(() => {
-    console.log(boardInfo);
-    console.log(newImages);
-    console.log(uploadImages);
+    // console.log(boardInfo);
+    // console.log(newImages);
+    // console.log(uploadImages);
   });
 
   const onClickAuth = () => {
