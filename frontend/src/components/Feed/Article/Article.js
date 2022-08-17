@@ -55,24 +55,11 @@ function Article({ articleData }) {
     });
   }, []);
 
-  useEffect(() => {
-    preview();
-  });
 
   useEffect(() => {
     fetchImage();
   }, [userImage]);
 
-  const preview = () => {
-    if (profileImg === "") return false;
-    const imgElement = document.querySelector(".article__inner__userimg > img");
-    if (imgElement !== null) {
-      imgElement.src = profileImg;
-    }
-    if (imgElement === undefined) {
-      imgElement.src = userImg;
-    }
-  };
 
   const fetchImage = () => {
     const storageRef = ref(storage, `images/${userImage}`);
