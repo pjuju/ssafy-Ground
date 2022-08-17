@@ -70,11 +70,10 @@ function TitleBar(props) {
   return (
     <Box sx={{ flexGrow: 1 }} display="flex" justifyContent="center">
       <AppBar id="titlebar" position="static">
-        <Toolbar id="titlebar__toolbar">
+        <Toolbar>
           {props.isBack && (
             <IconButton
               size="large"
-              edge="start"
               color="inherit"
               aria-label="menu"
               onClick={handleClickBack}
@@ -98,7 +97,6 @@ function TitleBar(props) {
           {props.title === "최신 글 피드" ? (
             <IconButton
               size="large"
-              edge="end"
               color="inherit"
               aria-label="filter"
               onClick={() => setFilterModalOpen(true)}
@@ -108,7 +106,6 @@ function TitleBar(props) {
           ) : props.title === "알림" ? (
             <IconButton
               size="large"
-              edge="end"
               color="inherit"
               aria-label="filter"
               onClick={() => setDeleteModalOpen(true)}
@@ -119,7 +116,6 @@ function TitleBar(props) {
             <IconButton>
               <LogoutIcon
                 size="large"
-                edge="end"
                 color="inherit"
                 aria-label="filter"
                 onClick={() => setLogoutModalOpen(true)}

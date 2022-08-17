@@ -27,7 +27,6 @@ function apiInstance() {
       window.location.replace("/");
     }
   );
-
   return instance;
 }
 
