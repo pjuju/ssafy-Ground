@@ -45,7 +45,7 @@ function ArticleMore(props) {
   let path = `/feed/update/${id}`;
 
   // isSaved가 바뀔 때마다 리렌더링
-  useEffect(() => {}, [isSaved]);
+  useEffect(() => { }, [isSaved]);
 
   const handleClickMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -63,9 +63,9 @@ function ArticleMore(props) {
 
   const handleClickDelete = () => {
     feedDelete(props.id, (res) => {
-      console.log(res.data);
+      console.log(res);
+      window.location.reload();
     });
-    console.log("delete");
   };
 
   const handleClickSave = () => {

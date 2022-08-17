@@ -58,6 +58,7 @@ function ArticleInfo(props) {
 
   const handleClickNickname = () => {
     navigate(`/profile/${props.userId}`);
+    window.location.reload();
   };
 
   return (

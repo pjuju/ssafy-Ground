@@ -3,16 +3,19 @@ import userImage from "assets/images/userImage.png";
 
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function FollowRequestNoti({
   id,
   idx,
   nickname,
-  fromUserId,
   isChecked,
+  fromUserId,
   handleClickReject,
   handleClickAccept,
 }) {
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (isChecked) {
       const element = document.querySelector(`.noti-fr:nth-child(${idx + 1})`);
@@ -20,8 +23,13 @@ function FollowRequestNoti({
     }
   });
 
+  const handleClickAccount = (userId) => {
+    navigate(`/profile/${userId}`);
+    console.log(userId + "의 프로필로 이동");
+  }
+
   return (
-    <Grid className="noti-fr" container direction="row">
+    <Grid className="noti-fr" container direction="row" onClick={() => handleClickAccount(fromUserId)}>
       <Grid className="noti-fr__top" container>
         <Grid className="noti-fr__top__img">
           <img src={userImage} />
