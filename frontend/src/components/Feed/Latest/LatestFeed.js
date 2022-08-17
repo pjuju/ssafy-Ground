@@ -48,15 +48,12 @@ function LatestFeed() {
   const dispatch = useDispatch();
   const onToggleInterestList = (id) => dispatch(toggleInterestList(id));
   const onSetInterest = (id) => dispatch(setInterest(id));
-  const onDeleteInterest = (id) => dispatch(deleteInterest(id));
 
   const fetchArticles = () => {
     getLatestBoard(pageNumber, (res) => {
       setArticles(articles.concat(res.data));
       setNewArticles(res.data);
       setPageNumber((pageNumber) => pageNumber + 1);
-      console.log(res.data);
-      console.log("페이지 넘버: " + pageNumber);
     });
   };
 
@@ -82,7 +79,6 @@ function LatestFeed() {
     getUserState((res) => {
       // 사용자의 관심 운동 종목을 redux state인 interestList에서 true로 변경
       getUserProfile(res.data.id, (res) => {
-        console.log(res.data);
         res.data.userCategories.map((item) => {
           onSetInterest(item.categoryId);
         });
@@ -175,7 +171,7 @@ function LatestFeed() {
             </p>
             <ThemeProvider theme={theme}>
               <Fab className="fab-write" color="primary" aria-label="edit">
-                <EditIcon onClick={handleClickCreate}/>
+                <EditIcon onClick={handleClickCreate} />
               </Fab>
             </ThemeProvider>
           </div>
@@ -186,7 +182,7 @@ function LatestFeed() {
             ))}
             <ThemeProvider theme={theme}>
               <Fab className="fab-write" color="primary" aria-label="edit">
-                <EditIcon onClick={handleClickCreate}/>
+                <EditIcon onClick={handleClickCreate} />
               </Fab>
             </ThemeProvider>
           </div>
