@@ -134,6 +134,12 @@ $wide-desktop: 1249px;
       border-radius: 50%;
     }
 
+    @include mobile() {
+      &__image {
+        width: 25px;
+      }
+    }
+
     &--right {
       height: 100%;
       padding-left: 8px;
