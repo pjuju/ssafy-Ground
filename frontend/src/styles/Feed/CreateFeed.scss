@@ -34,6 +34,7 @@
     font-size: 2rem;
     font-weight: 700;
     margin-left: 1rem;
+
     @include mobile() {
       font-size: 1.5rem;
     }
@@ -109,6 +110,7 @@
         margin-top: 0;
         padding-top: 0;
       }
+
       @include tablet() {
         border: none;
         margin-top: 0;
@@ -131,6 +133,7 @@
 
     &__dropdown {
       width: 30%;
+
       @include tablet() {
         width: 40%;
       }
@@ -162,6 +165,7 @@
     &__imglabel {
       font-size: 1rem;
       font-weight: 700;
+      margin-bottom: 1rem;
     }
 
     &__img-button {
@@ -175,6 +179,7 @@
         width: 150px;
         height: 150px;
       }
+
       @include tablet() {
         width: 150px;
         height: 150px;
@@ -193,6 +198,7 @@
         width: 150px;
         height: 150px;
       }
+
       @include tablet() {
         width: 150px;
         height: 150px;

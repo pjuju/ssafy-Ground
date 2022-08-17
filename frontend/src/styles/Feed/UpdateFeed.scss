@@ -6,6 +6,7 @@
 
 .update-feed {
   @include set-layout();
+
   &__top {
     @include mobile() {
       width: 100% !important;
@@ -33,6 +34,7 @@
     font-size: 2rem;
     font-weight: 700;
     margin-left: 1rem;
+
     @include mobile() {
       font-size: 1.5rem;
     }
@@ -84,6 +86,7 @@
       border-radius: 60px !important;
       font-size: 1rem !important;
       font-weight: 500 !important;
+
       @include mobile() {
         display: none !important;
         width: 20%;
@@ -96,6 +99,7 @@
       border-radius: 10px;
       padding: 2rem;
       margin-top: 1rem;
+
       @include mobile() {
         border: none;
         margin-top: 0;
@@ -113,6 +117,7 @@
 
     &__dropdown {
       width: 30%;
+
       @include mobile() {
         width: 40%;
       }
@@ -131,6 +136,7 @@
       width: 20%;
       font-size: 1rem;
       font-weight: 700;
+
       @include mobile() {
         width: 15%;
       }
@@ -139,6 +145,7 @@
     &__imglabel {
       font-size: 1rem;
       font-weight: 700;
+      margin-bottom: 1rem;
     }
 
     &__img-button {
@@ -146,6 +153,7 @@
       height: 200px;
       background: white;
       border: none;
+
       @include mobile() {
         width: 150px;
         height: 150px;
@@ -159,6 +167,7 @@
     &__media {
       width: 200px;
       height: 200px;
+
       @include mobile() {
         width: 150px;
         height: 150px;
