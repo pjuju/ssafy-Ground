@@ -24,7 +24,6 @@ function ArticleDetailContent({ articleData }) {
 
 
   useEffect(() => {
-    console.log(user)
     fetchImage();
   }, [userImage]);
 
