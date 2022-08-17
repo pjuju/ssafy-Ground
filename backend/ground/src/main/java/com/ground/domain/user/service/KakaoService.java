@@ -170,14 +170,14 @@ public class KakaoService {
 			 if(user.isEmpty()) {
 				 userRepository.save(params.toEntity());
 				 Optional<User> kakaoUser = userRepository.findByEmailAndUsername(params.getEmail(), params.getUsername());
-				 System.out.println("1success signup");
+				 System.out.println("success signup");
 				 ulrd.setResult("success signup");
 				 ulrd.setFtoken(kakaoUser.get().getFtoken());
 				 ulrd.setRegisterYN(kakaoUser.get().isRegisterYN());
 				 return ulrd;
 			 }
 			 else {
-				 System.out.println("2success login");
+				 System.out.println("success login");
 				 ulrd.setResult("success login");
 				 user.get().saveFtoken(params.getFtoken());
 				 ulrd.setFtoken(params.getFtoken());
