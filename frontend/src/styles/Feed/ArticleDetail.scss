@@ -83,6 +83,10 @@ $wide-desktop: 1249px;
   &__activity {
     padding: 1.5rem 1.5rem 0 1.5rem;
   }
+
+  & .more {
+    display: none !important;
+  }
 }
 
 .comment {
@@ -99,6 +103,7 @@ $wide-desktop: 1249px;
     &__image {
       width: 100%;
       max-width: 50px;
+      border-radius: 50%;
     }
 
     &--right {

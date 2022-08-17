@@ -13,11 +13,11 @@ import { Divider } from "@mui/material";
 import { login } from "api/login";
 import GrTextField from "components/common/GrTextField";
 import { useNavigate } from "react-router-dom";
-
-
+import { useAuth } from "auth/AuthProvider";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { systemLogin } = useAuth();
 
   const [userId, setUserId] = useState("");
   const [userPW, setUserPW] = useState("");
@@ -70,16 +70,15 @@ function LoginPage() {
       login(
         info,
         (res) => {
-          if(res.data.result === "success") {
-            localStorage.setItem("token", res.data.ftoken);
-            if(res.data.registerYN === false) {
+          if (res.data.result === "success") {
+            // localStorage.setItem("token", res.data.ftoken);
+            systemLogin(res.data.ftoken);
+            if (res.data.registerYN === false) {
               navigate("/welcome");
-            }
-            else {
+            } else {
               navigate("/feed/follow");
             }
-          }
-          else {
+          } else {
             alert("아이디 또는 비밀번호를 확인해주세요.");
           }
         },
@@ -102,7 +101,7 @@ function LoginPage() {
         <Grid className="login-form__logo" item>
           <img className="logo" src={logo} alt="text_logo" width="300px" />
         </Grid>
-        <GrTextField 
+        <GrTextField
           {...idProps}
           value={userId}
           onChange={(e) => {

@@ -319,7 +319,7 @@ function BasicInfo({ changeBasicInfo, goToOtherInfo }) {
               )}
             />
             <GrButton
-              className="register-form__innerBtn"
+              className="register-form__innerBtn register-form__innerBtn--bottom"
               variant="contained"
               onClick={onCertCodeSubmit}
             >
