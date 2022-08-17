@@ -167,14 +167,14 @@ function CreateFeedPage() {
         <CustomModal
           open={cancelOpen}
           setOpen={setCancelOpen}
-          title="글 수정을 취소하시겠습니까?"
+          title="글 작성을 취소하시겠습니까?"
           type="0"
           handleClickOKButton={handleClickBack}
         />
         <CustomModal
           open={authOpen}
           setOpen={setAuthOpen}
-          title="수정되었습니다."
+          title="작성되었습니다."
           type="1"
           handleClickOKButton={onClickAuth}
         />
