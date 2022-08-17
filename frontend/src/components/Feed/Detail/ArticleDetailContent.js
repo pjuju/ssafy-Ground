@@ -24,7 +24,6 @@ function ArticleDetailContent({ articleData }) {
 
 
   useEffect(() => {
-    console.log(user)
     fetchImage();
   }, [userImage]);
 
@@ -34,7 +33,6 @@ function ArticleDetailContent({ articleData }) {
 
     if (userImage !== undefined && userImage !== "") {
       getDownloadURL(storageRef).then((url) => {
-        console.log("download user");
         setProfileImg(url);
       });
     }
