@@ -16,7 +16,7 @@ function ArticleInfo(props) {
       date[4],
       date[5]
     );
-    let diff = new Date() - converted; // 차이(ms)
+    let diff = new Date() - converted - 32400000; // 차이(ms)
     const momentDate = date.filter((time, index) => index < 5);
     momentDate[1] = momentDate[1] - 1;
 

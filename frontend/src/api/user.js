@@ -34,8 +34,8 @@ function modifyPass(detail, success) {
   api.put("/user/modifyPass", detail).then(success);
 }
 
-function logout(success) {
-  api.delete("/user/logout").then(success);
+function logout(success, fail) {
+  api.delete("/user/logout").then(success).catch(fail);
 }
 
 function deleteUser(success) {

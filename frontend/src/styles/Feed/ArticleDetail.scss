@@ -190,6 +190,7 @@ $wide-desktop: 1249px;
     max-width: 50px;
     &__image {
       width: 100%;
+      border-radius: 50%;
     }
   }
 
@@ -199,6 +200,12 @@ $wide-desktop: 1249px;
     margin-right: 0.5rem !important;
     &__input {
       width: 100%;
+
+      @include mobile() {
+        & textarea {
+          font-size: 13px;
+        }
+      }
     }
   }
 
