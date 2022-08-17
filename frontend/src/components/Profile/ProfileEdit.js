@@ -246,7 +246,7 @@ function ProfileEdit() {
       introduce: changedIntroduce,
       nickname: getValues("nickname"),
       privateYN: changedPrivateYN,
-      userImage: num,
+      userImage: num.toString(),
     };
 
     if (imageInfo.imageUrl !== undefined) {
@@ -262,6 +262,12 @@ function ProfileEdit() {
             window.location.reload();
           });
         });
+    } else {
+      modifyUserInfo(userDetail, (res) => {
+        console.log(res);
+        navigate(`/profile/${userId}`);
+        window.location.reload();
+      });
     }
   };
 
@@ -462,11 +468,11 @@ function ProfileEdit() {
             </table>
             <Grid className="profile-edit__button">
               {nickname === getValues("nickname") &&
-              introduce === changedIntroduce &&
-              age === changedAge &&
-              userImage === changedUserImage &&
-              gender === changedGender &&
-              privateYN == changedPrivateYN ? (
+                introduce === changedIntroduce &&
+                age === changedAge &&
+                userImage === changedUserImage &&
+                gender === changedGender &&
+                privateYN == changedPrivateYN ? (
                 <Button
                   className="disabled"
                   children="수정하기"
