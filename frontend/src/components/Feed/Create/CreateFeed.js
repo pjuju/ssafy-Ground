@@ -25,9 +25,13 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TitleBar from "components/common/TitleBar";
+import CustomModal from "components/common/CustomModal";
+import "styles/Feed/CreateFeed.scss";
 
 function CreateFeedPage() {
   const [authOpen, setAuthOpen] = useState(false);
+  const [cancelOpen, setCancelOpen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [boardInfo, setBoardInfo] = useState({});
   const [newImages, setNewImages] = useState([]);
@@ -56,74 +60,13 @@ function CreateFeedPage() {
     console.log(uploadImages);
     console.log(newImages);
   });
-  // const onClickAuth = () => {
-  //   const data = {
-  //     content: feedContent,
-  //     images: imageList,
-  //     locationId: feedLocationId,
-  //     categoryId: feedCategoryId,
-  //     privateYN: feedPrivate,
-  //   };
-  //   feedCreate(
-  //     data,
-  //     (res) => {
-  //       console.log(res.data);
-  //     },
-  //     (error) => {
-  //       console.log(data);
-  //     }
-  //   );
-  //   setAuthOpen(false);
-  // };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     let imgNumList = [];
-  //     const imgUpload = await Promise.all(
-  //       feedImages.map((src) => {
-  //         const randNum = parseInt(
-  //           (new Date().getTime() + Math.random()) * 100
-  //         );
-  //         const fileName = src.name;
-  //         const fileLength = fileName.length;
-  //         const lastDot = fileName.lastIndexOf(".");
-  //         const fileSpec = fileName
-  //           .substring(lastDot + 1, fileLength)
-  //           .toLowerCase();
-  //         const imgType = ["jpg", "png", "gif"];
-  //         console.log(randNum);
-  //         const storageRef = ref(storage, `images/${randNum}`);
-  //         if (imgType.indexOf(fileSpec) !== -1) {
-  //           imgNumList.push({
-  //             imageType: fileSpec,
-  //             imageUrl: randNum.toString(),
-  //           });
-  //         }
-  //         if (fileSpec === "mp4") {
-  //           imgNumList.push({
-  //             imageType: fileSpec,
-  //             imageUrl: randNum.toString(),
-  //           });
-  //         }
-  //         uploadBytes(storageRef, src).then((snapshot) => {
-  //           console.log("Uploaded a blob or file!");
-  //         });
-  //       })
-  //     );
-  //     setImageList(imgNumList);
-  //   } catch (err) {
-  //     console.log("err");
-  //   }
-
-  //   setAuthOpen(true);
-  // };
   const handleSubmit = () => {
     if (boardInfo.categoryId === undefined) {
-      setIsCategoryError(true)
+      setIsCategoryError(true);
     }
     if (boardInfo.locationId === undefined) {
-      setIsLocationError(true)
+      setIsLocationError(true);
     }
     const newBoardInfo = {
       ...boardInfo,
@@ -136,11 +79,10 @@ function CreateFeedPage() {
     ) {
       feedCreate(newBoardInfo, (res) => {
         console.log(res.data);
+        setAuthOpen(true);
       });
-      setAuthOpen(true);
     }
-
-  }
+  };
 
   const onClickAuth = () => {
     uploadImages.map((src) => {
@@ -151,82 +93,92 @@ function CreateFeedPage() {
         });
       }
     });
-    setAuthOpen(false);
+    navigate(-1);
+  };
+
+  const handleClickBack = () => {
     navigate(-1);
   };
 
   return (
-    <Grid container direction="column" className="create-feed__top">
-      {/* <Grid
-        container
-        direction="row"
-        className="create-feed__back"
-        alignItems="center"
-      >
-        <ArrowBackIosIcon fontSize="large" />
-        <div className="create-feed__title"> 글 작성 </div>
-      </Grid> */}
-      <Grid className="content__title-desktop create-feed__top__title">
-        <IconButton
-         >
-          <ArrowBackIcon />
-        </IconButton>
-        <h2 className="back">글 작성</h2>
-      </Grid>
-      <Grid className="content__title-mobile">
-        <TitleBar title="글 작성" isBack={true} />
-      </Grid>
-      <Grid
-        container
-        direction="row"
-        className="create-feed__button-wrapper"
-        justifyContent="right"
-      >
-        <GrButton className="create-feed__cancel-button" variant="outlined">
-          취소
-        </GrButton>
-        <GrButton
-          className="create-feed__button"
-          variant="contained"
-          onClick={handleSubmit}
-        >
-          작성
-        </GrButton>
-      </Grid>
-      {!isLoading && (
-        <Grid
-        container
-        direction="column"
-        className="create-feed__box"
-        alignItems="center"
-      >
-        <ArticleText boardInfo={boardInfo} setBoardInfo={setBoardInfo}/>
-        <CategoryDropdown boardInfo={boardInfo} setBoardInfo={setBoardInfo} isCategoryError={isCategoryError}/>
-        <RegionDropdown boardInfo={boardInfo} setBoardInfo={setBoardInfo} isLocationError={isLocationError}/>
-        <ArticleOpen boardInfo={boardInfo} setBoardInfo={setBoardInfo}/>
-        <ArticleImg boardInfo={boardInfo} newImages={newImages} uploadImages={uploadImages} setBoardInfo={setBoardInfo} setNewImages={setNewImages} setUploadImages={setUploadImages}/>
-      </Grid>
-      )}
-      <Modal open={authOpen}>
-        <Box className="create-feed__modal-box">
+    <Grid className="content">
+      <Grid container direction="column" className="create-feed__top">
+        <Grid className="content__title-desktop create-feed__top__title">
+          <IconButton onClick={handleClickBack}>
+            <ArrowBackIcon />
+          </IconButton>
+          <h2 className="back">글 작성</h2>
+        </Grid>
+        <Grid className="content__title-mobile">
+          <TitleBar title="글 작성" isBack={true} />
+        </Grid>
+        <Grid className="content__inner">
           <Grid
             container
-            className="create-feed__modal-wrapper"
-            alignItems="flex-end"
+            direction="row"
+            className="create-feed__button-wrapper"
+            justifyContent="right"
           >
-            <Grid container justifyContent="center">
-              <div> 작성되었습니다. </div>
-            </Grid>
+            <GrButton
+              className="create-feed__cancel-button"
+              variant="outlined"
+              onClick={() => setCancelOpen(true)}
+            >
+              취소
+            </GrButton>
+            <GrButton
+              className="create-feed__button"
+              variant="contained"
+              onClick={handleSubmit}
+            >
+              작성
+            </GrButton>
+          </Grid>
+          {!isLoading && (
             <Grid
               container
-              justifyContent="center"
-              className="crate-feed__modal"
+              direction="column"
+              className="create-feed__box"
+              alignItems="center"
             >
-              <GrButton onClick={onClickAuth}>확인</GrButton>
+              <ArticleText boardInfo={boardInfo} setBoardInfo={setBoardInfo} />
+              <CategoryDropdown
+                boardInfo={boardInfo}
+                setBoardInfo={setBoardInfo}
+                isCategoryError={isCategoryError}
+              />
+              <RegionDropdown
+                boardInfo={boardInfo}
+                setBoardInfo={setBoardInfo}
+                isLocationError={isLocationError}
+              />
+              <ArticleOpen boardInfo={boardInfo} setBoardInfo={setBoardInfo} />
+              <ArticleImg
+                boardInfo={boardInfo}
+                newImages={newImages}
+                uploadImages={uploadImages}
+                setBoardInfo={setBoardInfo}
+                setNewImages={setNewImages}
+                setUploadImages={setUploadImages}
+              />
             </Grid>
-          </Grid>
-        </Box>
-      </Modal>
+          )}
+        </Grid>
+        <CustomModal
+          open={cancelOpen}
+          setOpen={setCancelOpen}
+          title="글 작성을 취소하시겠습니까?"
+          type="0"
+          handleClickOKButton={handleClickBack}
+        />
+        <CustomModal
+          open={authOpen}
+          setOpen={setAuthOpen}
+          title="작성되었습니다."
+          type="1"
+          handleClickOKButton={onClickAuth}
+        />
+      </Grid>
     </Grid>
   );
 }

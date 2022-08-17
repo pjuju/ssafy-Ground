@@ -1,7 +1,5 @@
 import "styles/common/Navbar.scss";
 import "styles/common/Notification.scss";
-import "styles/Feed/CreateFeed.scss";
-import "styles/Feed/UpdateFeed.scss"
 import "styles/common/_utils.scss";
 import "styles/common/article.scss";
 
@@ -28,9 +26,9 @@ function FeedPage() {
 
   const { token } = useAuth();
 
-  if(!token) {
-    alert("로그인이 필요한 서비스입니다.")
-    console.log("feed")
+  if (!token) {
+    alert("로그인이 필요한 서비스입니다.");
+    console.log("feed");
     return <Navigate to="/" />;
   }
 

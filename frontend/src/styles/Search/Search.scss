@@ -48,6 +48,7 @@
 
   &__top {
     width: 100%;
+    flex-wrap: wrap;
   }
 
   &__result {
@@ -59,7 +60,7 @@
 
     &__sort {
       color: gray;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       cursor: pointer;
       padding-right: 1rem;
     }
@@ -78,7 +79,7 @@
   // 반응형
   @include tablet() {
     width: 100%;
-    padding: 2rem 2rem 0 2rem !important;
+    padding: 85px 2rem 0 2rem !important;
   }
 
   @include mobile() {
