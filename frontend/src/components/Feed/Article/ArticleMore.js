@@ -20,6 +20,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { feedDelete } from "api/feed";
 import { getUserState } from "api/user";
 import { saveBoard, unsaveBoard } from "api/board";
+import CustomModal from "components/common/CustomModal";
 
 function ArticleMore(props) {
   const {
@@ -43,6 +44,8 @@ function ArticleMore(props) {
   const menuOpen = Boolean(anchorEl);
   let navigate = useNavigate();
   let path = `/feed/update/${id}`;
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   // isSaved가 바뀔 때마다 리렌더링
   useEffect(() => { }, [isSaved]);
@@ -117,7 +120,7 @@ function ArticleMore(props) {
                 </ListItemIcon>
                 <ListItemText>수정</ListItemText>
               </MenuItem>
-              <MenuItem onClick={handleClickDelete}>
+              <MenuItem onClick={() => setDeleteOpen(true)}>
                 <ThemeProvider theme={theme}>
                   <ListItemIcon>
                     <DeleteOutlinedIcon color="warning" fontSize="small" />
@@ -125,6 +128,13 @@ function ArticleMore(props) {
                   <ListItemText style={{ color: "#E6330F" }}>삭제</ListItemText>
                 </ThemeProvider>
               </MenuItem>
+              <CustomModal
+                open={deleteOpen}
+                setOpen={setDeleteOpen}
+                title="글을 삭제하시겠습니까?"
+                type="0"
+                handleClickOKButton={handleClickDelete}
+              />
             </Menu>
           </IconButton>
         </Grid>
