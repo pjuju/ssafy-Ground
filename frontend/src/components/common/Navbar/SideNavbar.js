@@ -71,7 +71,7 @@ function SideNavbar({
     logout(
       () => {
         localStorage.removeItem("token");
-        // systemLogout();
+        systemLogout();
         navigate("/");
       },
       (err) => {
@@ -80,6 +80,7 @@ function SideNavbar({
 
         // }
         localStorage.removeItem("token");
+        systemLogout();
         navigate("/");
       }
     );
