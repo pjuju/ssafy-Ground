@@ -4,8 +4,14 @@
   height: 100vh;
 
   &__inner {
-    margin-top: 60px;
-    margin-bottom: 60px;
+    @include tablet() {
+      margin-top: 65px;
+      margin-bottom: 60px;
+    }
+    @include mobile() {
+      margin-top: 60px;
+      margin-bottom: 60px;
+    }
 
     &__noti {
       & .notification__tabpanel {

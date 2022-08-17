@@ -1,23 +1,42 @@
 import { Grid } from "@mui/material";
-import userImage from "assets/images/userImage.png";
+import userImg from "assets/images/userImage.png";
 import GrButton from "components/common/GrButton";
 import GrTextField from "components/common/GrTextField";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "api/firebase";
 
-function CommentBox({ handleCommentRegister }) {
+function CommentBox({ handleCommentRegister, userImage }) {
   const [comment, setComment] = useState("");
+  const [commentImg, setCommentImg] = useState("");
+
+  useEffect(() => {
+    fetchImage();
+  }, [userImage]);
+
+  const fetchImage = () => {
+    const storageRef = ref(storage, `images/${userImage}`);
+
+    if (userImage !== undefined && userImage !== "") {
+      getDownloadURL(storageRef).then((url) => {
+        console.log("download user");
+        setCommentImg(url);
+      });
+    }
+  };
+
   return (
     <Grid className="comment-box" container justifyContent="space-between">
-      <Grid item xs={0.5} sm={0.8}>
+      <Grid className="comment-box__info" item>
         <img
-          className="comment__info__image"
-          src={userImage}
+          className="comment-box__info__image"
+          src={commentImg || userImg}
           alt="user_image"
         />
       </Grid>
-      <Grid item xs={8} sm={9.5} md={9.5} lg={9.8}>
+      <Grid item className="comment-box__field">
         <GrTextField
-          className="comment-box__field"
+          className="comment-box__field__input"
           multiline
           rows={2}
           value={comment}

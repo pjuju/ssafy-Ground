@@ -55,14 +55,18 @@ function Article({ articleData }) {
     });
   }, []);
 
+<<<<<<< HEAD
   useEffect(() => {
     preview();
   });
+=======
+>>>>>>> front
 
   useEffect(() => {
     fetchImage();
   }, [userImage]);
 
+<<<<<<< HEAD
   const preview = () => {
     if (profileImg === "") return false;
     const imgElement = document.querySelector(".article__inner__userimg > img");
@@ -73,6 +77,8 @@ function Article({ articleData }) {
       imgElement.src = userImg;
     }
   };
+=======
+>>>>>>> front
 
   const fetchImage = () => {
     const storageRef = ref(storage, `images/${userImage}`);

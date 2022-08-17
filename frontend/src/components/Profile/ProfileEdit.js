@@ -248,7 +248,6 @@ function ProfileEdit() {
       privateYN: changedPrivateYN,
       userImage: num,
     };
-    console.log(userDetail);
 
     if (imageInfo.imageUrl !== undefined) {
       const storageRef = ref(storage, `images/${imageInfo.imageUrl}`);
@@ -258,7 +257,7 @@ function ProfileEdit() {
         })
         .then((snapshot) => {
           modifyUserInfo(userDetail, (res) => {
-            console.log(userDetail);
+            console.log(res);
             navigate(`/profile/${userId}`);
             window.location.reload();
           });
@@ -301,9 +300,9 @@ function ProfileEdit() {
                 onClick={() => selectUserImg.current.click()}
               >
                 {userImage.length === 0 && userImage === changedUserImage ? (
-                  <img src={profileImg||userImg} alt="img-input" />
+                  <img src={profileImg || userImg} alt="img-input" />
                 ) : (
-                  <img src={changedUserImage||userImg} alt="img-input" />
+                  <img src={changedUserImage || userImg} alt="img-input" />
                 )}
               </button>
             </Grid>
@@ -502,7 +501,7 @@ function ProfileEdit() {
             />
           </Grid>
         </Grid>
-        <div style={{ height: "30px" }}></div>
+        <div className="empty-div" style={{ height: "30px" }}></div>
       </Grid>
     </Grid>
   );
