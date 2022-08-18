@@ -55,24 +55,11 @@ function Article({ articleData }) {
     });
   }, []);
 
-  useEffect(() => {
-    preview();
-  });
 
   useEffect(() => {
     fetchImage();
   }, [userImage]);
 
-  const preview = () => {
-    if (profileImg === "") return false;
-    const imgElement = document.querySelector(".article__inner__userimg > img");
-    if (imgElement !== null) {
-      imgElement.src = profileImg;
-    }
-    if (imgElement === undefined) {
-      imgElement.src = userImg;
-    }
-  };
 
   const fetchImage = () => {
     const storageRef = ref(storage, `images/${userImage}`);
@@ -86,14 +73,16 @@ function Article({ articleData }) {
   };
 
   const handleClickImg = () => {
+    console.log(user.id);
     navigate(`/profile/${user.id}`);
+    window.location.reload();
   };
 
   return (
     <Box className="article">
       <Grid className="article__inner" container direction="row">
-        <Grid className="article__inner__userimg" onClick={handleClickImg}>
-          <img src={profileImg||userImg} />
+        <Grid className="article__inner__userimg">
+          <img src={profileImg || userImg} onClick={handleClickImg} />
         </Grid>
         <Grid className="article__inner__left">
           <ArticleInfo

@@ -70,16 +70,18 @@ function SideNavbar({
   const handleClickLogout = () => {
     logout(
       () => {
-        // localStorage.removeItem("token");
+        localStorage.removeItem("token");
         systemLogout();
         navigate("/");
       },
       (err) => {
         // JWT 토근이 만료되어 500 에러가 반환됐다면
-        if (err.response.status === 500) {
-          localStorage.removeItem("token");
-          navigate("/");
-        }
+        // if (err.response.status === 500) {
+
+        // }
+        localStorage.removeItem("token");
+        systemLogout();
+        navigate("/");
       }
     );
   };

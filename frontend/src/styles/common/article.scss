@@ -18,10 +18,10 @@
 
     &__userimg {
       width: 8%;
-      cursor: pointer;
 
       & img {
         width: 90%;
+        cursor: pointer;
         border-radius: 50%;
       }
     }
@@ -30,6 +30,10 @@
       width: 80%;
       padding-left: 0.5rem;
       padding-right: 0.5rem;
+
+      @include mobile() {
+        width: 70%;
+      }
     }
 
     &__right {
@@ -63,22 +67,8 @@
 
   &__text {
     margin-bottom: 2rem;
-    & span:first-child {
-      white-space: normal;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      margin-bottom: 0.2rem;
-    }
-
-    & span:last-child {
-      color: $light-gray;
-      text-decoration: underline;
-      margin-bottom: 1rem;
-      cursor: pointer;
-      display: inline;
-    }
+    cursor: pointer;
+    white-space: pre-wrap;
   }
 
   &__media {
@@ -122,10 +112,12 @@
   & .slick-list {
     max-height: 400px !important;
   }
+
   & .slick-track {
     display: flex !important;
     height: 100% !important;
   }
+
   & .slick-track .slick-slide {
     display: flex !important;
     height: auto !important;
@@ -138,10 +130,6 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-
-  @include mobile() {
-    font-size: 0.9rem;
-  }
 }
 
 .more {

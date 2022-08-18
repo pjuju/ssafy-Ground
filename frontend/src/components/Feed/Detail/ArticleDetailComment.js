@@ -3,7 +3,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Comment from "./Comment";
 import { useEffect, useState } from "react";
 import { getUserState } from "api/user";
-import { deleteComment, registerComment, updateComment } from "api/comment";
+import { registerComment, updateComment } from "api/comment";
 import { useParams } from "react-router-dom";
 import CommentBox from "./CommentBox";
 
@@ -21,18 +21,6 @@ function ArticleDetailComment({ commentList }) {
     });
   };
 
-  // 댓글 삭제 핸들러
-  const handleCommentDelete = (commentId) => {
-    if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      deleteComment(commentId, (res) => {
-        const deletedComments = comments.filter(
-          (comment) => comment.id !== commentId
-        );
-        setComments(deletedComments);
-      });
-    }
-  };
-
   // 댓글 수정 핸들러
   const handleCommentEdit = (commentId, comment) => {
     updateComment(commentId, comment, (res) => {
@@ -48,8 +36,7 @@ function ArticleDetailComment({ commentList }) {
 
   useEffect(() => {
     getUserState((res) => {
-      console.log(res.data)
-      setUserImage(res.data.userImage)
+      setUserImage(res.data.userImage);
       setUserId(res.data.id);
     });
   }, []);
@@ -62,14 +49,18 @@ function ArticleDetailComment({ commentList }) {
       <Grid item>
         댓글 <span className="bold">{comments.length}개</span>
       </Grid>
-      <CommentBox handleCommentRegister={handleCommentRegister} userImage={userImage}/>
+      <CommentBox
+        handleCommentRegister={handleCommentRegister}
+        userImage={userImage}
+      />
       {comments.map((comment, index) => (
         <Comment
           key={index}
           comment={comment}
+          comments={comments}
+          setComments={setComments}
           userId={userId}
           handleCommentEdit={handleCommentEdit}
-          handleCommentDelete={handleCommentDelete}
         />
       ))}
     </Grid>

@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public interface BoardFollowRepository extends JpaRepository<Follow, Long> {
-    List<Follow> findAllByfromUserId(User user);
+    List<Follow> findAllByFromUserIdAndFlag(User user, boolean f);
 
 
 }

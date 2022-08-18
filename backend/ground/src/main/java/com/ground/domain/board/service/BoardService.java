@@ -223,7 +223,7 @@ public class BoardService {
         List<User> openUserList = userRepository.findAllByPrivateYN(false);
         userList.addAll(openUserList);
         // 작성자가 팔로우 유저
-        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        List<Follow> followList = followRepository.findAllByFromUserIdAndFlag(user, true);
         for (Follow follow : followList) userList.add(follow.getToUserId());
         // 작성자가 나
         userList.add(user);
@@ -243,7 +243,7 @@ public class BoardService {
     @Transactional
     public List<BoardResponseDto> getFollowBoard(User user, int pageNumber) {
 
-        List<Follow> followList = followRepository.findAllByfromUserId(user);
+        List<Follow> followList = followRepository.findAllByFromUserIdAndFlag(user, true);
         List<User> userList = new ArrayList<>();
         for (Follow follow : followList) userList.add(follow.getToUserId());
 
@@ -331,7 +331,7 @@ public class BoardService {
         List<User> openUserList = userRepository.findAllByPrivateYN(false);
         userList.addAll(openUserList);
         // 작성자가 팔로우 유저
-        List<Follow> followList = followRepository.findAllByfromUserId(loginUser);
+        List<Follow> followList = followRepository.findAllByFromUserIdAndFlag(loginUser, true);
         for (Follow follow : followList) userList.add(follow.getToUserId());
         // 작성자가 나
         userList.add(loginUser);

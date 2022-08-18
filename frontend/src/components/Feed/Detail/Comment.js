@@ -3,14 +3,24 @@ import userImg from "assets/images/userImage.png";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import CommentEdit from "./CommentEdit";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "api/firebase";
+import { deleteComment } from "api/comment";
+import CustomModal from "components/common/CustomModal";
 
 const formatDate = (date) => {
   // let converted = new Date();
-  let converted = new Date(date[0], date[1] - 1, date[2], date[3], date[4], date[5]);
-  let diff = new Date() - converted; // 차이(ms)
+  let converted = new Date(
+    date[0],
+    date[1] - 1,
+    date[2],
+    date[3],
+    date[4],
+    date[5]
+  );
+  let diff = new Date() - converted - 32400000; // 차이(ms)
 
   // 차이가 1초 미만이라면
   if (diff < 1000) {
@@ -49,16 +59,22 @@ const formatDate = (date) => {
   return d.slice(0, 3).join(".") + " " + d.slice(3).join(":");
 };
 
-function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
+function Comment({
+  comment,
+  comments,
+  setComments,
+  userId,
+  handleCommentEdit,
+}) {
   const { id, user, regDttm, reply } = comment;
-  const image = user.userImage
+  const image = user.userImage;
   const [isEdit, setIsEdit] = useState(false);
   const [profileImg, setProfileImg] = useState("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetchImage();
   }, [image]);
-
 
   const fetchImage = () => {
     const storageRef = ref(storage, `images/${image}`);
@@ -71,16 +87,32 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleClickProfile = () => {
+    navigate(`/profile/${user.id}`);
+  };
+
+  // 댓글 삭제 핸들러
+  const handleCommentDelete = () => {
+    deleteComment(id, (res) => {
+      const deletedComments = comments.filter(
+        (comment) => comment.id !== id
+      );
+      setComments(deletedComments);
+    });
+  };
 
   return (
     <div className="comment">
       <Stack className="comment__inner">
         <Grid className="comment__info" container justifyContent="center">
-          <Grid item xs={0.8}>
+          <Grid item>
             <img
               className="comment__info__image"
-              src={profileImg||userImg}
+              src={profileImg || userImg}
               alt="user_image"
+              onClick={handleClickProfile}
             />
           </Grid>
           <Grid item xs={10}>
@@ -92,7 +124,12 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
             >
               <Grid container justifyContent="space-between">
                 <Stack direction="row">
-                  <Grid className="comment__nickname" item textAlign="center">
+                  <Grid
+                    className="comment__nickname"
+                    item
+                    textAlign="center"
+                    onClick={handleClickProfile}
+                  >
                     {user.nickname}
                   </Grid>
                   <Grid className="comment__regDate" item textAlign="center">
@@ -111,7 +148,7 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
                         className="comment__delete comment__button"
                         color="warning"
                         fontSize="small"
-                        onClick={() => handleCommentDelete(id)}
+                        onClick={() => setOpen(true)}
                       />
                     </>
                   )}
@@ -131,6 +168,13 @@ function Comment({ comment, userId, handleCommentEdit, handleCommentDelete }) {
           handleCommentEdit={handleCommentEdit}
         />
       )}
+      <CustomModal
+        open={open}
+        setOpen={setOpen}
+        title="삭제하시겠습니까?"
+        type="0"
+        handleClickOKButton={handleCommentDelete}
+      />
     </div>
   );
 }

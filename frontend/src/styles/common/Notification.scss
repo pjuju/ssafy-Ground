@@ -74,7 +74,7 @@
     }
 
     &--no-noti {
-      padding-top: 50%;
+      padding-top: 30%;
       color: $light-gray;
     }
   }
@@ -146,6 +146,16 @@
 }
 
 .noti {
+
+  &-like,
+  &-comment,
+  &-fr,
+  &-follow {
+    &__text {
+      cursor: pointer;
+    }
+  }
+
   &-like,
   &-comment {
     @include noti-common();

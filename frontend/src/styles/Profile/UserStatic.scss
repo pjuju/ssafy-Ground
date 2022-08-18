@@ -25,6 +25,7 @@ $primary: #54bab9;
 
   &__img {
     padding: 0 1px;
+    margin: 0 0.3rem 0.5rem 0.3rem;
   }
 }
 
@@ -34,6 +35,7 @@ $primary: #54bab9;
     margin-top: 60px;
   }
 }
+
 /*
  * Default color scale
  */
@@ -53,15 +55,19 @@ $primary: #54bab9;
 .react-calendar-heatmap .color-scale-0 {
   fill: #eeeeee;
 }
+
 .react-calendar-heatmap .color-scale-1 {
   fill: #bae9e8;
 }
+
 .react-calendar-heatmap .color-scale-2 {
   fill: #93dfdd;
 }
+
 .react-calendar-heatmap .color-scale-3 {
   fill: #54bab9;
 }
+
 .react-calendar-heatmap .color-scale-4 {
   fill: #469290;
 }

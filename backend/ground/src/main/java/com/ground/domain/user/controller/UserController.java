@@ -69,30 +69,35 @@ public class UserController {
 	@PostMapping("/signUp")
     @ApiOperation(value = "회원가입", response = boolean.class)
     public boolean signUp(@RequestBody UserRegisterDto params){
+		
     	return userService.saveUser(params);
     }
     
     @GetMapping("/isUsedUsername")
     @ApiOperation(value = "아이디 중복 체크", response = boolean.class)
     public boolean isUsedUsername(String username){
+    	
         return userService.checkUsername(username);
     }
     
     @GetMapping("/isUsedNickname")
     @ApiOperation(value = "닉네임 중복 체크", response = boolean.class)
     public boolean isUsedNickname(String nickname){
+    	
         return userService.checkNickname(nickname);
     }
     
     @GetMapping("/isUsedEmail")
     @ApiOperation(value = "이메일 중복 체크", response = boolean.class)
     public boolean isUsedEmail(String email){
+    	
         return userService.checkEmail(email);
     }
     
     @GetMapping("/emailAuth")
     @ApiOperation(value = "이메일 인증", response = String.class)
     public String emailAuth(String email) throws UnsupportedEncodingException{
+    	
         return mailService.joinEmail(email);
     }
     
@@ -100,18 +105,21 @@ public class UserController {
     @ApiOperation(value = "회원 탈퇴", response = String.class)
     public boolean deleteUser(@RequestHeader String Authorization){
     	String ftoken = Authorization.substring(7);
+    	
         return userService.deleteUser(jwtTokenProvider.getSubject(ftoken));
     }
     
     @GetMapping("/findId/{email}")
     @ApiOperation(value = "아이디 찾기", response = String.class)
     public String findId(@PathVariable String email) {
+    	
     	return userService.findId(email);
     }
     
     @PostMapping("/modifyPass")
     @ApiOperation(value = "비밀번호 변경을 위한 아이디, 이메일 확인", response = boolean.class)
     public boolean modifyPassCheck(@RequestBody UserFindPassDto params) {
+    	
     	return userService.modifyPassCheck(params);
     }
     
@@ -121,13 +129,14 @@ public class UserController {
     public boolean modifyPass(@RequestHeader String Authorization, @RequestBody UserModifyPassDto params) {
         String ftoken = Authorization.substring(7);
         User user = userRepository.findByUsername(jwtTokenProvider.getSubject(ftoken)).get();
+        
         return userService.modifyPass(user, params);
     }
 
-    
     @PostMapping("/login")
     @ApiOperation(value = "로그인", response = UserStateDto.class)
     public UserLoginResponseDto login(@RequestBody UserLoginDto params){
+    	
     	return userService.login(params);
     }
 
@@ -135,6 +144,7 @@ public class UserController {
     @ApiOperation(value = "유저상태정보 전송", response = UserStateDto.class)
     public UserStateDto userState(@RequestHeader String Authorization) {
     	String ftoken = Authorization.substring(7);
+    	
     	return userService.userState(ftoken);
     }
     
@@ -149,6 +159,7 @@ public class UserController {
     	
     	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
     	ukld = kakaoService.getUserInfo(access_Token);
+    	
     	return kakaoService.kakaoLogin(ukld);
     }
     
@@ -157,6 +168,7 @@ public class UserController {
     public UserLoginResponseDto googleLogin(@RequestParam("code") String access_token, HttpSession session) throws IOException {
     	UserKakaoLoginDto ukld = new UserKakaoLoginDto();
     	ukld = googleService.getUserInfo(access_token);
+    	
     	return googleService.googleLogin(ukld);
     }
     
@@ -164,10 +176,10 @@ public class UserController {
     @ApiOperation(value = "로그아웃", response = boolean.class)
     public boolean logoutUser(@RequestHeader String Authorization) {
     	String ftoken = Authorization.substring(7);
+    	
     	return userService.logoutUser(ftoken);
     }
 
-    
 
     // -----------------BSH-----------------
     // 프로필 조회 이동

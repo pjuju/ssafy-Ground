@@ -39,14 +39,14 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
         }
 
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new IllegalArgumentException("유효하지 않은 토큰1");
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
 
         String name = jwtTokenProvider.getSubject(token);
         Optional<User> user = userRepository.findByUsername(name);
         
         if(!token.equals(user.get().getFtoken())) {
-        	throw new IllegalArgumentException("유효하지 않은 토큰2");
+        	throw new IllegalArgumentException("사용자의 토큰과 일치하지 않습니다.");
         }
         request.setAttribute("name", name);
         return true;

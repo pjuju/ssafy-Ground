@@ -246,9 +246,8 @@ function ProfileEdit() {
       introduce: changedIntroduce,
       nickname: getValues("nickname"),
       privateYN: changedPrivateYN,
-      userImage: num,
+      userImage: num.toString(),
     };
-    console.log(userDetail);
 
     if (imageInfo.imageUrl !== undefined) {
       const storageRef = ref(storage, `images/${imageInfo.imageUrl}`);
@@ -258,11 +257,17 @@ function ProfileEdit() {
         })
         .then((snapshot) => {
           modifyUserInfo(userDetail, (res) => {
-            console.log(userDetail);
+            console.log(res);
             navigate(`/profile/${userId}`);
             window.location.reload();
           });
         });
+    } else {
+      modifyUserInfo(userDetail, (res) => {
+        console.log(res);
+        navigate(`/profile/${userId}`);
+        window.location.reload();
+      });
     }
   };
 
@@ -301,9 +306,9 @@ function ProfileEdit() {
                 onClick={() => selectUserImg.current.click()}
               >
                 {userImage.length === 0 && userImage === changedUserImage ? (
-                  <img src={profileImg||userImg} alt="img-input" />
+                  <img src={profileImg || userImg} alt="img-input" />
                 ) : (
-                  <img src={changedUserImage||userImg} alt="img-input" />
+                  <img src={changedUserImage || userImg} alt="img-input" />
                 )}
               </button>
             </Grid>
@@ -315,7 +320,7 @@ function ProfileEdit() {
                 </tr>
                 <tr className="profile-edit__table__email">
                   <th>이메일</th>
-                  <td>{email}</td>
+                  <td>{email.replace('"', "").replace('"', "")}</td>
                 </tr>
                 <tr className="profile-edit__table__password">
                   <th>비밀번호</th>
@@ -463,11 +468,11 @@ function ProfileEdit() {
             </table>
             <Grid className="profile-edit__button">
               {nickname === getValues("nickname") &&
-              introduce === changedIntroduce &&
-              age === changedAge &&
-              userImage === changedUserImage &&
-              gender === changedGender &&
-              privateYN == changedPrivateYN ? (
+                introduce === changedIntroduce &&
+                age === changedAge &&
+                userImage === changedUserImage &&
+                gender === changedGender &&
+                privateYN == changedPrivateYN ? (
                 <Button
                   className="disabled"
                   children="수정하기"
@@ -502,7 +507,7 @@ function ProfileEdit() {
             />
           </Grid>
         </Grid>
-        <div style={{ height: "30px" }}></div>
+        <div className="empty-div" style={{ height: "30px" }}></div>
       </Grid>
     </Grid>
   );

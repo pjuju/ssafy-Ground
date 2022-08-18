@@ -3,6 +3,7 @@ import MediaSlider from "components/Feed/Article/MediaSlider";
 import { Grid } from "@mui/material";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function ArticleContent(props) {
   const navigate = useNavigate();
@@ -13,13 +14,7 @@ function ArticleContent(props) {
   return (
     <Grid className="article-content">
       <Grid className="article-content__text">
-        <span>{props.content}</span>
-        <span
-          className="article-content more"
-          onClick={handleClickMore}
-        >
-          더보기
-        </span>
+        <span onClick={handleClickMore}>{props.content}</span>
       </Grid>
       <Grid className="article-content__media">
         <MediaSlider images={props.images} />
