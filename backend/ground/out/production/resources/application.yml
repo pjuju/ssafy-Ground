@@ -1,0 +1,60 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jongui7303@gmail.com
+    password: uvppuyzqcflwldaw
+    properties:
+      mail:
+        smtp:
+#          ssl:
+#            protocols: TLSv1.2
+          auth: true
+          starttls:
+            enable: true
+            
+  datasource:
+#    url: jdbc:mysql://ground.cspd92r3jqje.ap-northeast-2.rds.amazonaws.com/ground?useSSL=false&serverTimezone=Asia/Seoul
+#    username: admin
+#    password: Abcd123!
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ground?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      show_sql: true
+      hibernate:
+      format_sql: true
+    database: mysql
+
+
+   
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+      
+jwt:
+  secret: 1234
+  token-validity-in-seconds: 600000
+  #60000 -> 1분
+    
+kakao:
+  client_id: 87b8da584f22cf18e58e764a34d23c9e
+  redirect_uri: http://localhost:3000/oauth/callback/kakao
+  
+google:
+  auth_url: https://accounts.google.com/o/oauth2/v2/auth
+  token_url: https://oauth2.googleapis.com/token
+  redirect_uri: http://localhost:3000/oauth/callback/google
+  client_id: 1064595615724-vbu3rttpmqnl440je7vckas5i61kiv4h.apps.googleusercontent.com
+  client_secret: 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
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace

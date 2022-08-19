@@ -1,0 +1,76 @@
+@import "../common/utils";
+
+.content {
+  height: 100vh;
+
+  &__inner {
+    @include tablet() {
+      margin-top: 65px;
+      margin-bottom: 60px;
+    }
+    @include mobile() {
+      margin-top: 60px;
+      margin-bottom: 60px;
+    }
+
+    &__noti {
+      & .notification__tabpanel {
+        & .noti {
+          &-like,
+          &-comment,
+          &-follow {
+            padding: 1rem 0 1rem 0.5rem;
+
+            &__img {
+              margin-right: 0.6rem;
+              width: 6%;
+            }
+
+            &__text {
+              width: 76%;
+            }
+
+            &__delete {
+              width: 8% !important;
+
+              & button {
+                width: 100%;
+              }
+            }
+          }
+
+          &-fr {
+            padding: 1rem 0 1rem 0.5rem;
+
+            &__top {
+              padding-left: 0;
+              justify-content: center;
+              align-items: center;
+
+              &__img {
+                margin-right: 0.6rem;
+                width: 6%;
+              }
+
+              &__text {
+                width: 84%;
+              }
+            }
+
+            &__button {
+              margin-right: 1.5rem;
+            }
+          }
+        }
+      }
+
+      & .notification__bottom {
+        bottom: 10%;
+      }
+    }
+  }
+}
+
+.checked {
+  background: #fff;
+}
