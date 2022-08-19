@@ -1,0 +1,169 @@
+@import "../common/utils";
+
+/* 관심 운동 종목 칩 */
+@mixin interest-filter {
+  width: 100%;
+  padding: 0rem 2.5rem 0.5rem 2.5rem;
+
+  &__chips {
+    width: 94%;
+    left: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+
+    @include custom-scrollbar();
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    & div {
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      &.MuiChip-root {
+        color: rgba(24, 151, 143, 1);
+        background-color: rgba(84, 186, 185, 0.12);
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      & .MuiChip-deleteIcon {
+        color: rgba(24, 151, 143, 0.7);
+      }
+    }
+  }
+
+  &__icon {
+    width: 6%;
+    text-align: end;
+  }
+}
+
+#desktop {
+  & .content {
+    &__inner {
+      /* 최신 글 피드의 운동 종목 칩들 */
+      &__filter {
+        @include interest-filter();
+
+        &--none {
+          padding-top: 30%;
+          display: flex;
+          justify-content: center;
+          color: $light-gray;
+        }
+      }
+    }
+  }
+}
+
+#mobile {
+  & .content {
+    &__inner {
+      padding-top: 1.5rem;
+      padding-bottom: 2rem;
+
+      /* 최신 글 피드의 운동 종목 칩들 */
+      &__filter {
+        @include interest-filter();
+
+        padding: 0rem 4.8vw 0.5rem 4.8vw;
+
+        &__chips {
+          width: 100%;
+        }
+
+        &__icon {
+          display: none;
+        }
+
+        &--none {
+          padding-top: 35%;
+          display: flex;
+          justify-content: center;
+          color: $light-gray;
+        }
+      }
+    }
+  }
+}
+
+/* 데스크탑에서 필터 버튼을 선택했을 때 뜨는 메뉴 창 */
+.interest-filter {
+  & .MuiPaper-root {
+    width: 48%;
+    padding: 1.5rem;
+    padding-top: 0;
+    padding-bottom: 0.8rem;
+
+    @include wide-desktop() {
+      width: 40%;
+    }
+  }
+
+  &__title {
+    margin-bottom: 0;
+  }
+
+  &__desc {
+    margin-block-start: 0.2rem;
+    color: $light-gray;
+  }
+
+  &__checkbox {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.9rem;
+    width: 30%;
+
+    & span {
+      font-size: 1rem;
+    }
+  }
+
+  &__button {
+    text-align: right;
+    margin-top: 0;
+    margin-right: 0.3rem;
+
+    & button {
+      border-radius: 20px !important;
+    }
+  }
+}
+
+/* 필터 모달창 */
+
+.latest-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  background-color: #fff;
+
+  @include mobile() {
+    width: 100%;
+    top: 100%;
+    transform: translate(-50%, -100%);
+    padding-left: 8px;
+
+    &__desc {
+      font-size: 13px;
+    }
+
+    & .MuiFormControlLabel-label {
+      font-size: 13px;
+    }
+  }
+
+  &__inner {
+    padding: 10px 0 15px 30px;
+  }
+
+  &__button {
+    padding-right: 15px;
+  }
+}

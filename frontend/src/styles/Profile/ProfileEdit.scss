@@ -1,0 +1,199 @@
+@import "../common/utils";
+
+.back {
+  margin-left: 0.5rem;
+}
+
+.profile-edit {
+  border: 1px solid $super-light-gray;
+  border-radius: 30px;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  padding-top: 3rem;
+  padding-bottom: 1.5rem;
+
+  &__img {
+    text-align: center;
+
+    &__input {
+      display: none;
+    }
+
+    &__input-button {
+      margin-bottom: 1rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      & img {
+        height: 250px;
+        width: 250px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &__table {
+    width: 100%;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+
+    & th {
+      text-align: left;
+      font-weight: 800;
+    }
+
+    & td {
+      padding: 1rem;
+      padding-left: 3rem;
+      width: 300px;
+
+      & .MuiTextField-root {
+        width: 100%;
+      }
+    }
+
+    &__nickname {
+      & td {
+        & .MuiTextField-root {
+          width: 65%;
+        }
+      }
+
+      & button {
+        width: 30%;
+      }
+    }
+
+    &__introduce {
+      & input {
+        width: 100%;
+      }
+    }
+  }
+
+  &__button {
+    margin: 1.5rem 0;
+    text-align: center;
+
+    & button {
+      width: 30%;
+      font-size: 1rem;
+    }
+  }
+
+  &__quit {
+    text-align: center;
+    color: $light-gray;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    margin-top: 2rem;
+    cursor: pointer;
+  }
+}
+
+.profile-edit-modal {
+  &__button {
+    padding-top: 1.5rem;
+
+    &--cancel {
+      margin-right: 1rem !important;
+    }
+
+    &--ok-2 {
+      width: 40%;
+    }
+  }
+}
+
+.modify-pass-modal {
+  &__title {
+    margin-bottom: 2rem;
+
+    & h2 {
+      margin-bottom: 0;
+    }
+  }
+
+  &__content {
+    justify-content: center;
+    margin-bottom: 1rem;
+
+    &__password {
+      width: 100%;
+      margin-top: 1.5rem !important;
+    }
+  }
+
+  &__button {
+    padding-top: 1rem;
+
+    &--cancel {
+      margin-right: 1rem !important;
+    }
+  }
+}
+
+#mobile {
+  .profile-edit {
+    padding-top: 1rem;
+
+    &__img {
+      & img {
+        width: 180px;
+        height: 180px;
+      }
+    }
+
+    &__table {
+      width: 100%;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: center;
+      padding-left: 1.2rem;
+      padding-right: 1.2rem;
+
+      & th {
+        text-align: left;
+        width: 30%;
+      }
+
+      & td {
+        padding: 1rem;
+      }
+
+      &__nickname {
+        & .MuiTextField-root {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+
+        & button {
+          min-width: 110.95px;
+        }
+      }
+
+      &__introduce {
+        & input {
+          width: 100%;
+        }
+      }
+    }
+
+    // &__button {
+    //   display: none;
+    // }
+  }
+}
+
+.empty-div {
+  @include tablet() {
+    display: none;
+  }
+
+  @include mobile() {
+    display: none;
+  }
+}

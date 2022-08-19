@@ -1,0 +1,174 @@
+@import "../common/utils";
+
+.dialog {
+  &-follower,
+  &-following {
+    & .MuiPaper-root.MuiDialog-paper {
+      min-width: 300px;
+      max-width: 400px;
+    }
+
+    & .MuiDialogTitle-root {
+      text-align: center;
+    }
+
+    &__list {
+      width: 100%;
+      min-height: 400px;
+      max-height: 500px;
+      overflow-y: auto;
+
+      &.MuiList-root {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+
+        & .following-user-profile,
+        .follower-user-profile {
+          flex-direction: row;
+          justify-content: center;
+          margin-bottom: 1.5rem;
+
+          &__img {
+            width: 10%;
+            margin-right: 0.5rem;
+
+            & img {
+              width: 100%;
+            }
+          }
+
+          &__text-info {
+            width: 38%;
+            justify-content: center;
+            margin-right: 2rem;
+
+            &__nickname {
+              font-weight: 700;
+            }
+
+            &__user-id {
+              color: $light-gray;
+            }
+          }
+
+          &__button {
+            display: flex;
+            align-items: center;
+            width: 25%;
+            text-align: end;
+            justify-content: flex-end;
+
+            & button {
+              border-radius: 20px;
+            }
+          }
+        }
+
+        & .following-user-profile {
+          &__text-info {
+            width: 36%;
+          }
+          &__button {
+            width: 30%;
+          }
+
+          @include tablet() {
+            &__text-info {
+              width: 20%;
+              font-size: 0.9rem;
+            }
+            &__button {
+              width: 50%;
+              font-size: 0.7rem;
+            }
+          }
+          @include mobile() {
+            &__text-info {
+              width: 20%;
+              font-size: 0.9rem;
+            }
+            &__button {
+              width: 45%;
+              font-size: 0.7rem;
+            }
+          }
+        }
+
+        & .follower-user-profile {
+          &__text-info {
+            width: 30%;
+          }
+
+          &__button {
+            width: 35%;
+            justify-content: flex-end;
+
+            &--follow,
+            &--ing,
+            &--unfollow {
+              margin-right: 0.5rem;
+            }
+          }
+
+          @include tablet() {
+            &__text-info {
+              width: 25%;
+              font-size: 0.9rem;
+            }
+            &__button {
+              &--unfollow {
+                font-size: 0.7rem;
+              }
+
+              &--delete {
+                font-size: 0.7rem;
+              }
+            }
+          }
+          @include mobile() {
+            &__text-info {
+              width: 20%;
+              font-size: 0.9rem;
+            }
+            &__button {
+              width: 50%;
+              &--unfollow {
+                font-size: 0.7rem;
+                margin-right: 0.4srem;
+              }
+
+              &--delete {
+                font-size: 0.7rem;
+              }
+            }
+          }
+          @include desktop() {
+            &__text-info {
+              width: 30%;
+            }
+
+            &__button {
+            }
+          }
+          @include wide-desktop() {
+          }
+        }
+      }
+
+      & p {
+        text-align: center;
+        color: $light-gray;
+      }
+
+      &--none {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+.dialog-follower {
+  & .MuiPaper-root.MuiDialog-paper {
+    max-width: 500px;
+  }
+}
