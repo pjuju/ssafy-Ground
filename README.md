@@ -181,7 +181,7 @@ git clone https://lab.ssafy.com/s07-webmobile2-sub2/S07P12D103.git
   ```
 2. clean 으로 기존 jar 파일 삭제
 3. bootJar 으로 현제 버전 jar 파일 생성  
-<img src="https://user-images.githubusercontent.com/55791128/185339539-e182b420-a55d-47f4-b633-414a32940378.png" />
+<img src="https://user-images.githubusercontent.com/55791128/185339539-e182b420-a55d-47f4-b633-414a32940378.png" />  
 4. [Shift + F10] run 실행
 
 <br />
