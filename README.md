@@ -190,8 +190,8 @@ git clone https://lab.ssafy.com/s07-webmobile2-sub2/S07P12D103.git
 <div id="6"></div>
 
 # 팀 소개
-|이름|김주영|배시현|박종욱|박주현|조인후|한유빈|
+|이름|김주영|박종욱|박주현|배시현|조인후|한유빈|
 |:-:| :---: | :---: | :---: | :---: | :---: | :---: |
-|프로필|<img src="https://user-images.githubusercontent.com/55791128/185524130-b2cdbdfc-1df6-4e40-a218-85ed642ba388.jpg" width="100px"/>|<img src="https://user-images.githubusercontent.com/55791128/185524304-1e3c258c-3eb3-46cb-96df-f34c38ee43fc.jpg" width="110px"/>|<img src="https://user-images.githubusercontent.com/55791128/185525409-d05fbc23-1c7b-4599-bb6d-81c9cef133c2.jpg" width="100px"/>|<img src="https://user-images.githubusercontent.com/55791128/185388776-2c934788-9dcf-4ef6-84ba-1239976f6d9d.jpg" width="100px"/>|<img src="https://user-images.githubusercontent.com/55791128/185334973-da545e19-67c9-472d-994b-2b5f5a31073e.jpg" width="100px"/>|<img src="https://user-images.githubusercontent.com/55791128/185519033-70de1167-eb57-4993-ae76-2932ad075e83.jpg" width="100px"/>|
-|포지션|Frontend & UI/UX <br /> 영상편집|Backend|Backend|Backend & CI/CD|Frontend & UI/UX|**팀장**<br />Frontend & UI/UX|
+|프로필|<img src="https://user-images.githubusercontent.com/55791128/185524130-b2cdbdfc-1df6-4e40-a218-85ed642ba388.jpg" width="100px"/>|<img src="https://user-images.githubusercontent.com/55791128/185525409-d05fbc23-1c7b-4599-bb6d-81c9cef133c2.jpg" width="100px"/>|<img src="https://user-images.githubusercontent.com/55791128/185388776-2c934788-9dcf-4ef6-84ba-1239976f6d9d.jpg" width="100px"/>|<img src="https://user-images.githubusercontent.com/55791128/185524304-1e3c258c-3eb3-46cb-96df-f34c38ee43fc.jpg" width="110px"/>|<img src="https://user-images.githubusercontent.com/55791128/185334973-da545e19-67c9-472d-994b-2b5f5a31073e.jpg" width="100px"/>|<img src="https://user-images.githubusercontent.com/55791128/185519033-70de1167-eb57-4993-ae76-2932ad075e83.jpg" width="100px"/>|
+|포지션|Frontend & UI/UX <br /> 영상편집|Backend|Backend & CI/CD|Backend|Frontend & UI/UX|**팀장**<br />Frontend & UI/UX|
 
