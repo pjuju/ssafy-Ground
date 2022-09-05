@@ -1,5 +1,3 @@
-# SSAFY-GROUND
-
 <div align="center">
   <img src="./readme_asset/readme_title.png" alt="GROUND"/>
   <br />
